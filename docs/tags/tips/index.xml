@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tips on vSoliloquy</title>
+    <link>https://jangari-ntk.github.io/tags/tips/</link>
+    <description>Recent content in Tips on vSoliloquy</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
+    <lastBuildDate>Fri, 07 Aug 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://jangari-ntk.github.io/tags/tips/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>pyVmomi から API 操作で Instant Clone をやってみる</title>
+      <link>https://jangari-ntk.github.io/post/2020-08-07/</link>
+      <pubDate>Fri, 07 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2020-08-07/</guid>
+      <description>はじめに 本記事では pyVmomi を使って vSphere 単体で Instant Clone を行う方法について書いていきます。
+事の発端は以下のVMware社の中の人が PowerCLI から Nested ESXi をインスタントクローンする記事です。
+Leveraging Instant Clone in vSphere 6.7 for extremely fast Nested ESXi provisioning
+vSphere Web Services API と pyVmomi vCenter Server のタスクをコマンドで実行する場合、PowerCLI を使うことが多いと思います。もしくは、開発やトラブルシューティングなどの一環で MOB (Managed Object Browser) を使用したことがある方もいらっしゃるかもしれません。
+ VMware PowerCLI - VMware {code} Online Documentation - vSphere SDK for Perl Programming Guide - VMware {code}  これらのツールは「vSphere Web Services API」という vSphere のローレベルな SOAP API を操作しています1。</description>
+    </item>
+    
+    <item>
+      <title>vCenter Server 7.0 のイベントをテキストで取得</title>
+      <link>https://jangari-ntk.github.io/post/2020-08-01/</link>
+      <pubDate>Sat, 01 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2020-08-01/</guid>
+      <description>はじめに vSphere Web Client (Flash 版) が vSphere 7 で遂に廃止となりました。vSphere Client (HTML5 版) は動作もスムーズで良いのですが、どうやら現時点では従来のイベントのエクスポートが行えないようです。
+Exporting virtual machine events from the Tasks &amp;amp; Events tab (2008204)
+ Note: The export tasks/Events option is only available on the vSphere Web Client (Flex). The HTML client does not include this feature at this time.
+ このため、別の方法でイベントを取得する方法を試してみました。試した方法は以下の２パターンです。
+ イベントストリーミングで転送してみる PowerCLI でエクスポートしてみる  なお、どちらの方法もメッセージの言語のローカライズは行われないためご注意ください。
+VCSA のイベントストリーミングで転送してみる イベントストリーミングでの転送では以下の２点の設定が必要ですが、後者は既定で設定済みなので、実質的には前者のリモート Syslog 転送の設定だけ行うことでイベントが転送されるようになります。
+ vCenter Server のログ ファイルを リモート Syslog サーバへ転送 リモートの Syslog サーバへのイベント ストリーミングの構成  Syslog 転送の構成はアプライアンス管理インターフェイス (VAMI) から行います。まず root ユーザーで VAMI にログインして以下のように [syslog] を開きましょう。</description>
+    </item>
+    
+  </channel>
+</rss>

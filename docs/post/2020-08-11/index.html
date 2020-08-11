@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en" data-figures="" class="page">
+  <head>  <title>vCenter Server 7.0 で Identity Federation を構成【Part 1】 | vSoliloquy</title>
+  <meta charset='utf-8'>
+  <meta name="generator" content="Hugo 0.74.3" />
+  <meta name = 'viewport' content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+  <meta http-equiv = 'X-UA-Compatible' content = 'IE=edge'>
+<script async src="https://www.googletagmanager.com/gtag/js?id=XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'XXXXXXXXXX');
+</script>
+  
+<meta property = "og:locale" content = "en_US" />
+<meta property="og:type" content="article">
+<meta name="description" content="本記事シリーズでは vCenter Server 7.0 の新機能である Identity Federation を構成する方法を数回に分けてご紹介します。今回は Identity Federation の紹介と、最初の vCenter Server 側での手順について見ていきます。残りの AD FS の手順、 …">
+<meta name = "twitter:card" content = "summary" />
+<meta name = "twitter:creator" content = "@Jangari_nTK">
+<meta name = "twitter:title" content = "vCenter Server 7.0 で Identity Federation を構成【Part 1】" />
+<meta property = "og:url" content = "https://jangari-ntk.github.io/post/2020-08-11/" />
+<meta property = "og:title" content = "vCenter Server 7.0 で Identity Federation を構成【Part 1】" />
+<meta property = "og:description" content = "本記事シリーズでは vCenter Server 7.0 の新機能である Identity Federation を構成する方法を数回に分けてご紹介します。今回は Identity Federation の紹介と、最初の vCenter Server 側での手順について見ていきます。残りの AD FS の手順、 …" />
+<meta property = "og:image" content = "https://jangari-ntk.github.io/images/2020-08-11/ID_Federation_diagram.PNG" />
+<link rel='apple-touch-icon' sizes='180x180' href='https://jangari-ntk.github.io/icons/apple-touch-icon.png'>
+<link rel='icon' type='image/png' sizes='32x32' href='https://jangari-ntk.github.io/icons/favicon-32x32.png'>
+<link rel='icon' type='image/png' sizes='16x16' href='https://jangari-ntk.github.io/icons/favicon-16x16.png'>
+<link rel='manifest' href='https://jangari-ntk.github.io/icons/site.webmanifest'>
+<link rel="mask-icon" href= 'https://jangari-ntk.github.io/safari-pinned-tab.svg' color="#002538">
+<meta name="msapplication-TileColor" content="#002538">
+<meta name="theme-color" content="#002538">
+
+  <link rel='canonical' href='https://jangari-ntk.github.io/post/2020-08-11/'>
+    
+
+    
+    <link rel="preload" href="https://jangari-ntk.github.io/css/styles.228fc89506d99c23a4b80541d821f0424fc5eb62f0b49f7f53ba67f40a7cd76788ed21431d09689ec02b4a52751416634fde8cddc196a65ccf268ca1a0058921.css" integrity = 'sha512-Io/IlQbZnCOkuAVB2CHwQk/F62LwtJ9/U7pn9Ap812eI7SFDHQlonsArSlJ1FBZjT96M3cGWplzPJoyhoAWJIQ==' as="style">
+    <link rel="preload" href="https://jangari-ntk.github.io/js/bundle.f11fd62745d1a773065645eb6f90461f96d1918737e6ef9fc05cd1bce00b9322930bd58a337f67c368af62503f6dd7eb4389876b64a4a035183afe83443bd34d.js" as="script">
+
+    
+    <link rel = 'stylesheet' href = 'https://jangari-ntk.github.io/css/styles.228fc89506d99c23a4b80541d821f0424fc5eb62f0b49f7f53ba67f40a7cd76788ed21431d09689ec02b4a52751416634fde8cddc196a65ccf268ca1a0058921.css' integrity = 'sha512-Io/IlQbZnCOkuAVB2CHwQk/F62LwtJ9/U7pn9Ap812eI7SFDHQlonsArSlJ1FBZjT96M3cGWplzPJoyhoAWJIQ=='>
+  </head>
+  
+  
+  
+    
+  
+  <body data-code="100" data-lines="true" id="documentTop">
+
+<header class = 'nav_header' >
+  <nav class = 'nav'>
+    <a href='https://jangari-ntk.github.io/' class = 'nav_brand nav_item'>
+      <img src="https://jangari-ntk.github.io/logos/logo.png" class="logo">
+      <div class = 'nav_close'>
+        <svg class="icon">
+          <use xlink:href="#open-menu"></use>
+        </svg>
+        <svg class="icon">
+          <use xlink:href="#closeme"></use>
+        </svg>
+      </div>
+    </a>
+    <div class = 'nav_body nav_body_left'>
+      <div class = 'nav_parent'>
+        <a href = 'https://jangari-ntk.github.io/' class = 'nav_item'>Home </a>
+      </div>
+      <div class = 'nav_parent'>
+        <a href = 'https://jangari-ntk.github.io/about/' class = 'nav_item'>About </a>
+      </div>
+      <div class = 'nav_parent'>
+        <a href = 'https://twitter.com/Jangari_nTK' class = 'nav_item'>Twitter </a>
+      </div>
+<div class='follow'>
+  
+  <a href='https://jangari-ntk.github.io/index.xml'>
+    <svg class="icon">
+      <use xlink:href="#rss"></use>
+    </svg>
+  </a>
+</div>
+
+    </div>
+  </nav>
+</header>
+
+    <main>
+  
+<div class = 'grid-inverse wrap content'>
+  <article class='post_content'>
+    <h1 class='post_title'>vCenter Server 7.0 で Identity Federation を構成【Part 1】</h1><div class = 'post_meta'>
+  <svg class="icon">
+    <use xlink:href="#calendar"></use>
+  </svg>
+  <span class="post_date">
+    Aug 11, 2020</span>
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/vcenter-server' class = 'post_tag button button_translucent'>vCenter Server
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/security' class = 'post_tag button button_translucent'>Security
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/featured' class = 'post_tag button button_translucent'>Featured
+  </a>
+</div>
+
+    <div class='post_share'>
+  Share on:
+  <a href="https://twitter.com/intent/tweet?text=vCenter%20Server%207.0%20%e3%81%a7%20Identity%20Federation%20%e3%82%92%e6%a7%8b%e6%88%90%e3%80%90Part%201%e3%80%91&url=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2020-08-11%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
+    <svg class="icon">
+      <use xlink:href="#twitter"></use>
+    </svg>
+  </a>
+  
+  <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2020-08-11%2f&t=vCenter%20Server%207.0%20%e3%81%a7%20Identity%20Federation%20%e3%82%92%e6%a7%8b%e6%88%90%e3%80%90Part%201%e3%80%91" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
+    <svg class="icon">
+      <use xlink:href="#facebook"></use>
+    </svg>
+  </a>
+  <script>
+    function shareViaLinkedin() {
+      window.open('http://www.linkedin.com/shareArticle?mini=true&url='+encodeURIComponent("https://jangari-ntk.github.io/post/2020-08-11/"), '', 'left=0,top=0,width=650,height=420,personalbar=0,toolbar=0,scrollbars=0,resizable=0');
+    }
+  </script>
+  <a href="#linkedinshare" id = "linkedinshare" class="linkedin" title="Share on LinkedIn" rel="nofollow" onclick="shareViaLinkedin()">
+    <svg class="icon">
+      <use xlink:href="#linkedin"></use>
+    </svg>
+  </a>
+  <a href="https://jangari-ntk.github.io/post/2020-08-11/" title="Copy Link" class="link link_yank">
+    <svg class="icon">
+      <use xlink:href="#yank"></use>
+    </svg>
+  </a>
+</div>
+
+    
+    
+    <h2>Table of contents</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#はじめに">はじめに</a></li>
+    <li><a href="#vcenter-server-70-の-identity-federation-とは">vCenter Server 7.0 の Identity Federation とは？</a></li>
+    <li><a href="#identity-federation-の認証フロー概要">Identity Federation の認証フロー概要</a></li>
+    <li><a href="#実際のブラウザでの画面遷移">実際のブラウザでの画面遷移</a></li>
+    <li><a href="#構成手順の概要">構成手順の概要</a></li>
+    <li><a href="#vcenter-server-へのルート-ca-証明書のインポート">vCenter Server へのルート CA 証明書のインポート</a></li>
+    <li><a href="#vcenter-server-のリダイレクト-uri-の確認">vCenter Server のリダイレクト URI の確認</a></li>
+    <li><a href="#to-be-continued">To be continued&hellip;</a></li>
+  </ul>
+</nav>
+    <h2 id="はじめに">はじめに</h2>
+<p>本記事シリーズでは vCenter Server 7.0 の新機能である Identity Federation を構成する方法を数回に分けてご紹介します。今回は Identity Federation の紹介と、最初の vCenter Server 側での手順について見ていきます。残りの AD FS の手順、その後の vCenter Server の手順は次回以降で見ていきます。</p>
+<blockquote>
+<p>注意: 本機能の <a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-0A3A19E6-150A-493B-8B57-37E19AB420F2.html">VMware Docs</a> での名称は vCenter Server ID プロバイダ フェデレーション (vCenter Server Identity Provider Federation)、<a href="https://blogs.vmware.com/vsphere/2020/03/vsphere-7-identity-federation.html">公式 Blog の記事</a>などでは Identity Federation と呼称されています。本記事では文字数の便宜上、当該機能を Identity Federation として呼称することとします。</p>
+</blockquote>
+<h2 id="vcenter-server-70-の-identity-federation-とは">vCenter Server 7.0 の Identity Federation とは？</h2>
+<p>Identity Federation は vCenter Server 7.0 の新機能で、AD FS と OpenID Connect (OIDC) を使用してユーザー認証を行う機能です。ユーザー認証を外部の ID プロバイダに移譲することで、vCenter Server に依存せず柔軟なシングルサインオンが実現できます。<a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-157188E3-531C-4CC2-BDD4-8BF01EA26BDC.html">こちらの VMware Docs</a> では具体的に以下のようなメリットが挙げられています。</p>
+<blockquote>
+<p>vCenter ServerID プロバイダ フェデレーションには、次の利点があります。</p>
+<ul>
+<li>既存のフェデレーション インフラストラクチャおよびアプリケーションで Single Sign-On を使用できます。</li>
+<li>vCenter Serverではユーザーの認証情報が処理されないため、データセンターのセキュリティを高めることができます。</li>
+<li>外部 ID プロバイダでサポートされている多要素認証などの認証メカニズムを使用できます。</li>
+</ul>
+</blockquote>
+<p>AD FS を使用するその他のアプリケーションと vCenter Server の間で認証機構を統合できる、AD FS でサポートされている多要素認証が利用できることはセキュリティ面で大きなメリットですね。パスワードなどの認証情報が vCenter Server を経由しないという点も Identity Federation の特徴です。</p>
+<p>なお、あくまでも Identity Federation や従来の vCenter SSO は、ユーザーが「誰か」という「認証 (Authentication, AuthN)」の機能となります。ユーザーが「何を行えるか」という「認可 (Authorization, AuthZ)」の機能は従来通り <a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-5372F580-5C23-4E9C-8A4E-EF1B4DD9033E.html">vCenter Server の権限・ロール</a>を使用します。</p>
+<h2 id="identity-federation-の認証フロー概要">Identity Federation の認証フロー概要</h2>
+<p>vCenter Server 7 の Identity Federation における認証は以下の図のようなフローとなっています。</p>
+<p><img src="/images/2020-08-11/ID_Federation_diagram.PNG" alt="Identity Federation の流れ"></p>
+<p>まず、ブラウザで vCenter Server にアクセスするとユーザー名の入力を促されます。次に Active Directory ドメインユーザーを入力すると AD FS の画面にリダイレクトされます。その後、AD FS 経由でパスワード等による認証をおこなうと、vCenter Server は AD FS から発行された ID トークンでユーザーのログインを許可します<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>。</p>
+<p>上図を見てもらえると、パスワードなどの認証情報は AD FS / AD DS しか使用せず、vCenter Server は経由しないことが分かると思います。</p>
+<p>一方、従来の vCenter SSO による認証では下図のように、Active Directory や OpenLDAP といった外部の ID ソースを利用して認証を行う場合も vCenter SSO (Platform Services Controller<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>) が認証情報を仲介する必要がありました<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>。ユーザーが vSphere のコンポーネントに認証情報を渡す必要があるかどうか、という点が最も大きな違いといえます。</p>
+<p><img src="/images/2020-08-11/Traditional_vCenter_SSO_diagram.PNG" alt="従来の vCenter SSO による認証"></p>
+<p>また、複数の vCenter Server 間で vCenter SSO の認証をフェデレーションさせる場合、従来は拡張リンクモードが必要でした。Identity Federation では拡張リンクモードを構成していない場合も AD FS を介して vCenter Server 間で認証をフェデレーションできます。もちろん、拡張リンクモードと併用することも可能です<sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup>。</p>
+<h2 id="実際のブラウザでの画面遷移">実際のブラウザでの画面遷移</h2>
+<p>それでは実際にユーザーから見えるブラウザ上での画面遷移を見ていきます。</p>
+<p>まず vCenter Server (vSphere Client) にアクセスすると以下のようなユーザー名の入力画面が表示されます。</p>
+<p><img src="/images/2020-08-11/idfederation-page-001.png" alt="vCenter Server のログイン画面"></p>
+<p>ここで Active Directory ドメインユーザー (上記では <a href="mailto:administrator@jangari.local">administrator@jangari.local</a>) を入力すると、外部 ID プロバイダのユーザーと判断されて以下のような AD FS のログイン画面に遷移します。</p>
+<p><img src="/images/2020-08-11/idfederation-page-002.png" alt="AD FS のログイン画面"></p>
+<p>この AD FS のログイン画面から認証を行うと、AD FS から vCenter Server に ID トークンが発行されて vSphere Client にログインできるようになります。ユーザー見えとしては認証関連の画面はこの２点のみとなります。</p>
+<p>なお Identity Federation を構成している場合でも、最初の vCenter Server 側の画面で <a href="mailto:administrator@vsphere.local">administrator@vsphere.local</a> などの vCenter SSO ドメインのユーザーを入力した場合は従来の vCenter SSO のログイン画面に遷移します。最初のユーザー名の入力でどちらの ID プロバイダを使用するか分岐する、とイメージしておくと良いと思います。</p>
+<h2 id="構成手順の概要">構成手順の概要</h2>
+<p>Identity Federation の大まかな構成手順としては以下の３点を順番に実施します。</p>
+<ol>
+<li>vCenter Server に ID プロバイダ(AD FS)のルート CA 証明書をインポートする。</li>
+<li>AD FS で vCenter Server 用にアプリケーショングループを構成する。</li>
+<li>vCenter Server で Identity Federation 用に ID プロバイダを構成(変更)する。</li>
+</ol>
+<p>VMware 社のドキュメントは以下の３点を使用しますが、手順はこれらのドキュメント(特に2,3点目)を行き来する必要があります。今どの部分の何の作業を行っているか逐次確認しながら進めていくことが重要です。</p>
+<ul>
+<li><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-A916B60D-E2F0-461B-9F5E-CD7447BD97F2.html">外部 ID プロバイダの信頼された証明書のインポート</a></li>
+<li><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-C5E998B2-1148-46DC-990E-A5DB71F93351.html">vCenter ServerID プロバイダ フェデレーションの設定</a></li>
+<li><a href="https://kb.vmware.com/s/article/78029">How to enable OpenID Connect in ADFS 2016 for vCenter Server (78029)</a></li>
+</ul>
+<p>なお、今回の検証環境では AD FS / AD DS をホストする OS はそれぞれ Windows Server 2019 を使用しています。AD FS のインストールや初期構成は本記事の主旨から外れるため、以下のような AD FS 関連の Microsoft 社ドキュメントを参照し、展開までは事前に完了しているものとして割愛させていただきます。</p>
+<ul>
+<li><a href="https://docs.microsoft.com/ja-jp/windows-server/identity/ad-fs/overview/ad-fs-requirements">AD FS の要件</a></li>
+<li><a href="https://docs.microsoft.com/ja-jp/windows-server/identity/ad-fs/deployment/deploying-a-federation-server-farm">フェデレーション サーバー ファームの展開</a></li>
+</ul>
+<h2 id="vcenter-server-へのルート-ca-証明書のインポート">vCenter Server へのルート CA 証明書のインポート</h2>
+<p>今回の環境はプライベートなルート CA (としている AD CS) から AD FS の証明書を発行しており公的な認証局ではないことから、以下のドキュメントに沿って vCenter Server の JRE トラストストアに CA 証明書をインポートすることから始める必要があります。</p>
+<p><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-A916B60D-E2F0-461B-9F5E-CD7447BD97F2.html">外部 ID プロバイダの信頼された証明書のインポート</a></p>
+<p>最初に SCP または SFTP による vCenter Server へのルート CA 証明書のアップロードを行っていきます。しかし、VCSA は既定のシェルがアプライアンスシェル (/bin/appliancesh) となっており、こちらのシェルは SCP / SFTP での接続には対応していません。</p>
+<p>そこで以下の VMware KB の手順に従い、SSH による接続および shell コマンドで Bash シェルに切り替えた後に、chsh コマンドを使用してデフォルトシェルを Bash に切り替えます。</p>
+<p><a href="https://kb.vmware.com/s/article/2107727">Error when uploading files to vCenter Server Appliance using WinSCP (2107727)</a></p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>&gt; shell
+<span class="ln">2</span># chsh -s /bin/bash root
+</code></pre></div><p>その後、任意の SCP クライアントや SFTP クライアントで VCSA に証明書をアップロードします。私は Windows だと WinSCP を使うことが多いです。</p>
+<p>CA 証明書のインポートはドキュメントの手順に沿って vCenter Server の JRE に付属している <a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/keytool.html">keytool</a> を利用しておこないます。</p>
+<p>-file &lt;インポートする証明書ファイル&gt; / -alias &lt;証明書エントリのエイリアス名(任意)&gt; はそれぞれ適切な値を指定します。ここでは証明書のファイルのパスを /root/myrootca.cer としています。keytool 実行時に CA 証明書を信頼されるか質問されるため yes を入力します。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span># keytool -import -trustcacerts -file /root/myrootca.cer -alias myrootca \
+<span class="ln">2</span>    -keystore $VMWARE_JAVA_HOME/lib/security/cacerts -storepass changeit
+</code></pre></div><p>引き続きドキュメントに沿って、CA 証明書がインポートされたことを確認します。keytool 実行時に JRE トラストストアのパスワードを求められるので上記同様に changeit と入力します。なお、コマンドそのままだと CA 証明書のエントリが大量に出てくるため grep や less にパイプを繋げると確認しやすいと思います。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>keytool -list -v -keystore $VMWARE_JAVA_HOME/lib/security/cacerts | grep myrootca
+</code></pre></div><p>指定されたサービスの再起動を順番に行っていきます。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span># service-control --restart vsphere-ui
+<span class="ln">2</span># service-control --restart vmware-trustmanagement
+<span class="ln">3</span># service-control --restart vmware-stsd
+</code></pre></div><p>ここまでの作業が完了したら、また KB2107727 の手順を参照してデフォルトシェルをアプライアンスシェルに戻しておきましょう。これで JRE トラストストアへのルート CA 証明書のインポートは完了です。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span># chsh -s /bin/appliancesh root
+</code></pre></div><h2 id="vcenter-server-のリダイレクト-uri-の確認">vCenter Server のリダイレクト URI の確認</h2>
+<p><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-C5E998B2-1148-46DC-990E-A5DB71F93351.html">こちらのドキュメント</a>の手順１～３を進めていきます。</p>
+<p>まず vSphere Client にログインし、[ホーム] &gt; [管理] &gt; [Single Sign-On] &gt; [設定] から [ID プロバイダ] タブを選択します。</p>
+<p><img src="/images/2020-08-11/vcentersso-idp-list-001.PNG" alt="Single Sign-On の ID プロバイダ画面"></p>
+<p>右上の [ID プロバイダの変更] の右に情報アイコン(i)があるので、これをクリックすると以下のようにポップアップが表示されます。</p>
+<p><img src="/images/2020-08-11/vcentersso-idp-list-002.PNG" alt="OpenID Connect のリダイレクト URI"></p>
+<p>この2点の URI は認証フローの中で AD FS からのリダイレクト先になる URI となります(前者はログアウト時、後者がログイン時)。これらを AD FS に登録するためメモ帳などにコピー＆ペーストで保存しておきます。</p>
+<h2 id="to-be-continued">To be continued&hellip;</h2>
+<p>次回は AD FS での vCenter Server 用の OpenID Connect の構成について見ていきます。お楽しみに！</p>
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p>OpenID Connect の文脈では、vCenter Server がリライングパーティ、AD FS が ID プロバイダ (および UserInfo エンドポイント) にあたり、処理の流れには認可コードフローが使用されています(Burp 等で捕捉すると認可コードが確認できます)。OAuth 2.0 や OpenID Connect の取っ掛かりは<a href="https://authya.booth.pm/">この辺りの書籍</a>が参考になると思います。 <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p>vSphere 6.7 以前に存在していた Platform Services Controller は vCenter Server 7.0 に完全に統合されたため、「Platform Services Controller」という言葉は vSphere 7 の文脈上では使われなくなったようです。詳しいところは<a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vcenter.upgrade.doc/GUID-2360F9C9-EDBD-4362-B898-0B291AF1560E.html">こちらの VMware Docs</a> をご参照ください。 <a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3" role="doc-endnote">
+<p>ソリューションユーザーに関しては vSphere 7 でも従来の vCenter SSO + SAML の認証が利用されます。こちらは vCenter Server 内部のサービスが使用するユーザーで、認証も vCenter Server に閉じて行われるため、さほど意識することは無いかなと思います。 <a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:4" role="doc-endnote">
+<p>複数の vCenter Server で Identity Federation と拡張リンクモードを併用する場合の動作や注意点などは<a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-4B4E336B-75E4-47D9-9BDE-E835071E71F9.html">こちらの VMware Docs</a> を参照してください。 <a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+
+  </article>
+<aside class="sidebar">
+  <section class="sidebar_inner">
+    <h2>Jangari</h2>
+    <div>
+      Jangari is a Technical Support Engineer working on a certain company in Japan.
+    </div>
+    <a href = 'https://jangari-ntk.github.io/about/' class="button mt-1" role="button">Read More</a>
+    <h2 class="mt-4">Featured Posts</h2>
+    <ul>
+    
+    
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-07/" class="nav-link">pyVmomi から API 操作で Instant Clone をやってみる</a>
+      </li>
+    
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-01/" class="nav-link">vCenter Server 7.0 のイベントをテキストで取得</a>
+      </li>
+    
+    </ul>
+    <h2 class="mt-4">Recent Posts</h2>
+    <ul class="flex-column">
+      
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-07/" class="nav-link">pyVmomi から API 操作で Instant Clone をやってみる</a>
+      </li>
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-01/" class="nav-link">vCenter Server 7.0 のイベントをテキストで取得</a>
+      </li>
+    </ul> 
+    
+    <div>
+      <h2 class="mt-4 taxonomy" id="categories-section">categories</h2>
+      <nav class="tags_nav">
+        <a href='https://jangari-ntk.github.io/categories/vsphere/' class=" post_tag button button_translucent">
+          VSPHERE
+          <span class='button_tally'>3</span>
+        </a>
+        
+        
+      </nav>
+    </div>
+    
+    <div>
+      <h2 class="mt-4 taxonomy" id="tags-section">tags</h2>
+      <nav class="tags_nav">
+        <a href='https://jangari-ntk.github.io/tags/featured/' class=" post_tag button button_translucent">
+          FEATURED
+          <span class='button_tally'>3</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent">
+          VSPHERE
+          <span class='button_tally'>3</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/tips/' class=" post_tag button button_translucent">
+          TIPS
+          <span class='button_tally'>2</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/vcenter-server/' class=" post_tag button button_translucent">
+          VCENTER-SERVER
+          <span class='button_tally'>2</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/instant-clone/' class=" post_tag button button_translucent">
+          INSTANT-CLONE
+          <span class='button_tally'>1</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/nested/' class=" post_tag button button_translucent">
+          NESTED
+          <span class='button_tally'>1</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/sdk/api/' class=" post_tag button button_translucent">
+          SDK/API
+          <span class='button_tally'>1</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/security/' class=" post_tag button button_translucent">
+          SECURITY
+          <span class='button_tally'>1</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/vsphere-7.0/' class=" post_tag button button_translucent">
+          VSPHERE-7.0
+          <span class='button_tally'>1</span>
+        </a>
+        
+        
+      </nav>
+    </div>
+    
+  </section>
+</aside>
+
+</div>
+    </main><svg width="0" height="0" class="hidden">
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="facebook">
+    <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h151V331h-60v-90h60v-61c0-49.629 40.371-90 90-90h91v90h-91v61h91l-15 90h-76v181h121c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zm0 0"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18.001 18.001" id="twitter">
+    <path d="M15.891 4.013c.808-.496 1.343-1.173 1.605-2.034a8.68 8.68 0 0 1-2.351.861c-.703-.756-1.593-1.14-2.66-1.14-1.043 0-1.924.366-2.643 1.078a3.56 3.56 0 0 0-1.076 2.605c0 .309.039.585.117.819-3.076-.105-5.622-1.381-7.628-3.837-.34.601-.51 1.213-.51 1.846 0 1.301.549 2.332 1.645 3.089-.625-.053-1.176-.211-1.645-.47 0 .929.273 1.705.82 2.388a3.623 3.623 0 0 0 2.115 1.291c-.312.08-.641.118-.979.118-.312 0-.533-.026-.664-.083.23.757.664 1.371 1.291 1.841a3.652 3.652 0 0 0 2.152.743C4.148 14.173 2.625 14.69.902 14.69c-.422 0-.721-.006-.902-.038 1.697 1.102 3.586 1.649 5.676 1.649 2.139 0 4.029-.542 5.674-1.626 1.645-1.078 2.859-2.408 3.639-3.974a10.77 10.77 0 0 0 1.172-4.892v-.468a7.788 7.788 0 0 0 1.84-1.921 8.142 8.142 0 0 1-2.11.593z"
+      ></path>
+  </symbol>
+  <symbol aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="mail">
+    <path  d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="calendar">
+    <path d="M452 40h-24V0h-40v40H124V0H84v40H60C26.916 40 0 66.916 0 100v352c0 33.084 26.916 60 60 60h392c33.084 0 60-26.916 60-60V100c0-33.084-26.916-60-60-60zm20 412c0 11.028-8.972 20-20 20H60c-11.028 0-20-8.972-20-20V188h432v264zm0-304H40v-48c0-11.028 8.972-20 20-20h24v40h40V80h264v40h40V80h24c11.028 0 20 8.972 20 20v48z"></path>
+    <path d="M76 230h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zM76 310h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zM76 390h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zm80-80h40v40h-40z"></path>
+  </symbol>
+  <symbol viewBox="-21 0 512 512" xmlns="http://www.w3.org/2000/svg" id="yank">
+    <path d="M410.668 405.332H165.332c-32.363 0-58.664-26.3-58.664-58.664v-288c0-32.363 26.3-58.668 58.664-58.668h181.504c21.059 0 41.687 8.535 56.555 23.445l42.496 42.496c15.125 15.125 23.445 35.223 23.445 56.575v224.152c0 32.363-26.3 58.664-58.664 58.664zM165.332 32c-14.7 0-26.664 11.969-26.664 26.668v288c0 14.7 11.965 26.664 26.664 26.664h245.336c14.7 0 26.664-11.965 26.664-26.664V122.516c0-12.82-4.992-24.871-14.059-33.942l-42.496-42.496C371.84 37.121 359.488 32 346.836 32zm0 0"></path>
+    <path d="M314.668 512h-256C26.305 512 0 485.695 0 453.332V112c0-32.363 26.305-58.668 58.668-58.668h10.664c8.832 0 16 7.168 16 16s-7.168 16-16 16H58.668C43.968 85.332 32 97.301 32 112v341.332C32 468.032 43.969 480 58.668 480h256c14.7 0 26.664-11.969 26.664-26.668v-10.664c0-8.832 7.168-16 16-16s16 7.168 16 16v10.664c0 32.363-26.3 58.668-58.664 58.668zM368 181.332H208c-8.832 0-16-7.168-16-16s7.168-16 16-16h160c8.832 0 16 7.168 16 16s-7.168 16-16 16zm0 0"></path>
+    <path d="M368 245.332H208c-8.832 0-16-7.168-16-16s7.168-16 16-16h160c8.832 0 16 7.168 16 16s-7.168 16-16 16zm0 64H208c-8.832 0-16-7.168-16-16s7.168-16 16-16h160c8.832 0 16 7.168 16 16s-7.168 16-16 16zm0 0"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="github">
+    <path d="M255.968 5.329C114.624 5.329 0 120.401 0 262.353c0 113.536 73.344 209.856 175.104 243.872 12.8 2.368 17.472-5.568 17.472-12.384 0-6.112-.224-22.272-.352-43.712-71.2 15.52-86.24-34.464-86.24-34.464-11.616-29.696-28.416-37.6-28.416-37.6-23.264-15.936 1.728-15.616 1.728-15.616 25.696 1.824 39.2 26.496 39.2 26.496 22.848 39.264 59.936 27.936 74.528 21.344 2.304-16.608 8.928-27.936 16.256-34.368-56.832-6.496-116.608-28.544-116.608-127.008 0-28.064 9.984-51.008 26.368-68.992-2.656-6.496-11.424-32.64 2.496-68 0 0 21.504-6.912 70.4 26.336 20.416-5.696 42.304-8.544 64.096-8.64 21.728.128 43.648 2.944 64.096 8.672 48.864-33.248 70.336-26.336 70.336-26.336 13.952 35.392 5.184 61.504 2.56 68 16.416 17.984 26.304 40.928 26.304 68.992 0 98.72-59.84 120.448-116.864 126.816 9.184 7.936 17.376 23.616 17.376 47.584 0 34.368-.32 62.08-.32 70.496 0 6.88 4.608 14.88 17.6 12.352C438.72 472.145 512 375.857 512 262.353 512 120.401 397.376 5.329 255.968 5.329z"></path>
+  </symbol>
+  <symbol viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="rss">
+    <circle cx="3.429" cy="20.571" r="3.429"></circle>
+    <path d="M11.429 24h4.57C15.999 15.179 8.821 8.001 0 8v4.572c6.302.001 11.429 5.126 11.429 11.428z"></path>
+    <path d="M24 24C24 10.766 13.234 0 0 0v4.571c10.714 0 19.43 8.714 19.43 19.429z"></path>
+  </symbol>
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="linkedin">
+    <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h362c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zM181 406h-60V196h60zm0-240h-60v-60h60zm210 240h-60V286c0-16.54-13.46-30-30-30s-30 13.46-30 30v120h-60V196h60v11.309C286.719 202.422 296.93 196 316 196c40.691.043 75 36.547 75 79.688zm0 0"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="arrow">
+    <path d="M604.501 440.509L325.398 134.956c-5.331-5.357-12.423-7.627-19.386-7.27-6.989-.357-14.056 1.913-19.387 7.27L7.499 440.509c-9.999 10.024-9.999 26.298 0 36.323s26.223 10.024 36.222 0l262.293-287.164L568.28 476.832c9.999 10.024 26.222 10.024 36.221 0 9.999-10.023 9.999-26.298 0-36.323z"></path>
+  </symbol>
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="carly">
+    <path d="M504.971 239.029L448 182.059V84c0-46.317-37.682-84-84-84h-44c-13.255 0-24 10.745-24 24s10.745 24 24 24h44c19.851 0 36 16.149 36 36v108c0 6.365 2.529 12.47 7.029 16.971L454.059 256l-47.029 47.029A24.002 24.002 0 0 0 400 320v108c0 19.851-16.149 36-36 36h-44c-13.255 0-24 10.745-24 24s10.745 24 24 24h44c46.318 0 84-37.683 84-84v-98.059l56.971-56.971c9.372-9.372 9.372-24.568 0-33.941zM112 192V84c0-19.851 16.149-36 36-36h44c13.255 0 24-10.745 24-24S205.255 0 192 0h-44c-46.318 0-84 37.683-84 84v98.059l-56.971 56.97c-9.373 9.373-9.373 24.568 0 33.941L64 329.941V428c0 46.317 37.682 84 84 84h44c13.255 0 24-10.745 24-24s-10.745-24-24-24h-44c-19.851 0-36-16.149-36-36V320c0-6.365-2.529-12.47-7.029-16.971L57.941 256l47.029-47.029A24.002 24.002 0 0 0 112 192z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="copy">
+    <path d="M366.345 406.069H66.207c-9.751 0-17.655-7.904-17.655-17.655V17.655C48.552 7.904 56.456 0 66.207 0h300.138C376.096 0 384 7.904 384 17.655v370.759c0 9.751-7.904 17.655-17.655 17.655z" fill="#f1f4fb"></path>
+    <path d="M384 388.414v-76.992c-.907.322-1.869.494-2.751.882-6.307-6.593-14.733-11.025-24.111-11.964a40.49 40.49 0 0 0-8.448.039v-92.93c0-21.903-17.82-39.723-39.723-39.724a40.5 40.5 0 0 0-4.036.202c-20.012 2.004-35.689 19.916-35.689 40.781v101.773l-21.581 21.581c-15.241 15.241-21.393 36.866-16.456 57.847l3.802 16.16h131.338c9.75 0 17.655-7.905 17.655-17.655z"
+      fill="#d5dced"></path>
+    <circle cx="128" cy="105.931" r="26.483" fill="#b4e66e"></circle>
+    <circle cx="128" cy="203.034" r="26.483" fill="#dae169"></circle>
+    <circle cx="128" cy="300.138" r="26.483" fill="#ffdc64"></circle>
+    <path d="M331.034 229.517H189.793c-4.879 0-8.828-3.953-8.828-8.828s3.948-8.828 8.828-8.828h141.241c4.879 0 8.828 3.953 8.828 8.828s-3.948 8.828-8.828 8.828z" fill="#7f8499"></path>
+    <path d="M295.724 194.207H189.793a8.826 8.826 0 0 1-8.828-8.828 8.826 8.826 0 0 1 8.828-8.828h105.931a8.826 8.826 0 0 1 8.828 8.828 8.826 8.826 0 0 1-8.828 8.828z" fill="#5b5d6e"></path>
+    <path d="M331.034 326.621H189.793c-4.879 0-8.828-3.953-8.828-8.828s3.948-8.828 8.828-8.828h141.241c4.879 0 8.828 3.953 8.828 8.828s-3.948 8.828-8.828 8.828z" fill="#7f8499"></path>
+    <path d="M295.724 291.31H189.793c-4.879 0-8.828-3.953-8.828-8.828s3.948-8.828 8.828-8.828h105.931c4.879 0 8.828 3.953 8.828 8.828s-3.948 8.828-8.828 8.828z" fill="#5b5d6e"></path>
+    <path d="M331.034 132.414H189.793a8.826 8.826 0 0 1-8.828-8.828 8.826 8.826 0 0 1 8.828-8.828h141.241a8.826 8.826 0 0 1 8.828 8.828 8.826 8.826 0 0 1-8.828 8.828z" fill="#7f8499"></path>
+    <path d="M295.724 97.103H189.793a8.826 8.826 0 0 1-8.828-8.828 8.826 8.826 0 0 1 8.828-8.828h105.931a8.826 8.826 0 0 1 8.828 8.828 8.825 8.825 0 0 1-8.828 8.828z" fill="#5b5d6e"></path>
+    <path d="M443.656 335.563c-13.21-1.323-24.345 9.015-24.345 21.954v-7.569c0-11.544-8.306-22.063-19.794-23.213-13.209-1.323-24.344 9.015-24.344 21.954v-7.569c0-11.544-8.306-22.063-19.794-23.213-13.209-1.323-24.344 9.015-24.344 21.954V207.448c0-12.939-11.135-23.277-24.345-21.954-11.486 1.15-19.793 11.669-19.793 23.213v109.086l-26.752 26.752a44.14 44.14 0 0 0-11.754 41.32l18.47 78.495c6.567 27.913 31.475 47.64 60.15 47.64h74.645c34.127 0 61.793-27.666 61.793-61.793v-91.431c-.001-11.544-8.306-22.063-19.793-23.213z"
+      fill="#f0c087"></path>
+    <path d="M339.862 361.377a8.829 8.829 0 0 0 8.828-8.828v-34.194c-10.052 2.061-17.655 10.844-17.655 21.506v12.687a8.827 8.827 0 0 0 8.827 8.829zM384 370.205a8.829 8.829 0 0 0 8.828-8.828v-34.194c-10.052 2.061-17.655 10.844-17.655 21.506v12.687a8.827 8.827 0 0 0 8.827 8.829zm44.138 8.827a8.829 8.829 0 0 0 8.828-8.828V336.01c-10.052 2.061-17.655 10.844-17.655 21.506v12.687a8.827 8.827 0 0 0 8.827 8.829zM288.885 464.36l-20.467-86.985a28.482 28.482 0 0 1 7.585-26.663l10.893-10.894v22.113a8.829 8.829 0 0 0 17.656 0V185.933c-10.344 2.173-17.655 11.972-17.655 22.773v109.087l-26.752 26.752a44.14 44.14 0 0 0-11.754 41.32l18.47 78.495c6.567 27.913 31.475 47.64 60.15 47.64h22.026c-28.677 0-53.584-19.727-60.152-47.64z"
+      fill="#e6af78"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001" id="closeme">
+    <path d="M284.286 256.002L506.143 34.144c7.811-7.811 7.811-20.475 0-28.285-7.811-7.81-20.475-7.811-28.285 0L256 227.717 34.143 5.859c-7.811-7.811-20.475-7.811-28.285 0-7.81 7.811-7.811 20.475 0 28.285l221.857 221.857L5.858 477.859c-7.811 7.811-7.811 20.475 0 28.285a19.938 19.938 0 0 0 14.143 5.857 19.94 19.94 0 0 0 14.143-5.857L256 284.287l221.857 221.857c3.905 3.905 9.024 5.857 14.143 5.857s10.237-1.952 14.143-5.857c7.811-7.811 7.811-20.475 0-28.285L284.286 256.002z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="open-menu">
+    <path d="M492 236H20c-11.046 0-20 8.954-20 20s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20zm0-160H20C8.954 76 0 84.954 0 96s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20zm0 320H20c-11.046 0-20 8.954-20 20s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20z"></path>
+  </symbol>
+</svg>
+<footer class = 'footer'>
+  <div class = 'footer_inner wrap pale'>
+    <img src = 'https://jangari-ntk.github.io/icons/apple-touch-icon.png' class = 'icon icon_2 transparent'>
+    <p>Copyright &copy;&nbsp;<span class = 'year'></span>&nbsp;VSOLILOQUY. All Rights Reserved</p>
+<a class='to_top' href="#documentTop">
+  <svg class="icon">
+    <use xlink:href="#arrow"></use>
+  </svg>
+</a>
+
+  </div>
+</footer>
+    <script src = 'https://jangari-ntk.github.io/js/bundle.f11fd62745d1a773065645eb6f90461f96d1918737e6ef9fc05cd1bce00b9322930bd58a337f67c368af62503f6dd7eb4389876b64a4a035183afe83443bd34d.js'></script>
+  </body>
+</html>

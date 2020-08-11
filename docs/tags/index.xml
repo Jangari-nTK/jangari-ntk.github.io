@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on vSoliloquy</title>
+    <link>https://jangari-ntk.github.io/tags/</link>
+    <description>Recent content in Tags on vSoliloquy</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
+    <lastBuildDate>Tue, 11 Aug 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://jangari-ntk.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>featured</title>
+      <link>https://jangari-ntk.github.io/tags/featured/</link>
+      <pubDate>Tue, 11 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/tags/featured/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Security</title>
+      <link>https://jangari-ntk.github.io/tags/security/</link>
+      <pubDate>Tue, 11 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/tags/security/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>vCenter Server</title>
+      <link>https://jangari-ntk.github.io/tags/vcenter-server/</link>
+      <pubDate>Tue, 11 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/tags/vcenter-server/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>vSphere</title>
+      <link>https://jangari-ntk.github.io/tags/vsphere/</link>
+      <pubDate>Tue, 11 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/tags/vsphere/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Instant Clone</title>
+      <link>https://jangari-ntk.github.io/tags/instant-clone/</link>
+      <pubDate>Fri, 07 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/tags/instant-clone/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Nested</title>
+      <link>https://jangari-ntk.github.io/tags/nested/</link>
+      <pubDate>Fri, 07 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/tags/nested/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Tips</title>
+      <link>https://jangari-ntk.github.io/tags/tips/</link>
+      <pubDate>Fri, 07 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/tags/tips/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>vSphere 7.0</title>
+      <link>https://jangari-ntk.github.io/tags/vsphere-7.0/</link>
+      <pubDate>Sat, 01 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/tags/vsphere-7.0/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>SDK/API</title>
+      <link>https://jangari-ntk.github.io/tags/sdk/api/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/tags/sdk/api/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

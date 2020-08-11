@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en" data-figures="" class="page">
+  <head>  <title>pyVmomi から API 操作で Instant Clone をやってみる | vSoliloquy</title>
+  <meta charset='utf-8'>
+  <meta name="generator" content="Hugo 0.74.3" />
+  <meta name = 'viewport' content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+  <meta http-equiv = 'X-UA-Compatible' content = 'IE=edge'>
+<script async src="https://www.googletagmanager.com/gtag/js?id=XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'XXXXXXXXXX');
+</script>
+  
+<meta property = "og:locale" content = "en_US" />
+<meta property="og:type" content="article">
+<meta name="description" content="本記事では pyVmomi を使って vSphere 単体で Instant Clone を行う方法について書いていきます。">
+<meta name = "twitter:card" content = "summary" />
+<meta name = "twitter:creator" content = "@Jangari_nTK">
+<meta name = "twitter:title" content = "pyVmomi から API 操作で Instant Clone をやってみる" />
+<meta property = "og:url" content = "https://jangari-ntk.github.io/post/2020-08-07/" />
+<meta property = "og:title" content = "pyVmomi から API 操作で Instant Clone をやってみる" />
+<meta property = "og:description" content = "本記事では pyVmomi を使って vSphere 単体で Instant Clone を行う方法について書いていきます。" />
+<meta property = "og:image" content = "https://jangari-ntk.github.io/images/building.png" />
+<link rel='apple-touch-icon' sizes='180x180' href='https://jangari-ntk.github.io/icons/apple-touch-icon.png'>
+<link rel='icon' type='image/png' sizes='32x32' href='https://jangari-ntk.github.io/icons/favicon-32x32.png'>
+<link rel='icon' type='image/png' sizes='16x16' href='https://jangari-ntk.github.io/icons/favicon-16x16.png'>
+<link rel='manifest' href='https://jangari-ntk.github.io/icons/site.webmanifest'>
+<link rel="mask-icon" href= 'https://jangari-ntk.github.io/safari-pinned-tab.svg' color="#002538">
+<meta name="msapplication-TileColor" content="#002538">
+<meta name="theme-color" content="#002538">
+
+  <link rel='canonical' href='https://jangari-ntk.github.io/post/2020-08-07/'>
+    
+
+    
+    <link rel="preload" href="https://jangari-ntk.github.io/css/styles.228fc89506d99c23a4b80541d821f0424fc5eb62f0b49f7f53ba67f40a7cd76788ed21431d09689ec02b4a52751416634fde8cddc196a65ccf268ca1a0058921.css" integrity = 'sha512-Io/IlQbZnCOkuAVB2CHwQk/F62LwtJ9/U7pn9Ap812eI7SFDHQlonsArSlJ1FBZjT96M3cGWplzPJoyhoAWJIQ==' as="style">
+    <link rel="preload" href="https://jangari-ntk.github.io/js/bundle.f11fd62745d1a773065645eb6f90461f96d1918737e6ef9fc05cd1bce00b9322930bd58a337f67c368af62503f6dd7eb4389876b64a4a035183afe83443bd34d.js" as="script">
+
+    
+    <link rel = 'stylesheet' href = 'https://jangari-ntk.github.io/css/styles.228fc89506d99c23a4b80541d821f0424fc5eb62f0b49f7f53ba67f40a7cd76788ed21431d09689ec02b4a52751416634fde8cddc196a65ccf268ca1a0058921.css' integrity = 'sha512-Io/IlQbZnCOkuAVB2CHwQk/F62LwtJ9/U7pn9Ap812eI7SFDHQlonsArSlJ1FBZjT96M3cGWplzPJoyhoAWJIQ=='>
+  </head>
+  
+  
+  
+    
+  
+  <body data-code="100" data-lines="true" id="documentTop">
+
+<header class = 'nav_header' >
+  <nav class = 'nav'>
+    <a href='https://jangari-ntk.github.io/' class = 'nav_brand nav_item'>
+      <img src="https://jangari-ntk.github.io/logos/logo.png" class="logo">
+      <div class = 'nav_close'>
+        <svg class="icon">
+          <use xlink:href="#open-menu"></use>
+        </svg>
+        <svg class="icon">
+          <use xlink:href="#closeme"></use>
+        </svg>
+      </div>
+    </a>
+    <div class = 'nav_body nav_body_left'>
+      <div class = 'nav_parent'>
+        <a href = 'https://jangari-ntk.github.io/' class = 'nav_item'>Home </a>
+      </div>
+      <div class = 'nav_parent'>
+        <a href = 'https://jangari-ntk.github.io/about/' class = 'nav_item'>About </a>
+      </div>
+      <div class = 'nav_parent'>
+        <a href = 'https://twitter.com/Jangari_nTK' class = 'nav_item'>Twitter </a>
+      </div>
+<div class='follow'>
+  
+  <a href='https://jangari-ntk.github.io/index.xml'>
+    <svg class="icon">
+      <use xlink:href="#rss"></use>
+    </svg>
+  </a>
+</div>
+
+    </div>
+  </nav>
+</header>
+
+    <main>
+  
+<div class = 'grid-inverse wrap content'>
+  <article class='post_content'>
+    <h1 class='post_title'>pyVmomi から API 操作で Instant Clone をやってみる</h1><div class = 'post_meta'>
+  <svg class="icon">
+    <use xlink:href="#calendar"></use>
+  </svg>
+  <span class="post_date">
+    Aug 7, 2020</span>
+  <a href = 'https://jangari-ntk.github.io/tags/tips' class = 'post_tag button button_translucent'>Tips
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/nested' class = 'post_tag button button_translucent'>Nested
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/instant-clone' class = 'post_tag button button_translucent'>Instant Clone
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/sdk/api' class = 'post_tag button button_translucent'>SDK/API
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/featured' class = 'post_tag button button_translucent'>Featured
+  </a>
+</div>
+
+    <div class='post_share'>
+  Share on:
+  <a href="https://twitter.com/intent/tweet?text=pyVmomi%20%e3%81%8b%e3%82%89%20API%20%e6%93%8d%e4%bd%9c%e3%81%a7%20Instant%20Clone%20%e3%82%92%e3%82%84%e3%81%a3%e3%81%a6%e3%81%bf%e3%82%8b&url=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2020-08-07%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
+    <svg class="icon">
+      <use xlink:href="#twitter"></use>
+    </svg>
+  </a>
+  
+  <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2020-08-07%2f&t=pyVmomi%20%e3%81%8b%e3%82%89%20API%20%e6%93%8d%e4%bd%9c%e3%81%a7%20Instant%20Clone%20%e3%82%92%e3%82%84%e3%81%a3%e3%81%a6%e3%81%bf%e3%82%8b" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
+    <svg class="icon">
+      <use xlink:href="#facebook"></use>
+    </svg>
+  </a>
+  <script>
+    function shareViaLinkedin() {
+      window.open('http://www.linkedin.com/shareArticle?mini=true&url='+encodeURIComponent("https://jangari-ntk.github.io/post/2020-08-07/"), '', 'left=0,top=0,width=650,height=420,personalbar=0,toolbar=0,scrollbars=0,resizable=0');
+    }
+  </script>
+  <a href="#linkedinshare" id = "linkedinshare" class="linkedin" title="Share on LinkedIn" rel="nofollow" onclick="shareViaLinkedin()">
+    <svg class="icon">
+      <use xlink:href="#linkedin"></use>
+    </svg>
+  </a>
+  <a href="https://jangari-ntk.github.io/post/2020-08-07/" title="Copy Link" class="link link_yank">
+    <svg class="icon">
+      <use xlink:href="#yank"></use>
+    </svg>
+  </a>
+</div>
+
+    
+    
+    <h2>Table of contents</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#はじめに">はじめに</a></li>
+    <li><a href="#vsphere-web-services-api-と-pyvmomi">vSphere Web Services API と pyVmomi</a></li>
+    <li><a href="#インスタントクローンと-vsphere-web-services-api">インスタントクローンと vSphere Web Services API</a></li>
+    <li><a href="#pyvmomi-でインスタントクローン">pyVmomi でインスタントクローン</a></li>
+    <li><a href="#python-実行環境と-pyvmomi-のインストール手順">Python 実行環境と pyVmomi のインストール手順</a></li>
+    <li><a href="#サンプルコードとその解説">サンプルコードとその解説</a></li>
+    <li><a href="#おわりに">おわりに</a></li>
+    <li><a href="#補足">補足</a></li>
+  </ul>
+</nav>
+    <h2 id="はじめに">はじめに</h2>
+<p>本記事では pyVmomi を使って vSphere 単体で Instant Clone を行う方法について書いていきます。</p>
+<p>事の発端は以下のVMware社の中の人が PowerCLI から Nested ESXi をインスタントクローンする記事です。</p>
+<p><a href="https://www.virtuallyghetto.com/2018/05/leveraging-instant-clone-in-vsphere-6-7-for-extremely-fast-nested-esxi-provisioning.html">Leveraging Instant Clone in vSphere 6.7 for extremely fast Nested ESXi provisioning</a></p>
+<h2 id="vsphere-web-services-api-と-pyvmomi">vSphere Web Services API と pyVmomi</h2>
+<p>vCenter Server のタスクをコマンドで実行する場合、PowerCLI を使うことが多いと思います。もしくは、開発やトラブルシューティングなどの一環で MOB (Managed Object Browser) を使用したことがある方もいらっしゃるかもしれません。</p>
+<ul>
+<li><a href="https://code.vmware.com/web/tool/12.0.0/vmware-powercli">VMware PowerCLI - VMware {code}</a></li>
+<li><a href="https://code.vmware.com/docs/6536/vsphere-sdk-for-perl-programming-guide/doc/GUID-9D615A34-EEA5-4BBE-A612-E4600F47B555.html">Online Documentation - vSphere SDK for Perl Programming Guide - VMware {code}</a></li>
+</ul>
+<p>これらのツールは「vSphere Web Services API」という vSphere のローレベルな SOAP API を操作しています<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>。</p>
+<ul>
+<li><a href="https://code.vmware.com/web/sdk/7.0/vsphere-management">vSphere Management SDK - VMware {code}</a></li>
+<li><a href="https://code.vmware.com/apis/968/vsphere">vSphere Web Services API - VMware API Explorer - VMware {code}</a></li>
+</ul>
+<p>今回の記事で紹介する「pyVmomi」という Python SDK も PowerCLI と同様に vSphere Web Services API を操作することが出来ます。</p>
+<p>pyVmomi のインストール手順やコミュニティのサンプルコードは GitHub の以下のリポジトリで公開されています。</p>
+<ul>
+<li><a href="https://github.com/vmware/pyvmomi">vmware/pyvmomi: VMware vSphere API Python Bindings</a></li>
+<li><a href="https://github.com/vmware/pyvmomi-community-samples">vmware/pyvmomi-community-samples: A place for community contributed samples for the pyVmomi library.</a></li>
+</ul>
+<h2 id="インスタントクローンと-vsphere-web-services-api">インスタントクローンと vSphere Web Services API</h2>
+<p>インスタントクローンといえば Horizon 7 で利用できる非常に高速な仮想マシンのクローンです。パワーオン状態の仮想マシンが2秒程度で複製でき、親仮想マシンとメモリを共有するためリソースを節約できるという極めて強力な機能で、vSphere Integrated Containers でもコンテナを Photon OS 仮想マシンで隔離するために利用されています。</p>
+<ul>
+<li><a href="https://docs.vmware.com/jp/VMware-Horizon-7/7.0/rn/horizon-70-view-release-notes.html">VMware Horizon 7 バージョン 7.0 リリース ノート</a></li>
+<li><a href="https://blogs.vmware.com/jp-cim/2015/10/vsphere-integrated-containers-tech.html">vSphere Integrated Containers テクノロジー ウォークスルー</a></li>
+</ul>
+<p>vSphere 6.5 以前では Horizon など vSphere 外部の製品のみ使用できましたが、vSphere 6.7 から vSphere Web Services API で仮想マシンオブジェクトに InstantClone_Task メソッドが追加されており vSphere 単体でも API 経由なら実行できるようになっています。</p>
+<p><a href="https://vdc-download.vmware.com/vmwb-repository/dcr-public/fb07ebe8-b565-4aa8-ba36-f1ec77671c80/da3f8c40-c818-4733-a403-17877eaefd7e/vsphere-web-services-sdk-67-release-notes.html">vSphere Web Services SDK 6.7 Release Notes</a></p>
+<blockquote>
+<p>New InstantClone method added.</p>
+<p>The vSphere 6.7 release includes the InstantClone_Task() method for low-latency deployment of cloned virtual machines from a running or frozen source virtual machine.</p>
+</blockquote>
+<p>なお、インスタントクローン自体は上述の通り Horizon 7 でだいぶ前から使われている機能で、具体的な仕組みは既に色々な方がブログなどで解説を書いてくれていますので Google などで検索してみていただければと思います。本記事では VMware Docs だけ置いておきます。</p>
+<p><a href="https://docs.vmware.com/jp/VMware-vSphere/6.7/com.vmware.vsphere.vm_admin.doc/GUID-853B1E2B-76CE-4240-A654-3806912820EB.html">インスタント クローンを使用した仮想マシンのクローン作成</a></p>
+<h2 id="pyvmomi-でインスタントクローン">pyVmomi でインスタントクローン</h2>
+<p>冒頭に記載した中の人の記事やリンクされている GitHub リポジトリのコードを読むと分かるのですが、PowerCLI から vSphere Web Services API の InstantClone_Task メソッドを呼び出す実装になっています。このため「もしかしたら pyVmomi でもインスタントクローンが出来るのでは？」という発想になりました。</p>
+<p>1年半ほど前に試しに作ってみた際にかなり便利だったので検証用の Nested ESXi などの払い出しに使っていましたが、せっかくブログを立ち上げましたのでサンプルコードと合わせて解説をしていきたいと思います。</p>
+<h2 id="python-実行環境と-pyvmomi-のインストール手順">Python 実行環境と pyVmomi のインストール手順</h2>
+<p>今回使用した私の実行環境は以下の通りです。</p>
+<ul>
+<li>WSL2 の Ubuntu 18.04 LTS</li>
+<li>Python 3.6.9 および pyVmomi 7.0</li>
+<li>vCenter Server 7.0 / ESXi 6.7 Update 3</li>
+</ul>
+<p>pyVmomi は PyPI で提供されていますので pip によるインストールが可能です。pip をインストールしてから pyvmomi パッケージをインストールします。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>$ sudo apt-get install python3-pip
+<span class="ln">2</span>$ pip3 install --upgrade pyvmomi
+</code></pre></div><h2 id="サンプルコードとその解説">サンプルコードとその解説</h2>
+<p>サンプルコードは<a href="https://github.com/Jangari-nTK/pyvmomi-instant-clone-sample">こちらの GitHub リポジトリ</a>に置いてあります<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>。基本的に vmware/pyvmomi-community-samples のサンプルコード <a href="https://github.com/vmware/pyvmomi-community-samples/blob/master/samples/clone_vm.py">clone_vm.py</a> をベースにしていますが、少し長いので一番主要な部分にコメントを入れたものを以下に抜粋します。</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="ln"> 1</span><span class="c1"># インスタントクローンを実行する関数。</span>
+<span class="ln"> 2</span><span class="k">def</span> <span class="nf">instant_clone_vm</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">parent_vm</span><span class="p">,</span> <span class="n">vm_name</span><span class="p">,</span> <span class="n">datacenter_name</span><span class="p">,</span> <span class="n">vm_folder</span><span class="p">,</span> <span class="n">resource_pool</span><span class="p">):</span>
+<span class="ln"> 3</span>
+<span class="ln"> 4</span>    <span class="c1"># 指定の仮想マシンフォルダを取得します(無ければルート仮想マシンフォルダ)。</span>
+<span class="ln"> 5</span>    <span class="n">datacenter</span> <span class="o">=</span> <span class="n">get_obj</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="p">[</span><span class="n">vim</span><span class="o">.</span><span class="n">Datacenter</span><span class="p">],</span> <span class="n">datacenter_name</span><span class="p">)</span>
+<span class="ln"> 6</span>    <span class="k">if</span> <span class="n">vm_folder</span><span class="p">:</span>
+<span class="ln"> 7</span>        <span class="n">dst_folder</span> <span class="o">=</span> <span class="n">get_obj</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="p">[</span><span class="n">vim</span><span class="o">.</span><span class="n">Folder</span><span class="p">],</span> <span class="n">vm_folder</span><span class="p">)</span>
+<span class="ln"> 8</span>    <span class="k">else</span><span class="p">:</span>
+<span class="ln"> 9</span>        <span class="n">dst_folder</span> <span class="o">=</span> <span class="n">datacenter</span><span class="o">.</span><span class="n">vmFolder</span>
+<span class="ln">10</span>
+<span class="ln">11</span>    <span class="c1"># 特定のリソースプールの明示的な指定が必要です(当記事の補足参照)。</span>
+<span class="ln">12</span>    <span class="n">resource_pool</span> <span class="o">=</span> <span class="n">get_obj</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="p">[</span><span class="n">vim</span><span class="o">.</span><span class="n">ResourcePool</span><span class="p">],</span> <span class="n">resource_pool</span><span class="p">)</span>
+<span class="ln">13</span>
+<span class="ln">14</span>    <span class="c1"># RelocateSpec オブジェクトで仮想マシンの配置情報を指定します。</span>
+<span class="ln">15</span>    <span class="n">vm_relocate_spec</span> <span class="o">=</span> <span class="n">vim</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">RelocateSpec</span><span class="p">()</span>
+<span class="ln">16</span>    <span class="n">vm_relocate_spec</span><span class="o">.</span><span class="n">folder</span> <span class="o">=</span> <span class="n">dst_folder</span>
+<span class="ln">17</span>    <span class="n">vm_relocate_spec</span><span class="o">.</span><span class="n">pool</span> <span class="o">=</span> <span class="n">resource_pool</span>
+<span class="ln">18</span>
+<span class="ln">19</span>    <span class="c1"># InstantCloneSpec オブジェクトでインスタントクローンの</span>
+<span class="ln">20</span>    <span class="c1"># 各種パラメータを指定します。</span>
+<span class="ln">21</span>    <span class="n">instant_clone_spec</span> <span class="o">=</span> <span class="n">vim</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">InstantCloneSpec</span><span class="p">()</span>
+<span class="ln">22</span>    <span class="n">instant_clone_spec</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">vm_name</span>
+<span class="ln">23</span>    <span class="n">instant_clone_spec</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">vm_relocate_spec</span>
+<span class="ln">24</span>
+<span class="ln">25</span>    <span class="c1"># InstantClone_Task メソッドに作成した InstantCloneSpec オブジェクト</span>
+<span class="ln">26</span>    <span class="c1"># を渡すことでインスタントクローンを実行します。メソッドの戻り値は Task</span>
+<span class="ln">27</span>    <span class="c1"># オブジェクトのため、WaitForTask 関数に渡してタスクの完了を待ちます。</span>
+<span class="ln">28</span>    <span class="n">WaitForTask</span><span class="p">(</span><span class="n">parent_vm</span><span class="o">.</span><span class="n">InstantClone_Task</span><span class="p">(</span><span class="n">spec</span><span class="o">=</span><span class="n">instant_clone_spec</span><span class="p">))</span>
+<span class="ln">29</span>
+<span class="ln">30</span><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="ln">31</span>    <span class="n">args</span> <span class="o">=</span> <span class="n">get_args</span><span class="p">()</span>
+<span class="ln">32</span>
+<span class="ln">33</span>    <span class="c1"># vCenter Server のマシン SSL 証明書が信頼されていない場合も</span>
+<span class="ln">34</span>    <span class="c1"># 多いので、サーバ証明書の検証は無視して進むようにしています。</span>
+<span class="ln">35</span>    <span class="n">context</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="ln">36</span>    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ssl</span><span class="p">,</span> <span class="s2">&#34;_create_unverified_context&#34;</span><span class="p">):</span>
+<span class="ln">37</span>        <span class="n">context</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">_create_unverified_context</span><span class="p">()</span>
+<span class="ln">38</span>
+<span class="ln">39</span>    <span class="c1"># vCenter Server に接続して、インベントリ全体のルートに相当する</span>
+<span class="ln">40</span>    <span class="c1"># ServiceInstance / ServiceContent オブジェクトを取得します。</span>
+<span class="ln">41</span>    <span class="n">si</span> <span class="o">=</span> <span class="n">SmartConnect</span><span class="p">(</span>
+<span class="ln">42</span>                    <span class="n">host</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">host</span><span class="p">,</span>
+<span class="ln">43</span>                    <span class="n">user</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
+<span class="ln">44</span>                    <span class="n">pwd</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">password</span><span class="p">,</span>
+<span class="ln">45</span>                    <span class="n">port</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">port</span><span class="p">,</span>
+<span class="ln">46</span>                    <span class="n">sslContext</span><span class="o">=</span><span class="n">context</span><span class="p">)</span>
+<span class="ln">47</span>    <span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Disconnect</span><span class="p">,</span> <span class="n">si</span><span class="p">)</span>
+<span class="ln">48</span>    <span class="n">content</span> <span class="o">=</span> <span class="n">si</span><span class="o">.</span><span class="n">content</span>
+<span class="ln">49</span>
+<span class="ln">50</span>    <span class="c1"># 親仮想マシンを VirtualMachine オブジェクトとして取得します。</span>
+<span class="ln">51</span>    <span class="n">parent_vm</span> <span class="o">=</span> <span class="n">get_obj</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="p">[</span><span class="n">vim</span><span class="o">.</span><span class="n">VirtualMachine</span><span class="p">],</span> <span class="n">args</span><span class="o">.</span><span class="n">parent_vm</span><span class="p">)</span>
+<span class="ln">52</span>
+<span class="ln">53</span>    <span class="c1"># 上述の instant_clone_vm 関数を呼び出してインスタントクローンを実行します。</span>
+<span class="ln">54</span>    <span class="k">if</span> <span class="n">parent_vm</span><span class="p">:</span>
+<span class="ln">55</span>        <span class="n">instant_clone_vm</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">parent_vm</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">vm_name</span><span class="p">,</span>
+<span class="ln">56</span>            <span class="n">args</span><span class="o">.</span><span class="n">datacenter_name</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">vm_folder</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">resource_pool</span><span class="p">)</span>
+<span class="ln">57</span>    <span class="k">else</span><span class="p">:</span>
+<span class="ln">58</span>        <span class="k">print</span><span class="p">(</span><span class="s2">&#34;parent_vm not found&#34;</span><span class="p">)</span>
+<span class="ln">59</span>        <span class="n">quit</span><span class="p">()</span>
+<span class="ln">60</span>
+<span class="ln">61</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="ln">62</span>    <span class="n">main</span><span class="p">()</span>
+</code></pre></div><p>上述のコードを見てもらえると、VirtualMachine オブジェクトのメソッドとして InstantClone_Task が呼び出されていることが分かると思います。</p>
+<p><a href="https://vdc-download.vmware.com/vmwb-repository/dcr-public/b50dcbbf-051d-4204-a3e7-e1b618c1e384/538cf2ec-b34f-4bae-a332-3820ef9e7773/vim.VirtualMachine.html#instantClone">InstantClone_Task(instantClone) | Managed Object - VirtualMachine(vim.VirtualMachine)</a></p>
+<p>コード全体としても実質的に行っていることは単純で、要約すると以下の流れになっています。</p>
+<ol>
+<li>vCenter Server にログインする。</li>
+<li>vCenter Server のインベントリから親仮想マシンを取得する。</li>
+<li>クローン仮想マシンの配置先を指定する。</li>
+<li>仮想マシン名と3.の配置先をインスタントクローンのパラメータに指定する。</li>
+<li>2.の親仮想マシンに対して4.の内容に基づきインスタントクローンを実行する。</li>
+</ol>
+<p>この Python スクリプトを実行する場合は以下のようなフォーマットになります。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>$ git clone https://github.com/Jangari-nTK/pyvmomi-instant-clone-sample.git
+<span class="ln">2</span>$ cd pyvmomi-instant-clone-sample
+<span class="ln">3</span>$ python3 instant_clone.py --host vcsa01.corp.local --user administrator@vsphere.local \
+<span class="ln">4</span>    --password VMware1! --vm-name &#34;New_VM&#34; --parent-vm &#34;Parent_VM&#34; --resource-pool &#34;Destination-Pool&#34;
+</code></pre></div><p>実行すると以下のようにインスタントクローンが実行されます。タスクの実行時間(赤枠)を見ると、開始～完了までが3秒と極めて高速です。通常のクローンのようにゲストOSの起動も必要がないため複製後に即座に使用できるようになります。</p>
+<p><img src="/images/2020-08-08/pyvmomi-instant-clone-001.PNG" alt="インスタントクローンの実行後"></p>
+<h2 id="おわりに">おわりに</h2>
+<p>今回の記事では pyVmomi でインスタントクローンを行う方法について見てきました。</p>
+<p>これだけでも良いのですが、以下の中の人のブログにも記載がある通り、親仮想マシンが動いている状態でインスタントクローンを行うとリソース周りが最適化されません<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>。加えて、現状のスクリプトではゲストにカスタマイズを何も加えないため、クローン前後の仮想マシンでネットワーク情報の競合が発生してしまいます。</p>
+<p><a href="http://www.yellow-bricks.com/2018/05/01/instant-clone-vsphere-67/">Instant Clone in vSphere 6.7 rocks!</a></p>
+<p>これに対しては、<a href="https://www.virtuallyghetto.com/2018/04/new-instant-clone-architecture-in-vsphere-6-7-part-2.html">この中の人の記事</a>や<a href="https://github.com/lamw/instantclone-community-customization-scripts/blob/master/ubuntu16/customize.sh">カスタマイズスクリプト</a>のように、vmware-rpcinfo を使った仮想マシンの freeze、NIC ドライバの unbind/bind で認識中の MAC アドレスの更新からの IP アドレス再設定、VMware Tools の guestinfo 変数でゲスト上のスクリプトに値を渡すなどのテクニックがあります。<br>
+※ゲスト上スクリプトで guestinfo 変数を使う場合はインスタントクローンのスクリプト側も修正が必要になるはずです。</p>
+<p>私は Nested ESXi の払い出しには (いちいちネットワーク情報の指定が面倒なので) DHCP でネットワーク情報を払い出していましたが、この辺りは気力が続けば別途続きとして記事を作成・公開しようかなと思います。</p>
+<h2 id="補足">補足</h2>
+<p>GitHub の vmware/pyvmomi-community-samples リポジトリにあるサンプルコード clone_vm.py とは異なり、今回のコードではリソースプールの指定を必須にしています。</p>
+<p>これは、リソースプールを明示せずに(ルートリソースプールを使用して) InstantClone_Task メソッドを呼び出したところ、 RelocateSpec の pool プロパティが不正な値とみなされてタスクが失敗したためです。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span>pyVmomi.VmomiSupport.InvalidArgument: (vmodl.fault.InvalidArgument) {
+<span class="ln"> 2</span>   dynamicType = &lt;unset&gt;,
+<span class="ln"> 3</span>   dynamicProperty = (vmodl.DynamicProperty) [],
+<span class="ln"> 4</span>   msg = &#39;A specified parameter was not correct: spec.pool&#39;,
+<span class="ln"> 5</span>   faultCause = &lt;unset&gt;,
+<span class="ln"> 6</span>   faultMessage = (vmodl.LocalizableMessage) [
+<span class="ln"> 7</span>      (vmodl.LocalizableMessage) {
+<span class="ln"> 8</span>         dynamicType = &lt;unset&gt;,
+<span class="ln"> 9</span>         dynamicProperty = (vmodl.DynamicProperty) [],
+<span class="ln">10</span>         key = &#39;com.vmware.vim.vpxd.vmcheck.hostPoolMismatch&#39;,
+<span class="ln">11</span>         arg = (vmodl.KeyAnyValue) [],
+<span class="ln">12</span>         message = &#39;Resource pool and host do not belong to the same compute resource.&#39;
+<span class="ln">13</span>      }
+<span class="ln">14</span>   ],
+<span class="ln">15</span>   invalidProperty = &#39;spec.pool&#39;
+<span class="ln">16</span>}
+</code></pre></div><p>エラーの詳細メッセージをそのまま読むと「ホストとリソースプールが同じ計算リソースに所属してはいけない」となりますが、この状況は (クラスタやスタンドアロンホストの) ルートリソースプールをクローン先として使用する場合に限られるかと考えています。</p>
+<p><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.resmgmt.doc/GUID-60077B40-66FF-4625-934A-641703ED7601.html">リソース プールの管理</a></p>
+<blockquote>
+<p>各スタンドアロン ホストと各 DRS クラスタには、（非表示の） ルート リソース プールがあり、そのホストまたはクラスタのリソースがグループ分けされています。ホスト （またはクラスタ） のリソースとルート リソース プールのリソースは常に同じであるため、ルート リソース プールは表示されません。</p>
+</blockquote>
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p>PowerCLI と vSphere Web Services API の関係は「<a href="https://blogs.vmware.com/PowerCLI/2019/02/documentation-walkthrough.html">Documentation Walkthrough - VMware PowerCLI Blog</a>」の記事が参考になります。 <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p><a href="https://code.vmware.com/samples/7409/pyvmomi-instant-clone-sample-code">VMware{code} のサンプル</a>としても追加しておきました。 <a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3" role="doc-endnote">
+<p>親仮想マシンにスナップショットの差分ディスク(*-00000n.vmdk)が毎回作成されてしまいます。なお、そのままでは削除や統合が出来なかったため、ダミーのスナップショットを作成してから [すべてのスナップショットの削除] で削除しました。この削除方法は何らかの要因で変に差分ディスクが残った時に便利です。 <a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+
+  </article>
+<aside class="sidebar">
+  <section class="sidebar_inner">
+    <h2>Jangari</h2>
+    <div>
+      Jangari is a Technical Support Engineer working on a certain company in Japan.
+    </div>
+    <a href = 'https://jangari-ntk.github.io/about/' class="button mt-1" role="button">Read More</a>
+    <h2 class="mt-4">Featured Posts</h2>
+    <ul>
+    
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-11/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 1】</a>
+      </li>
+    
+    
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-01/" class="nav-link">vCenter Server 7.0 のイベントをテキストで取得</a>
+      </li>
+    
+    </ul>
+    <h2 class="mt-4">Recent Posts</h2>
+    <ul class="flex-column">
+      
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-11/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 1】</a>
+      </li>
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-01/" class="nav-link">vCenter Server 7.0 のイベントをテキストで取得</a>
+      </li>
+    </ul> 
+    
+    <div>
+      <h2 class="mt-4 taxonomy" id="categories-section">categories</h2>
+      <nav class="tags_nav">
+        <a href='https://jangari-ntk.github.io/categories/vsphere/' class=" post_tag button button_translucent">
+          VSPHERE
+          <span class='button_tally'>3</span>
+        </a>
+        
+        
+      </nav>
+    </div>
+    
+    <div>
+      <h2 class="mt-4 taxonomy" id="tags-section">tags</h2>
+      <nav class="tags_nav">
+        <a href='https://jangari-ntk.github.io/tags/featured/' class=" post_tag button button_translucent">
+          FEATURED
+          <span class='button_tally'>3</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent">
+          VSPHERE
+          <span class='button_tally'>3</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/tips/' class=" post_tag button button_translucent">
+          TIPS
+          <span class='button_tally'>2</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/vcenter-server/' class=" post_tag button button_translucent">
+          VCENTER-SERVER
+          <span class='button_tally'>2</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/instant-clone/' class=" post_tag button button_translucent">
+          INSTANT-CLONE
+          <span class='button_tally'>1</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/nested/' class=" post_tag button button_translucent">
+          NESTED
+          <span class='button_tally'>1</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/sdk/api/' class=" post_tag button button_translucent">
+          SDK/API
+          <span class='button_tally'>1</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/security/' class=" post_tag button button_translucent">
+          SECURITY
+          <span class='button_tally'>1</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/vsphere-7.0/' class=" post_tag button button_translucent">
+          VSPHERE-7.0
+          <span class='button_tally'>1</span>
+        </a>
+        
+        
+      </nav>
+    </div>
+    
+  </section>
+</aside>
+
+</div>
+    </main><svg width="0" height="0" class="hidden">
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="facebook">
+    <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h151V331h-60v-90h60v-61c0-49.629 40.371-90 90-90h91v90h-91v61h91l-15 90h-76v181h121c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zm0 0"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18.001 18.001" id="twitter">
+    <path d="M15.891 4.013c.808-.496 1.343-1.173 1.605-2.034a8.68 8.68 0 0 1-2.351.861c-.703-.756-1.593-1.14-2.66-1.14-1.043 0-1.924.366-2.643 1.078a3.56 3.56 0 0 0-1.076 2.605c0 .309.039.585.117.819-3.076-.105-5.622-1.381-7.628-3.837-.34.601-.51 1.213-.51 1.846 0 1.301.549 2.332 1.645 3.089-.625-.053-1.176-.211-1.645-.47 0 .929.273 1.705.82 2.388a3.623 3.623 0 0 0 2.115 1.291c-.312.08-.641.118-.979.118-.312 0-.533-.026-.664-.083.23.757.664 1.371 1.291 1.841a3.652 3.652 0 0 0 2.152.743C4.148 14.173 2.625 14.69.902 14.69c-.422 0-.721-.006-.902-.038 1.697 1.102 3.586 1.649 5.676 1.649 2.139 0 4.029-.542 5.674-1.626 1.645-1.078 2.859-2.408 3.639-3.974a10.77 10.77 0 0 0 1.172-4.892v-.468a7.788 7.788 0 0 0 1.84-1.921 8.142 8.142 0 0 1-2.11.593z"
+      ></path>
+  </symbol>
+  <symbol aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="mail">
+    <path  d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="calendar">
+    <path d="M452 40h-24V0h-40v40H124V0H84v40H60C26.916 40 0 66.916 0 100v352c0 33.084 26.916 60 60 60h392c33.084 0 60-26.916 60-60V100c0-33.084-26.916-60-60-60zm20 412c0 11.028-8.972 20-20 20H60c-11.028 0-20-8.972-20-20V188h432v264zm0-304H40v-48c0-11.028 8.972-20 20-20h24v40h40V80h264v40h40V80h24c11.028 0 20 8.972 20 20v48z"></path>
+    <path d="M76 230h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zM76 310h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zM76 390h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zm80-80h40v40h-40z"></path>
+  </symbol>
+  <symbol viewBox="-21 0 512 512" xmlns="http://www.w3.org/2000/svg" id="yank">
+    <path d="M410.668 405.332H165.332c-32.363 0-58.664-26.3-58.664-58.664v-288c0-32.363 26.3-58.668 58.664-58.668h181.504c21.059 0 41.687 8.535 56.555 23.445l42.496 42.496c15.125 15.125 23.445 35.223 23.445 56.575v224.152c0 32.363-26.3 58.664-58.664 58.664zM165.332 32c-14.7 0-26.664 11.969-26.664 26.668v288c0 14.7 11.965 26.664 26.664 26.664h245.336c14.7 0 26.664-11.965 26.664-26.664V122.516c0-12.82-4.992-24.871-14.059-33.942l-42.496-42.496C371.84 37.121 359.488 32 346.836 32zm0 0"></path>
+    <path d="M314.668 512h-256C26.305 512 0 485.695 0 453.332V112c0-32.363 26.305-58.668 58.668-58.668h10.664c8.832 0 16 7.168 16 16s-7.168 16-16 16H58.668C43.968 85.332 32 97.301 32 112v341.332C32 468.032 43.969 480 58.668 480h256c14.7 0 26.664-11.969 26.664-26.668v-10.664c0-8.832 7.168-16 16-16s16 7.168 16 16v10.664c0 32.363-26.3 58.668-58.664 58.668zM368 181.332H208c-8.832 0-16-7.168-16-16s7.168-16 16-16h160c8.832 0 16 7.168 16 16s-7.168 16-16 16zm0 0"></path>
+    <path d="M368 245.332H208c-8.832 0-16-7.168-16-16s7.168-16 16-16h160c8.832 0 16 7.168 16 16s-7.168 16-16 16zm0 64H208c-8.832 0-16-7.168-16-16s7.168-16 16-16h160c8.832 0 16 7.168 16 16s-7.168 16-16 16zm0 0"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="github">
+    <path d="M255.968 5.329C114.624 5.329 0 120.401 0 262.353c0 113.536 73.344 209.856 175.104 243.872 12.8 2.368 17.472-5.568 17.472-12.384 0-6.112-.224-22.272-.352-43.712-71.2 15.52-86.24-34.464-86.24-34.464-11.616-29.696-28.416-37.6-28.416-37.6-23.264-15.936 1.728-15.616 1.728-15.616 25.696 1.824 39.2 26.496 39.2 26.496 22.848 39.264 59.936 27.936 74.528 21.344 2.304-16.608 8.928-27.936 16.256-34.368-56.832-6.496-116.608-28.544-116.608-127.008 0-28.064 9.984-51.008 26.368-68.992-2.656-6.496-11.424-32.64 2.496-68 0 0 21.504-6.912 70.4 26.336 20.416-5.696 42.304-8.544 64.096-8.64 21.728.128 43.648 2.944 64.096 8.672 48.864-33.248 70.336-26.336 70.336-26.336 13.952 35.392 5.184 61.504 2.56 68 16.416 17.984 26.304 40.928 26.304 68.992 0 98.72-59.84 120.448-116.864 126.816 9.184 7.936 17.376 23.616 17.376 47.584 0 34.368-.32 62.08-.32 70.496 0 6.88 4.608 14.88 17.6 12.352C438.72 472.145 512 375.857 512 262.353 512 120.401 397.376 5.329 255.968 5.329z"></path>
+  </symbol>
+  <symbol viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="rss">
+    <circle cx="3.429" cy="20.571" r="3.429"></circle>
+    <path d="M11.429 24h4.57C15.999 15.179 8.821 8.001 0 8v4.572c6.302.001 11.429 5.126 11.429 11.428z"></path>
+    <path d="M24 24C24 10.766 13.234 0 0 0v4.571c10.714 0 19.43 8.714 19.43 19.429z"></path>
+  </symbol>
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="linkedin">
+    <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h362c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zM181 406h-60V196h60zm0-240h-60v-60h60zm210 240h-60V286c0-16.54-13.46-30-30-30s-30 13.46-30 30v120h-60V196h60v11.309C286.719 202.422 296.93 196 316 196c40.691.043 75 36.547 75 79.688zm0 0"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="arrow">
+    <path d="M604.501 440.509L325.398 134.956c-5.331-5.357-12.423-7.627-19.386-7.27-6.989-.357-14.056 1.913-19.387 7.27L7.499 440.509c-9.999 10.024-9.999 26.298 0 36.323s26.223 10.024 36.222 0l262.293-287.164L568.28 476.832c9.999 10.024 26.222 10.024 36.221 0 9.999-10.023 9.999-26.298 0-36.323z"></path>
+  </symbol>
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="carly">
+    <path d="M504.971 239.029L448 182.059V84c0-46.317-37.682-84-84-84h-44c-13.255 0-24 10.745-24 24s10.745 24 24 24h44c19.851 0 36 16.149 36 36v108c0 6.365 2.529 12.47 7.029 16.971L454.059 256l-47.029 47.029A24.002 24.002 0 0 0 400 320v108c0 19.851-16.149 36-36 36h-44c-13.255 0-24 10.745-24 24s10.745 24 24 24h44c46.318 0 84-37.683 84-84v-98.059l56.971-56.971c9.372-9.372 9.372-24.568 0-33.941zM112 192V84c0-19.851 16.149-36 36-36h44c13.255 0 24-10.745 24-24S205.255 0 192 0h-44c-46.318 0-84 37.683-84 84v98.059l-56.971 56.97c-9.373 9.373-9.373 24.568 0 33.941L64 329.941V428c0 46.317 37.682 84 84 84h44c13.255 0 24-10.745 24-24s-10.745-24-24-24h-44c-19.851 0-36-16.149-36-36V320c0-6.365-2.529-12.47-7.029-16.971L57.941 256l47.029-47.029A24.002 24.002 0 0 0 112 192z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="copy">
+    <path d="M366.345 406.069H66.207c-9.751 0-17.655-7.904-17.655-17.655V17.655C48.552 7.904 56.456 0 66.207 0h300.138C376.096 0 384 7.904 384 17.655v370.759c0 9.751-7.904 17.655-17.655 17.655z" fill="#f1f4fb"></path>
+    <path d="M384 388.414v-76.992c-.907.322-1.869.494-2.751.882-6.307-6.593-14.733-11.025-24.111-11.964a40.49 40.49 0 0 0-8.448.039v-92.93c0-21.903-17.82-39.723-39.723-39.724a40.5 40.5 0 0 0-4.036.202c-20.012 2.004-35.689 19.916-35.689 40.781v101.773l-21.581 21.581c-15.241 15.241-21.393 36.866-16.456 57.847l3.802 16.16h131.338c9.75 0 17.655-7.905 17.655-17.655z"
+      fill="#d5dced"></path>
+    <circle cx="128" cy="105.931" r="26.483" fill="#b4e66e"></circle>
+    <circle cx="128" cy="203.034" r="26.483" fill="#dae169"></circle>
+    <circle cx="128" cy="300.138" r="26.483" fill="#ffdc64"></circle>
+    <path d="M331.034 229.517H189.793c-4.879 0-8.828-3.953-8.828-8.828s3.948-8.828 8.828-8.828h141.241c4.879 0 8.828 3.953 8.828 8.828s-3.948 8.828-8.828 8.828z" fill="#7f8499"></path>
+    <path d="M295.724 194.207H189.793a8.826 8.826 0 0 1-8.828-8.828 8.826 8.826 0 0 1 8.828-8.828h105.931a8.826 8.826 0 0 1 8.828 8.828 8.826 8.826 0 0 1-8.828 8.828z" fill="#5b5d6e"></path>
+    <path d="M331.034 326.621H189.793c-4.879 0-8.828-3.953-8.828-8.828s3.948-8.828 8.828-8.828h141.241c4.879 0 8.828 3.953 8.828 8.828s-3.948 8.828-8.828 8.828z" fill="#7f8499"></path>
+    <path d="M295.724 291.31H189.793c-4.879 0-8.828-3.953-8.828-8.828s3.948-8.828 8.828-8.828h105.931c4.879 0 8.828 3.953 8.828 8.828s-3.948 8.828-8.828 8.828z" fill="#5b5d6e"></path>
+    <path d="M331.034 132.414H189.793a8.826 8.826 0 0 1-8.828-8.828 8.826 8.826 0 0 1 8.828-8.828h141.241a8.826 8.826 0 0 1 8.828 8.828 8.826 8.826 0 0 1-8.828 8.828z" fill="#7f8499"></path>
+    <path d="M295.724 97.103H189.793a8.826 8.826 0 0 1-8.828-8.828 8.826 8.826 0 0 1 8.828-8.828h105.931a8.826 8.826 0 0 1 8.828 8.828 8.825 8.825 0 0 1-8.828 8.828z" fill="#5b5d6e"></path>
+    <path d="M443.656 335.563c-13.21-1.323-24.345 9.015-24.345 21.954v-7.569c0-11.544-8.306-22.063-19.794-23.213-13.209-1.323-24.344 9.015-24.344 21.954v-7.569c0-11.544-8.306-22.063-19.794-23.213-13.209-1.323-24.344 9.015-24.344 21.954V207.448c0-12.939-11.135-23.277-24.345-21.954-11.486 1.15-19.793 11.669-19.793 23.213v109.086l-26.752 26.752a44.14 44.14 0 0 0-11.754 41.32l18.47 78.495c6.567 27.913 31.475 47.64 60.15 47.64h74.645c34.127 0 61.793-27.666 61.793-61.793v-91.431c-.001-11.544-8.306-22.063-19.793-23.213z"
+      fill="#f0c087"></path>
+    <path d="M339.862 361.377a8.829 8.829 0 0 0 8.828-8.828v-34.194c-10.052 2.061-17.655 10.844-17.655 21.506v12.687a8.827 8.827 0 0 0 8.827 8.829zM384 370.205a8.829 8.829 0 0 0 8.828-8.828v-34.194c-10.052 2.061-17.655 10.844-17.655 21.506v12.687a8.827 8.827 0 0 0 8.827 8.829zm44.138 8.827a8.829 8.829 0 0 0 8.828-8.828V336.01c-10.052 2.061-17.655 10.844-17.655 21.506v12.687a8.827 8.827 0 0 0 8.827 8.829zM288.885 464.36l-20.467-86.985a28.482 28.482 0 0 1 7.585-26.663l10.893-10.894v22.113a8.829 8.829 0 0 0 17.656 0V185.933c-10.344 2.173-17.655 11.972-17.655 22.773v109.087l-26.752 26.752a44.14 44.14 0 0 0-11.754 41.32l18.47 78.495c6.567 27.913 31.475 47.64 60.15 47.64h22.026c-28.677 0-53.584-19.727-60.152-47.64z"
+      fill="#e6af78"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001" id="closeme">
+    <path d="M284.286 256.002L506.143 34.144c7.811-7.811 7.811-20.475 0-28.285-7.811-7.81-20.475-7.811-28.285 0L256 227.717 34.143 5.859c-7.811-7.811-20.475-7.811-28.285 0-7.81 7.811-7.811 20.475 0 28.285l221.857 221.857L5.858 477.859c-7.811 7.811-7.811 20.475 0 28.285a19.938 19.938 0 0 0 14.143 5.857 19.94 19.94 0 0 0 14.143-5.857L256 284.287l221.857 221.857c3.905 3.905 9.024 5.857 14.143 5.857s10.237-1.952 14.143-5.857c7.811-7.811 7.811-20.475 0-28.285L284.286 256.002z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="open-menu">
+    <path d="M492 236H20c-11.046 0-20 8.954-20 20s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20zm0-160H20C8.954 76 0 84.954 0 96s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20zm0 320H20c-11.046 0-20 8.954-20 20s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20z"></path>
+  </symbol>
+</svg>
+<footer class = 'footer'>
+  <div class = 'footer_inner wrap pale'>
+    <img src = 'https://jangari-ntk.github.io/icons/apple-touch-icon.png' class = 'icon icon_2 transparent'>
+    <p>Copyright &copy;&nbsp;<span class = 'year'></span>&nbsp;VSOLILOQUY. All Rights Reserved</p>
+<a class='to_top' href="#documentTop">
+  <svg class="icon">
+    <use xlink:href="#arrow"></use>
+  </svg>
+</a>
+
+  </div>
+</footer>
+    <script src = 'https://jangari-ntk.github.io/js/bundle.f11fd62745d1a773065645eb6f90461f96d1918737e6ef9fc05cd1bce00b9322930bd58a337f67c368af62503f6dd7eb4389876b64a4a035183afe83443bd34d.js'></script>
+  </body>
+</html>

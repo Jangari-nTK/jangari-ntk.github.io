@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>vSoliloquy</title>
+    <link>https://jangari-ntk.github.io/</link>
+    <description>Recent content on vSoliloquy</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
+    <lastBuildDate>Tue, 11 Aug 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://jangari-ntk.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>vCenter Server 7.0 で Identity Federation を構成【Part 1】</title>
+      <link>https://jangari-ntk.github.io/post/2020-08-11/</link>
+      <pubDate>Tue, 11 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2020-08-11/</guid>
+      <description>はじめに 本記事シリーズでは vCenter Server 7.0 の新機能である Identity Federation を構成する方法を数回に分けてご紹介します。今回は Identity Federation の紹介と、最初の vCenter Server 側での手順について見ていきます。残りの AD FS の手順、その後の vCenter Server の手順は次回以降で見ていきます。
+ 注意: 本機能の VMware Docs での名称は vCenter Server ID プロバイダ フェデレーション (vCenter Server Identity Provider Federation)、公式 Blog の記事などでは Identity Federation と呼称されています。本記事では文字数の便宜上、当該機能を Identity Federation として呼称することとします。
+ vCenter Server 7.0 の Identity Federation とは？ Identity Federation は vCenter Server 7.0 の新機能で、AD FS と OpenID Connect (OIDC) を使用してユーザー認証を行う機能です。ユーザー認証を外部の ID プロバイダに移譲することで、vCenter Server に依存せず柔軟なシングルサインオンが実現できます。こちらの VMware Docs では具体的に以下のようなメリットが挙げられています。</description>
+    </item>
+    
+    <item>
+      <title>pyVmomi から API 操作で Instant Clone をやってみる</title>
+      <link>https://jangari-ntk.github.io/post/2020-08-07/</link>
+      <pubDate>Fri, 07 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2020-08-07/</guid>
+      <description>はじめに 本記事では pyVmomi を使って vSphere 単体で Instant Clone を行う方法について書いていきます。
+事の発端は以下のVMware社の中の人が PowerCLI から Nested ESXi をインスタントクローンする記事です。
+Leveraging Instant Clone in vSphere 6.7 for extremely fast Nested ESXi provisioning
+vSphere Web Services API と pyVmomi vCenter Server のタスクをコマンドで実行する場合、PowerCLI を使うことが多いと思います。もしくは、開発やトラブルシューティングなどの一環で MOB (Managed Object Browser) を使用したことがある方もいらっしゃるかもしれません。
+ VMware PowerCLI - VMware {code} Online Documentation - vSphere SDK for Perl Programming Guide - VMware {code}  これらのツールは「vSphere Web Services API」という vSphere のローレベルな SOAP API を操作しています1。</description>
+    </item>
+    
+    <item>
+      <title>vCenter Server 7.0 のイベントをテキストで取得</title>
+      <link>https://jangari-ntk.github.io/post/2020-08-01/</link>
+      <pubDate>Sat, 01 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2020-08-01/</guid>
+      <description>はじめに vSphere Web Client (Flash 版) が vSphere 7 で遂に廃止となりました。vSphere Client (HTML5 版) は動作もスムーズで良いのですが、どうやら現時点では従来のイベントのエクスポートが行えないようです。
+Exporting virtual machine events from the Tasks &amp;amp; Events tab (2008204)
+ Note: The export tasks/Events option is only available on the vSphere Web Client (Flex). The HTML client does not include this feature at this time.
+ このため、別の方法でイベントを取得する方法を試してみました。試した方法は以下の２パターンです。
+ イベントストリーミングで転送してみる PowerCLI でエクスポートしてみる  なお、どちらの方法もメッセージの言語のローカライズは行われないためご注意ください。
+VCSA のイベントストリーミングで転送してみる イベントストリーミングでの転送では以下の２点の設定が必要ですが、後者は既定で設定済みなので、実質的には前者のリモート Syslog 転送の設定だけ行うことでイベントが転送されるようになります。
+ vCenter Server のログ ファイルを リモート Syslog サーバへ転送 リモートの Syslog サーバへのイベント ストリーミングの構成  Syslog 転送の構成はアプライアンス管理インターフェイス (VAMI) から行います。まず root ユーザーで VAMI にログインして以下のように [syslog] を開きましょう。</description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>https://jangari-ntk.github.io/about/</link>
+      <pubDate>Thu, 01 Jan 1970 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/about/</guid>
+      <description>自己紹介とこのブログについて はじめまして。日本のとある企業でテクニカルサポートエンジニアとして働いている Jangari と申します。
+本ブログでは私が日頃から触っている＆勉強している VMware 製品に関して、自分の知識の定着も兼ねてアウトプットしていきたいと思います。
+私が一番好きな製品である vSphere に関する Tips が基本的にメインになると思いますが、もしかしたら NSX-T など他の製品の記事、雑記などを書く場合もあるかもしれません。
+また、時々 Twitter アカウント (@Jangari_nTK) でも自宅のホームラボで試した内容などを流していますので、お気軽にフォローいただければと思います。
+About me and this blog Hello everyone. I&amp;rsquo;m Jangari, a Technical Support Engineer working on a certain company in Japan.
+This blog focuses on short tips of VMware products, which I use and support everyday. I will write articles of vSphere, which is my most favorite product, but perhaps I write about other products like vSAN, NSX-T, and so on.</description>
+    </item>
+    
+  </channel>
+</rss>

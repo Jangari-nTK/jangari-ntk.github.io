@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Security on vSoliloquy</title>
+    <link>https://jangari-ntk.github.io/tags/security/</link>
+    <description>Recent content in Security on vSoliloquy</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
+    <lastBuildDate>Tue, 11 Aug 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://jangari-ntk.github.io/tags/security/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>vCenter Server 7.0 で Identity Federation を構成【Part 1】</title>
+      <link>https://jangari-ntk.github.io/post/2020-08-11/</link>
+      <pubDate>Tue, 11 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2020-08-11/</guid>
+      <description>はじめに 本記事シリーズでは vCenter Server 7.0 の新機能である Identity Federation を構成する方法を数回に分けてご紹介します。今回は Identity Federation の紹介と、最初の vCenter Server 側での手順について見ていきます。残りの AD FS の手順、その後の vCenter Server の手順は次回以降で見ていきます。
+ 注意: 本機能の VMware Docs での名称は vCenter Server ID プロバイダ フェデレーション (vCenter Server Identity Provider Federation)、公式 Blog の記事などでは Identity Federation と呼称されています。本記事では文字数の便宜上、当該機能を Identity Federation として呼称することとします。
+ vCenter Server 7.0 の Identity Federation とは？ Identity Federation は vCenter Server 7.0 の新機能で、AD FS と OpenID Connect (OIDC) を使用してユーザー認証を行う機能です。ユーザー認証を外部の ID プロバイダに移譲することで、vCenter Server に依存せず柔軟なシングルサインオンが実現できます。こちらの VMware Docs では具体的に以下のようなメリットが挙げられています。</description>
+    </item>
+    
+  </channel>
+</rss>
