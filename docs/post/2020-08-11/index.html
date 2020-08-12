@@ -201,7 +201,7 @@
 <li><a href="https://docs.microsoft.com/ja-jp/windows-server/identity/ad-fs/deployment/deploying-a-federation-server-farm">フェデレーション サーバー ファームの展開</a></li>
 </ul>
 <h2 id="vcenter-server-へのルート-ca-証明書のインポート">vCenter Server へのルート CA 証明書のインポート</h2>
-<p>今回の環境はプライベートなルート CA (としている AD CS) から AD FS の証明書を発行しており公的な認証局ではないことから、以下のドキュメントに沿って vCenter Server の JRE トラストストアに CA 証明書をインポートすることから始める必要があります。</p>
+<p>今回の環境はプライベートなルート CA (としている AD CS) から AD FS の証明書を発行しています。このため公的な認証局ではないことから、以下のドキュメントに沿って vCenter Server の JRE トラストストアに CA 証明書をインポートすることから始める必要があります。</p>
 <p><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-A916B60D-E2F0-461B-9F5E-CD7447BD97F2.html">外部 ID プロバイダの信頼された証明書のインポート</a></p>
 <p>最初に SCP または SFTP による vCenter Server へのルート CA 証明書のアップロードを行っていきます。しかし、VCSA は既定のシェルがアプライアンスシェル (/bin/appliancesh) となっており、こちらのシェルは SCP / SFTP での接続には対応していません。</p>
 <p>そこで以下の VMware KB の手順に従い、SSH による接続および shell コマンドで Bash シェルに切り替えた後に、chsh コマンドを使用してデフォルトシェルを Bash に切り替えます。</p>
@@ -259,19 +259,18 @@
     <h2 class="mt-4">Featured Posts</h2>
     <ul>
     
-    
       <li>
-        <a href="https://jangari-ntk.github.io/post/2020-08-07/" class="nav-link">pyVmomi から API 操作で Instant Clone をやってみる</a>
+        <a href="https://jangari-ntk.github.io/post/2020-08-12/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 2】</a>
       </li>
     
-      <li>
-        <a href="https://jangari-ntk.github.io/post/2020-08-01/" class="nav-link">vCenter Server 7.0 のイベントをテキストで取得</a>
-      </li>
     
     </ul>
     <h2 class="mt-4">Recent Posts</h2>
     <ul class="flex-column">
       
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-12/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 2】</a>
+      </li>
       <li>
         <a href="https://jangari-ntk.github.io/post/2020-08-07/" class="nav-link">pyVmomi から API 操作で Instant Clone をやってみる</a>
       </li>
@@ -285,7 +284,7 @@
       <nav class="tags_nav">
         <a href='https://jangari-ntk.github.io/categories/vsphere/' class=" post_tag button button_translucent">
           VSPHERE
-          <span class='button_tally'>3</span>
+          <span class='button_tally'>4</span>
         </a>
         
         
@@ -295,23 +294,28 @@
     <div>
       <h2 class="mt-4 taxonomy" id="tags-section">tags</h2>
       <nav class="tags_nav">
-        <a href='https://jangari-ntk.github.io/tags/featured/' class=" post_tag button button_translucent">
-          FEATURED
-          <span class='button_tally'>3</span>
-        </a>
-        
         <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent">
           VSPHERE
-          <span class='button_tally'>3</span>
-        </a>
-        
-        <a href='https://jangari-ntk.github.io/tags/tips/' class=" post_tag button button_translucent">
-          TIPS
-          <span class='button_tally'>2</span>
+          <span class='button_tally'>4</span>
         </a>
         
         <a href='https://jangari-ntk.github.io/tags/vcenter-server/' class=" post_tag button button_translucent">
           VCENTER-SERVER
+          <span class='button_tally'>3</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/featured/' class=" post_tag button button_translucent">
+          FEATURED
+          <span class='button_tally'>2</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/security/' class=" post_tag button button_translucent">
+          SECURITY
+          <span class='button_tally'>2</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/tips/' class=" post_tag button button_translucent">
+          TIPS
           <span class='button_tally'>2</span>
         </a>
         
@@ -327,11 +331,6 @@
         
         <a href='https://jangari-ntk.github.io/tags/sdk/api/' class=" post_tag button button_translucent">
           SDK/API
-          <span class='button_tally'>1</span>
-        </a>
-        
-        <a href='https://jangari-ntk.github.io/tags/security/' class=" post_tag button button_translucent">
-          SECURITY
           <span class='button_tally'>1</span>
         </a>
         

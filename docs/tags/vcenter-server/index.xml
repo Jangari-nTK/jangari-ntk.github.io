@@ -6,10 +6,23 @@
     <description>Recent content in vCenter Server on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Tue, 11 Aug 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 12 Aug 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/tags/vcenter-server/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>vCenter Server 7.0 で Identity Federation を構成【Part 2】</title>
+      <link>https://jangari-ntk.github.io/post/2020-08-12/</link>
+      <pubDate>Wed, 12 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2020-08-12/</guid>
+      <description>はじめに 本記事は Identity Federation の構成記事の Part 2 となります。今回は AD FS 側の構成を行っていきます。
+ 注意: 本機能の VMware Docs での名称は vCenter Server ID プロバイダ フェデレーション (vCenter Server Identity Provider Federation)、公式 Blog の記事などでは Identity Federation と呼称されています。本記事では文字数の便宜上、当該機能を Identity Federation として呼称することとします。
+ vCenter Server のリダイレクト URI の確認 まず前回の記事からの再掲になりますが、vSphere Client の [ホーム] &amp;gt; [管理] &amp;gt; [vCenter Single Sign-On] &amp;gt; [設定] で [ID プロバイダの変更] の右に (i) の情報アイコンがあるので、これをクリックすると以下のようにポップアップが表示されます。
+この2点の URI が AD FS からのリダイレクト先になる URI となります(前者はログアウト時、後者がログイン時)。AD FS に登録するため、メモ帳などにコピー＆ペーストで保存しておきます。
+AD FS で vCenter Server 用にアプリケーショングループを構成 こちらのドキュメントの手順４、つまり KB78029 の手順を実施して、vCenter Server 用に OpenID Connect を使用するためのアプリケーショングループを構成していきます。</description>
+    </item>
     
     <item>
       <title>vCenter Server 7.0 で Identity Federation を構成【Part 1】</title>
