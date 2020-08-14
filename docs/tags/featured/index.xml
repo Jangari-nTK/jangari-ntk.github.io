@@ -6,10 +6,22 @@
     <description>Recent content in Featured on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Wed, 12 Aug 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 14 Aug 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/tags/featured/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>vCenter Server 7.0 で Identity Federation を構成【Part 3】</title>
+      <link>https://jangari-ntk.github.io/post/2020-08-14/</link>
+      <pubDate>Fri, 14 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2020-08-14/</guid>
+      <description>はじめに 本記事はIdentity Federation の構成記事の Part 3 となります。前回は AD FS 側の構成をおこないました。今回はいよいよ vCenter Server 側での構成を行っていきます。
+ 注意: 本機能の VMware Docs での名称は vCenter Server ID プロバイダ フェデレーション (vCenter Server Identity Provider Federation)、公式 Blog の記事などでは Identity Federation と呼称されています。本記事では文字数の便宜上、当該機能を Identity Federation として呼称することとします。
+ vCenter Server での作業に入る前に確認 再掲になりますが、まずは前回の作業で使用した AD FS でのアプリケーショングループの以下の３点の情報を揃えておきます。
+ クライアント識別子 共有シークレット AD FS の openid-configuration の URL  Active Directory の LDAPS の SSL/TLS 証明書の取得 認証には使われない(はず)ですが、vCenter Server 側でのロールによる認可にあたり Active Directory のユーザーの一覧が必要になります1。この一覧の取得にあたり、vCenter Server から Active Directory の LDAPS への接続が必要になります。</description>
+    </item>
     
     <item>
       <title>vCenter Server 7.0 で Identity Federation を構成【Part 2】</title>

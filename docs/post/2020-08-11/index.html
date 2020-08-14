@@ -5,12 +5,12 @@
   <meta name="generator" content="Hugo 0.74.3" />
   <meta name = 'viewport' content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
   <meta http-equiv = 'X-UA-Compatible' content = 'IE=edge'>
-<script async src="https://www.googletagmanager.com/gtag/js?id=XXXXXXXXXX"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-175306204-1"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'XXXXXXXXXX');
+  gtag('config', 'UA-175306204-1');
 </script>
   
 <meta property = "og:locale" content = "en_US" />
@@ -215,7 +215,7 @@
 <span class="ln">2</span>    -keystore $VMWARE_JAVA_HOME/lib/security/cacerts -storepass changeit
 </code></pre></div><p>引き続きドキュメントに沿って、CA 証明書がインポートされたことを確認します。keytool 実行時に JRE トラストストアのパスワードを求められるので上記同様に changeit と入力します。なお、コマンドそのままだと CA 証明書のエントリが大量に出てくるため grep や less にパイプを繋げると確認しやすいと思います。</p>
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>keytool -list -v -keystore $VMWARE_JAVA_HOME/lib/security/cacerts | grep myrootca
-</code></pre></div><p>指定されたサービスの再起動を順番に行っていきます。</p>
+</code></pre></div><p>ドキュメントで指定されているサービスの再起動を順番に行っていきます。</p>
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span># service-control --restart vsphere-ui
 <span class="ln">2</span># service-control --restart vmware-trustmanagement
 <span class="ln">3</span># service-control --restart vmware-stsd
@@ -260,6 +260,10 @@
     <ul>
     
       <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-14/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 3】</a>
+      </li>
+    
+      <li>
         <a href="https://jangari-ntk.github.io/post/2020-08-12/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 2】</a>
       </li>
     
@@ -268,6 +272,9 @@
     <h2 class="mt-4">Recent Posts</h2>
     <ul class="flex-column">
       
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-14/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 3】</a>
+      </li>
       <li>
         <a href="https://jangari-ntk.github.io/post/2020-08-12/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 2】</a>
       </li>
@@ -284,7 +291,7 @@
       <nav class="tags_nav">
         <a href='https://jangari-ntk.github.io/categories/vsphere/' class=" post_tag button button_translucent">
           VSPHERE
-          <span class='button_tally'>4</span>
+          <span class='button_tally'>5</span>
         </a>
         
         
@@ -296,22 +303,22 @@
       <nav class="tags_nav">
         <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent">
           VSPHERE
-          <span class='button_tally'>4</span>
+          <span class='button_tally'>5</span>
         </a>
         
         <a href='https://jangari-ntk.github.io/tags/vcenter-server/' class=" post_tag button button_translucent">
           VCENTER-SERVER
-          <span class='button_tally'>3</span>
+          <span class='button_tally'>4</span>
         </a>
         
         <a href='https://jangari-ntk.github.io/tags/featured/' class=" post_tag button button_translucent">
           FEATURED
-          <span class='button_tally'>2</span>
+          <span class='button_tally'>3</span>
         </a>
         
         <a href='https://jangari-ntk.github.io/tags/security/' class=" post_tag button button_translucent">
           SECURITY
-          <span class='button_tally'>2</span>
+          <span class='button_tally'>3</span>
         </a>
         
         <a href='https://jangari-ntk.github.io/tags/tips/' class=" post_tag button button_translucent">
