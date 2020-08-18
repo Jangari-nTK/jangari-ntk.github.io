@@ -6,10 +6,21 @@
     <description>Recent content in Featured on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Fri, 14 Aug 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 18 Aug 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/tags/featured/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Active Directory over LDAPS の ID ソースを構成する</title>
+      <link>https://jangari-ntk.github.io/post/2020-08-18/</link>
+      <pubDate>Tue, 18 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2020-08-18/</guid>
+      <description>はじめに 前回、3記事に渡って vSphere 7 の新機能である Identity Federation の構成を行っていきました。しかし、いきなり AD FS を用意するのはシステム的／コスト的に難しい場合もあると思いますので、今回の記事では従来の vCenter SSO で Active Directory over LDAPS の ID ソースを構成していきたいと思います。
+vCenter Single Sign-On とは？ vCenter Single Sign-On (以下 vCenter SSO) は vSpehre Web Client (Flash) と併せて vSphere 5.1 で初めて導入された、vCenter Server でユーザー認証を行うためのコンポーネントです。SAML 2.0 による認証フロー1が採用されており、vCenter SSO は SAML における Identity Provider (IdP) として動作します。
+なお、前回の記事シリーズでの Identity Federation は、vCenter Server に組み込まれている vCenter SSO (SAML) を使用せず、ID プロバイダに AD FS (OpenID Connect) を使用しています。以下の図と比較してもらえると、vCenter SSO の立ち位置が丸ごと AD FS に置き換わっていることが分かると思います。</description>
+    </item>
     
     <item>
       <title>vCenter Server 7.0 で Identity Federation を構成【Part 3】</title>
