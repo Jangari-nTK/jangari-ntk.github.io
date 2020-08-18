@@ -142,7 +142,7 @@
     <li><a href="#はじめに">はじめに</a></li>
     <li><a href="#vcenter-single-sign-on-とは">vCenter Single Sign-On とは？</a></li>
     <li><a href="#id-ソースとは">ID ソースとは？</a></li>
-    <li><a href="#active-directory-over-ldap-と-active-directory-統合-windows-認証">Active Directory over LDAP と Active Directory (統合 Windows 認証)</a></li>
+    <li><a href="#active-directory-over-ldap-とは">Active Directory over LDAP とは？</a></li>
     <li><a href="#なぜ-active-directory-over-ldap-を使用するのか">なぜ Active Directory over LDAP を使用するのか？</a></li>
     <li><a href="#active-directory-over-ldaps-を構成する">Active Directory over LDAPS を構成する</a>
       <ul>
@@ -171,7 +171,7 @@
 <li>OpenLDAP</li>
 </ul>
 <p>なお、vCenter SSO 自体も独自のユーザーやグループを持っており、組み込みの ID ソースとして保持しています<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>。vCenter SSO ドメインのユーザーを認証する場合、特に外部の ID ソースは使用されず vSphere 内で認証が完結することになります。</p>
-<h2 id="active-directory-over-ldap-と-active-directory-統合-windows-認証">Active Directory over LDAP と Active Directory (統合 Windows 認証)</h2>
+<h2 id="active-directory-over-ldap-とは">Active Directory over LDAP とは？</h2>
 <p>日本語では「LDAP を介した Active Directory」となり、LDAP プロトコルを使って Active Directory によるユーザー認証を行うための ID ソースです。</p>
 <p>「Active Directory (統合 Windows 認証)」の ID ソースの場合は Kerberos など LDAP 以外のプロトコルも使用しますが、Active Directory over LDAP(S) の場合は純粋に LDAP のみで認証をおこないます。</p>
 <p>なお、SSL/TLS を使用しない Active Directory over LDAP の場合では、LDAP サーバへのバインド要求に SASL でなく Simple を使用しているため以下のようにネットワーク上にパスワードが平文で流れます<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>。このため、ネットワークの盗聴によりパスワードの取得が可能であることから、セキュリティの観点からは SSL/TLS による暗号化が行われる LDAPS の使用が推奨されます。</p>
