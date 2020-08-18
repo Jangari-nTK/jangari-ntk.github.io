@@ -154,6 +154,10 @@
 <blockquote>
 <p>注意: 本機能の <a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-0A3A19E6-150A-493B-8B57-37E19AB420F2.html">VMware Docs</a> での名称は vCenter Server ID プロバイダ フェデレーション (vCenter Server Identity Provider Federation)、<a href="https://blogs.vmware.com/vsphere/2020/03/vsphere-7-identity-federation.html">公式 Blog の記事</a>などでは Identity Federation と呼称されています。本記事では文字数の便宜上、当該機能を Identity Federation として呼称することとします。</p>
 </blockquote>
+<blockquote>
+<p>2020/08/18 追記: 当方の <a href="https://portal.msrc.microsoft.com/en-us/security-guidance/advisory/ADV190023">ADV190023</a>の対応に関する認識に誤りがあり、[おわりに] で「AD LDAP のデフォルトの動作が変更される」旨を記載していましたが、正しくは「設定変更が推奨であるものの既存の設定は変更されない」でした。このため、記事の内容を修正したとともに、誤った情報を記載したことをお詫び申し上げます。</p>
+<p>なお、ADV190023 周りの詳細は「<a href="https://support.microsoft.com/en-ie/help/4520412/2020-ldap-channel-binding-and-ldap-signing-requirements-for-windows">2020 LDAP channel binding and LDAP signing requirements for Windows</a>」を参照しています。</p>
+</blockquote>
 <h2 id="vcenter-server-での作業に入る前に確認">vCenter Server での作業に入る前に確認</h2>
 <p>再掲になりますが、まずは前回の作業で使用した AD FS でのアプリケーショングループの以下の３点の情報を揃えておきます。</p>
 <ul>
@@ -210,7 +214,7 @@
 <p>エラーメッセージの内容や OpenID Connect を使っていることを考えると、vCenter Server が OpenID Connect の認可コードを利用して AD FS にトークンリクエストを発行する際に何かが失敗したと推測しています。この後に JRE トラストストアへの CA 証明書をインポートして解消された状況を鑑みれば、恐らく AD FS のサーバ証明書の検証時に問題が起きていたんだろうと思います。</p>
 <h2 id="おわりに">おわりに</h2>
 <p>今回は３記事に渡って vSphere 7 における Identity Federation の構成を見ていきました。</p>
-<p>将来的に Microsoft 側では Active Directory の LDAP 周りの動作変更<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>(2020年3月予定が延期中)、VMware 側では<a href="https://kb.vmware.com/s/article/78506?lang=ja">統合 Windows 認証の今後の vSphere リリースでの廃止</a>が予定されています。</p>
+<p>VMware 側では<a href="https://kb.vmware.com/s/article/78506?lang=ja">統合 Windows 認証の今後の vSphere リリースでの廃止</a>が予定されており、Microsoft 側では統合 Windows 認証に影響を及ぼす Active Directory LDAP のセキュリティを強化する設定が追加<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>されています。</p>
 <p>これらにより、今後 Active Directory を認証に使用している環境ではシステムの構成変更が求められる可能性もありますので、現在の自システムの vSphere の認証がどういう構成になっているか、今後 Identity Federation を使用するか他の認証方式を選択するか今のうちから検討しておくことをお勧めしたいと思います。</p>
 <section class="footnotes" role="doc-endnotes">
 <hr>
