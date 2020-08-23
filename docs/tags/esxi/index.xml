@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Nested on vSoliloquy</title>
-    <link>https://jangari-ntk.github.io/tags/nested/</link>
-    <description>Recent content in Nested on vSoliloquy</description>
+    <title>ESXi on vSoliloquy</title>
+    <link>https://jangari-ntk.github.io/tags/esxi/</link>
+    <description>Recent content in ESXi on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
     <lastBuildDate>Sun, 23 Aug 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://jangari-ntk.github.io/tags/nested/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://jangari-ntk.github.io/tags/esxi/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -24,19 +24,6 @@
 ゲストOSの種類に VMware ESXi 6.5 以降を選択 仮想マシンの作成時にゲストOSの種類として [VMware ESXi 6.5 以降] を選択することで、2 CPU、4GB メモリ、VMXNET3、PVSCSI が自動的に選択されるようになっています。選択したゲストOSの種類に応じた仮想ハードウェア構成がプリセットとして選択されるので、Nested ESXi に限らず、仮想マシンの作成時に正しいゲストOSを選択することはとても重要です。
 なお、VMXNET3 ドライバは ESXi 5.1 時代から、PVSCSI ドライバは ESXi 6.5 から ESXi 自身のモジュールとして組み込まれています。
  Nested ESXi 5.1 Supports VMXNET3 Network Adapter Type Nested ESXi Enhancements in vSphere 6.5  また、ESXi 6.7 Update 2 では Nested ESXi 向けの Intel DPDK 対応(Poll Mode Driver)のドライバ(nvmxnet3_ens)も追加されていたりします。NSX-T で N-VDS / VDS を拡張データパスで構成するとこちらのドライバに切り替わります。</description>
-    </item>
-    
-    <item>
-      <title>pyVmomi から API 操作で Instant Clone をやってみる</title>
-      <link>https://jangari-ntk.github.io/post/2020-08-07/</link>
-      <pubDate>Fri, 07 Aug 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jangari-ntk.github.io/post/2020-08-07/</guid>
-      <description>はじめに 本記事では pyVmomi を使って vSphere 単体で Instant Clone を行う方法について書いていきます。
-事の発端は以下のVMware社の中の人が PowerCLI から Nested ESXi をインスタントクローンする記事です。
-Leveraging Instant Clone in vSphere 6.7 for extremely fast Nested ESXi provisioning
-vSphere Web Services API と pyVmomi vCenter Server のタスクをコマンドで実行する場合、PowerCLI を使うことが多いと思います。もしくは、開発やトラブルシューティングなどの一環で MOB (Managed Object Browser) を使用したことがある方もいらっしゃるかもしれません。
- VMware PowerCLI - VMware {code} Online Documentation - vSphere SDK for Perl Programming Guide - VMware {code}  これらのツールは「vSphere Web Services API」という vSphere のローレベルな SOAP API を操作しています1。</description>
     </item>
     
   </channel>
