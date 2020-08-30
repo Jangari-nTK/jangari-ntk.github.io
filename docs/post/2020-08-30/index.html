@@ -147,9 +147,9 @@
         <li><a href="#クイックスタートで初期構成">クイックスタートで初期構成</a></li>
         <li><a href="#cloud-assembly-でブループリントを作っていく">Cloud Assembly でブループリントを作っていく</a></li>
         <li><a href="#ブループリントからデプロイを試す">ブループリントからデプロイを試す</a></li>
-        <li><a href="#おわりに">おわりに</a></li>
       </ul>
     </li>
+    <li><a href="#おわりに">おわりに</a></li>
   </ul>
 </nav>
     <h2 id="はじめに">はじめに</h2>
@@ -229,7 +229,7 @@
 <p>見慣れた Nested ESXi の DCUI の画面が出てきました。vSphere Client の Web コンソールと同様に操作が出来ます。これは vRA アプライアンス経由で仮想マシンコンソールにアクセスしています。あくまでも Nested ESXi 仮想マシンのコンソールですので、物理サーバ側の ESXi のコンソール画面ではないことにご留意ください。</p>
 <p><img src="/images/2020-08-30/vRA-CloudAssembly-15.PNG" alt="vRA Web Console"></p>
 <p>これで Nested ESXi のブループリントの作成が出来ました。</p>
-<h3 id="おわりに">おわりに</h3>
+<h2 id="おわりに">おわりに</h2>
 <p>ここまで vRealize Automation の Cloud Assembly を使って Nested ESXi を展開するブループリントを作成しました。</p>
 <p>ブループリントの作成後は Service Broker を使用してプロジェクト内のメンバーとブループリントを共有することで、メンバーがカタログからセルフサービスでブループリントから展開できるようになります<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>。今回作ったブループリントに関しては、複数人が Nested ESXi を検証や研修に使ったりするなどの用途では役に立つかもしれません。</p>
 <p>他にも GitLab や Jenkins 等の CI/CD 系ツールと連携する Code Stream という機能が統合されていたり、Docker / Kubernetes といったコンテナや Ansible / Ansible Tower といった自動化ツールとも連携できたりなど、クラウドの管理や自動化に利用できる様々な機能が搭載されています。</p>
