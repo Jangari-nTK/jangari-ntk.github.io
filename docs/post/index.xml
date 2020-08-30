@@ -6,10 +6,28 @@
     <description>Recent content on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Sun, 23 Aug 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 30 Aug 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>vRealize Automation 8.1 で Nested ESXi の Blueprint を作ってみた</title>
+      <link>https://jangari-ntk.github.io/post/2020-08-30/</link>
+      <pubDate>Sun, 30 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2020-08-30/</guid>
+      <description>はじめに VMUG Advantage の Eval Experience に vRealize Suite 2019 Enterprise の評価ライセンスがありましたので、試しに自宅の vSphere に vRealize Automation (以下 vRA) 8.1 をデプロイして遊んでみています。
+今回、Nested ESXi が展開できるブループリントでも作ってみたら面白いかなと思い、新しい UI 等に慣れるのを半分、ネタを半分にやってみました。vRA は過去に 7.x 系を少し触っていただけの初心者のため詳細な解説などは難しいですが、せっかくなので記事にしてみたいと思います。
+vRealize Automation の概要 vRealize Automation は VMware 製品の中でもクラウドの管理や自動化(Cloud Management)といったカテゴリに属する製品です。vSphere や vSAN、NSX-T はインフラストラクチャ寄りの製品ですが、vRA はそれらも含めてユーザーがクラウド環境を容易に利用できるようサービスとして提供することが主な役割です。
+vRealize Automation（vRA）の概要| クラウド自動化ツール | VMware | JP
+ 各担当者のニーズに応えながら、ユーザーの利便性も確保するハイブリッド クラウド自動化プラットフォーム
+IT 運用部門、ビジネス運用部門、DevOps、ビジネス部門、開発者のニーズに応じてハイブリッド クラウド環境やマルチクラウド環境を管理することは複雑な作業です。インフラストラクチャとアプリケーションのプロビジョニングが、複数のツールとスクリプトで半自動化されていると、効率性、生産性、一貫性が低下し、セキュリティとコンプライアンス上のリスクを招きます。vRealize Automation を使用すれば、ユーザーは必要なときに必要なサービスを入手できます。リリースの自動化プロセスは DevOps チームが管理し、セキュリティとガバナンスの保守については IT チームが担当します。
+ 例えば、開発者などのユーザーからシステム管理者に仮想マシンの払い出しの要求があった場合、システム管理者がユーザーに仮想マシンの払い出しを行って管理するなどの対応が必要となります。この場合、完了までにかかる時間の多くはシステム管理者に依存します。
+vRA を使った場合、仮想マシンの払い出しや管理などは事前に自動化されているテンプレートから vRA が提供を行うため、多くをユーザーの作業のみで迅速に完結させることができます。これによりシステム管理者はその他のシステム管理業務に注力することが出来ます。
+※ユーザーが「セルフサービスで」出来るようになるところが一番のポイントです。
+パブリッククラウドの AWS や Azure、GCP 等には様々なサービスがありますが、vRA も作り込み次第では仮想マシンの提供以外に様々なサービスをユーザーに提供することが出来るようになります。</description>
+    </item>
     
     <item>
       <title>Nested ESXi のテンプレート作りに必要な設定と解説</title>
