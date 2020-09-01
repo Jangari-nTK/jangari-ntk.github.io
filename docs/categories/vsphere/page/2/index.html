@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" data-figures="" class="page">
-  <head>  <title>vCenter Server 7.0 で Identity Federation を構成【Part 2】 | vSoliloquy</title>
+<html lang="en" data-figures="">
+  <head>  <title>vSphere | vSoliloquy</title>
   <meta charset='utf-8'>
   <meta name="generator" content="Hugo 0.74.3" />
   <meta name = 'viewport' content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
@@ -12,17 +12,16 @@
   gtag('js', new Date());
   gtag('config', 'UA-175306204-1');
 </script>
-  
 <meta property = "og:locale" content = "en_US" />
 <meta property="og:type" content="article">
-<meta name="description" content="本記事は Identity Federation の構成記事の Part 2 となります。今回は AD FS 側の構成を行っていきます。">
+<meta name="description" content="">
 <meta name = "twitter:card" content = "summary" />
 <meta name = "twitter:creator" content = "@Jangari_nTK">
-<meta name = "twitter:title" content = "vCenter Server 7.0 で Identity Federation を構成【Part 2】" />
-<meta property = "og:url" content = "https://jangari-ntk.github.io/post/2020-08-12/" />
-<meta property = "og:title" content = "vCenter Server 7.0 で Identity Federation を構成【Part 2】" />
-<meta property = "og:description" content = "本記事は Identity Federation の構成記事の Part 2 となります。今回は AD FS 側の構成を行っていきます。" />
-<meta property = "og:image" content = "https://jangari-ntk.github.io/images/2020-08-11/ID_Federation_diagram.PNG" />
+<meta name = "twitter:title" content = "vSphere" />
+<meta property = "og:url" content = "https://jangari-ntk.github.io/categories/vsphere/" />
+<meta property = "og:title" content = "vSphere" />
+<meta property = "og:description" content = "" />
+<meta property = "og:image" content = "https://jangari-ntk.github.io/images/thumbnail.png" />
 <link rel='apple-touch-icon' sizes='180x180' href='https://jangari-ntk.github.io/icons/apple-touch-icon.png'>
 <link rel='icon' type='image/png' sizes='32x32' href='https://jangari-ntk.github.io/icons/favicon-32x32.png'>
 <link rel='icon' type='image/png' sizes='16x16' href='https://jangari-ntk.github.io/icons/favicon-16x16.png'>
@@ -31,7 +30,7 @@
 <meta name="msapplication-TileColor" content="#002538">
 <meta name="theme-color" content="#002538">
 
-  <link rel='canonical' href='https://jangari-ntk.github.io/post/2020-08-12/'>
+  <link rel='canonical' href='https://jangari-ntk.github.io/categories/vsphere/'>
     
 
     
@@ -85,138 +84,73 @@
 </header>
 
     <main>
-  
-<div class = 'grid-inverse wrap content'>
-  <article class='post_content'>
-    <h1 class='post_title'>vCenter Server 7.0 で Identity Federation を構成【Part 2】</h1><div class = 'post_meta'>
+
+<div class='grid-inverse wrap content'>
+  <ul class='posts' id = 'posts'>
+      
+<li class = 'post_item'>
+  <div class = 'excerpt'>
+    <div class = 'excerpt_header'>
+      <h3 class = 'post_link'>
+        <a href='https://jangari-ntk.github.io/post/2020-08-01/'>vCenter Server 7.0 のイベントをテキストで取得</a>
+      </h3>
+      <div class = 'post_meta'>
   <svg class="icon">
     <use xlink:href="#calendar"></use>
   </svg>
   <span class="post_date">
-    Aug 12, 2020</span>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
+    Aug 1, 2020</span>
+  <a href = 'https://jangari-ntk.github.io/tags/tips' class = 'post_tag button button_translucent'>Tips
   </a>
   <a href = 'https://jangari-ntk.github.io/tags/vcenter-server' class = 'post_tag button button_translucent'>vCenter Server
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/security' class = 'post_tag button button_translucent'>Security
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/featured' class = 'post_tag button button_translucent'>Featured
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere-7.0' class = 'post_tag button button_translucent'>vSphere 7.0
   </a>
 </div>
 
-    <div class='post_share'>
-  Share on:
-  <a href="https://twitter.com/intent/tweet?text=vCenter%20Server%207.0%20%e3%81%a7%20Identity%20Federation%20%e3%82%92%e6%a7%8b%e6%88%90%e3%80%90Part%202%e3%80%91&url=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2020-08-12%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
-    <svg class="icon">
-      <use xlink:href="#twitter"></use>
-    </svg>
-  </a>
+    </div>
+    <div class = 'excerpt_footer partition'>
+      <div class = 'excerpt_thumbnail'>
+      <img src = '/images/building.png'>
+      </div>
+      
+        <div>
+          <p class = 'pale'>はじめに vSphere Web Client (Flash 版) が vSphere 7 で遂に廃止となりました。vSphere Client (HTML5 版) は動作もスムーズで良いのですが、どうやら現時点では従来のイベントのエクスポートが行えないようです。
+Exporting virtual machine events from the Tasks &amp; Events tab (2008204)
+ Note: The export tasks/Events option is only available on the vSphere Web Client (Flex). The HTML client does …</p>
+          <a href='https://jangari-ntk.github.io/post/2020-08-01/' class='excerpt_more button'>Read More</a>
+        </div>
+      </div>
+    </div>
+  </li>
   
-  <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2020-08-12%2f&t=vCenter%20Server%207.0%20%e3%81%a7%20Identity%20Federation%20%e3%82%92%e6%a7%8b%e6%88%90%e3%80%90Part%202%e3%80%91" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
-    <svg class="icon">
-      <use xlink:href="#facebook"></use>
-    </svg>
-  </a>
-  <script>
-    function shareViaLinkedin() {
-      window.open('http://www.linkedin.com/shareArticle?mini=true&url='+encodeURIComponent("https://jangari-ntk.github.io/post/2020-08-12/"), '', 'left=0,top=0,width=650,height=420,personalbar=0,toolbar=0,scrollbars=0,resizable=0');
-    }
-  </script>
-  <a href="#linkedinshare" id = "linkedinshare" class="linkedin" title="Share on LinkedIn" rel="nofollow" onclick="shareViaLinkedin()">
-    <svg class="icon">
-      <use xlink:href="#linkedin"></use>
-    </svg>
-  </a>
-  <a href="https://jangari-ntk.github.io/post/2020-08-12/" title="Copy Link" class="link link_yank">
-    <svg class="icon">
-      <use xlink:href="#yank"></use>
-    </svg>
-  </a>
-</div>
-
-    
-    
-    <h2>Table of contents</h2>
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#はじめに">はじめに</a></li>
-    <li><a href="#vcenter-server-のリダイレクト-uri-の確認">vCenter Server のリダイレクト URI の確認</a></li>
-    <li><a href="#ad-fs-で-vcenter-server-用にアプリケーショングループを構成">AD FS で vCenter Server 用にアプリケーショングループを構成</a>
-      <ul>
-        <li><a href="#アプリケーショングループの新規作成">アプリケーショングループの新規作成</a></li>
-        <li><a href="#アプリケーショングループの追加の構成">アプリケーショングループの追加の構成</a></li>
-      </ul>
-    </li>
-    <li><a href="#ad-fs-の-openid-configuration-の-url-の確認">AD FS の openid-configuration の URL の確認</a></li>
-    <li><a href="#vcenter-server-での作業に入る前に確認">vCenter Server での作業に入る前に確認</a></li>
-    <li><a href="#to-be-continued">To be continued&hellip;</a></li>
-  </ul>
-</nav>
-    <h2 id="はじめに">はじめに</h2>
-<p>本記事は <a href="/post/2020-08-11/">Identity Federation の構成記事</a>の Part 2 となります。今回は AD FS 側の構成を行っていきます。</p>
-<blockquote>
-<p>注意: 本機能の <a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-0A3A19E6-150A-493B-8B57-37E19AB420F2.html">VMware Docs</a> での名称は vCenter Server ID プロバイダ フェデレーション (vCenter Server Identity Provider Federation)、<a href="https://blogs.vmware.com/vsphere/2020/03/vsphere-7-identity-federation.html">公式 Blog の記事</a>などでは Identity Federation と呼称されています。本記事では文字数の便宜上、当該機能を Identity Federation として呼称することとします。</p>
-</blockquote>
-<h2 id="vcenter-server-のリダイレクト-uri-の確認">vCenter Server のリダイレクト URI の確認</h2>
-<p>まず前回の記事からの再掲になりますが、vSphere Client の [ホーム] &gt; [管理] &gt; [vCenter Single Sign-On] &gt; [設定] で [ID プロバイダの変更] の右に (i) の情報アイコンがあるので、これをクリックすると以下のようにポップアップが表示されます。</p>
-<p><img src="/images/2020-08-11/vcentersso-idp-list-002.PNG" alt="OpenID Connect のリダイレクト URI"></p>
-<p>この2点の URI が AD FS からのリダイレクト先になる URI となります(前者はログアウト時、後者がログイン時)。AD FS に登録するため、メモ帳などにコピー＆ペーストで保存しておきます。</p>
-<h2 id="ad-fs-で-vcenter-server-用にアプリケーショングループを構成">AD FS で vCenter Server 用にアプリケーショングループを構成</h2>
-<p><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-C5E998B2-1148-46DC-990E-A5DB71F93351.html">こちらのドキュメント</a>の手順４、つまり <a href="https://kb.vmware.com/s/article/78029">KB78029</a> の手順を実施して、vCenter Server 用に OpenID Connect を使用するためのアプリケーショングループを構成していきます。</p>
-<p>以下は KB78029 の手順をイメージできるように、画面のスクリーンショットと合わせて手順を進めていきます。KB の手順と合わせて読んでいくと作業がイメージがしやすいかなと思います。</p>
-<h3 id="アプリケーショングループの新規作成">アプリケーショングループの新規作成</h3>
-<p>まず AD FS の Windows にログオンして Windows 管理ツールから [AD FS の管理] を開いたら、[アプリケーション グループ] を右クリックして [アプリケーション グループの追加] を選択します。</p>
-<p><img src="/images/2020-08-12/adfs-oidc-config-001.PNG" alt="AD FS の管理 コンソール"></p>
-<p>ウィザードの [ようこそ] ページで名前と説明を入力したら、[Web API にアクセスするサーバー アプリケーション] を選択して [次へ] をクリックして進みます。</p>
-<p><img src="/images/2020-08-12/adfs-oidc-config-002.PNG" alt="アプリケーション グループのテンプレートの指定"></p>
-<p>[サーバー アプリケーション] ページでは、先ほどメモした２点のリダイレクト URI を追加します。[クライアント識別子] は後で使用するためコピー＆ペーストでメモしておきましょう。[次へ] をクリックして進みます。</p>
-<p><img src="/images/2020-08-12/adfs-oidc-config-003.PNG" alt="リダイレクト URI の追加"></p>
-<p>[アプリケーションの資格情報の構成] ページでは [共有シークレットを生成する] にチェックを入れます。生成された共有シークレットをコピー＆ペーストでメモして [次へ] をクリックして進みます。なお、シークレットはウィザード完了後は確認できず、忘れるとシークレットのリセットが必要になりますのでご注意ください。</p>
-<p><img src="/images/2020-08-12/adfs-oidc-config-004.PNG" alt="共有シークレットの生成"></p>
-<p>[Web API の構成] ページでは先ほどメモしたクライアント識別子を追加し [次へ] をクリックして進みます。</p>
-<p><img src="/images/2020-08-12/adfs-oidc-config-005.PNG" alt="Web API へのクライアント識別子の追加"></p>
-<p>[アクセス制御ポリシーの適用] ページでは [すべてのユーザーを許可] を選択し [次へ] をクリックして進みます。</p>
-<p><img src="/images/2020-08-12/adfs-oidc-config-006.PNG" alt="アクセス制御ポリシーの設定"></p>
-<p>[アプリケーションのアクセス許可の構成] ページでは &ldquo;openid&rdquo; と &ldquo;allatclaims&rdquo; の2点にチェックを入れて、[次へ] をクリックします。残りはそのまま進めてウィザードを完了します。</p>
-<p><img src="/images/2020-08-12/adfs-oidc-config-007.PNG" alt="アプリケーションのアクセス許可の構成"></p>
-<h3 id="アプリケーショングループの追加の構成">アプリケーショングループの追加の構成</h3>
-<p>次に [ADFS の管理] の [アプリケーション グループ] から、先ほど作成したアプリケーショングループを右クリックして [プロパティ] をクリックします。アプリケーショングループのプロパティでは作成した Web API を選択して [編集] をクリックします。</p>
-<p><img src="/images/2020-08-12/adfs-oidc-config-additional-001.PNG" alt="アプリケーショングループのプロパティ"></p>
-<p>[発行変換規則] タブを開いて3つの規則 (グループ、サブジェクト、UPN) を順に追加していきます。</p>
-<p><img src="/images/2020-08-12/adfs-oidc-config-additional-002.PNG" alt="Web API のプロパティ"></p>
-<p>まずグループの規則を追加します。[規則の追加] をクリックし、[規則の種類の選択] ページで要求規則テンプレートに [LDAP 属性を要求として送信] を選択して [次へ] をクリックします。</p>
-<p><img src="/images/2020-08-12/adfs-oidc-config-additional-003.PNG" alt="グループ規則: 規則の種類"></p>
-<p>[要求規則の構成] ページでは、規則の名前を入力し、属性ストアに [Active Directory]、関連付けを以下のように指定して [完了] を押下します。</p>
-<p><img src="/images/2020-08-12/adfs-oidc-config-additional-004.PNG" alt="グループ規則: 規則の構成"></p>
-<p>同様の手順でサブジェクトと UPN の規則をそれぞれ追加していきます。使用する要求規則テンプレートは同じなので画面は省略し、それぞれの要求規則の構成ページでの設定内容を以下に示します。</p>
-<p><img src="/images/2020-08-12/adfs-oidc-config-additional-005.PNG" alt="サブジェクト規則: 規則の構成"></p>
-<p><img src="/images/2020-08-12/adfs-oidc-config-additional-006.PNG" alt="UPN 規則: 規則の構成"></p>
-<p>３つの規則を作成したら、[OK] をクリックしていきアプリケーショングループのプロパティを閉じます。</p>
-<h2 id="ad-fs-の-openid-configuration-の-url-の確認">AD FS の openid-configuration の URL の確認</h2>
-<p>AD FS の Windows 上で PowerShell を管理者として開き、以下のコマンドで /.well-known/openid-configuration で終わる URL<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> を確認することが出来ます。こちらの URL は後で vCenter Server 側での構成時に使用しますのでメモしておきます。</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>&gt; Get-AdfsEndpoint | Select FullUrl | Select-String openid-configuration
-<span class="ln">2</span>
-<span class="ln">3</span>@{FullUrl=https://adfs-windows.jangari.local/adfs/.well-known/openid-configuration}
-</code></pre></div><p>これで AD FS 側での OpenID Connect の構成は完了です。</p>
-<h2 id="vcenter-server-での作業に入る前に確認">vCenter Server での作業に入る前に確認</h2>
-<p>この後は vCenter Server から Identity Federation の構成を行っていきますが、今回の AD FS での作業で使用した以下の３点の情報は vCenter Server での作業で使用します。メモして安全なところに保管しておきましょう。</p>
-<ul>
-<li>クライアント識別子</li>
-<li>共有シークレット</li>
-<li>AD FS の openid-configuration の URL</li>
+    <li>
+<ul class="pagination">
+  <li class="page-item">
+    <a href="/categories/vsphere/" class="page-link" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+  </li>
+  <li class="page-item">
+    <a href="/categories/vsphere/" class="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+  </li>
+  <li class="page-item">
+    <a class="page-link" href="/categories/vsphere/">1</a>
+  </li>
+  <li class="page-item active">
+    <a class="page-link" href="/categories/vsphere/page/2/">2</a>
+  </li>
+  <li class="page-item disabled">
+    <a  class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+  </li>
+  <li class="page-item">
+    <a href="/categories/vsphere/page/2/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+  </li>
 </ul>
-<h2 id="to-be-continued">To be continued&hellip;</h2>
-<p>次回、いよいよ vCenter Server で Identity Federation を構成していきます。お楽しみに！</p>
-<section class="footnotes" role="doc-endnotes">
-<hr>
-<ol>
-<li id="fn:1" role="doc-endnote">
-<p>OpenID Connect Discovery 1.0 という仕様に基づいて、OpenID Connect の各種エンドポイントの URL など、ID プロバイダのメタデータの取得に使用する URL です。こちらの詳細は <a href="https://docs.microsoft.com/ja-jp/azure/active-directory/develop/v2-protocols-oidc">Microsoft 社の AD FS のドキュメント</a> や <a href="https://openid.net/specs/openid-connect-discovery-1_0.html">OpenID Connect Discovery 1.0 の仕様</a>を参照してください。 <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-</li>
-</ol>
-</section>
 
-  </article>
+
+    </li>
+  </ul>
 <aside class="sidebar">
   <section class="sidebar_inner">
     <h2>Jangari</h2>
@@ -235,6 +169,9 @@
         <a href="https://jangari-ntk.github.io/post/2020-08-14/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 3】</a>
       </li>
     
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-12/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 2】</a>
+      </li>
     
       <li>
         <a href="https://jangari-ntk.github.io/post/2020-08-11/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 1】</a>
@@ -258,6 +195,9 @@
       </li>
       <li>
         <a href="https://jangari-ntk.github.io/post/2020-08-14/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 3】</a>
+      </li>
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-12/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 2】</a>
       </li>
       <li>
         <a href="https://jangari-ntk.github.io/post/2020-08-11/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 1】</a>
@@ -355,6 +295,8 @@
 </aside>
 
 </div>
+
+
     </main><svg width="0" height="0" class="hidden">
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="facebook">
     <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h151V331h-60v-90h60v-61c0-49.629 40.371-90 90-90h91v90h-91v61h91l-15 90h-76v181h121c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zm0 0"></path>

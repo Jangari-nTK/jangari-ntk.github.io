@@ -6,10 +6,26 @@
     <description>Recent content in vSphere on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Sun, 30 Aug 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 01 Sep 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/tags/vsphere/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>【Part.1】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</title>
+      <link>https://jangari-ntk.github.io/post/2020-09-01/</link>
+      <pubDate>Tue, 01 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2020-09-01/</guid>
+      <description>はじめに 以前開催された VMworld 2017 のセッションが VMworld の公式 YouTube チャンネルで一般公開されています。
+  こちらの SER2965BU のセッションは ESXi のトラブルシューティングで使うツールとユースケースを解説している非常に貴重な資料です。しかし、ただでさえトラブルシューティングの話でそこそこハードルが高いことに加えて英語のセッションのため、可能な範囲で日本語で補足もしつつ見ていきたいと思います。
+本記事シリーズについて SER2965BU のセッション動画は vSphere の管理者が ESXi の障害に直面した時に自力でトラブルシューティングをするためのステップが解説されています。本記事シリーズではセッションの Objectives (動画の 1:57～) に沿って見ていきたいと思います。
+ ESXi のアーキテクチャ概要をコンポーネントに深堀りして理解する トラブルシューティング七つ道具 3セットについて見ていく  ログファイル：いつ、どのログファイルを見るか ESXi のコマンド：問題の切り分けと対処を行うために 構成ファイル：トラブルシューティングの中でとっても重要    今回はまず最初に準備編として ESXi のアーキテクチャの概要を押さえていきます。動画では 3:08 ～ 4:30 くらいでサラッと流されているので少しだけ踏み込みたいと思います。ESXi の構造を頭に入れておくだけでも、ホストのトラブルシューティング時にイメージがしやすくなるかなと思います。
+なお、原初の ESXi のアーキテクチャは以下のホワイトペーパーで公開されています。現在の ESXi とは異なる部分もありますが、基本的なコンセプトの理解にはとても役立つと思います(これも英語ですが・・・)。
+The Architecture of VMware ESXi
+ESXi のアーキテクチャ概観 まず ESXi の各種コンポーネントおよび関連コンポーネント (vCenter Server やクライアント、ゲストOS) がどのようにコミュニケーションするか、セッションの 3:08～ のダイアグラムを以下に引用します。
+ESXi を構成するコンポーネントを大まかに分類すると以下の３種類があります。</description>
+    </item>
     
     <item>
       <title>vRealize Automation 8.1 で Nested ESXi の Blueprint を作ってみた</title>

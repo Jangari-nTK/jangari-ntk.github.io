@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-figures="" class="page">
-  <head>  <title>vCenter Server 7.0 で Identity Federation を構成【Part 2】 | vSoliloquy</title>
+  <head>  <title>【Part.1】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus | vSoliloquy</title>
   <meta charset='utf-8'>
   <meta name="generator" content="Hugo 0.74.3" />
   <meta name = 'viewport' content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
@@ -15,14 +15,14 @@
   
 <meta property = "og:locale" content = "en_US" />
 <meta property="og:type" content="article">
-<meta name="description" content="本記事は Identity Federation の構成記事の Part 2 となります。今回は AD FS 側の構成を行っていきます。">
+<meta name="description" content="以前開催された VMworld 2017 のセッション (SER2965BU) が VMworld の公式 YouTube チャンネルで公開されています。こちらのセッションは ESXi のトラブルシューティングのツールとユースケースを解説している非常に貴重な資料です。しかし、ただでさえトラブルシューティングの話でそこそ …">
 <meta name = "twitter:card" content = "summary" />
 <meta name = "twitter:creator" content = "@Jangari_nTK">
-<meta name = "twitter:title" content = "vCenter Server 7.0 で Identity Federation を構成【Part 2】" />
-<meta property = "og:url" content = "https://jangari-ntk.github.io/post/2020-08-12/" />
-<meta property = "og:title" content = "vCenter Server 7.0 で Identity Federation を構成【Part 2】" />
-<meta property = "og:description" content = "本記事は Identity Federation の構成記事の Part 2 となります。今回は AD FS 側の構成を行っていきます。" />
-<meta property = "og:image" content = "https://jangari-ntk.github.io/images/2020-08-11/ID_Federation_diagram.PNG" />
+<meta name = "twitter:title" content = "【Part.1】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus" />
+<meta property = "og:url" content = "https://jangari-ntk.github.io/post/2020-09-01/" />
+<meta property = "og:title" content = "【Part.1】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus" />
+<meta property = "og:description" content = "以前開催された VMworld 2017 のセッション (SER2965BU) が VMworld の公式 YouTube チャンネルで公開されています。こちらのセッションは ESXi のトラブルシューティングのツールとユースケースを解説している非常に貴重な資料です。しかし、ただでさえトラブルシューティングの話でそこそ …" />
+<meta property = "og:image" content = "https://jangari-ntk.github.io/images/thumbnail.png" />
 <link rel='apple-touch-icon' sizes='180x180' href='https://jangari-ntk.github.io/icons/apple-touch-icon.png'>
 <link rel='icon' type='image/png' sizes='32x32' href='https://jangari-ntk.github.io/icons/favicon-32x32.png'>
 <link rel='icon' type='image/png' sizes='16x16' href='https://jangari-ntk.github.io/icons/favicon-16x16.png'>
@@ -31,7 +31,7 @@
 <meta name="msapplication-TileColor" content="#002538">
 <meta name="theme-color" content="#002538">
 
-  <link rel='canonical' href='https://jangari-ntk.github.io/post/2020-08-12/'>
+  <link rel='canonical' href='https://jangari-ntk.github.io/post/2020-09-01/'>
     
 
     
@@ -88,38 +88,38 @@
   
 <div class = 'grid-inverse wrap content'>
   <article class='post_content'>
-    <h1 class='post_title'>vCenter Server 7.0 で Identity Federation を構成【Part 2】</h1><div class = 'post_meta'>
+    <h1 class='post_title'>【Part.1】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</h1><div class = 'post_meta'>
   <svg class="icon">
     <use xlink:href="#calendar"></use>
   </svg>
   <span class="post_date">
-    Aug 12, 2020</span>
+    Sep 1, 2020</span>
   <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vcenter-server' class = 'post_tag button button_translucent'>vCenter Server
+  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/security' class = 'post_tag button button_translucent'>Security
+  <a href = 'https://jangari-ntk.github.io/tags/troubleshooting' class = 'post_tag button button_translucent'>Troubleshooting
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/featured' class = 'post_tag button button_translucent'>Featured
+  <a href = 'https://jangari-ntk.github.io/tags/architecture' class = 'post_tag button button_translucent'>Architecture
   </a>
 </div>
 
     <div class='post_share'>
   Share on:
-  <a href="https://twitter.com/intent/tweet?text=vCenter%20Server%207.0%20%e3%81%a7%20Identity%20Federation%20%e3%82%92%e6%a7%8b%e6%88%90%e3%80%90Part%202%e3%80%91&url=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2020-08-12%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
+  <a href="https://twitter.com/intent/tweet?text=%e3%80%90Part.1%e3%80%91Advanced%20Troubleshooting%20of%20VMware%20ESXi%20Server%206.x%20for%20vSphere%20Gurus&url=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2020-09-01%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
     <svg class="icon">
       <use xlink:href="#twitter"></use>
     </svg>
   </a>
   
-  <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2020-08-12%2f&t=vCenter%20Server%207.0%20%e3%81%a7%20Identity%20Federation%20%e3%82%92%e6%a7%8b%e6%88%90%e3%80%90Part%202%e3%80%91" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
+  <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2020-09-01%2f&t=%e3%80%90Part.1%e3%80%91Advanced%20Troubleshooting%20of%20VMware%20ESXi%20Server%206.x%20for%20vSphere%20Gurus" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
     <svg class="icon">
       <use xlink:href="#facebook"></use>
     </svg>
   </a>
   <script>
     function shareViaLinkedin() {
-      window.open('http://www.linkedin.com/shareArticle?mini=true&url='+encodeURIComponent("https://jangari-ntk.github.io/post/2020-08-12/"), '', 'left=0,top=0,width=650,height=420,personalbar=0,toolbar=0,scrollbars=0,resizable=0');
+      window.open('http://www.linkedin.com/shareArticle?mini=true&url='+encodeURIComponent("https://jangari-ntk.github.io/post/2020-09-01/"), '', 'left=0,top=0,width=650,height=420,personalbar=0,toolbar=0,scrollbars=0,resizable=0');
     }
   </script>
   <a href="#linkedinshare" id = "linkedinshare" class="linkedin" title="Share on LinkedIn" rel="nofollow" onclick="shareViaLinkedin()">
@@ -127,7 +127,7 @@
       <use xlink:href="#linkedin"></use>
     </svg>
   </a>
-  <a href="https://jangari-ntk.github.io/post/2020-08-12/" title="Copy Link" class="link link_yank">
+  <a href="https://jangari-ntk.github.io/post/2020-09-01/" title="Copy Link" class="link link_yank">
     <svg class="icon">
       <use xlink:href="#yank"></use>
     </svg>
@@ -140,78 +140,136 @@
     <nav id="TableOfContents">
   <ul>
     <li><a href="#はじめに">はじめに</a></li>
-    <li><a href="#vcenter-server-のリダイレクト-uri-の確認">vCenter Server のリダイレクト URI の確認</a></li>
-    <li><a href="#ad-fs-で-vcenter-server-用にアプリケーショングループを構成">AD FS で vCenter Server 用にアプリケーショングループを構成</a>
+    <li><a href="#本記事シリーズについて">本記事シリーズについて</a></li>
+    <li><a href="#esxi-のアーキテクチャ概観">ESXi のアーキテクチャ概観</a></li>
+    <li><a href="#vmkernel-とは">VMkernel とは？</a></li>
+    <li><a href="#代表的な-userworld">代表的な Userworld</a>
       <ul>
-        <li><a href="#アプリケーショングループの新規作成">アプリケーショングループの新規作成</a></li>
-        <li><a href="#アプリケーショングループの追加の構成">アプリケーショングループの追加の構成</a></li>
+        <li><a href="#hostd-とは">hostd とは？</a></li>
+        <li><a href="#vpxa-とは">vpxa とは？</a></li>
+        <li><a href="#fdm-とは">fdm とは？</a></li>
+        <li><a href="#その他の-userworld-の一例">その他の Userworld の一例</a></li>
       </ul>
     </li>
-    <li><a href="#ad-fs-の-openid-configuration-の-url-の確認">AD FS の openid-configuration の URL の確認</a></li>
-    <li><a href="#vcenter-server-での作業に入る前に確認">vCenter Server での作業に入る前に確認</a></li>
     <li><a href="#to-be-continued">To be continued&hellip;</a></li>
   </ul>
 </nav>
     <h2 id="はじめに">はじめに</h2>
-<p>本記事は <a href="/post/2020-08-11/">Identity Federation の構成記事</a>の Part 2 となります。今回は AD FS 側の構成を行っていきます。</p>
-<blockquote>
-<p>注意: 本機能の <a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-0A3A19E6-150A-493B-8B57-37E19AB420F2.html">VMware Docs</a> での名称は vCenter Server ID プロバイダ フェデレーション (vCenter Server Identity Provider Federation)、<a href="https://blogs.vmware.com/vsphere/2020/03/vsphere-7-identity-federation.html">公式 Blog の記事</a>などでは Identity Federation と呼称されています。本記事では文字数の便宜上、当該機能を Identity Federation として呼称することとします。</p>
-</blockquote>
-<h2 id="vcenter-server-のリダイレクト-uri-の確認">vCenter Server のリダイレクト URI の確認</h2>
-<p>まず前回の記事からの再掲になりますが、vSphere Client の [ホーム] &gt; [管理] &gt; [vCenter Single Sign-On] &gt; [設定] で [ID プロバイダの変更] の右に (i) の情報アイコンがあるので、これをクリックすると以下のようにポップアップが表示されます。</p>
-<p><img src="/images/2020-08-11/vcentersso-idp-list-002.PNG" alt="OpenID Connect のリダイレクト URI"></p>
-<p>この2点の URI が AD FS からのリダイレクト先になる URI となります(前者はログアウト時、後者がログイン時)。AD FS に登録するため、メモ帳などにコピー＆ペーストで保存しておきます。</p>
-<h2 id="ad-fs-で-vcenter-server-用にアプリケーショングループを構成">AD FS で vCenter Server 用にアプリケーショングループを構成</h2>
-<p><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-C5E998B2-1148-46DC-990E-A5DB71F93351.html">こちらのドキュメント</a>の手順４、つまり <a href="https://kb.vmware.com/s/article/78029">KB78029</a> の手順を実施して、vCenter Server 用に OpenID Connect を使用するためのアプリケーショングループを構成していきます。</p>
-<p>以下は KB78029 の手順をイメージできるように、画面のスクリーンショットと合わせて手順を進めていきます。KB の手順と合わせて読んでいくと作業がイメージがしやすいかなと思います。</p>
-<h3 id="アプリケーショングループの新規作成">アプリケーショングループの新規作成</h3>
-<p>まず AD FS の Windows にログオンして Windows 管理ツールから [AD FS の管理] を開いたら、[アプリケーション グループ] を右クリックして [アプリケーション グループの追加] を選択します。</p>
-<p><img src="/images/2020-08-12/adfs-oidc-config-001.PNG" alt="AD FS の管理 コンソール"></p>
-<p>ウィザードの [ようこそ] ページで名前と説明を入力したら、[Web API にアクセスするサーバー アプリケーション] を選択して [次へ] をクリックして進みます。</p>
-<p><img src="/images/2020-08-12/adfs-oidc-config-002.PNG" alt="アプリケーション グループのテンプレートの指定"></p>
-<p>[サーバー アプリケーション] ページでは、先ほどメモした２点のリダイレクト URI を追加します。[クライアント識別子] は後で使用するためコピー＆ペーストでメモしておきましょう。[次へ] をクリックして進みます。</p>
-<p><img src="/images/2020-08-12/adfs-oidc-config-003.PNG" alt="リダイレクト URI の追加"></p>
-<p>[アプリケーションの資格情報の構成] ページでは [共有シークレットを生成する] にチェックを入れます。生成された共有シークレットをコピー＆ペーストでメモして [次へ] をクリックして進みます。なお、シークレットはウィザード完了後は確認できず、忘れるとシークレットのリセットが必要になりますのでご注意ください。</p>
-<p><img src="/images/2020-08-12/adfs-oidc-config-004.PNG" alt="共有シークレットの生成"></p>
-<p>[Web API の構成] ページでは先ほどメモしたクライアント識別子を追加し [次へ] をクリックして進みます。</p>
-<p><img src="/images/2020-08-12/adfs-oidc-config-005.PNG" alt="Web API へのクライアント識別子の追加"></p>
-<p>[アクセス制御ポリシーの適用] ページでは [すべてのユーザーを許可] を選択し [次へ] をクリックして進みます。</p>
-<p><img src="/images/2020-08-12/adfs-oidc-config-006.PNG" alt="アクセス制御ポリシーの設定"></p>
-<p>[アプリケーションのアクセス許可の構成] ページでは &ldquo;openid&rdquo; と &ldquo;allatclaims&rdquo; の2点にチェックを入れて、[次へ] をクリックします。残りはそのまま進めてウィザードを完了します。</p>
-<p><img src="/images/2020-08-12/adfs-oidc-config-007.PNG" alt="アプリケーションのアクセス許可の構成"></p>
-<h3 id="アプリケーショングループの追加の構成">アプリケーショングループの追加の構成</h3>
-<p>次に [ADFS の管理] の [アプリケーション グループ] から、先ほど作成したアプリケーショングループを右クリックして [プロパティ] をクリックします。アプリケーショングループのプロパティでは作成した Web API を選択して [編集] をクリックします。</p>
-<p><img src="/images/2020-08-12/adfs-oidc-config-additional-001.PNG" alt="アプリケーショングループのプロパティ"></p>
-<p>[発行変換規則] タブを開いて3つの規則 (グループ、サブジェクト、UPN) を順に追加していきます。</p>
-<p><img src="/images/2020-08-12/adfs-oidc-config-additional-002.PNG" alt="Web API のプロパティ"></p>
-<p>まずグループの規則を追加します。[規則の追加] をクリックし、[規則の種類の選択] ページで要求規則テンプレートに [LDAP 属性を要求として送信] を選択して [次へ] をクリックします。</p>
-<p><img src="/images/2020-08-12/adfs-oidc-config-additional-003.PNG" alt="グループ規則: 規則の種類"></p>
-<p>[要求規則の構成] ページでは、規則の名前を入力し、属性ストアに [Active Directory]、関連付けを以下のように指定して [完了] を押下します。</p>
-<p><img src="/images/2020-08-12/adfs-oidc-config-additional-004.PNG" alt="グループ規則: 規則の構成"></p>
-<p>同様の手順でサブジェクトと UPN の規則をそれぞれ追加していきます。使用する要求規則テンプレートは同じなので画面は省略し、それぞれの要求規則の構成ページでの設定内容を以下に示します。</p>
-<p><img src="/images/2020-08-12/adfs-oidc-config-additional-005.PNG" alt="サブジェクト規則: 規則の構成"></p>
-<p><img src="/images/2020-08-12/adfs-oidc-config-additional-006.PNG" alt="UPN 規則: 規則の構成"></p>
-<p>３つの規則を作成したら、[OK] をクリックしていきアプリケーショングループのプロパティを閉じます。</p>
-<h2 id="ad-fs-の-openid-configuration-の-url-の確認">AD FS の openid-configuration の URL の確認</h2>
-<p>AD FS の Windows 上で PowerShell を管理者として開き、以下のコマンドで /.well-known/openid-configuration で終わる URL<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> を確認することが出来ます。こちらの URL は後で vCenter Server 側での構成時に使用しますのでメモしておきます。</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>&gt; Get-AdfsEndpoint | Select FullUrl | Select-String openid-configuration
-<span class="ln">2</span>
-<span class="ln">3</span>@{FullUrl=https://adfs-windows.jangari.local/adfs/.well-known/openid-configuration}
-</code></pre></div><p>これで AD FS 側での OpenID Connect の構成は完了です。</p>
-<h2 id="vcenter-server-での作業に入る前に確認">vCenter Server での作業に入る前に確認</h2>
-<p>この後は vCenter Server から Identity Federation の構成を行っていきますが、今回の AD FS での作業で使用した以下の３点の情報は vCenter Server での作業で使用します。メモして安全なところに保管しておきましょう。</p>
+<p>以前開催された VMworld 2017 のセッションが <a href="https://www.youtube.com/channel/UCaC9l9CYIEazFB5-pWfCNKw">VMworld の公式 YouTube チャンネル</a>で一般公開されています。</p>
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe src="https://www.youtube.com/embed/_wRRXEZkeXo" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
+</div>
+
+<p>こちらの SER2965BU のセッションは ESXi のトラブルシューティングで使うツールとユースケースを解説している非常に貴重な資料です。しかし、ただでさえトラブルシューティングの話でそこそこハードルが高いことに加えて英語のセッションのため、可能な範囲で日本語で補足もしつつ見ていきたいと思います。</p>
+<h2 id="本記事シリーズについて">本記事シリーズについて</h2>
+<p>SER2965BU のセッション動画は vSphere の管理者が ESXi の障害に直面した時に自力でトラブルシューティングをするためのステップが解説されています。本記事シリーズではセッションの Objectives (動画の 1:57～) に沿って見ていきたいと思います。</p>
 <ul>
-<li>クライアント識別子</li>
-<li>共有シークレット</li>
-<li>AD FS の openid-configuration の URL</li>
+<li>ESXi のアーキテクチャ概要をコンポーネントに深堀りして理解する</li>
+<li>トラブルシューティング七つ道具 3セットについて見ていく
+<ol>
+<li>ログファイル：いつ、どのログファイルを見るか</li>
+<li>ESXi のコマンド：問題の切り分けと対処を行うために</li>
+<li>構成ファイル：トラブルシューティングの中でとっても重要</li>
+</ol>
+</li>
+</ul>
+<p>今回はまず最初に準備編として ESXi のアーキテクチャの概要を押さえていきます。動画では 3:08 ～ 4:30 くらいでサラッと流されているので少しだけ踏み込みたいと思います。ESXi の構造を頭に入れておくだけでも、ホストのトラブルシューティング時にイメージがしやすくなるかなと思います。</p>
+<p>なお、原初の ESXi のアーキテクチャは以下のホワイトペーパーで公開されています。現在の ESXi とは異なる部分もありますが、基本的なコンセプトの理解にはとても役立つと思います(これも英語ですが・・・)。</p>
+<p><a href="https://www.vmware.com/content/dam/digitalmarketing/vmware/en/pdf/techpaper/ESXi_architecture.pdf">The Architecture of VMware ESXi</a></p>
+<h2 id="esxi-のアーキテクチャ概観">ESXi のアーキテクチャ概観</h2>
+<p>まず ESXi の各種コンポーネントおよび関連コンポーネント (vCenter Server やクライアント、ゲストOS) がどのようにコミュニケーションするか、セッションの 3:08～ のダイアグラムを以下に引用します。</p>
+<p><img src="/images/2020-09-01/ESXi-Architecture.PNG" alt="ESXi Architecture"></p>
+<p>ESXi を構成するコンポーネントを大まかに分類すると以下の３種類があります。</p>
+<ul>
+<li>VMkernel</li>
+<li>Userworld</li>
+<li>Virtual Machine Monitor</li>
+</ul>
+<p>ESXi も Windows や Linux などの OS と同じくカーネルとユーザープロセス(のようなもの)が存在します。前者は VMkernel、後者は Userworld と呼ばれます。主な Userworld には hostd, vpxa, fdm などがあります。後ほど個別に説明します。</p>
+<p>仮想マシンの実体は仮想マシンモニタ (Virtual Machine Monitor, VMM) として VMkernel の管理下で実行されます。Intel VT-x (または Binary Translation) を使用して CPU を仮想化、Intel EPT (または Shadow Paging) を使用してメモリを仮想化、ゲストOSはその上で動作しています<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>。一般的な仮想マシンモニタの動作などはここでは説明しませんが、以下のような資料をご参考としてください。</p>
+<ul>
+<li><a href="https://ipsj.ixsq.nii.ac.jp/ej/?action=pages_view_main&amp;active_action=repository_view_main_item_detail&amp;item_id=65793&amp;item_no=1&amp;page_id=13&amp;block_id=8">[情報処理学会] 仮想マシン道しるべ : 仮想マシンを支えるハードウェア技術（インテル）</a></li>
+<li><a href="http://syuu1228.github.io/howto_implement_hypervisor/">ハイパーバイザの作り方</a></li>
+</ul>
+<p>なお KB1001101 に記載がありますが、コマンドの実行結果やログなどでは、仮想マシンモニタやカーネルスレッドなどを World という抽象化された管理単位で呼んだり、関連する World の集合を Cartel と呼ぶ場合もあります。KB1010993 に記載がある ps コマンド(ESXi 固有のもの)を実行すると World 番号や World のタイプなどが確認できます。</p>
+<ul>
+<li><a href="https://kb.vmware.com/s/article/1001101">Mapping a virtual machine world number to a virtual machine name (1001101)</a></li>
+<li><a href="https://kb.vmware.com/s/article/1010993">Obtaining process information in ESXi (1010993)</a></li>
+</ul>
+<h2 id="vmkernel-とは">VMkernel とは？</h2>
+<p>VMkernel は ESXi のカーネルです。まず、仮想マシンに CPU やメモリなどのリソースを割り当てるリソーススケジューラの役割を持っています。例えばリソースのシェアや予約、物理 CPU の NUMA トポロジなどに基づいて仮想マシンが適切な CPU コアで実行されるようスケジューリングします。</p>
+<p>また、仮想マシンからのネットワーク I/O やディスク I/O は VMkernel を経由して実行されます。ネットワーク I/O であれば各種ネットワークポリシーの適用や TCP/IP のオフロードが行われたり、ストレージ I/O であれば適切なパスを選んで I/O を送出したりなど、様々な処理が VMkernel で行われます。NIC や HBA 等のデバイスドライバは VMkernel のモジュールとしてロードされます。</p>
+<p>これらの詳細に関しては、以下のような資料が参考になると思います。</p>
+<ul>
+<li>VMware vSphere 6.5 Host Resources Deep Dive <a href="https://www.rubrik.com/en/lp/white-papers/19/host-resources-deep-dive-ebook.html">(Free Ebook)</a> <a href="https://www.amazon.co.jp/dp/B0746H6DFC/">(Kindle)</a></li>
+<li><a href="https://blogs.vmware.com/vsphere/2018/12/understanding-the-esxi-network-iochain.html">Understanding the ESXi Network IOChain - VMware vSphere Blog</a></li>
+<li><a href="http://virtualguido.blogspot.com/2016/08/esxi-storage-io-path.html">VMware ESXi Storage I/O Path</a> <a href="https://blogs.networld.co.jp/main/2016/09/vmware-esxi-io-b006.html">(日本語訳 (ネットワールド様) )</a></li>
+<li><a href="https://blogs.vmware.com/performance/2020/05/performance-best-practices-guide-for-vsphere-7-0.html">Performance Best Practices Guide for vSphere 7.0</a></li>
+</ul>
+<p>その他には一般的な OS のユーザープロセスとカーネルの関係と同じように、Userworld から発行されたシステムコール<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>を受けて、ファイルやデバイスの読み書きなどの処理を実行する場合もあります。ただし汎用的な実行環境ではないため、ハイパーバイザー環境に必要な最小限の機能だけが提供されています(API は非公開)。</p>
+<h2 id="代表的な-userworld">代表的な Userworld</h2>
+<p>ESXi の中で最も重要な Userworld は以下の３つです。個人的には、この３つの Userworld の役割を押さえることが本格的なトラブルシューティングへの入り口になるかなと思っています。</p>
+<ul>
+<li>hostd</li>
+<li>vpxa</li>
+<li>fdm</li>
+</ul>
+<p>以下、それぞれの概要について説明していきます。</p>
+<h3 id="hostd-とは">hostd とは？</h3>
+<p>hostd (Host Daemon) は、vpxa や fdm といった他の Userworld や ESXi に直接接続する外部のコンポーネント (Host Client や C# Client、vSphere CLI 等) からの操作や要求を受け付け、VMkernel や仮想マシンとコミュニケーションを取ります。</p>
+<p>例えば、仮想マシンのパワーオンやスナップショットの作成、vMotion やコールド移行といった ESXi のタスクは、まず最初に hostd が受け付けます。その後、必要に応じて VMkernel や仮想マシンとコミュニケーションを取ります。</p>
+<p>ESXi の主要な Userworld の多くは hostd に依存関係があるため、hostd が停止するとほぼ何もできなくなります。停止した hostd が再起動できない状況では結果的に ESXi の再起動が必要になることが多いです。このため、非常に重要な Userworld です。</p>
+<ul>
+<li><a href="https://kb.vmware.com/s/article/1003409">Troubleshooting an ESXi host in a &ldquo;not responding&rdquo; state (1003409)</a></li>
+<li><a href="https://kb.vmware.com/s/article/1003490">Restarting the Management agents in ESXi (1003490)</a></li>
+</ul>
+<h3 id="vpxa-とは">vpxa とは？</h3>
+<p>vpxa (VPX Agent) は主に vCenter Server (vpxd) からの指示を hostd に渡す、ESXi と vCenter Server の仲介役を担っています。vCenter Server と ESXi の仲介役のためスタンドアロン ESXi では基本的に使用されない Userworld です(起動はしている)。</p>
+<p>vCenter Server に接続して ESXi の操作を行う場合、vCenter Server からの指示はすべて vpxa が仲介し、hostd によって解釈・実行されます。vpxa が停止した場合、ESXi は応答なしとなり vCenter Server からの操作が行なえません。ただ、ESXi への直接接続は hostd への接続になるため可能な場合も稀にあります。</p>
+<p>ESXi にログインする場合は ESXi の root ユーザーなどを使用しますが、vpxd - vpxa 間の通信には vpxuser という管理者権限を持った特別な ESXi ユーザーが使用されます。vpxuser は vCenter Server にホストを追加した時に ESXi 上に作成され、以後、既定では30日ごとに vCenter Server が vpxuser のパスワードを更新します。</p>
+<ul>
+<li><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-E905038D-A5A3-401E-921D-58A4CD57B07C.html">vCenter Serverパスワード ポリシーの設定</a></li>
+<li><a href="https://kb.vmware.com/s/article/2014275?lang=ja">ESX/ESXi ホストが次のエラーで情報の更新に失敗する： vmware esx がホストを同期できません (2014275)</a></li>
+</ul>
+<h3 id="fdm-とは">fdm とは？</h3>
+<p>FDM (Fault Domain Manager) は vSphere HA の機能を司るエージェントです。ESXi のインストール直後は存在せず、vCenter Server から vSphere HA を有効化すると、vSphere HA の設定と合わせてクラスタの各 ESXi にプッシュおよびインストールされます。</p>
+<p>vSphere HA では ESXi が管理ネットワーク上で相互に通信を行ってマスターホスト<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>を選出したり、マスターホストが他のホストの状態を監視したりします。保護されている仮想マシンの電源状態のチェックや vSphere HA のホスト障害の種類 (停止・隔離・パーティション) の判別などもマスターホストが実施します。これらの動作は実際には ESXi 上の FDM が担当しています。</p>
+<p>このため、vSphere HA の構成や設定変更は vCenter Server から実施する必要がありますが、構成した後は vCenter Server とは独立しクラスタ配下の ESXi のみで vSphere HA が動作するようになります<sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup>。</p>
+<p>なお、今ではもう化石になりつつありますが、vSphere 4.1 以前の VMware HA (vSphere HA の前身) では AAM (Automated Availability Manager) という全く別のエージェントが使用されていました。VMware HA と vSphere HA では動作も仕様も異なっています。</p>
+<p><a href="https://kb.vmware.com/s/article/2004401">Comparing VMware HA 4.x and vSphere HA 5.x (2004401)</a></p>
+<h3 id="その他の-userworld-の一例">その他の Userworld の一例</h3>
+<p>特筆すべき重要な Userworld は上述の hostd, vpxa, fdm ですが、他にも多くの Userworld が存在します。以下に一例を記載します。</p>
+<ul>
+<li>vobd (VMkernel Observation Daemon)：VMkernel での特徴的なイベントをモニタリングする</li>
+<li>sfcbd (Small Footprint CIM Broker Daemon)：ホストのハードウェア健全性情報を提供する CIM エージェント</li>
+<li>shell：ESXi Shell</li>
+<li>dcui：ダイレクトコンソール (DCUI)</li>
+<li>ntpd：NTP クライアント</li>
+<li>esxcli：ESXi の様々な操作を行うトラブルシューティング用のコマンド。hostd を経由して VMkernel にアクセスする</li>
+<li>localcli：esxcli と似ているが hostd を経由しない、hostd 停止時などに使用する基本的には非常用のコマンド</li>
+<li>vmx (Virtual Machine Executable)：仮想マシンの性能に関連しない I/O などを担当するヘルパープロセス<sup id="fnref:5"><a href="#fn:5" class="footnote-ref" role="doc-noteref">5</a></sup></li>
+<li>mks (Mouse Keyboard Screen)：仮想マシンのマウス・キーボード・画面の入出力を担当するヘルパープロセス</li>
 </ul>
 <h2 id="to-be-continued">To be continued&hellip;</h2>
-<p>次回、いよいよ vCenter Server で Identity Federation を構成していきます。お楽しみに！</p>
+<p>今回は準備編として ESXi のアーキテクチャの概観を見ていきました。次回は ESXi の各種ログファイルを見ていきます。</p>
 <section class="footnotes" role="doc-endnotes">
 <hr>
 <ol>
 <li id="fn:1" role="doc-endnote">
-<p>OpenID Connect Discovery 1.0 という仕様に基づいて、OpenID Connect の各種エンドポイントの URL など、ID プロバイダのメタデータの取得に使用する URL です。こちらの詳細は <a href="https://docs.microsoft.com/ja-jp/azure/active-directory/develop/v2-protocols-oidc">Microsoft 社の AD FS のドキュメント</a> や <a href="https://openid.net/specs/openid-connect-discovery-1_0.html">OpenID Connect Discovery 1.0 の仕様</a>を参照してください。 <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<p>Binary Translation は ESXi 6.7 で廃止されました。これに伴い ESXi 6.7 以降では仮想マシンから CPU/MMU 仮想化の設定が無くなっています。MMU 仮想化設定も無くなっているところを見ると実質的には EPT も必須といったところでしょうか。 <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p>地味ですが ESXi Shell に strace コマンドがあったりもします。ただ、<a href="https://www.virtuallyghetto.com/2011/07/new-vsphere-5-cli-utilitiestricks_23.html">中の人の記事</a>はありますが VMware Docs や KB など公式な公開情報は見当たりませんでした。 <a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3" role="doc-endnote">
+<p><a href="https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.avail.doc/GUID-B9ACCE9B-A14D-4B2F-87EF-4B0A67ABDF58.html">VMware Docs の英語版</a>では現在 Primary Host / Secondary Host の表記になっています。もしかしたら日本語版もそのうち追従して更新されるかもしれません。 <a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:4" role="doc-endnote">
+<p>vSphere 7 では、ホスト障害時のフェイルオーバーで vSphere HA と DRS が連携する改良が加えられています。vCenter Server が停止していてもフェイルオーバーは行われますが、vCenter Server が起動していれば DRS により配置が最適化されます。詳細な動作は<a href="http://www.yellow-bricks.com/2020/05/13/vsphere-ha-internals-restart-placement-changes-in-vsphere-7/">中の人のブログ記事</a>をご参照ください (私も記事を読んで<a href="https://twitter.com/Jangari_nTK/status/1271006647180091393">概要などツイートしてます</a>)。 <a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:5" role="doc-endnote">
+<p>例えば、<a href="https://kb.vmware.com/s/article/1019471">KB1019471</a>にあるようなスナップショット操作の指示を受けるための通信や、<a href="https://blogs.vmware.com/vsphere/2019/07/the-vmotion-process-under-the-hood.html">こちらの記事</a>にある vMotion でのスイッチオーバー時のソースVMの停止などがあります。詳細な公開情報はないので、個人的には VMM/VMX/MKS 等を一つにまとめて「仮想マシン」として見ておけば十分かなと思います。 <a href="#fnref:5" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 </ol>
 </section>
@@ -235,6 +293,9 @@
         <a href="https://jangari-ntk.github.io/post/2020-08-14/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 3】</a>
       </li>
     
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-12/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 2】</a>
+      </li>
     
       <li>
         <a href="https://jangari-ntk.github.io/post/2020-08-11/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 1】</a>
@@ -244,9 +305,6 @@
     <h2 class="mt-4">Recent Posts</h2>
     <ul class="flex-column">
       
-      <li>
-        <a href="https://jangari-ntk.github.io/post/2020-09-01/" class="nav-link">【Part.1】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</a>
-      </li>
       <li>
         <a href="https://jangari-ntk.github.io/post/2020-08-30/" class="nav-link">vRealize Automation 8.1 で Nested ESXi の Blueprint を作ってみた</a>
       </li>
@@ -258,6 +316,9 @@
       </li>
       <li>
         <a href="https://jangari-ntk.github.io/post/2020-08-14/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 3】</a>
+      </li>
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-12/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 2】</a>
       </li>
       <li>
         <a href="https://jangari-ntk.github.io/post/2020-08-11/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 1】</a>
