@@ -6,10 +6,27 @@
     <description>Recent content in vSphere on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Tue, 01 Sep 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 06 Sep 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/categories/vsphere/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>【Part.2】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</title>
+      <link>https://jangari-ntk.github.io/post/2020-09-06/</link>
+      <pubDate>Sun, 06 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2020-09-06/</guid>
+      <description>はじめに 前回の記事の続きです。今回は VMworld 2017 SER2965BU のセッションでの 4:28 ～ 26:54 頃までの内容、七つ道具x3セットの１セット目である７つのログについて見ていきます。
+ vmksummary.log boot.gz.log hostd.log &amp;amp; hostd-probe.log vmware.log vmkernel.log vobd.log fdm.log  この辺りの基本的なログの特徴を理解しつつログとの対話を重ねていくと、障害時などにログから原因の推測などがしやすくなると思います。なお、実際に出力されるメッセージは事象によりケースバイケースで異なるため、今回の記事ではセッションと同様、ログファイルの概観とログを見るためのポイントを押さえるといった程度に留めます。
+免責事項 当サイトでは可能な限り公式から情報公開されている内容などの情報源を記載するようにはしていますが、記事を参考にしたことで障害調査が遅延したなど何らかの問題が発生した場合においては一切の責任を負いかねますので、予めご了承いただきますようお願いいたします。
+ログファイルの場所 まずログを見るために最も重要な点はログファイルの場所です。基本的には /var/log 配下にカレントのログなどが、/var/run/log 配下にローテートされたログファイルも含めて配置されています。
+ ESXi のシステム ログ ESXi ログ ファイルの場所 Location of ESXi 5.0 log files (2004201)  なお、ログの実体は既定でスクラッチパーティション (ESXi 7 では ESX-OSData 領域) に格納されています。何らかの要因でスクラッチ領域が未設定だとログが /tmp 領域(＝メモリ上)に配置され、ESXi の再起動でメモリ内容の破棄とともにログが消失してしまいます。
+特に ESXi が USB メモリや SD カードから起動される環境ではスクラッチ領域の作成自体が行われませんので、ESXi のインストール後に設定が必要になることにご注意ください。スクラッチ領域の詳細は以下の KB1033696 をご確認いただければと思います。
+ESXi 7.x/6.x/5.x/4.x の永続的スクラッチの場所の作成 (1033696)
+それではログの場所も確認できたところで順にログファイルを見ていきます。
+vmksummary.log - 突然のホスト再起動 突然、ある ESXi ホストが再起動したといったケースで見るべきログが vmksummary.</description>
+    </item>
     
     <item>
       <title>【Part.1】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</title>

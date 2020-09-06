@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en" data-figures="" class="page">
+  <head>  <title>【Part.2】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus | vSoliloquy</title>
+  <meta charset='utf-8'>
+  <meta name="generator" content="Hugo 0.74.3" />
+  <meta name = 'viewport' content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+  <meta http-equiv = 'X-UA-Compatible' content = 'IE=edge'>
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-175306204-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-175306204-1');
+</script>
+  
+<meta property = "og:locale" content = "en_US" />
+<meta property="og:type" content="article">
+<meta name="description" content="前回の記事の続きです。今回は VMworld 2017 SER2965BU のセッションでの 4:28 ～ 26:54 頃までの内容、七つ道具x3セットの１セット目である７つのログについて見ていきます。">
+<meta name = "twitter:card" content = "summary" />
+<meta name = "twitter:creator" content = "@Jangari_nTK">
+<meta name = "twitter:title" content = "【Part.2】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus" />
+<meta property = "og:url" content = "https://jangari-ntk.github.io/post/2020-09-06/" />
+<meta property = "og:title" content = "【Part.2】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus" />
+<meta property = "og:description" content = "前回の記事の続きです。今回は VMworld 2017 SER2965BU のセッションでの 4:28 ～ 26:54 頃までの内容、七つ道具x3セットの１セット目である７つのログについて見ていきます。" />
+<meta property = "og:image" content = "https://jangari-ntk.github.io/images/2020-09-01/ESXi-Architecture.PNG" />
+<link rel='apple-touch-icon' sizes='180x180' href='https://jangari-ntk.github.io/icons/apple-touch-icon.png'>
+<link rel='icon' type='image/png' sizes='32x32' href='https://jangari-ntk.github.io/icons/favicon-32x32.png'>
+<link rel='icon' type='image/png' sizes='16x16' href='https://jangari-ntk.github.io/icons/favicon-16x16.png'>
+<link rel='manifest' href='https://jangari-ntk.github.io/icons/site.webmanifest'>
+<link rel="mask-icon" href= 'https://jangari-ntk.github.io/safari-pinned-tab.svg' color="#002538">
+<meta name="msapplication-TileColor" content="#002538">
+<meta name="theme-color" content="#002538">
+
+  <link rel='canonical' href='https://jangari-ntk.github.io/post/2020-09-06/'>
+    
+
+    
+    <link rel="preload" href="https://jangari-ntk.github.io/css/styles.07d826161ae19e9fb022eb322413acf88cd0957118327581a5d1a71bf72a78b50092e34a0fbcfa0baaafd30ce88389c0c1fe3c51938f49e175a5239b2ff2b548.css" integrity = 'sha512-B9gmFhrhnp&#43;wIusyJBOs&#43;IzQlXEYMnWBpdGnG/cqeLUAkuNKD7z6C6qv0wzog4nAwf48UZOPSeF1pSObL/K1SA==' as="style">
+    <link rel="preload" href="https://jangari-ntk.github.io/js/bundle.f11fd62745d1a773065645eb6f90461f96d1918737e6ef9fc05cd1bce00b9322930bd58a337f67c368af62503f6dd7eb4389876b64a4a035183afe83443bd34d.js" as="script">
+
+    
+    <link rel = 'stylesheet' href = 'https://jangari-ntk.github.io/css/styles.07d826161ae19e9fb022eb322413acf88cd0957118327581a5d1a71bf72a78b50092e34a0fbcfa0baaafd30ce88389c0c1fe3c51938f49e175a5239b2ff2b548.css' integrity = 'sha512-B9gmFhrhnp&#43;wIusyJBOs&#43;IzQlXEYMnWBpdGnG/cqeLUAkuNKD7z6C6qv0wzog4nAwf48UZOPSeF1pSObL/K1SA=='>
+  </head>
+  
+  
+  
+    
+  
+  <body data-code="100" data-lines="true" id="documentTop">
+
+<header class = 'nav_header' >
+  <nav class = 'nav'>
+    <a href='https://jangari-ntk.github.io/' class = 'nav_brand nav_item'>
+      <img src="https://jangari-ntk.github.io/logos/logo.png" class="logo">
+      <div class = 'nav_close'>
+        <svg class="icon">
+          <use xlink:href="#open-menu"></use>
+        </svg>
+        <svg class="icon">
+          <use xlink:href="#closeme"></use>
+        </svg>
+      </div>
+    </a>
+    <div class = 'nav_body nav_body_left'>
+      <div class = 'nav_parent'>
+        <a href = 'https://jangari-ntk.github.io/' class = 'nav_item'>Home </a>
+      </div>
+      <div class = 'nav_parent'>
+        <a href = 'https://jangari-ntk.github.io/about/' class = 'nav_item'>About </a>
+      </div>
+      <div class = 'nav_parent'>
+        <a href = 'https://twitter.com/Jangari_nTK' class = 'nav_item'>Twitter </a>
+      </div>
+<div class='follow'>
+  
+  <a href='https://jangari-ntk.github.io/index.xml'>
+    <svg class="icon">
+      <use xlink:href="#rss"></use>
+    </svg>
+  </a>
+</div>
+
+    </div>
+  </nav>
+</header>
+
+    <main>
+  
+<div class = 'grid-inverse wrap content'>
+  <article class='post_content'>
+    <h1 class='post_title'>【Part.2】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</h1><div class = 'post_meta'>
+  <svg class="icon">
+    <use xlink:href="#calendar"></use>
+  </svg>
+  <span class="post_date">
+    Sep 6, 2020</span>
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/troubleshooting' class = 'post_tag button button_translucent'>Troubleshooting
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/architecture' class = 'post_tag button button_translucent'>Architecture
+  </a>
+</div>
+
+    <div class='post_share'>
+  Share on:
+  <a href="https://twitter.com/intent/tweet?text=%e3%80%90Part.2%e3%80%91Advanced%20Troubleshooting%20of%20VMware%20ESXi%20Server%206.x%20for%20vSphere%20Gurus&url=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2020-09-06%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
+    <svg class="icon">
+      <use xlink:href="#twitter"></use>
+    </svg>
+  </a>
+  
+  <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2020-09-06%2f&t=%e3%80%90Part.2%e3%80%91Advanced%20Troubleshooting%20of%20VMware%20ESXi%20Server%206.x%20for%20vSphere%20Gurus" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
+    <svg class="icon">
+      <use xlink:href="#facebook"></use>
+    </svg>
+  </a>
+  <script>
+    function shareViaLinkedin() {
+      window.open('http://www.linkedin.com/shareArticle?mini=true&url='+encodeURIComponent("https://jangari-ntk.github.io/post/2020-09-06/"), '', 'left=0,top=0,width=650,height=420,personalbar=0,toolbar=0,scrollbars=0,resizable=0');
+    }
+  </script>
+  <a href="#linkedinshare" id = "linkedinshare" class="linkedin" title="Share on LinkedIn" rel="nofollow" onclick="shareViaLinkedin()">
+    <svg class="icon">
+      <use xlink:href="#linkedin"></use>
+    </svg>
+  </a>
+  <a href="https://jangari-ntk.github.io/post/2020-09-06/" title="Copy Link" class="link link_yank">
+    <svg class="icon">
+      <use xlink:href="#yank"></use>
+    </svg>
+  </a>
+</div>
+
+    
+    
+    <h2>Table of contents</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#はじめに">はじめに</a></li>
+    <li><a href="#免責事項">免責事項</a></li>
+    <li><a href="#ログファイルの場所">ログファイルの場所</a></li>
+    <li><a href="#vmksummarylog---突然のホスト再起動">vmksummary.log - 突然のホスト再起動</a></li>
+    <li><a href="#bootgz---esxi-の起動が遅い問題">boot.gz - ESXi の起動が遅い問題</a></li>
+    <li><a href="#hostdlog--hostd-probelog---ホストが応答なし">hostd.log &amp; hostd-probe.log - ホストが応答なし</a></li>
+    <li><a href="#vmwarelog---仮想マシンにおける問題">vmware.log - 仮想マシンにおける問題</a></li>
+    <li><a href="#vmkernellog---ストレージやドライバの問題">vmkernel.log - ストレージやドライバの問題</a></li>
+    <li><a href="#vobdlog---ストレージやネットワークの問題">vobd.log - ストレージやネットワークの問題</a></li>
+    <li><a href="#fdmlog---vsphere-ha-の問題">fdm.log - vSphere HA の問題</a></li>
+    <li><a href="#to-be-continued">To be continued&hellip;</a></li>
+  </ul>
+</nav>
+    <h2 id="はじめに">はじめに</h2>
+<p>前回の記事の続きです。今回は <a href="https://www.youtube.com/watch?v=_wRRXEZkeXo">VMworld 2017 SER2965BU のセッション</a>での 4:28 ～ 26:54 頃までの内容、七つ道具x3セットの１セット目である７つのログについて見ていきます。</p>
+<ol>
+<li>vmksummary.log</li>
+<li>boot.gz.log</li>
+<li>hostd.log &amp; hostd-probe.log</li>
+<li>vmware.log</li>
+<li>vmkernel.log</li>
+<li>vobd.log</li>
+<li>fdm.log</li>
+</ol>
+<p>この辺りの基本的なログの特徴を理解しつつログとの対話を重ねていくと、障害時などにログから原因の推測などがしやすくなると思います。なお、実際に出力されるメッセージは事象によりケースバイケースで異なるため、今回の記事ではセッションと同様、ログファイルの概観とログを見るためのポイントを押さえるといった程度に留めます。</p>
+<h2 id="免責事項">免責事項</h2>
+<p>当サイトでは可能な限り公式から情報公開されている内容などの情報源を記載するようにはしていますが、記事を参考にしたことで障害調査が遅延したなど何らかの問題が発生した場合においては一切の責任を負いかねますので、予めご了承いただきますようお願いいたします。</p>
+<h2 id="ログファイルの場所">ログファイルの場所</h2>
+<p>まずログを見るために最も重要な点はログファイルの場所です。基本的には /var/log 配下にカレントのログなどが、/var/run/log 配下にローテートされたログファイルも含めて配置されています。</p>
+<ul>
+<li><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.monitoring.doc/GUID-DACC9E0E-E857-4AE1-A469-3FDAE2B391A0.html">ESXi のシステム ログ</a></li>
+<li><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-832A2618-6B11-4A28-9672-93296DA931D0.html">ESXi ログ ファイルの場所</a></li>
+<li><a href="https://kb.vmware.com/s/article/2004201">Location of ESXi 5.0 log files (2004201)</a></li>
+</ul>
+<p>なお、ログの実体は既定でスクラッチパーティション (ESXi 7 では ESX-OSData 領域) に格納されています。何らかの要因でスクラッチ領域が未設定だとログが /tmp 領域(＝メモリ上)に配置され、ESXi の再起動でメモリ内容の破棄とともにログが消失してしまいます。</p>
+<p>特に ESXi が USB メモリや SD カードから起動される環境ではスクラッチ領域の作成自体が行われませんので、ESXi のインストール後に設定が必要になることにご注意ください。スクラッチ領域の詳細は以下の KB1033696 をご確認いただければと思います。</p>
+<p><a href="https://kb.vmware.com/s/article/1033696?lang=ja">ESXi 7.x/6.x/5.x/4.x の永続的スクラッチの場所の作成 (1033696)</a></p>
+<p>それではログの場所も確認できたところで順にログファイルを見ていきます。</p>
+<h2 id="vmksummarylog---突然のホスト再起動">vmksummary.log - 突然のホスト再起動</h2>
+<p>突然、ある ESXi ホストが再起動したといったケースで見るべきログが vmksummary.log です。まず、適切な ESXi の再起動が行われた場合、ESXi は自分から再起動や起動を行うので、vmksummary.log には以下のように Host is rebooting (＝今から再起動する) と Host has booted (＝起動がおわった) の記録が残ります。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>2020-05-20T14:00:01Z heartbeat: up 0d8h47m9s, 7 VMs; [[87812 vmx 7534364kB] [82559 vmx 16726548kB] [68485 vmx 16762084kB]] [[87812 vmx 0%max] [82559 vmx 0%max] [68485 vmx 0%max]]
+<span class="ln">2</span>2020-05-20T14:26:45Z bootstop: Host is rebooting
+<span class="ln">3</span>2020-05-20T14:41:43Z bootstop: Host has booted
+<span class="ln">4</span>2020-05-20T15:00:01Z heartbeat: up 0d0h19m48s, 4 VMs; [[67968 vmx 6291080kB] [68442 vmx 11900344kB] [68617 vmx 16614596kB]] [[67968 vmx 0%max] [68442 vmx 0%max] [68617 vmx 0%max]]
+</code></pre></div><p>これに対して適切でない再起動が発生した状況、例えばサーバの電源ボタンや IPMI 等を利用した電源リセットやハードウェア障害で装置が再起動したなど、ESXi で再起動処理が走らないような状況を考えてみます。この場合、ESXi は自分では起動しかできなかったため Host is rebooting は記録されません。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>2020-09-05T14:00:00Z heartbeat: up 0d2h7m27s, 0 VMs; [[65846 vmsyslogd 14196kB] [67536 vpxa 21360kB] [67319 hostd 61388kB]] []
+<span class="ln">2</span>2020-09-05T14:31:18Z bootstop: Host has booted
+</code></pre></div><p>ESXi で致命的なエラーが発生してクラッシュして PSOD (紫色の診断画面) が発生した場合を考えてみます。以下は Nested ESXi ですが、ESXi 7.0 で NMI を発行して意図的に PSOD を起こしています。後ろから2～3行目を見るとコアダンプがファイルとして出力されていることが分かります。ESXi 6.7 以前では Disk dump として表示(診断パーティションへ保存)されることも多いと思います。</p>
+<p><img src="/images/2020-09-06/ESXi-PSOD-NMI.png" alt="PSOD"></p>
+<p>この場合も ESXi の再起動処理は行われていないため Host is rebooting は記録されません<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>。ただ、ESXi の起動時にディスク上に保存された PSOD 時のコアダンプを検出して core dump found といった記録を伴うことが多いです。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>2020-09-05T14:00:00Z heartbeat: up 0d2h7m27s, 0 VMs; [[65846 vmsyslogd 14196kB] [67536 vpxa 21360kB] [67319 hostd 61388kB]] []
+<span class="ln">2</span>2020-09-05T14:31:18Z bootstop: Host has booted
+<span class="ln">3</span>2020-09-05T14:31:18Z bootstop: file core dump found
+</code></pre></div><p>なお、vmksummary.log の特徴として一時間毎にホストの Uptime や実行中 VM 数と合わせて記録されます。このため、vmksummary.log の記録が途切れた場合、その直近の記録から一時間後までの間に何か致命的な状況(例えば電源 OFF や PSOD)が起こったと判断できます。</p>
+<p>vmksummary.log のフォーマットやホストでの電源操作の有無の判断などは以下の KB も参考にしてみてください。KB2004566 はメッセージが古いバージョンのものですが、vmksummary.log を目grepする分には支障はないと思います。</p>
+<ul>
+<li><a href="https://kb.vmware.com/s/article/2004566">Format of the ESXi 5.x vmksummary log file (2004566)</a></li>
+<li><a href="https://kb.vmware.com/s/article/1019238">Determining why an ESXi host was powered off or restarted (1019238)</a></li>
+</ul>
+<h2 id="bootgz---esxi-の起動が遅い問題">boot.gz - ESXi の起動が遅い問題</h2>
+<p>boot.gz は ESXi の起動プロセスが記録されるログで、ESXi の起動処理が遅かったり、起動プロセス中に ESXi がハングしたりした場合には boot.gz を見ます。こちらのログは /var/log/boot.gz に存在しますが、圧縮されているので以下のように zcat で展開して確認します。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span># zcat /var/log/boot.gz | less
+</code></pre></div><p>ESXi のブートプロセスとして、大まかにはまず VMkernel のロード処理が出力され、その後に jumpstart という各種モジュール(例えばドライバ)をロードするためのモジュールが実行されます。これらの処理の経過が boot.gz に記録されます。jumpstart についてはタイムスタンプと合わせて記録されるため、これを眺めることで他の処理と比べて時間がかかっている処理を見つけられます。</p>
+<p>ブートが遅い事象の例としては KB1016106 があります。個人的にはブートが遅い時は大体この事象が起きている印象があります。</p>
+<ul>
+<li><a href="https://kb.vmware.com/s/article/1016106?lang=ja">RDM を含む MSCS ノードによって使用されている RDM LUN を認識できる ESXi/ESX ホストで、起動または LUN の再スキャンに時間がかかる場合がある (1016106)</a></li>
+<li><a href="https://kb.vmware.com/s/article/1016106">ESXi/ESX hosts with visibility to RDM LUNs being used by MSCS/WSFC nodes with RDMs may take a long time to start or during LUN rescan (1016106)</a></li>
+</ul>
+<p>詳細は省略しますが、MSCS/WSFC でのクラスタリングを共有の物理互換モード RDM で組んだ場合、MSCS/WSFC の仕様上、Windows ゲストにより RDM LUN がロックされます。この状態で ESXi の起動や再スキャンを行うと Windows ゲストによる既存のロックと ESXi の新しいロックが競合して処理に非常に時間がかかるという事象です。この対応には RDM に永久予約を設定する必要があります<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>。</p>
+<p>KB1016106 の事象が ESXi のブートプロセスで発生した場合には boot.gz を見ることになると思います。しかし、この事象は元々は vSphere 上で WSFC を組むガイドラインに準拠せず設定が漏れた場合に発生します。このため、ブートプロセスが遅いとなったら真っ先に物理互換 RDM で WSFC 等のゲストクラスタリングを組んでいないか、ガイドラインを守っているかを確認する方が良いと思います。</p>
+<p><a href="https://docs.vmware.com/jp/VMware-vSphere/6.7/com.vmware.vsphere.mscs.doc/GUID-E794B860-E9AB-43B9-A6D0-F7DE222695A1.html">vSphere MSCS 設定のチェックリスト</a></p>
+<blockquote>
+<p>ESXi 5.0は、MSCS クラスタのデバイスで RAW デバイス マッピング (RDM) LUN が使用されているかどうかを判別するために別の技術を使用します。そのために、MSCS クラスタに参加している各デバイスを「永久予約」としてマークする構成フラグが導入されています。RDM LUN を使用するパッシブ MSCS ノードをホストする ESXi ホストの場合は、次の esxcli コマンドを使用してデバイスを永久予約としてマークします： esxcli storage core device setconfig -d &lt;naa.id&gt; &ndash;perennially-reserved=true。詳細は、KB 1016106 を参照してください。</p>
+</blockquote>
+<p>なお、DCUI で Alt + F12 を押下すると VMkernel のログが見られるため、こちらからライブ感を持ってトラブルシューティングをすることも出来なくはないです。ESXi Shell が起動できずログバンドルも取れないなどの緊急時にはここから何か得られるか見ることになると思います<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>。</p>
+<p><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.esxi.install.doc/GUID-E64B4311-11E5-44E8-8DB5-B438B4A14289.html">ESXi のダイレクト コンソール インターフェイスについて</a></p>
+<p>セッション動画の 9:28 頃から ESXi のログが永続化されてない場合に<a href="https://kb.vmware.com/s/article/1033888">シリアルポート経由でログを転送する方法</a>について説明されています。ただし動画内でも言われている通り、ログが永続化されない状況はワーストケースですので本記事では割愛します。</p>
+<h2 id="hostdlog--hostd-probelog---ホストが応答なし">hostd.log &amp; hostd-probe.log - ホストが応答なし</h2>
+<p>hostd は ESXi の中核のプロセス(Userworld)です。hostd に問題が発生すれば vpxa - hostd 間のやり取りができなくなり、vCenter Server からは ESXi が応答なしになります。ping などの L2/L3 のネットワーク疎通には問題が無いにもかかわらず、Host Client からの接続など ESXi への直接接続が行えない場合には hostd に問題が発生している可能性があります。</p>
+<p>hostd-probe プロセスは hostd に定期的にクエリを発行して死活監視をしています。hostd からの応答がなくなると hostd detected to be non-responsive といったメッセージが hostd-probe.log に記録されます。</p>
+<p>hostd に異常がある場合は ESXi の管理エージェントの再起動を行うことになります。もしログで明らかに hostd の問題であることが確認ができているようであれば、サポートに何か追加で事前に採取すべき資料があるか確認することが推奨されるとのことです<sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup>。</p>
+<ul>
+<li><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.esxi.install.doc/GUID-00978746-4F96-4C53-B778-7E4ACB114B86.html">管理エージェントの再起動</a></li>
+<li><a href="https://kb.vmware.com/s/article/1003490">Restarting the Management agents in ESXi (1003490)</a></li>
+</ul>
+<p>管理エージェントの再起動の実施後、hostd が正常に動作しているか確認する簡易な手順としては、<a href="https://kb.vmware.com/s/article/2012964">KB2012964</a> などで言及されている以下の vim-cmd コマンドで仮想マシンの一覧を表示してみる、Host Client で ESXi に接続してみるなどの方法が考えられます。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span># vim-cmd vmsvc/getallvms
+</code></pre></div><p>前回記事や上述の内容にもある通り hostd は ESXi の中核となるプロセスです。以下の KB2012964 にあるような ESXi で実行されるタスクはおおむね hostd.log に何らかの記録が残ると思いますので、何か ESXi のタスクで問題が発生した場合には hostd.log を見てみるのも一つ有効かもしれません。</p>
+<p><a href="https://kb.vmware.com/s/article/2012964">Performing common virtual machine-related tasks with command-line utilities (2012964)</a></p>
+<h2 id="vmwarelog---仮想マシンにおける問題">vmware.log - 仮想マシンにおける問題</h2>
+<p>セッションでは以下の KB1007969 の問題により仮想マシンの起動が失敗したケースについて言及されています。こちらの問題は、何らかの要因でスナップショットの親ディスクの CID と子ディスクが持つ親 CID が不一致になり、スナップショットチェーンが破損してしまった場合に発生します。</p>
+<p><a href="https://kb.vmware.com/s/article/1007969?lang=ja">「子が作成されたあとに、親仮想ディスクが変更されています(The parent virtual disk has been modified since the child was created)」エラー (1007969)</a></p>
+<blockquote>
+<p>仮想マシンのログに、次のようなエントリが含まれている。</p>
+<p>vmx| DISKLIB-LINK : Attach: Content ID mismatch (d0fdb25b != ef4854ee).<br>
+vmx| DISKLIB-CHAIN : &ldquo;/vmfs/volumes/4a365b5d-eceda119-439b-000cfc0086f3/examplevm/examplevm.vmdk&rdquo; : failed to open (The parent virtual disk has been modified since the child was created).</p>
+</blockquote>
+<p>例えば、親ディスクを別の仮想マシンに既存のハードディスクとして追加してパワーオンすると、仮想マシンに構成されてしまった親ディスクの CID が更新され、元のスナップショットチェーンが破損します。これにより仮想マシンをパワーオンしようとするとタスクがエラーになり上述のようなメッセージが vmware.log に記録されます。</p>
+<p>KB1007969 の他にも、一般にスナップショットの作成や削除・統合の詳細な内容は vmware.log によく出力されます。これらの操作で問題が発生した場合は vmware.log に何か詳細な情報が無いか調べてみるのも良いでしょう。Windows の静止スナップショットでは VSS が使用されますが、ゲスト上の VSS による静止点確保に失敗すると VSS のエラーコードが vmware.log に記録される場合もあります。</p>
+<ul>
+<li><a href="https://kb.vmware.com/s/article/1007696?lang=ja">ボリューム シャドウ コピー サービス (VSS) 静止関連の問題のトラブルシューティング (1007696)</a></li>
+<li><a href="https://kb.vmware.com/s/article/1018194?lang=ja">スナップショット作成操作が、停止した仮想マシンでの I/O 保留時間制限を超えたため静止スナップショットを作成できない (1018194)</a></li>
+<li><a href="https://kb.vmware.com/s/article/2090545">Quiescing snapshots in an ESXi host fails with the error: The guest OS has reported an error during quiescing. The error code was: 5 The error message was: Asynchronous operation failed: &gt;VssSyncStart (2090545)</a></li>
+</ul>
+<p>仮想マシンやゲストOSで電源操作を行った場合も特徴的なメッセージが vmware.log に残ります。これに関しては以下の KB1019064 が詳しいのでこちらをご参照ください。</p>
+<p><a href="https://kb.vmware.com/s/article/1019064?lang=ja">仮想マシンがパワーオフまたは再起動した原因を特定する (1019064)</a></p>
+<p>なお、vmware.log は仮想マシンのパワーオンや vMotion のように新しい仮想マシンプロセスが生成されるタイミングでローテーションが行われます。これらの操作／処理が頻繁に発生するとすぐにログが流されてしまう場合もあります。</p>
+<p><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.monitoring.doc/GUID-F465D340-6556-49E8-B137-C0B4A060E83B.html">ゲスト OS のログ レベルの構成</a></p>
+<p>環境や運用によってはログの世代数を変更する、問題発生時に追加の作業を行う前に速やかにログを採取する、といった対応が必要になる場合があるかもしれません。後者は vmware.log に限らず事象発生当初の状態の保全という意味では重要です。</p>
+<h2 id="vmkernellog---ストレージやドライバの問題">vmkernel.log - ストレージやドライバの問題</h2>
+<p>vmkernel.log は VMkernel のログで様々な内容が記録されますが、主にストレージ関連の問題が発生した際に見ることが多いログです。また、ドライバによるエラーやイベントの記録もこのログに記録されます。</p>
+<p>例えば VMFS データストアや HBA が検出されない、LUN やパーティションや VMFS 自身に何らかの問題があるといった場合、vmkernel.log にそれらを示唆する記録が出力されることが多いです。</p>
+<p>ここで「示唆する」という言葉を使ったのは、ストレージ関連の記録は必ずしもログに「こういう問題が出てますよ！」といった具体的なエラーを示すメッセージが出るわけではないからです。ストレージの記録は主に SCSI Sense Code として出力されるため、何が起きているか以下のような資料を参考にしつつ解釈していく必要があります。</p>
+<ul>
+<li><a href="https://kb.vmware.com/s/article/289902">Interpreting SCSI sense codes in VMware ESXi and ESX (289902)</a></li>
+<li><a href="https://www.virten.net/vmware/esxi-scsi-sense-code-decoder/">VMware ESXi SCSI Sense Code Decoder</a></li>
+<li><a href="https://www.t10.org/lists/2status.htm">SCSI Status Codes</a></li>
+<li><a href="https://tldp.org/HOWTO/SCSI-Generic-HOWTO/x291.html">6.18. host_status | The Linux SCSI Generic (sg) HOWTO</a></li>
+<li><a href="https://tldp.org/HOWTO/archived/SCSI-Programming-HOWTO/SCSI-Programming-HOWTO-21.html">21. Error handling | The Linux SCSI Generic (sg) HOWTO</a></li>
+<li><a href="https://www.t10.org/lists/asc-num.htm">SCSI ASC/ASCQ Assignments</a></li>
+<li><a href="https://kb.vmware.com/s/article/2004086">Understanding SCSI plug-in NMP errors/conditions in ESX/ESXi 4.x/5.x/6.0 (2004086)</a></li>
+</ul>
+<p>SCSI コマンドのエラーメッセージは主に「ScsiDeviceIO」から始まります。一例として、KB289902 にある以下のメッセージを解釈してみましょう(セッション動画もほぼ同じ内容のメッセージです)。</p>
+<blockquote>
+<p>2011-04-04T21:07:30.257Z cpu2:2050)ScsiDeviceIO: 2315: Cmd(0x4124003edb00) 0x12, CmdSN 0x51 to dev &ldquo;naa.600508e000000000c9f6baa7c19f6900&rdquo; failed H:0x0 D:0x2 P:0x0 Valid sense data: 0x5 0x24 0x0.</p>
+</blockquote>
+<p>まず、最初の Cmd 0x12 は SCSI コマンドの種類を指します。この場合は 0x12 ＝ INQUIRY を発行していることが分かります。</p>
+<p>次に、failed の後の H: D: P: はそれぞれ Host Code (＝HBA 側)、Device Status Code (＝ディスク側)、Plugin Error Code (VMware 固有のコード) を指します。どれも 0x0 は問題ないことを示すため 0x0 以外のものを見ます。上述のメッセージの場合、D:0x2 から Device/Status codes ＝ Check Condition となっています。</p>
+<p>コマンドの結果として Check Condition が返された場合は Sense Data (sense data: 0x5 0x24 0x0) に詳細な内容が含まれるため、こちらを見ます。Sense Data は左から Sense Key、ASC (Additional Sense Code)、ASCQ (Additional Sense Code) です。今回は Sense Key ＝ 0x5 ＝ ILLEGAL REQUEST、ASC/ASCQ ＝ 24/00 ＝ INVALID FIELD IN CDB となります。</p>
+<p>これらの内容から、このメッセージは「INQUIRY コマンドを発行したところデバイスには不正なリクエストとして判断された」と解釈できます。では、このエラーメッセージは実際に問題を示しているものでしょうか？</p>
+<p>KB1010244 を見ると、そもそも当該コマンドはデバイスによって完全な情報を提供しない場合もあり、必ずしも問題を示すものではないということが分かります。従って、このコマンドと結果の組み合わせのメッセージが何らかの問題を示すかはストレージの仕様に依存することになります(問題ではないケースが多い印象です)。</p>
+<p><a href="https://kb.vmware.com/s/article/1010244?lang=ja">リスキャン操作中の VMkernel ログ内の SCSI Check Condition について (1010244)</a></p>
+<blockquote>
+<p>SCSI INQUIRY は、ユニット シリアル番号（ページ 0x80）、デバイス識別番号（ページ 0x83）、管理ネットワーク アドレス（ページ 0x85）を含む、LUN からの重要プロダクト データ (VPD) ページ情報を要求します。</p>
+<p>SCSI デバイスが特定の VPD ページをサポートしない場合、SCSI デバイスはこの要求にエラーで応答する場合があります。具体的には、SCSI ステータス 2 （Check Condition）とともに、認識キー 5 （Illegal Request）、および追加の認識コード (ASC) と追加の認識コード修飾子 (ASCQ) （0x20/0x0 または 0x24/0x0 に設定されている）を返す場合があります。</p>
+</blockquote>
+<p>本章の冒頭に記載の通り、vmkernel.log には他にもドライバによるエラーやイベントの記録も出力されます。例えば、物理 NIC でのリンクダウンやリンクアップは分かりやすいところです。しかし、これもメッセージの記録のされ方などはドライバに依存するため、メッセージの決まったフォーマットはありません。</p>
+<p>このように vmkernel.log にはストレージやドライバの問題が記録されますが、解釈が単純ではないケースも多いです。vmkernel.log 以外のログにも当てはまりますが「全てのエラーメッセージが実際の問題を示しているとは限らない」「適切なトラブルシューティングは関連するコンポーネントにも依存する」といったことを意識しておくことが非常に重要です。</p>
+<h2 id="vobdlog---ストレージやネットワークの問題">vobd.log - ストレージやネットワークの問題</h2>
+<p>vmkernel.log は慣れないと読み解くことがかなり難しいですが、vobd.log は VMkernel で検出された問題をより抽象度が高いイベントとして記録されるため読みやすいログです。特にネットワークやストレージへの接続が単純に切断されたようなケースでは最初に見るべきログです。vobd.log に出力される内容は vCenter Server のイベントとしても出力されることが多いです。</p>
+<p>例えば、ホストの NIC がリンクダウンした場合、以下のようにリンクダウンと影響を受けるポートグループが記録されます。この場合は冗長性を完全に喪失しネットワーク接続までロストした記録も出ています。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>2020-09-05T16:04:56.742Z: [netCorrelator] 5435478730us: [vob.net.pg.uplink.transition.down] Uplink: vmnic0 is down. Affected portgroup: Management Network. 0 uplinks up. Failed criteria: 128
+<span class="ln">2</span>2020-09-05T16:04:56.742Z: [netCorrelator] 5435478768us: [vob.net.vmnic.linkstate.down] vmnic vmnic0 linkstate down
+<span class="ln">3</span>2020-09-05T16:04:58.001Z: [netCorrelator] 5436738494us: [esx.problem.net.connectivity.lost] Lost network connectivity on virtual switch &#34;vSwitch0&#34;. Physical NIC vmnic0 is down. Affected port groups: &#34;Management Network&#34;
+</code></pre></div><p>他には、ESXi からストレージデバイスへのパスがダウンし、パスの冗長性が低下した場合には以下のように記録されます。この場合は redundancy が lost した記録までは出てないため「まだパスは生きてて冗長性もある」と推測できます。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>2020-08-11T04:12:52.583Z: [scsiCorrelator] 53521051215us: [esx.problem.storage.redundancy.degraded] Path redundancy to storage device naa.6a4badb04d1b31001fdef7e509ec5276 degraded. Path vmhba65:C0:T5:L1 is down. Affected datastores: &#34;DS_123&#34;.
+</code></pre></div><p>ネットワークの問題による iSCSI 接続の切断であれば <a href="https://kb.vmware.com/s/article/2001447">KB2001447</a> のような記録が出力されます。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>2017-07-27T15:41:42.583Z: [iscsiCorrelator] 535636694us: [vob.iscsi.target.connect.error] vmhba65 failed to login to iqn.1992-08.com.netapp:sn.151696808:vf.23fc0bc3-addf-11e2-a25d-123478563412 because of a network connection failure.
+</code></pre></div><p>もし直前に上述のような NIC のリンクダウンの記録があれば、接続先のスイッチとのリンクの問題に起因すると判断したり出来ます。特に無いようであれば vmkernel.log 上で詳細な情報が出ていないか、SAN 上やストレージに問題が無いか、トラフィックの輻輳が発生していないかなどを切り分けていきます。</p>
+<p>このように vobd.log は読める英語でメッセージが出力されるので、ネットワークやストレージの問題が出た場合は vobd.log を見て状況の概観を掴んだ後に vmkernel.log で詳細を見ていくなどのアプローチも良いでしょう。なお、ネットワークの問題の場合は vmkernel.log での確認ではなくパケットキャプチャでの確認が必要となるケースも多いと思います。</p>
+<h2 id="fdmlog---vsphere-ha-の問題">fdm.log - vSphere HA の問題</h2>
+<p>vSphere HA の記録、例えばあるホストの障害時に停止した仮想マシンが他のホストでパワーオンされたかどうか等は fdm.log に記録されます。Fault Tolerance が有効の場合はそのログもこちらに出力されます。</p>
+<p>fdm.log を読み解いていくには以下の３つのポイントを押さえることが重要です。</p>
+<ul>
+<li>ホストの HostID</li>
+<li>ホストが slave か master か</li>
+<li>ホストが隔離された(isolated)かどうか</li>
+</ul>
+<p>まず <a href="https://kb.vmware.com/s/article/2037000">KB2037000</a> のようにいずれかの ESXi の ESXi Shell で /opt/vmware/fdm/fdm/prettyPrint.sh hostlist コマンドを実行すると、以下のように vSphere HA が有効な同一クラスタに参加している ESXi の HostID やホスト名、ビルド番号や vmnic の MAC アドレスなどが確認できます。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span>&lt;obj xmlns:xsd=&#34;http://www.w3.org/2001/XMLSchema&#34; xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34;     xmlns=&#34;urn:csi&#34; versionId=&#34;1.0&#34; xsi:type=&#34;CsiHostList&#34;&gt;
+<span class="ln"> 2</span>   &lt;faultDomainId&gt;acf001e5-2449-46a7-a882-82c069b29111-25037-6bc5c5f-vcsa01a&lt;/faultDomainId&gt;
+<span class="ln"> 3</span>   &lt;version&gt;29&lt;/version&gt;
+<span class="ln"> 4</span>   &lt;host&gt;
+<span class="ln"> 5</span>      &lt;hostId&gt;host-25029&lt;/hostId&gt;
+<span class="ln"> 6</span>      &lt;hostName&gt;esxi70-01.jangari.local&lt;/hostName&gt;
+<span class="ln"> 7</span>      &lt;sslThumbprint&gt;71:CC:28:47:4B:B8:50:20:9E:73:23:78:5E:D2:58:6A:BD:54:ED:62&lt;/sslThumbprint&gt;
+<span class="ln"> 8</span>      &lt;ipAddress&gt;10.0.1.1&lt;/ipAddress&gt;
+<span class="ln"> 9</span>      &lt;mac&gt;00:50:56:ad:c9:82&lt;/mac&gt;
+<span class="ln">10</span>      &lt;mac&gt;00:50:56:ad:d9:49&lt;/mac&gt;
+<span class="ln">11</span>      &lt;vmkNics&gt;vmk1&lt;/vmkNics&gt;
+<span class="ln">12</span>      &lt;hostdPort&gt;443&lt;/hostdPort&gt;
+<span class="ln">13</span>      &lt;version&gt;7.0.0&lt;/version&gt;
+<span class="ln">14</span>      &lt;build&gt;15843807&lt;/build&gt;
+<span class="ln">15</span>      &lt;hostInfoState&gt;KNOWN&lt;/hostInfoState&gt;
+<span class="ln">16</span>   &lt;/host&gt;
+</code></pre></div><p>なお、上記例は vmk1 で vSAN を有効にしている環境で採取したため、vSphere HA の通信には vSAN ネットワークが使われることから vmkNics が vmk1 となっています。vSAN 以外の環境であれば管理トラフィックの VMkernel ポートが vSphere HA の通信に使用されます。</p>
+<p>自身の hostId が見つかったら、fdm.log からその内容を探してみます。fdm.log にはよく以下のようなメッセージが出力されています。こちらのメッセージから自身は Slave であること、マスターホストは host-25033 の hostId を持つ別のホストであること、自身は隔離状態ではない、といったことが分かります。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>2020-08-25T11:05:29.949Z info fdm[565994] [Originator@6876 sub=Cluster opID=SWI-3ab50c2a] hostId=host-25029 state=Slave master=host-25033 isolated=false host-list-version=4 config-version=5 vm-metadata-version=10 slv-mst-tdiff-sec=0
+</code></pre></div><p>前回の記事でも少し書きましたが、vSphere HA はマスターホストが他のホストの監視やホスト障害の判断などの役割を担っています。マスターホストが確認できれば、マスターホストの fdm.log を確認することでホスト障害時の vSphere HA の処理の流れを確認することが出来ます。</p>
+<p>マスターホストの特定は上述の fdm.log のメッセージの他にも、ホストの [サマリ] タブ等からも確認出来ます。クラスタの [ホスト] タブを見ると [HA 状態] 列から一覧で確認できるので、こちらで探すのも早いかもしれません。</p>
+<p><img src="/images/2020-09-06/vSphere-HA-Status.PNG" alt="Cluster > Host tab > HA Status"></p>
+<h2 id="to-be-continued">To be continued&hellip;</h2>
+<p>今回は ESXi のログファイルについて見ていきました。次は ESXi のコマンドについて見ていきます。</p>
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p>ESXi で PSOD が発生した場合、既定では自動的に再起動はしません。この動作は <a href="https://kb.vmware.com/s/article/2042500?lang=ja">KB2042500</a>の手順で変更できますが、自動的に再起動すると PSOD のスクリーンショットを取りそこねる可能性が非常に高いです。これにより PSOD の調査が出来なくなるケース(ストレージ周りが起因の場合は特に)もあることから、KB2042500 に記載のとおり既定値のまま触らない方がよいです。 <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p>RDM の永久予約は <a href="https://blogs.vmware.com/virtualblocks/2020/07/31/using-perennially-reserved-flag-wsfc-rdms/">vSphere 7 で GUI から一括設定が可能</a>になりました。ただ、vSphere 7 なら Clutered VMDK (FC only) や vSAN での WSFC がサポートされているので、使えるならこれらを使った方が・・・という感じはあります。詳細は <a href="https://kb.vmware.com/s/article/79616">KB79616</a> を参照してください。 <a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3" role="doc-endnote">
+<p>個人的な見解ですが、ESXi Shell や DCUI すら操作できないような状況は、既に ESXi の再起動が必要になっている状況の可能性が高い印象です。滅多に無いと思いますが万が一そのような状況まで陥ってしまった場合には、再起動なしで復旧できるといった希望はあまり持たない方が良いと思っています。 <a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:4" role="doc-endnote">
+<p>動画内で livecore という単語が出ていますが、ドキュメントやナレッジベースなどの VMware から正式に公開されている情報は見当たりませんでした。<a href="https://communities.vmware.com/docs/DOC-40302">恐らくこの内容</a>と推測されますが、仮にそうでもサポート指示がない限りサポートされないと思いますのでこれ以上は言及しません。 <a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+
+  </article>
+<aside class="sidebar">
+  <section class="sidebar_inner">
+    <h2>Jangari</h2>
+    <div>
+      Jangari is a Technical Support Engineer working on a certain company in Japan.
+    </div>
+    <a href = 'https://jangari-ntk.github.io/about/' class="button mt-1" role="button">Read More</a>
+    <h2 class="mt-4">Featured Posts</h2>
+    <ul>
+    
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-18/" class="nav-link">Active Directory over LDAPS の ID ソースを構成する</a>
+      </li>
+    
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-14/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 3】</a>
+      </li>
+    
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-12/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 2】</a>
+      </li>
+    
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-11/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 1】</a>
+      </li>
+    
+    </ul>
+    <h2 class="mt-4">Recent Posts</h2>
+    <ul class="flex-column">
+      
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-09-01/" class="nav-link">【Part.1】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</a>
+      </li>
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-30/" class="nav-link">vRealize Automation 8.1 で Nested ESXi の Blueprint を作ってみた</a>
+      </li>
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-23/" class="nav-link">Nested ESXi のテンプレート作りに必要な設定と解説</a>
+      </li>
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-18/" class="nav-link">Active Directory over LDAPS の ID ソースを構成する</a>
+      </li>
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-14/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 3】</a>
+      </li>
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-12/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 2】</a>
+      </li>
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-11/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 1】</a>
+      </li>
+    </ul> 
+    
+    <div>
+      <h2 class="mt-4 taxonomy" id="categories-section">categories</h2>
+      <nav class="tags_nav">
+        <a href='https://jangari-ntk.github.io/categories/vsphere/' class=" post_tag button button_translucent">
+          VSPHERE
+          <span class='button_tally'>10</span>
+        </a>
+        
+        
+      </nav>
+    </div>
+    
+    <div>
+      <h2 class="mt-4 taxonomy" id="tags-section">tags</h2>
+      <nav class="tags_nav">
+        <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent">
+          VSPHERE
+          <span class='button_tally'>10</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/vcenter-server/' class=" post_tag button button_translucent">
+          VCENTER-SERVER
+          <span class='button_tally'>5</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/featured/' class=" post_tag button button_translucent">
+          FEATURED
+          <span class='button_tally'>4</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/security/' class=" post_tag button button_translucent">
+          SECURITY
+          <span class='button_tally'>4</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/tips/' class=" post_tag button button_translucent">
+          TIPS
+          <span class='button_tally'>4</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/esxi/' class=" post_tag button button_translucent">
+          ESXI
+          <span class='button_tally'>3</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/nested/' class=" post_tag button button_translucent">
+          NESTED
+          <span class='button_tally'>3</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/architecture/' class=" post_tag button button_translucent">
+          ARCHITECTURE
+          <span class='button_tally'>2</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/troubleshooting/' class=" post_tag button button_translucent">
+          TROUBLESHOOTING
+          <span class='button_tally'>2</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/instant-clone/' class=" post_tag button button_translucent">
+          INSTANT-CLONE
+          <span class='button_tally'>1</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/sdk/api/' class=" post_tag button button_translucent">
+          SDK/API
+          <span class='button_tally'>1</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/vrealize-automation/' class=" post_tag button button_translucent">
+          VREALIZE-AUTOMATION
+          <span class='button_tally'>1</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/vsphere-7.0/' class=" post_tag button button_translucent">
+          VSPHERE-7.0
+          <span class='button_tally'>1</span>
+        </a>
+        
+        
+      </nav>
+    </div>
+    
+  </section>
+</aside>
+
+</div>
+    </main><svg width="0" height="0" class="hidden">
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="facebook">
+    <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h151V331h-60v-90h60v-61c0-49.629 40.371-90 90-90h91v90h-91v61h91l-15 90h-76v181h121c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zm0 0"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18.001 18.001" id="twitter">
+    <path d="M15.891 4.013c.808-.496 1.343-1.173 1.605-2.034a8.68 8.68 0 0 1-2.351.861c-.703-.756-1.593-1.14-2.66-1.14-1.043 0-1.924.366-2.643 1.078a3.56 3.56 0 0 0-1.076 2.605c0 .309.039.585.117.819-3.076-.105-5.622-1.381-7.628-3.837-.34.601-.51 1.213-.51 1.846 0 1.301.549 2.332 1.645 3.089-.625-.053-1.176-.211-1.645-.47 0 .929.273 1.705.82 2.388a3.623 3.623 0 0 0 2.115 1.291c-.312.08-.641.118-.979.118-.312 0-.533-.026-.664-.083.23.757.664 1.371 1.291 1.841a3.652 3.652 0 0 0 2.152.743C4.148 14.173 2.625 14.69.902 14.69c-.422 0-.721-.006-.902-.038 1.697 1.102 3.586 1.649 5.676 1.649 2.139 0 4.029-.542 5.674-1.626 1.645-1.078 2.859-2.408 3.639-3.974a10.77 10.77 0 0 0 1.172-4.892v-.468a7.788 7.788 0 0 0 1.84-1.921 8.142 8.142 0 0 1-2.11.593z"
+      ></path>
+  </symbol>
+  <symbol aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="mail">
+    <path  d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="calendar">
+    <path d="M452 40h-24V0h-40v40H124V0H84v40H60C26.916 40 0 66.916 0 100v352c0 33.084 26.916 60 60 60h392c33.084 0 60-26.916 60-60V100c0-33.084-26.916-60-60-60zm20 412c0 11.028-8.972 20-20 20H60c-11.028 0-20-8.972-20-20V188h432v264zm0-304H40v-48c0-11.028 8.972-20 20-20h24v40h40V80h264v40h40V80h24c11.028 0 20 8.972 20 20v48z"></path>
+    <path d="M76 230h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zM76 310h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zM76 390h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zm80-80h40v40h-40z"></path>
+  </symbol>
+  <symbol viewBox="-21 0 512 512" xmlns="http://www.w3.org/2000/svg" id="yank">
+    <path d="M410.668 405.332H165.332c-32.363 0-58.664-26.3-58.664-58.664v-288c0-32.363 26.3-58.668 58.664-58.668h181.504c21.059 0 41.687 8.535 56.555 23.445l42.496 42.496c15.125 15.125 23.445 35.223 23.445 56.575v224.152c0 32.363-26.3 58.664-58.664 58.664zM165.332 32c-14.7 0-26.664 11.969-26.664 26.668v288c0 14.7 11.965 26.664 26.664 26.664h245.336c14.7 0 26.664-11.965 26.664-26.664V122.516c0-12.82-4.992-24.871-14.059-33.942l-42.496-42.496C371.84 37.121 359.488 32 346.836 32zm0 0"></path>
+    <path d="M314.668 512h-256C26.305 512 0 485.695 0 453.332V112c0-32.363 26.305-58.668 58.668-58.668h10.664c8.832 0 16 7.168 16 16s-7.168 16-16 16H58.668C43.968 85.332 32 97.301 32 112v341.332C32 468.032 43.969 480 58.668 480h256c14.7 0 26.664-11.969 26.664-26.668v-10.664c0-8.832 7.168-16 16-16s16 7.168 16 16v10.664c0 32.363-26.3 58.668-58.664 58.668zM368 181.332H208c-8.832 0-16-7.168-16-16s7.168-16 16-16h160c8.832 0 16 7.168 16 16s-7.168 16-16 16zm0 0"></path>
+    <path d="M368 245.332H208c-8.832 0-16-7.168-16-16s7.168-16 16-16h160c8.832 0 16 7.168 16 16s-7.168 16-16 16zm0 64H208c-8.832 0-16-7.168-16-16s7.168-16 16-16h160c8.832 0 16 7.168 16 16s-7.168 16-16 16zm0 0"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="github">
+    <path d="M255.968 5.329C114.624 5.329 0 120.401 0 262.353c0 113.536 73.344 209.856 175.104 243.872 12.8 2.368 17.472-5.568 17.472-12.384 0-6.112-.224-22.272-.352-43.712-71.2 15.52-86.24-34.464-86.24-34.464-11.616-29.696-28.416-37.6-28.416-37.6-23.264-15.936 1.728-15.616 1.728-15.616 25.696 1.824 39.2 26.496 39.2 26.496 22.848 39.264 59.936 27.936 74.528 21.344 2.304-16.608 8.928-27.936 16.256-34.368-56.832-6.496-116.608-28.544-116.608-127.008 0-28.064 9.984-51.008 26.368-68.992-2.656-6.496-11.424-32.64 2.496-68 0 0 21.504-6.912 70.4 26.336 20.416-5.696 42.304-8.544 64.096-8.64 21.728.128 43.648 2.944 64.096 8.672 48.864-33.248 70.336-26.336 70.336-26.336 13.952 35.392 5.184 61.504 2.56 68 16.416 17.984 26.304 40.928 26.304 68.992 0 98.72-59.84 120.448-116.864 126.816 9.184 7.936 17.376 23.616 17.376 47.584 0 34.368-.32 62.08-.32 70.496 0 6.88 4.608 14.88 17.6 12.352C438.72 472.145 512 375.857 512 262.353 512 120.401 397.376 5.329 255.968 5.329z"></path>
+  </symbol>
+  <symbol viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="rss">
+    <circle cx="3.429" cy="20.571" r="3.429"></circle>
+    <path d="M11.429 24h4.57C15.999 15.179 8.821 8.001 0 8v4.572c6.302.001 11.429 5.126 11.429 11.428z"></path>
+    <path d="M24 24C24 10.766 13.234 0 0 0v4.571c10.714 0 19.43 8.714 19.43 19.429z"></path>
+  </symbol>
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="linkedin">
+    <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h362c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zM181 406h-60V196h60zm0-240h-60v-60h60zm210 240h-60V286c0-16.54-13.46-30-30-30s-30 13.46-30 30v120h-60V196h60v11.309C286.719 202.422 296.93 196 316 196c40.691.043 75 36.547 75 79.688zm0 0"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="arrow">
+    <path d="M604.501 440.509L325.398 134.956c-5.331-5.357-12.423-7.627-19.386-7.27-6.989-.357-14.056 1.913-19.387 7.27L7.499 440.509c-9.999 10.024-9.999 26.298 0 36.323s26.223 10.024 36.222 0l262.293-287.164L568.28 476.832c9.999 10.024 26.222 10.024 36.221 0 9.999-10.023 9.999-26.298 0-36.323z"></path>
+  </symbol>
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="carly">
+    <path d="M504.971 239.029L448 182.059V84c0-46.317-37.682-84-84-84h-44c-13.255 0-24 10.745-24 24s10.745 24 24 24h44c19.851 0 36 16.149 36 36v108c0 6.365 2.529 12.47 7.029 16.971L454.059 256l-47.029 47.029A24.002 24.002 0 0 0 400 320v108c0 19.851-16.149 36-36 36h-44c-13.255 0-24 10.745-24 24s10.745 24 24 24h44c46.318 0 84-37.683 84-84v-98.059l56.971-56.971c9.372-9.372 9.372-24.568 0-33.941zM112 192V84c0-19.851 16.149-36 36-36h44c13.255 0 24-10.745 24-24S205.255 0 192 0h-44c-46.318 0-84 37.683-84 84v98.059l-56.971 56.97c-9.373 9.373-9.373 24.568 0 33.941L64 329.941V428c0 46.317 37.682 84 84 84h44c13.255 0 24-10.745 24-24s-10.745-24-24-24h-44c-19.851 0-36-16.149-36-36V320c0-6.365-2.529-12.47-7.029-16.971L57.941 256l47.029-47.029A24.002 24.002 0 0 0 112 192z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="copy">
+    <path d="M366.345 406.069H66.207c-9.751 0-17.655-7.904-17.655-17.655V17.655C48.552 7.904 56.456 0 66.207 0h300.138C376.096 0 384 7.904 384 17.655v370.759c0 9.751-7.904 17.655-17.655 17.655z" fill="#f1f4fb"></path>
+    <path d="M384 388.414v-76.992c-.907.322-1.869.494-2.751.882-6.307-6.593-14.733-11.025-24.111-11.964a40.49 40.49 0 0 0-8.448.039v-92.93c0-21.903-17.82-39.723-39.723-39.724a40.5 40.5 0 0 0-4.036.202c-20.012 2.004-35.689 19.916-35.689 40.781v101.773l-21.581 21.581c-15.241 15.241-21.393 36.866-16.456 57.847l3.802 16.16h131.338c9.75 0 17.655-7.905 17.655-17.655z"
+      fill="#d5dced"></path>
+    <circle cx="128" cy="105.931" r="26.483" fill="#b4e66e"></circle>
+    <circle cx="128" cy="203.034" r="26.483" fill="#dae169"></circle>
+    <circle cx="128" cy="300.138" r="26.483" fill="#ffdc64"></circle>
+    <path d="M331.034 229.517H189.793c-4.879 0-8.828-3.953-8.828-8.828s3.948-8.828 8.828-8.828h141.241c4.879 0 8.828 3.953 8.828 8.828s-3.948 8.828-8.828 8.828z" fill="#7f8499"></path>
+    <path d="M295.724 194.207H189.793a8.826 8.826 0 0 1-8.828-8.828 8.826 8.826 0 0 1 8.828-8.828h105.931a8.826 8.826 0 0 1 8.828 8.828 8.826 8.826 0 0 1-8.828 8.828z" fill="#5b5d6e"></path>
+    <path d="M331.034 326.621H189.793c-4.879 0-8.828-3.953-8.828-8.828s3.948-8.828 8.828-8.828h141.241c4.879 0 8.828 3.953 8.828 8.828s-3.948 8.828-8.828 8.828z" fill="#7f8499"></path>
+    <path d="M295.724 291.31H189.793c-4.879 0-8.828-3.953-8.828-8.828s3.948-8.828 8.828-8.828h105.931c4.879 0 8.828 3.953 8.828 8.828s-3.948 8.828-8.828 8.828z" fill="#5b5d6e"></path>
+    <path d="M331.034 132.414H189.793a8.826 8.826 0 0 1-8.828-8.828 8.826 8.826 0 0 1 8.828-8.828h141.241a8.826 8.826 0 0 1 8.828 8.828 8.826 8.826 0 0 1-8.828 8.828z" fill="#7f8499"></path>
+    <path d="M295.724 97.103H189.793a8.826 8.826 0 0 1-8.828-8.828 8.826 8.826 0 0 1 8.828-8.828h105.931a8.826 8.826 0 0 1 8.828 8.828 8.825 8.825 0 0 1-8.828 8.828z" fill="#5b5d6e"></path>
+    <path d="M443.656 335.563c-13.21-1.323-24.345 9.015-24.345 21.954v-7.569c0-11.544-8.306-22.063-19.794-23.213-13.209-1.323-24.344 9.015-24.344 21.954v-7.569c0-11.544-8.306-22.063-19.794-23.213-13.209-1.323-24.344 9.015-24.344 21.954V207.448c0-12.939-11.135-23.277-24.345-21.954-11.486 1.15-19.793 11.669-19.793 23.213v109.086l-26.752 26.752a44.14 44.14 0 0 0-11.754 41.32l18.47 78.495c6.567 27.913 31.475 47.64 60.15 47.64h74.645c34.127 0 61.793-27.666 61.793-61.793v-91.431c-.001-11.544-8.306-22.063-19.793-23.213z"
+      fill="#f0c087"></path>
+    <path d="M339.862 361.377a8.829 8.829 0 0 0 8.828-8.828v-34.194c-10.052 2.061-17.655 10.844-17.655 21.506v12.687a8.827 8.827 0 0 0 8.827 8.829zM384 370.205a8.829 8.829 0 0 0 8.828-8.828v-34.194c-10.052 2.061-17.655 10.844-17.655 21.506v12.687a8.827 8.827 0 0 0 8.827 8.829zm44.138 8.827a8.829 8.829 0 0 0 8.828-8.828V336.01c-10.052 2.061-17.655 10.844-17.655 21.506v12.687a8.827 8.827 0 0 0 8.827 8.829zM288.885 464.36l-20.467-86.985a28.482 28.482 0 0 1 7.585-26.663l10.893-10.894v22.113a8.829 8.829 0 0 0 17.656 0V185.933c-10.344 2.173-17.655 11.972-17.655 22.773v109.087l-26.752 26.752a44.14 44.14 0 0 0-11.754 41.32l18.47 78.495c6.567 27.913 31.475 47.64 60.15 47.64h22.026c-28.677 0-53.584-19.727-60.152-47.64z"
+      fill="#e6af78"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001" id="closeme">
+    <path d="M284.286 256.002L506.143 34.144c7.811-7.811 7.811-20.475 0-28.285-7.811-7.81-20.475-7.811-28.285 0L256 227.717 34.143 5.859c-7.811-7.811-20.475-7.811-28.285 0-7.81 7.811-7.811 20.475 0 28.285l221.857 221.857L5.858 477.859c-7.811 7.811-7.811 20.475 0 28.285a19.938 19.938 0 0 0 14.143 5.857 19.94 19.94 0 0 0 14.143-5.857L256 284.287l221.857 221.857c3.905 3.905 9.024 5.857 14.143 5.857s10.237-1.952 14.143-5.857c7.811-7.811 7.811-20.475 0-28.285L284.286 256.002z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="open-menu">
+    <path d="M492 236H20c-11.046 0-20 8.954-20 20s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20zm0-160H20C8.954 76 0 84.954 0 96s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20zm0 320H20c-11.046 0-20 8.954-20 20s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20z"></path>
+  </symbol>
+</svg>
+<footer class = 'footer'>
+  <div class = 'footer_inner wrap pale'>
+    <img src = 'https://jangari-ntk.github.io/icons/apple-touch-icon.png' class = 'icon icon_2 transparent'>
+    <p>Copyright &copy;&nbsp;<span class = 'year'></span>&nbsp;VSOLILOQUY. All Rights Reserved</p>
+<a class='to_top' href="#documentTop">
+  <svg class="icon">
+    <use xlink:href="#arrow"></use>
+  </svg>
+</a>
+
+  </div>
+</footer>
+    <script src = 'https://jangari-ntk.github.io/js/bundle.f11fd62745d1a773065645eb6f90461f96d1918737e6ef9fc05cd1bce00b9322930bd58a337f67c368af62503f6dd7eb4389876b64a4a035183afe83443bd34d.js'></script>
+  </body>
+</html>
