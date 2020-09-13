@@ -395,7 +395,7 @@
 <span class="ln">20</span>Disk chain is not consistent : The parent virtual disk has been modified since the child was created. The content ID of the parent virtual disk does not match the corresponding parent content ID in the child (18)
 </code></pre></div><p>もしこの状況に陥ってしまった場合には、<a href="https://kb.vmware.com/s/article/1007969">KB1007969</a> を参考に頑張って VMDK ファイルを修正した上でゲストが正常に起動できることを祈るか、仮想マシンのバックアップからリストアしてください。ゲストが正常に動作する保証もないことから基本的にバックアップからのリストアを推奨します。</p>
 <p>次に２つ目の -t オプションです。-t オプションはコマンドのヘルプにすら表示されませんが、仮想ディスクと VMFS データストアのブロックの対応付けや整合性が確認できるようです。ただし、ゲストOSのファイルシステムの破損はもちろん確認できないので、あくまでも仮想ディスクと VMFS の間での確認であることに留意が必要です。</p>
-<p>以下はシンプロビジョニングの仮想ディスクでの実行結果です。実行結果を見る限りでは恐らくの表記と思われます。</p>
+<p>シンプロビジョニングの仮想ディスクでの実行結果を示します。実行結果を見る限りでは以下の表記と思われます。</p>
 <p>[VMDK 上のオフセット: 連続して確保したサイズ] --&gt; [VMFS or 未割り当て(NOMP) -- 連続する領域]</p>
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span># vmkfstools -t10 Example.vmdk
 <span class="ln"> 2</span>Mapping for file Example.vmdk (274877906944 bytes in size):
@@ -411,7 +411,8 @@
 <span class="ln">12</span>  (中略)
 <span class="ln">13</span>[ 274662948864:   213909504] --&gt; [NOMP -- :(           0 --&gt;    213909504)]
 <span class="ln">14</span>[ 274876858368:     1048576] --&gt; [VMFS -- LVID:5ef41cb3-9908b450-562d-b8ac6f12a79c/5ef41cb3-8ebb96d4-b073-b8ac6f12a79c/1:( 143364456448 --&gt;  143365505024)]
-</code></pre></div><p>最後に３つ目の -x オプションです。こちらはホストのクラッシュやストレージの障害でディスクの中身が破損した場合に修復を行います。問題がなければ以下のように Disk is error free と出ます。</p>
+</code></pre></div><p>最後に３つ目の -x オプションです。こちらはホストのクラッシュやストレージの障害でディスクの中身が破損した場合にチェックや修復を行います。</p>
+<p>-x check は問題がなければ以下のように Disk is error free と出ます。</p>
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span># vmkfstools -x check Example.vmdk
 <span class="ln">2</span>Disk is error free
 </code></pre></div><p>ディスクに問題があると Disk needs repair. と表示されるので、その場合は -x repair として修復します。ただし、あらゆる状況に対応できるわけではないため、修復しても駄目だった場合は最終手段として仮想マシンのバックアップからリストアが必要になります。</p>
