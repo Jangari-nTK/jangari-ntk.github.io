@@ -256,27 +256,29 @@
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>※以下でも同じ結果を得られます。
 <span class="ln">2</span># vsish -e get /hardware/cpu/cpuInfo
 </code></pre></div><p>vsish を使うサンプルケースとして、2vCPU 仮想マシン2台の CPU 使用率が常に 100% になっている仮定において、2vCPU という構成が妥当かどうかを一例として見ています。具体的には、vsish での仮想マシンの CPU 統計情報から demand-entitlement-ratio (仮想マシンのリソース要求と実際の割り当ての比率) という値を一つの目安としています。</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span># ps | grep -E vmx
-<span class="ln"> 2</span># vsish
-<span class="ln"> 3</span>/&gt; get /sched/Vcpus/2100059/groupID
-<span class="ln"> 4</span>13871
-<span class="ln"> 5</span>/&gt; get /sched/groups/13871/stats/cpuStatsDir/cpuStats
-<span class="ln"> 6</span>group CpuStats {
-<span class="ln"> 7</span>   number of vsmps:26
-<span class="ln"> 8</span>   size:40
-<span class="ln"> 9</span>   used-time:7637451738 usec
-<span class="ln">10</span>   latency-stats:latency-stats {
-<span class="ln">11</span>      cpu-latency:cpu-latency {
-<span class="ln">12</span>         stolen-time:1892717578 usec
-<span class="ln">13</span>         ready-time:248449051 usec
-<span class="ln">14</span>         costop-time:3489838 usec
-<span class="ln">15</span>         limbo-time:0 usec
-<span class="ln">16</span>         execution-skew-time:1640778689 usec
-<span class="ln">17</span>      }
-<span class="ln">18</span>      (中略)
-<span class="ln">19</span>   demand:1052 MHz
-<span class="ln">20</span>   demand-entitlement-ratio:45
-<span class="ln">21</span>}
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span># ps | grep vmx
+<span class="ln"> 2</span>2100059  2100059  vmx
+<span class="ln"> 3</span>
+<span class="ln"> 4</span># vsish
+<span class="ln"> 5</span>/&gt; get /sched/Vcpus/2100059/groupID
+<span class="ln"> 6</span>13871
+<span class="ln"> 7</span>/&gt; get /sched/groups/13871/stats/cpuStatsDir/cpuStats
+<span class="ln"> 8</span>group CpuStats {
+<span class="ln"> 9</span>   number of vsmps:26
+<span class="ln">10</span>   size:40
+<span class="ln">11</span>   used-time:7637451738 usec
+<span class="ln">12</span>   latency-stats:latency-stats {
+<span class="ln">13</span>      cpu-latency:cpu-latency {
+<span class="ln">14</span>         stolen-time:1892717578 usec
+<span class="ln">15</span>         ready-time:248449051 usec
+<span class="ln">16</span>         costop-time:3489838 usec
+<span class="ln">17</span>         limbo-time:0 usec
+<span class="ln">18</span>         execution-skew-time:1640778689 usec
+<span class="ln">19</span>      }
+<span class="ln">20</span>      (中略)
+<span class="ln">21</span>   demand:1052 MHz
+<span class="ln">22</span>   demand-entitlement-ratio:45
+<span class="ln">23</span>}
 </code></pre></div><p>この値が 100% を超えている状況、例えば 150% などであれば、単純に仮想マシンからの CPU 要求が割り当てを超過しているため、vCPU の追加が必要との判断に移れます。逆に 100% を大きく下回っている、例えば 50% や 25% であればオーバープロビジョニングの可能性が考えられるので、esxtop で %READY の値を見て CPU がオーバーコミットしていないかをチェックするなどの対応が必要という判断に移れます。</p>
 <p>なお、あくまでも上記は vsish の使い方のサンプルです。一般には、仮想マシンの性能情報は以下のようなガイドラインを見つつ esxtop で見る方が多いかなと思います。冒頭の通り vsish については体系的な公開情報も無いので、あくまで「こういう目安の出し方もあるよ」といった程度に考えておくと良いかなと思います。</p>
 <ul>
