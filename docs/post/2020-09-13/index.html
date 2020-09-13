@@ -162,7 +162,8 @@
 <li>esxtop - パフォーマンスモニタリング</li>
 </ol>
 <p>今回の記事では esxcli ～ vmkfstools までのコマンドを見ていきます。これだけでも長いため memstats ～ esxtop は次回の記事で。</p>
-<p>なお、esxcli, vmkfstools, pktcap-uw, esxtop は公式ドキュメントもあり、非常に便利で強力なトラブルシューティングツールです。これらは平時でも使えるように HOL や Nested ESXi で練習しておいた方が良いかなと思います。</p>
+<p>esxcli, vmkfstools, pktcap-uw, esxtop は公式ドキュメントもあり、非常に便利で強力なトラブルシューティングツールです。これらは平時でも使えるように HOL や Nested ESXi で練習しておいた方が良いかなと思います。</p>
+<p>セッションでは公開情報がない裏技的なコマンドも紹介されていますが、ESXi の仕組みの理解に役立つので本記事でも概要を紹介しています。</p>
 <h2 id="esxi-shell-と-ssh-の有効化">ESXi Shell と SSH の有効化</h2>
 <p>ESXi のコマンドは ESXi Shell か SSH で実行しますので、コマンドの利用にはまずこれらの有効化が必要になります。ESXi Shell の有効化の手順などは以下の KB2004746 に記載されていますので、こちらをご参照ください。</p>
 <p><a href="https://kb.vmware.com/s/article/2004746?lang=ja">ESXi 5.x および 6.x での ESXi Shell の使い方 (2004746)</a></p>
@@ -272,7 +273,7 @@
 <span class="ln">15</span>         limbo-time:0 usec
 <span class="ln">16</span>         execution-skew-time:1640778689 usec
 <span class="ln">17</span>      }
-<span class="ln">18</span>      (※中略)
+<span class="ln">18</span>      (中略)
 <span class="ln">19</span>   demand:1052 MHz
 <span class="ln">20</span>   demand-entitlement-ratio:45
 <span class="ln">21</span>}
@@ -391,7 +392,24 @@
 <span class="ln">19</span>        Parent Content ID: 4044818622
 <span class="ln">20</span>Disk chain is not consistent : The parent virtual disk has been modified since the child was created. The content ID of the parent virtual disk does not match the corresponding parent content ID in the child (18)
 </code></pre></div><p>もしこの状況に陥ってしまった場合には、<a href="https://kb.vmware.com/s/article/1007969">KB1007969</a> を参考に頑張って VMDK ファイルを修正した上でゲストが正常に起動できることを祈るか、仮想マシンのバックアップからリストアしてください。ゲストが正常に動作する保証もないことから基本的にバックアップからのリストアを推奨します。</p>
-<p>次に２つ目の -x オプションです。こちらはホストのクラッシュやストレージの障害でディスクの中身が破損した場合に修復を行います。問題がなければ以下のように Disk is error free と出ます。</p>
+<p>次に２つ目の -t オプションです。-t オプションはコマンドのヘルプにすら表示されませんが、仮想ディスクと VMFS データストアのブロックの対応付けや整合性が確認できるようです。ただし、ゲストOSのファイルシステムの破損はもちろん確認できないので、あくまでも仮想ディスクと VMFS の間での確認であることに留意が必要です。</p>
+<p>以下はシンプロビジョニングの仮想ディスクでの実行結果です。実行結果を見る限りでは恐らくの表記と思われます。</p>
+<p>[VMDK 上のオフセット: 連続して確保したサイズ] --&gt; [VMFS or 未割り当て(NOMP) -- 連続する領域]</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span># vmkfstools -t10 Example.vmdk
+<span class="ln"> 2</span>Mapping for file Example.vmdk (274877906944 bytes in size):
+<span class="ln"> 3</span>[           0:     1048576] --&gt; [VMFS -- LVID:5ef41cb3-9908b450-562d-b8ac6f12a79c/5ef41cb3-8ebb96d4-b073-b8ac6f12a79c/1:( 143363407872 --&gt;  143364456448)]
+<span class="ln"> 4</span>[     1048576:     2097152] --&gt; [VMFS -- LVID:5ef41cb3-9908b450-562d-b8ac6f12a79c/5ef41cb3-8ebb96d4-b073-b8ac6f12a79c/1:( 143371796480 --&gt;  143373893632)]
+<span class="ln"> 5</span>[     3145728:   103809024] --&gt; [NOMP -- :(           0 --&gt;    103809024)]
+<span class="ln"> 6</span>[   106954752:     1048576] --&gt; [VMFS -- LVID:5ef41cb3-9908b450-562d-b8ac6f12a79c/5ef41cb3-8ebb96d4-b073-b8ac6f12a79c/1:( 143365505024 --&gt;  143366553600)]
+<span class="ln"> 7</span>[   108003328:     2097152] --&gt; [VMFS -- LVID:5ef41cb3-9908b450-562d-b8ac6f12a79c/5ef41cb3-8ebb96d4-b073-b8ac6f12a79c/1:( 143373893632 --&gt;  143375990784)]
+<span class="ln"> 8</span>[   110100480:   167772160] --&gt; [VMFS -- LVID:5ef41cb3-9908b450-562d-b8ac6f12a79c/5ef41cb3-8ebb96d4-b073-b8ac6f12a79c/1:( 143488188416 --&gt;  143655960576)]
+<span class="ln"> 9</span>[   277872640:     1048576] --&gt; [VMFS -- LVID:5ef41cb3-9908b450-562d-b8ac6f12a79c/5ef41cb3-8ebb96d4-b073-b8ac6f12a79c/1:( 143865675776 --&gt;  143866724352)]
+<span class="ln">10</span>[   278921216:   536870912] --&gt; [NOMP -- :(           0 --&gt;    536870912)]
+<span class="ln">11</span>[   815792128:   536870912] --&gt; [NOMP -- :(           0 --&gt;    536870912)]
+<span class="ln">12</span>  (中略)
+<span class="ln">13</span>[ 274662948864:   213909504] --&gt; [NOMP -- :(           0 --&gt;    213909504)]
+<span class="ln">14</span>[ 274876858368:     1048576] --&gt; [VMFS -- LVID:5ef41cb3-9908b450-562d-b8ac6f12a79c/5ef41cb3-8ebb96d4-b073-b8ac6f12a79c/1:( 143364456448 --&gt;  143365505024)]
+</code></pre></div><p>最後に３つ目の -x オプションです。こちらはホストのクラッシュやストレージの障害でディスクの中身が破損した場合に修復を行います。問題がなければ以下のように Disk is error free と出ます。</p>
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span># vmkfstools -x check Example.vmdk
 <span class="ln">2</span>Disk is error free
 </code></pre></div><p>ディスクに問題があると Disk needs repair. と表示されるので、その場合は -x repair として修復します。ただし、あらゆる状況に対応できるわけではないため、修復しても駄目だった場合は最終手段として仮想マシンのバックアップからリストアが必要になります。</p>
