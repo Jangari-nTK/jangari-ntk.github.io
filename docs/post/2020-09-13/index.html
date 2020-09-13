@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en" data-figures="" class="page">
+  <head>  <title>【Part.3-1】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus | vSoliloquy</title>
+  <meta charset='utf-8'>
+  <meta name="generator" content="Hugo 0.74.3" />
+  <meta name = 'viewport' content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+  <meta http-equiv = 'X-UA-Compatible' content = 'IE=edge'>
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-175306204-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-175306204-1');
+</script>
+  
+<meta property = "og:locale" content = "en_US" />
+<meta property="og:type" content="article">
+<meta name="description" content="前回の記事の続きです。今回と次回で VMworld 2017 SER2965BU のセッションでの 27:00 ～ 48:20 頃までの内容、七つ道具2セット目である７つのコマンドについて見ていきます。">
+<meta name = "twitter:card" content = "summary" />
+<meta name = "twitter:creator" content = "@Jangari_nTK">
+<meta name = "twitter:title" content = "【Part.3-1】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus" />
+<meta property = "og:url" content = "https://jangari-ntk.github.io/post/2020-09-13/" />
+<meta property = "og:title" content = "【Part.3-1】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus" />
+<meta property = "og:description" content = "前回の記事の続きです。今回と次回で VMworld 2017 SER2965BU のセッションでの 27:00 ～ 48:20 頃までの内容、七つ道具2セット目である７つのコマンドについて見ていきます。" />
+<meta property = "og:image" content = "https://jangari-ntk.github.io/images/2020-09-06/thumbnail.PNG" />
+<link rel='apple-touch-icon' sizes='180x180' href='https://jangari-ntk.github.io/icons/apple-touch-icon.png'>
+<link rel='icon' type='image/png' sizes='32x32' href='https://jangari-ntk.github.io/icons/favicon-32x32.png'>
+<link rel='icon' type='image/png' sizes='16x16' href='https://jangari-ntk.github.io/icons/favicon-16x16.png'>
+<link rel='manifest' href='https://jangari-ntk.github.io/icons/site.webmanifest'>
+<link rel="mask-icon" href= 'https://jangari-ntk.github.io/safari-pinned-tab.svg' color="#002538">
+<meta name="msapplication-TileColor" content="#002538">
+<meta name="theme-color" content="#002538">
+
+  <link rel='canonical' href='https://jangari-ntk.github.io/post/2020-09-13/'>
+    
+
+    
+    <link rel="preload" href="https://jangari-ntk.github.io/css/styles.07d826161ae19e9fb022eb322413acf88cd0957118327581a5d1a71bf72a78b50092e34a0fbcfa0baaafd30ce88389c0c1fe3c51938f49e175a5239b2ff2b548.css" integrity = 'sha512-B9gmFhrhnp&#43;wIusyJBOs&#43;IzQlXEYMnWBpdGnG/cqeLUAkuNKD7z6C6qv0wzog4nAwf48UZOPSeF1pSObL/K1SA==' as="style">
+    <link rel="preload" href="https://jangari-ntk.github.io/js/bundle.f11fd62745d1a773065645eb6f90461f96d1918737e6ef9fc05cd1bce00b9322930bd58a337f67c368af62503f6dd7eb4389876b64a4a035183afe83443bd34d.js" as="script">
+
+    
+    <link rel = 'stylesheet' href = 'https://jangari-ntk.github.io/css/styles.07d826161ae19e9fb022eb322413acf88cd0957118327581a5d1a71bf72a78b50092e34a0fbcfa0baaafd30ce88389c0c1fe3c51938f49e175a5239b2ff2b548.css' integrity = 'sha512-B9gmFhrhnp&#43;wIusyJBOs&#43;IzQlXEYMnWBpdGnG/cqeLUAkuNKD7z6C6qv0wzog4nAwf48UZOPSeF1pSObL/K1SA=='>
+  </head>
+  
+  
+  
+    
+  
+  <body data-code="100" data-lines="true" id="documentTop">
+
+<header class = 'nav_header' >
+  <nav class = 'nav'>
+    <a href='https://jangari-ntk.github.io/' class = 'nav_brand nav_item'>
+      <img src="https://jangari-ntk.github.io/logos/logo.png" class="logo">
+      <div class = 'nav_close'>
+        <svg class="icon">
+          <use xlink:href="#open-menu"></use>
+        </svg>
+        <svg class="icon">
+          <use xlink:href="#closeme"></use>
+        </svg>
+      </div>
+    </a>
+    <div class = 'nav_body nav_body_left'>
+      <div class = 'nav_parent'>
+        <a href = 'https://jangari-ntk.github.io/' class = 'nav_item'>Home </a>
+      </div>
+      <div class = 'nav_parent'>
+        <a href = 'https://jangari-ntk.github.io/about/' class = 'nav_item'>About </a>
+      </div>
+      <div class = 'nav_parent'>
+        <a href = 'https://twitter.com/Jangari_nTK' class = 'nav_item'>Twitter </a>
+      </div>
+<div class='follow'>
+  
+  <a href='https://jangari-ntk.github.io/index.xml'>
+    <svg class="icon">
+      <use xlink:href="#rss"></use>
+    </svg>
+  </a>
+</div>
+
+    </div>
+  </nav>
+</header>
+
+    <main>
+  
+<div class = 'grid-inverse wrap content'>
+  <article class='post_content'>
+    <h1 class='post_title'>【Part.3-1】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</h1><div class = 'post_meta'>
+  <svg class="icon">
+    <use xlink:href="#calendar"></use>
+  </svg>
+  <span class="post_date">
+    Sep 13, 2020</span>
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/troubleshooting' class = 'post_tag button button_translucent'>Troubleshooting
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/cli' class = 'post_tag button button_translucent'>CLI
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/architecture' class = 'post_tag button button_translucent'>Architecture
+  </a>
+</div>
+
+    <div class='post_share'>
+  Share on:
+  <a href="https://twitter.com/intent/tweet?text=%e3%80%90Part.3-1%e3%80%91Advanced%20Troubleshooting%20of%20VMware%20ESXi%20Server%206.x%20for%20vSphere%20Gurus&url=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2020-09-13%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
+    <svg class="icon">
+      <use xlink:href="#twitter"></use>
+    </svg>
+  </a>
+  
+  <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2020-09-13%2f&t=%e3%80%90Part.3-1%e3%80%91Advanced%20Troubleshooting%20of%20VMware%20ESXi%20Server%206.x%20for%20vSphere%20Gurus" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
+    <svg class="icon">
+      <use xlink:href="#facebook"></use>
+    </svg>
+  </a>
+  <script>
+    function shareViaLinkedin() {
+      window.open('http://www.linkedin.com/shareArticle?mini=true&url='+encodeURIComponent("https://jangari-ntk.github.io/post/2020-09-13/"), '', 'left=0,top=0,width=650,height=420,personalbar=0,toolbar=0,scrollbars=0,resizable=0');
+    }
+  </script>
+  <a href="#linkedinshare" id = "linkedinshare" class="linkedin" title="Share on LinkedIn" rel="nofollow" onclick="shareViaLinkedin()">
+    <svg class="icon">
+      <use xlink:href="#linkedin"></use>
+    </svg>
+  </a>
+  <a href="https://jangari-ntk.github.io/post/2020-09-13/" title="Copy Link" class="link link_yank">
+    <svg class="icon">
+      <use xlink:href="#yank"></use>
+    </svg>
+  </a>
+</div>
+
+    
+    
+    <h2>Table of contents</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#はじめに">はじめに</a></li>
+    <li><a href="#esxi-shell-と-ssh-の有効化">ESXi Shell と SSH の有効化</a></li>
+    <li><a href="#esxcli---esxi-の設定の確認や変更">esxcli - ESXi の設定の確認や変更</a></li>
+    <li><a href="#vsish---vmkernel-sysinfo-shell">vsish - VMkernel Sysinfo Shell</a></li>
+    <li><a href="#vim-cmd---esxi-と仮想マシンの構成の管理">vim-cmd - ESXi と仮想マシンの構成の管理</a></li>
+    <li><a href="#vmkfstools---データストアや仮想ディスクの管理">vmkfstools - データストアや仮想ディスクの管理</a></li>
+    <li><a href="#to-be-continued">To be continued&hellip;</a></li>
+  </ul>
+</nav>
+    <h2 id="はじめに">はじめに</h2>
+<p>VMworld 2017 SER2965BU のセッションでの 27:00 ～ 48:20 頃までの内容、七つ道具2セット目である７つのコマンドについて見ていきます。</p>
+<ol>
+<li>esxcli - ESXi の設定の確認や変更</li>
+<li>vsish - VMkernel Sysinfo Shell</li>
+<li>vim-cmd - ESXi と仮想マシンの構成の管理</li>
+<li>vmkfstools - データストアや仮想ディスクの管理</li>
+<li>memstats- 詳細なメモリ統計情報</li>
+<li>pktcap-uw - パケットのキャプチャ＆トレース</li>
+<li>esxtop - パフォーマンスモニタリング</li>
+</ol>
+<p>今回の記事では esxcli ～ vmkfstools までのコマンドを見ていきます。これだけでも長いため memstats ～ esxtop は次回の記事で。</p>
+<p>なお、esxcli, vmkfstools, pktcap-uw, esxtop は公式ドキュメントもあり、非常に便利で強力なトラブルシューティングツールです。これらは平時でも使えるように HOL や Nested ESXi で練習しておいた方が良いかなと思います。</p>
+<h2 id="esxi-shell-と-ssh-の有効化">ESXi Shell と SSH の有効化</h2>
+<p>ESXi のコマンドは ESXi Shell か SSH で実行しますので、コマンドの利用にはまずこれらの有効化が必要になります。ESXi Shell の有効化の手順などは以下の KB2004746 に記載されていますので、こちらをご参照ください。</p>
+<p><a href="https://kb.vmware.com/s/article/2004746?lang=ja">ESXi 5.x および 6.x での ESXi Shell の使い方 (2004746)</a></p>
+<p>なお、あくまでもトラブルシューティング用に使う機能のため、通常運用時はセキュリティの観点から無効にしておくことが推奨されます。</p>
+<h2 id="esxcli---esxi-の設定の確認や変更">esxcli - ESXi の設定の確認や変更</h2>
+<p>一番有名でよく使うコマンドといえば esxcli です。ESXi のストレージ、ネットワーク、システム情報、ソフトウェアパッケージ、vSAN 構成、仮想マシンなど、色々な情報を取得したり操作に使うことができます。</p>
+<p>非常に多彩なコマンドがありますが、基本的に使用できるコマンドは vSphere CLI や Standalone ESXCLI と同じです。すべてを記事にするのは困難かつセッションの範疇外なので、各種コマンドの詳細な内容は VMware {code} にあるコマンドリファレンスなどを参照してもらえればと思います。</p>
+<ul>
+<li><a href="https://code.vmware.com/web/tool/6.7/vsphere-cli">vSphere CLI - VMware {code}</a></li>
+<li><a href="https://code.vmware.com/web/tool/7.0/esxcli">ESXCLI - VMware {code}</a></li>
+</ul>
+<p>esxcli のユースケースは色々ありますがセッションで挙げられているものに言及すると、esxcli network ip neighbor list コマンドで ESXi の ARP テーブルを確認することが出来ます。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span># esxcli network ip neighbor list
+<span class="ln">2</span>Neighbor                  Mac Address        Vmknic     Expiry  State  Type
+<span class="ln">3</span>------------------------  -----------------  ------  ---------  -----  -------
+<span class="ln">4</span>192.168.0.129             00:0c:29:16:e6:3f  vmk0     1105 sec         Unknown
+<span class="ln">5</span>192.168.0.1               00:1b:8b:ae:d2:8a  vmk0      862 sec         Unknown
+<span class="ln">6</span>192.168.0.130             00:50:56:ad:ce:76  vmk0     1139 sec         Unknown
+<span class="ln">7</span>192.168.0.3               00:d8:61:a5:e9:d3  vmk0     1199 sec         Unknown
+<span class="ln">8</span>fe80::21b:8bff:feae:d28a  00:1b:8b:ae:d2:8a  vmk0    78801 sec  Stale  Unknown
+</code></pre></div><p>NSX-T の vxlan スタック(※)のように、カスタム TCP/IP スタックが使われている場合は -N オプションでデフォルト以外の TCP/IP スタックを指定して確認することも出来ます。<br>
+※非常に紛らわしいですが vxlan は GENEVE で通信する TEP のカスタム TCP/IP スタックの名前です。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span># esxcli network ip neighbor list -N vxlan
+<span class="ln">2</span>Neighbor    Mac Address        Vmknic    Expiry  State  Type
+<span class="ln">3</span>----------  -----------------  ------  --------  -----  ----
+<span class="ln">4</span>10.3.0.3    00:50:56:60:a0:40  vmk10   1192 sec         Dynamic
+<span class="ln">5</span>10.3.0.2    00:50:56:6e:89:3e  vmk10   1173 sec         Dynamic
+<span class="ln">6</span>10.3.0.5    00:50:56:ad:c7:8d  vmk10   1196 sec         Dynamic
+<span class="ln">7</span>10.3.0.4    00:50:56:69:49:90  vmk10   1193 sec         Dynamic
+</code></pre></div><p>他には esxcli vm process list コマンドで実行中の仮想マシンの一覧を確認するなども可能です。仮想マシン自体がハングしてしまい、kill -9 コマンドで強制終了する必要があるケースなどにはよく使用されます。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span># esxcli vm process list
+<span class="ln"> 2</span>VCSA01a
+<span class="ln"> 3</span>   World ID: 2100060
+<span class="ln"> 4</span>   Process ID: 0
+<span class="ln"> 5</span>   VMX Cartel ID: 2100059
+<span class="ln"> 6</span>   UUID: 42 2d c4 e7 72 b6 e6 47-aa e6 43 dd e7 81 b2 60
+<span class="ln"> 7</span>   Display Name: VCSA01a
+<span class="ln"> 8</span>   Config File: /vmfs/volumes/5ef41cb4-a94a9e8c-e0ab-b8ac6f12a79c/VCSA01a.vmx
+<span class="ln"> 9</span>
+<span class="ln">10</span>ADCS
+<span class="ln">11</span>   World ID: 2100515
+<span class="ln">12</span>   Process ID: 0
+<span class="ln">13</span>   VMX Cartel ID: 2100514
+<span class="ln">14</span>   UUID: 42 2d 80 9d ce ee c5 b8-d9 9d f3 b1 75 48 84 41
+<span class="ln">15</span>   Display Name: ADCS
+<span class="ln">16</span>   Config File: /vmfs/volumes/5ef41cb4-a94a9e8c-e0ab-b8ac6f12a79c/ADCS.vmx
+</code></pre></div><p>個人的によく使うのは esxcli network nic list や esxcli storage core adapter list でしょうか。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span># esxcli network nic list
+<span class="ln">2</span>Name    PCI Device    Driver  Admin Status  Link Status  Speed  Duplex  MAC Address         MTU  Description
+<span class="ln">3</span>------  ------------  ------  ------------  -----------  -----  ------  -----------------  ----  -------------------------------------------------------------
+<span class="ln">4</span>vmnic0  0000:01:00.0  qflge   Up            Up            1000  Full    b8:ac:6f:12:a7:9c  9000  Broadcom Corporation Broadcom NetXtreme II BCM5709 1000Base-T
+<span class="ln">5</span>vmnic1  0000:01:00.1  qflge   Up            Down             0  Half    b8:ac:6f:12:a7:9e  1500  Broadcom Corporation Broadcom NetXtreme II BCM5709 1000Base-T
+<span class="ln">6</span>vmnic2  0000:02:00.0  qflge   Up            Down             0  Half    b8:ac:6f:12:a7:a0  1500  Broadcom Corporation Broadcom NetXtreme II BCM5709 1000Base-T
+<span class="ln">7</span>vmnic3  0000:02:00.1  qflge   Up            Down             0  Half    b8:ac:6f:12:a7:a2  1500  Broadcom Corporation Broadcom NetXtreme II BCM5709 1000Base-T
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span># esxcli storage core adapter list
+<span class="ln">2</span>HBA Name  Driver        Link State  UID             Capabilities         Description
+<span class="ln">3</span>--------  ------------  ----------  --------------  -------------------  ------------------------------------------------------------------
+<span class="ln">4</span>vmhba0    megaraid_sas  link-n/a    unknown.vmhba0                       (0000:03:00.0) LSI / Symbios Logic Dell PERC 6/i Integrated
+<span class="ln">5</span>vmhba1    vmkata        link-n/a    sata.vmhba1                          (0000:00:1f.2) Intel Corporation 2 port SATA IDE Controller (ICH9)
+<span class="ln">6</span>vmhba64   vmkata        link-n/a    sata.vmhba64                         (0000:00:1f.2) Intel Corporation 2 port SATA IDE Controller (ICH9)
+<span class="ln">7</span>vmhba65   iscsi_vmk     online      iscsi.vmhba65   Second Level Lun ID  iSCSI Software Adapter
+</code></pre></div><p>NIC や HBA で実際に使用されているドライバを確認したり、PCI スロット番号をハードウェアのマニュアルと照らし合わせてハードウェア上での位置を特定する等の用途に使えます。PCI スロットの表記は Linux の lspci 等と同様に「ドメイン:バス:スロット.機能番号」です。</p>
+<p>なお、セッションの esxcli の説明で最初に挙げられていますが、esxcli の使用時に意識しておくべき内容があります。それは esxcli 自体の実行が異様に遅かったり失敗するケースです。</p>
+<p>最初の ESXi のアーキテクチャを思い出してもらえると、以下のように esxcli は hostd に対してアクセスを行っています。つまり、hostd に問題が発生している場合、hostd へのアクセスに失敗して esxcli も使用できない可能性があります。</p>
+<p><img src="/images/2020-09-13/ESXi-Architecture-excerpt.PNG" alt="ESXi Architecture Diagram Excerpt"></p>
+<p>このような場合、代わりに localcli コマンドを使用することで、hostd を迂回して同じような操作を行うことが出来ます。問題の根本原因が hostd の動作にも影響していて esxcli が使えない<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>、というケースもありますので頭の片隅に留めておくと良いと思います。なお、hostd を迂回するため、整合性を保つ観点から通常運用時は localcli による設定変更は行わない方が良いでしょう。</p>
+<p>esxcli コマンドは使いこなせると非常に強力なツールですので、是非 VMware HOL や Nested ESXi といったサンドボックス環境で実際にいじってマスターすることをおすすめしたいです。</p>
+<h2 id="vsish---vmkernel-sysinfo-shell">vsish - VMkernel Sysinfo Shell</h2>
+<p>VMkernel 内部の情報を取得するための特殊なシェルです。このコマンドは VMware Knowledge Base を検索するとちょこちょこ出てくるのですが、vsish 上でのコマンドの書式やユースケースなどが体系的にまとめられたドキュメントは公開されていないようです。</p>
+<p><a href="https://www.virtuallyghetto.com/2010/08/what-is-vmware-vsish.html">What is VMware vsish?</a></p>
+<p>前提として vsish で設定を「変更」すると予期せず大きなインパクトを与える可能性があります。このため、セッションでは vsish 上で実行するコマンドは get だけに留めるように言及されています。ナレッジベースなどの公開情報で必要と明示されていない限り、それ以外のコマンドを使用することは避けるべきです。</p>
+<p>コマンドの書式としては &ldquo;get /&lt;opt.1&gt;/&lt;opt.2&gt;/&lt;opt.3&gt;&hellip;&rdquo; のように、get の後にディレクトリのような階層構造で取得するオプションを指定します。オプションについては Tab キーで一覧を表示できます。</p>
+<p>例えば、CPU 情報を取得したい場合、vsish シェルを起動してから以下のように get コマンドを実行します。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span># vsish
+<span class="ln"> 2</span>/&gt; get /hardware/cpu/cpuInfo
+<span class="ln"> 3</span>CPU global information {
+<span class="ln"> 4</span>   Hyperthreading state:Hyperthreading state: 3 -&gt; enabled
+<span class="ln"> 5</span>   HV state:HV state: 3 -&gt; HV Enabled
+<span class="ln"> 6</span>   Number of packages:2
+<span class="ln"> 7</span>   Number of cores:12
+<span class="ln"> 8</span>   Number of CPUs (threads):24
+<span class="ln"> 9</span>   Number of licensable cores:12
+<span class="ln">10</span>   SLC64 capable:0
+<span class="ln">11</span>   HV Replay capable:0
+<span class="ln">12</span>   First of reasons why replay is disabled on Host:Reason replay is disabled on Host: 1 -&gt; CPU does not support HV Replay
+<span class="ln">13</span>   Several reasons why replay is disabled on Host:Reason replay is disabled on Host: 1 -&gt; CPU does not support HV Replay
+<span class="ln">14</span>   NVOA:0
+<span class="ln">15</span>   Hyperthreading security vulnerability mitigated:0
+<span class="ln">16</span>}
+</code></pre></div><p>vsish の実行時に -e オプションと合わせてワンライナーとしても実行できます。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>※以下でも同じ結果を得られます。
+<span class="ln">2</span># vsish -e get /hardware/cpu/cpuInfo
+</code></pre></div><p>vsish を使うサンプルケースとして、2vCPU 仮想マシン2台の CPU 使用率が常に 100% になっている仮定において、2vCPU という構成が妥当かどうかを一例として見ています。具体的には、vsish での仮想マシンの CPU 統計情報から demand-entitlement-ratio (仮想マシンのリソース要求と実際の割り当ての比率) という値を一つの目安としています。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span># ps | grep -E vmx
+<span class="ln"> 2</span># vsish
+<span class="ln"> 3</span>/&gt; get /sched/Vcpus/2100059/groupID
+<span class="ln"> 4</span>13871
+<span class="ln"> 5</span>/&gt; get /sched/groups/13871/stats/cpuStatsDir/cpuStats
+<span class="ln"> 6</span>group CpuStats {
+<span class="ln"> 7</span>   number of vsmps:26
+<span class="ln"> 8</span>   size:40
+<span class="ln"> 9</span>   used-time:7637451738 usec
+<span class="ln">10</span>   latency-stats:latency-stats {
+<span class="ln">11</span>      cpu-latency:cpu-latency {
+<span class="ln">12</span>         stolen-time:1892717578 usec
+<span class="ln">13</span>         ready-time:248449051 usec
+<span class="ln">14</span>         costop-time:3489838 usec
+<span class="ln">15</span>         limbo-time:0 usec
+<span class="ln">16</span>         execution-skew-time:1640778689 usec
+<span class="ln">17</span>      }
+<span class="ln">18</span>      (※中略)
+<span class="ln">19</span>   demand:1052 MHz
+<span class="ln">20</span>   demand-entitlement-ratio:45
+<span class="ln">21</span>}
+</code></pre></div><p>この値が 100% を超えている状況、例えば 150% などであれば、単純に仮想マシンからの CPU 要求が割り当てを超過しているため、vCPU の追加が必要との判断に移れます。逆に 100% を大きく下回っている、例えば 50% や 25% であればオーバープロビジョニングの可能性が考えられるので、esxtop で %READY の値を見て CPU がオーバーコミットしていないかをチェックするなどの対応が必要という判断に移れます。</p>
+<p>なお、あくまでも上記は vsish の使い方のサンプルです。一般には、仮想マシンの性能情報は以下のようなガイドラインを見つつ esxtop で見る方が多いかなと思います。冒頭の通り vsish については体系的な公開情報も無いので、あくまで「こういう目安の出し方もあるよ」といった程度に考えておくと良いかなと思います。</p>
+<ul>
+<li><a href="https://kb.vmware.com/s/article/2001003?lang=ja">ESX/ESXi 仮想マシンのパフォーマンス問題のトラブルシューティング (2001003)</a></li>
+<li><a href="https://kb.vmware.com/s/article/1017926?lang=ja">応答しなくなった仮想マシンのトラブルシューティング： VMM とゲスト CPU 使用量の比較 (1017926)</a></li>
+</ul>
+<p>また、セッションでは hardware, net, storage の3点の最上位のオプションから以下が一例として抜粋されていますが詳細は解説されていないので、本記事でもオプションの一覧と概要だけに留めます。</p>
+<ul>
+<li>/hardware/bios - BIOS 情報 (ベンダーやバージョンなど)</li>
+<li>/hardware/hardwareInfo - ハードウェア情報 (NUMA ノード数しか出てこず使い道が不明)</li>
+<li>/net/pNics/vmnic&lt;n&gt;/stats - アップリンクの統計情報 (各種エラーフレームのカウントなど)</li>
+<li>/net/portsets/&lt;vSwitch&gt;/stats - 仮想スイッチの統計情報</li>
+<li>/storage/scsifw/devices/&lt;device identifier&gt;/stats - ストレージデバイスの統計情報</li>
+<li>/storage/scsifw/adapters/vmhba<!-- raw HTML omitted -->/stats - ストレージアダプタの統計情報</li>
+</ul>
+<h2 id="vim-cmd---esxi-と仮想マシンの構成の管理">vim-cmd - ESXi と仮想マシンの構成の管理</h2>
+<p>vim-cmd も体系的なドキュメントはありませんが、以下のような仮想マシンのパワーオンなどで使用したことがある人もいると思います。こちらのコマンドは仮想マシンのパワーオンなどのタスク以外にも、ホスト単体で行えるようなタスク、例えばスナップショットの作成などは vim-cmd コマンドで行えるようになっています。</p>
+<p><a href="https://kb.vmware.com/s/article/1038043?lang=ja">vSphere Client を使用してホストを管理できない場合にコマンド ラインから仮想マシンをパワーオンする (1038043)</a></p>
+<p>vim-cmd も vsish と同じようにオプションは階層構造で指定します。上述の通り体系的な情報はありませんが、ざっと見た感じ最上位のオプションは以下のような対応付けのようです。</p>
+<ul>
+<li>vmsvc - 仮想マシン関連の操作</li>
+<li>hostsvc - ホスト関連を操作</li>
+<li>solo - 仮想マシンの登録など独立した操作</li>
+<li>vimsvc - タスク管理などの操作</li>
+<li>proxysvc - rhttpproxy (ESXi のリバースプロキシ) 周りの操作</li>
+<li>internalsvc - ホストの内部処理</li>
+<li>hbrsvc - vSphere Replication のレプリケーション関連の操作</li>
+</ul>
+<p>セッションでは以下の２つのコマンドについて説明されています。</p>
+<ul>
+<li>vim-cmd /vmsvc/getallvms (ホストのインベントリ上の仮想マシン一覧を表示)</li>
+<li>vim-cmd /vimsvc/task_list (ホストで実行されたタスクの一覧)</li>
+</ul>
+<p>1つ目の /vmsvc/getallvms は前回のログに関する記事で hostd.log の解説時にも少し見ました。ホスト上の仮想マシンの一覧を表示することができますが、それ以外にもコマンドが正常に実行されるかどうかで hostd が正常に動作しているかの切り分けに利用することが出来ます。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span># vim-cmd help /vmsvc/getallvms
+<span class="ln"> 2</span>Usage: getallvms [includeConfigNotAvailable]
+<span class="ln"> 3</span>
+<span class="ln"> 4</span>getallvms
+<span class="ln"> 5</span>
+<span class="ln"> 6</span>Get the list of virtual machines on the host.
+<span class="ln"> 7</span>
+<span class="ln"> 8</span># vim-cmd /vmsvc/getallvms
+<span class="ln"> 9</span>Vmid    Name                                 File                                      Guest OS         Version                           Annotation
+<span class="ln">10</span>4      Photon   [vsanDatastore] be93505f-43a9-269e-7f16-005056adc982/Photon.vmx   other3xLinux64Guest   vmx-11    This OVA provides a minimal installed profile of PhotonOS.
+</code></pre></div><p>2つ目の /vimsvc/task_list は、GUI で表示されないものも含めてホストで実行された最近のタスクを一覧で確認できます。スナップショットの統合が滞留しているなどの場合には、こちらでタスクを確認して /vimsvc/task_info で詳細を確認するなどの対応も可能です。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span># vim-cmd help /vimsvc/task_list
+<span class="ln"> 2</span>Usage: task_list
+<span class="ln"> 3</span>
+<span class="ln"> 4</span>Get list of recent tasks.
+<span class="ln"> 5</span>
+<span class="ln"> 6</span># vim-cmd /vimsvc/task_list
+<span class="ln"> 7</span>(ManagedObjectReference) [
+<span class="ln"> 8</span>   &#39;vim.Task:haTask-4-vim.VirtualMachine.reconfigure-2471509727&#39;,
+<span class="ln"> 9</span>   &#39;vim.Task:haTask-ha-host-vim.host.NetworkSystem.refresh-2471509741&#39;,
+<span class="ln">10</span>   &#39;vim.Task:haTask--vim.vslm.host.CatalogSyncManager.queryCatalogChange-2471509796&#39;,
+<span class="ln">11</span>   &#39;vim.Task:haTask-ha-host-vim.host.NetworkSystem.refresh-2471509800&#39;,
+<span class="ln">12</span>   &#39;vim.Task:haTask--vim.vslm.host.CatalogSyncManager.queryCatalogChange-2471509859&#39;,
+<span class="ln">13</span>   &#39;vim.Task:haTask-ha-host-vim.host.PatchManager.Query-2471509865&#39;,
+<span class="ln">14</span>   &#39;vim.Task:haTask-4-vim.VirtualMachine.powerOn-2471509883&#39;
+<span class="ln">15</span>]
+</code></pre></div><p>なお、/vimsvc/task_cancel でのタスクのキャンセルは、GUI からの実施と同様に種類によってはキャンセルできなかったり問題が発生する場合もあります。タスクのキャンセルは GUI / CLI に関わらず注意が必要です。</p>
+<h2 id="vmkfstools---データストアや仮想ディスクの管理">vmkfstools - データストアや仮想ディスクの管理</h2>
+<p>vmkfstools はデータストアや仮想ディスクの管理操作に使えるコマンドです。vmkfstools についてはスナップショットの統合や仮想ディスクのクローンで使用したことがある人も多いかなと思います。</p>
+<p>vmkfstools は以下の「vSphere のストレージ」のドキュメントにコマンドの構文やオプションがまとめられており、esxcli と同様に慣れておきたいコマンドの一つとして挙げられます。</p>
+<p><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.storage.doc/GUID-A5D85C33-A510-4A3E-8FC7-93E6BA0A048F.html">vmkfstools の使用</a></p>
+<p>個人的には以下のオプションは比較的よく使います。この3つに関しては覚えてしまって損はないです。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>VMFS データストアの構成情報の確認
+<span class="ln">2</span># vmkfstools -P -h /vmfs/volumes/&lt;datastore name&gt;
+<span class="ln">3</span>
+<span class="ln">4</span>仮想ディスクをシンプロビジョニングに変換
+<span class="ln">5</span># vmkfstools -K thickdisk.vmdk
+<span class="ln">6</span>
+<span class="ln">7</span>仮想ディスクをシンプロビジョニングでクローン
+<span class="ln">8</span># vmkfstools -i srcdisk.vmdk -d thin tgtdisk.vmdk
+</code></pre></div><p>セッションでは -e, -t10 -v10, -x という3つの少しマイナーな組み合わせについて解説されています。</p>
+<p>まず１つ目の -e オプションですが、こちらはスナップショットチェーンの整合性が維持されているかをチェックします。</p>
+<p>例えば、ログの記事で言及した <a href="https://kb.vmware.com/s/article/1007969">KB1007969</a> のようにスナップショットチェーンの整合性が取れていなくなった状態を仮定します。今回は実験として以下のように親ディスクの CID を vi で編集しましたが、実験以外では絶対にやらないようにお願いします。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span>■Example.vmdk (ベースディスク＝親ディスク)
+<span class="ln"> 2</span># Disk DescriptorFile
+<span class="ln"> 3</span>version=1
+<span class="ln"> 4</span>encoding=&#34;UTF-8&#34;
+<span class="ln"> 5</span>CID=f1171234  ※親の CID
+<span class="ln"> 6</span>parentCID=ffffffff
+<span class="ln"> 7</span>createType=&#34;vmfs&#34;
+<span class="ln"> 8</span>
+<span class="ln"> 9</span>■Example-000001.vmdk (子ディスク)
+<span class="ln">10</span># Disk DescriptorFile
+<span class="ln">11</span>version=1
+<span class="ln">12</span>encoding=&#34;UTF-8&#34;
+<span class="ln">13</span>CID=0826a84f
+<span class="ln">14</span>parentCID=f11708be  ※親の CID と一致してない＝チェーン破損
+<span class="ln">15</span>createType=&#34;seSparse&#34;
+<span class="ln">16</span>parentFileNameHint=&#34;Example.vmdk&#34;
+</code></pre></div><p>この状態で vmkfstools -e コマンドを実行すると、以下のように子ディスクから親ディスクへのスナップショットチェーンが破損していることが確認できます。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span># vmkfstools -e Example.vmdk
+<span class="ln"> 2</span>Disk chain is consistent.
+<span class="ln"> 3</span>
+<span class="ln"> 4</span># vmkfstools -e Example-000001.vmdk
+<span class="ln"> 5</span>Disk link /vmfs/volumes/5ef41cb4-a94a9e8c-e0ab-b8ac6f12a79c/Example/Example-000001.vmdk successfully opened.
+<span class="ln"> 6</span>Disk link /vmfs/volumes/5ef41cb4-a94a9e8c-e0ab-b8ac6f12a79c/Example/Example.vmdk successfully opened.
+<span class="ln"> 7</span>Cannot establish parent(/vmfs/volumes/5ef41cb4-a94a9e8c-e0ab-b8ac6f12a79c/Example/Example.vmdk)-child(/vmfs/volumes/5ef41cb4-a94a9e8c-e0ab-b8ac6f12a79c/Example/Example-000001.vmdk) relationship : The parent virtual disk has been modified since the child was created. The content ID of the parent virtual disk does not match the corresponding parent content ID in the child (18)
+<span class="ln"> 8</span>Parent link description
+<span class="ln"> 9</span>        Name: /vmfs/volumes/5ef41cb4-a94a9e8c-e0ab-b8ac6f12a79c/Example/Example.vmdk
+<span class="ln">10</span>        Create Type: vmfs
+<span class="ln">11</span>        Capacity: 274877906944
+<span class="ln">12</span>        Content ID: 4044821044
+<span class="ln">13</span>        Parent Content ID: 4294967295
+<span class="ln">14</span>Child link description
+<span class="ln">15</span>        Name: /vmfs/volumes/5ef41cb4-a94a9e8c-e0ab-b8ac6f12a79c/Example/Example-000001.vmdk
+<span class="ln">16</span>        Create Type: seSparse
+<span class="ln">17</span>        Capacity: 274877906944
+<span class="ln">18</span>        Content ID: 136751183
+<span class="ln">19</span>        Parent Content ID: 4044818622
+<span class="ln">20</span>Disk chain is not consistent : The parent virtual disk has been modified since the child was created. The content ID of the parent virtual disk does not match the corresponding parent content ID in the child (18)
+</code></pre></div><p>もしこの状況に陥ってしまった場合には、<a href="https://kb.vmware.com/s/article/1007969">KB1007969</a> を参考に頑張って VMDK ファイルを修正した上でゲストが正常に起動できることを祈るか、仮想マシンのバックアップからリストアしてください。ゲストが正常に動作する保証もないことから基本的にバックアップからのリストアを推奨します。</p>
+<p>次に２つ目の -x オプションです。こちらはホストのクラッシュやストレージの障害でディスクの中身が破損した場合に修復を行います。問題がなければ以下のように Disk is error free と出ます。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span># vmkfstools -x check Example.vmdk
+<span class="ln">2</span>Disk is error free
+</code></pre></div><p>ディスクに問題があると Disk needs repair. と表示されるので、その場合は -x repair として修復します。ただし、あらゆる状況に対応できるわけではないため、修復しても駄目だった場合は最終手段として仮想マシンのバックアップからリストアが必要になります。</p>
+<h2 id="to-be-continued">To be continued&hellip;</h2>
+<p>次回も残りの ESXi のコマンドについて見ていきます。</p>
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p>あるあるのケースはストレージの All Path Down (APD) の発生時です。APD によりストレージデバイスへアクセス不可になった際、I/O が詰まって hostd の動作が非常に重たくなる、というのは非常によく見かけます。この辺りの詳細は <a href="https://kb.vmware.com/s/article/2004684?lang=ja">KB2004684</a> をご覧ください。 <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+
+  </article>
+<aside class="sidebar">
+  <section class="sidebar_inner">
+    <h2>Jangari</h2>
+    <div>
+      Jangari is a Technical Support Engineer working on a certain company in Japan.
+    </div>
+    <a href = 'https://jangari-ntk.github.io/about/' class="button mt-1" role="button">Read More</a>
+    <h2 class="mt-4">Featured Posts</h2>
+    <ul>
+    
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-18/" class="nav-link">Active Directory over LDAPS の ID ソースを構成する</a>
+      </li>
+    
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-14/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 3】</a>
+      </li>
+    
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-12/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 2】</a>
+      </li>
+    
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-11/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 1】</a>
+      </li>
+    
+    </ul>
+    <h2 class="mt-4">Recent Posts</h2>
+    <ul class="flex-column">
+      
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-09-06/" class="nav-link">【Part.2】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</a>
+      </li>
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-09-01/" class="nav-link">【Part.1】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</a>
+      </li>
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-30/" class="nav-link">vRealize Automation 8.1 で Nested ESXi の Blueprint を作ってみた</a>
+      </li>
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-23/" class="nav-link">Nested ESXi のテンプレート作りに必要な設定と解説</a>
+      </li>
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-18/" class="nav-link">Active Directory over LDAPS の ID ソースを構成する</a>
+      </li>
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-14/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 3】</a>
+      </li>
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-12/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 2】</a>
+      </li>
+    </ul> 
+    
+    <div>
+      <h2 class="mt-4 taxonomy" id="categories-section">categories</h2>
+      <nav class="tags_nav">
+        <a href='https://jangari-ntk.github.io/categories/vsphere/' class=" post_tag button button_translucent">
+          VSPHERE
+          <span class='button_tally'>11</span>
+        </a>
+        
+        
+      </nav>
+    </div>
+    
+    <div>
+      <h2 class="mt-4 taxonomy" id="tags-section">tags</h2>
+      <nav class="tags_nav">
+        <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent">
+          VSPHERE
+          <span class='button_tally'>11</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/vcenter-server/' class=" post_tag button button_translucent">
+          VCENTER-SERVER
+          <span class='button_tally'>5</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/esxi/' class=" post_tag button button_translucent">
+          ESXI
+          <span class='button_tally'>4</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/featured/' class=" post_tag button button_translucent">
+          FEATURED
+          <span class='button_tally'>4</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/security/' class=" post_tag button button_translucent">
+          SECURITY
+          <span class='button_tally'>4</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/tips/' class=" post_tag button button_translucent">
+          TIPS
+          <span class='button_tally'>4</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/architecture/' class=" post_tag button button_translucent">
+          ARCHITECTURE
+          <span class='button_tally'>3</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/nested/' class=" post_tag button button_translucent">
+          NESTED
+          <span class='button_tally'>3</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/troubleshooting/' class=" post_tag button button_translucent">
+          TROUBLESHOOTING
+          <span class='button_tally'>3</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/cli/' class=" post_tag button button_translucent">
+          CLI
+          <span class='button_tally'>1</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/instant-clone/' class=" post_tag button button_translucent">
+          INSTANT-CLONE
+          <span class='button_tally'>1</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/sdk/api/' class=" post_tag button button_translucent">
+          SDK/API
+          <span class='button_tally'>1</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/vrealize-automation/' class=" post_tag button button_translucent">
+          VREALIZE-AUTOMATION
+          <span class='button_tally'>1</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/vsphere-7.0/' class=" post_tag button button_translucent">
+          VSPHERE-7.0
+          <span class='button_tally'>1</span>
+        </a>
+        
+        
+      </nav>
+    </div>
+    
+  </section>
+</aside>
+
+</div>
+    </main><svg width="0" height="0" class="hidden">
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="facebook">
+    <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h151V331h-60v-90h60v-61c0-49.629 40.371-90 90-90h91v90h-91v61h91l-15 90h-76v181h121c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zm0 0"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18.001 18.001" id="twitter">
+    <path d="M15.891 4.013c.808-.496 1.343-1.173 1.605-2.034a8.68 8.68 0 0 1-2.351.861c-.703-.756-1.593-1.14-2.66-1.14-1.043 0-1.924.366-2.643 1.078a3.56 3.56 0 0 0-1.076 2.605c0 .309.039.585.117.819-3.076-.105-5.622-1.381-7.628-3.837-.34.601-.51 1.213-.51 1.846 0 1.301.549 2.332 1.645 3.089-.625-.053-1.176-.211-1.645-.47 0 .929.273 1.705.82 2.388a3.623 3.623 0 0 0 2.115 1.291c-.312.08-.641.118-.979.118-.312 0-.533-.026-.664-.083.23.757.664 1.371 1.291 1.841a3.652 3.652 0 0 0 2.152.743C4.148 14.173 2.625 14.69.902 14.69c-.422 0-.721-.006-.902-.038 1.697 1.102 3.586 1.649 5.676 1.649 2.139 0 4.029-.542 5.674-1.626 1.645-1.078 2.859-2.408 3.639-3.974a10.77 10.77 0 0 0 1.172-4.892v-.468a7.788 7.788 0 0 0 1.84-1.921 8.142 8.142 0 0 1-2.11.593z"
+      ></path>
+  </symbol>
+  <symbol aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="mail">
+    <path  d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="calendar">
+    <path d="M452 40h-24V0h-40v40H124V0H84v40H60C26.916 40 0 66.916 0 100v352c0 33.084 26.916 60 60 60h392c33.084 0 60-26.916 60-60V100c0-33.084-26.916-60-60-60zm20 412c0 11.028-8.972 20-20 20H60c-11.028 0-20-8.972-20-20V188h432v264zm0-304H40v-48c0-11.028 8.972-20 20-20h24v40h40V80h264v40h40V80h24c11.028 0 20 8.972 20 20v48z"></path>
+    <path d="M76 230h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zM76 310h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zM76 390h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zm80-80h40v40h-40z"></path>
+  </symbol>
+  <symbol viewBox="-21 0 512 512" xmlns="http://www.w3.org/2000/svg" id="yank">
+    <path d="M410.668 405.332H165.332c-32.363 0-58.664-26.3-58.664-58.664v-288c0-32.363 26.3-58.668 58.664-58.668h181.504c21.059 0 41.687 8.535 56.555 23.445l42.496 42.496c15.125 15.125 23.445 35.223 23.445 56.575v224.152c0 32.363-26.3 58.664-58.664 58.664zM165.332 32c-14.7 0-26.664 11.969-26.664 26.668v288c0 14.7 11.965 26.664 26.664 26.664h245.336c14.7 0 26.664-11.965 26.664-26.664V122.516c0-12.82-4.992-24.871-14.059-33.942l-42.496-42.496C371.84 37.121 359.488 32 346.836 32zm0 0"></path>
+    <path d="M314.668 512h-256C26.305 512 0 485.695 0 453.332V112c0-32.363 26.305-58.668 58.668-58.668h10.664c8.832 0 16 7.168 16 16s-7.168 16-16 16H58.668C43.968 85.332 32 97.301 32 112v341.332C32 468.032 43.969 480 58.668 480h256c14.7 0 26.664-11.969 26.664-26.668v-10.664c0-8.832 7.168-16 16-16s16 7.168 16 16v10.664c0 32.363-26.3 58.668-58.664 58.668zM368 181.332H208c-8.832 0-16-7.168-16-16s7.168-16 16-16h160c8.832 0 16 7.168 16 16s-7.168 16-16 16zm0 0"></path>
+    <path d="M368 245.332H208c-8.832 0-16-7.168-16-16s7.168-16 16-16h160c8.832 0 16 7.168 16 16s-7.168 16-16 16zm0 64H208c-8.832 0-16-7.168-16-16s7.168-16 16-16h160c8.832 0 16 7.168 16 16s-7.168 16-16 16zm0 0"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="github">
+    <path d="M255.968 5.329C114.624 5.329 0 120.401 0 262.353c0 113.536 73.344 209.856 175.104 243.872 12.8 2.368 17.472-5.568 17.472-12.384 0-6.112-.224-22.272-.352-43.712-71.2 15.52-86.24-34.464-86.24-34.464-11.616-29.696-28.416-37.6-28.416-37.6-23.264-15.936 1.728-15.616 1.728-15.616 25.696 1.824 39.2 26.496 39.2 26.496 22.848 39.264 59.936 27.936 74.528 21.344 2.304-16.608 8.928-27.936 16.256-34.368-56.832-6.496-116.608-28.544-116.608-127.008 0-28.064 9.984-51.008 26.368-68.992-2.656-6.496-11.424-32.64 2.496-68 0 0 21.504-6.912 70.4 26.336 20.416-5.696 42.304-8.544 64.096-8.64 21.728.128 43.648 2.944 64.096 8.672 48.864-33.248 70.336-26.336 70.336-26.336 13.952 35.392 5.184 61.504 2.56 68 16.416 17.984 26.304 40.928 26.304 68.992 0 98.72-59.84 120.448-116.864 126.816 9.184 7.936 17.376 23.616 17.376 47.584 0 34.368-.32 62.08-.32 70.496 0 6.88 4.608 14.88 17.6 12.352C438.72 472.145 512 375.857 512 262.353 512 120.401 397.376 5.329 255.968 5.329z"></path>
+  </symbol>
+  <symbol viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="rss">
+    <circle cx="3.429" cy="20.571" r="3.429"></circle>
+    <path d="M11.429 24h4.57C15.999 15.179 8.821 8.001 0 8v4.572c6.302.001 11.429 5.126 11.429 11.428z"></path>
+    <path d="M24 24C24 10.766 13.234 0 0 0v4.571c10.714 0 19.43 8.714 19.43 19.429z"></path>
+  </symbol>
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="linkedin">
+    <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h362c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zM181 406h-60V196h60zm0-240h-60v-60h60zm210 240h-60V286c0-16.54-13.46-30-30-30s-30 13.46-30 30v120h-60V196h60v11.309C286.719 202.422 296.93 196 316 196c40.691.043 75 36.547 75 79.688zm0 0"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="arrow">
+    <path d="M604.501 440.509L325.398 134.956c-5.331-5.357-12.423-7.627-19.386-7.27-6.989-.357-14.056 1.913-19.387 7.27L7.499 440.509c-9.999 10.024-9.999 26.298 0 36.323s26.223 10.024 36.222 0l262.293-287.164L568.28 476.832c9.999 10.024 26.222 10.024 36.221 0 9.999-10.023 9.999-26.298 0-36.323z"></path>
+  </symbol>
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="carly">
+    <path d="M504.971 239.029L448 182.059V84c0-46.317-37.682-84-84-84h-44c-13.255 0-24 10.745-24 24s10.745 24 24 24h44c19.851 0 36 16.149 36 36v108c0 6.365 2.529 12.47 7.029 16.971L454.059 256l-47.029 47.029A24.002 24.002 0 0 0 400 320v108c0 19.851-16.149 36-36 36h-44c-13.255 0-24 10.745-24 24s10.745 24 24 24h44c46.318 0 84-37.683 84-84v-98.059l56.971-56.971c9.372-9.372 9.372-24.568 0-33.941zM112 192V84c0-19.851 16.149-36 36-36h44c13.255 0 24-10.745 24-24S205.255 0 192 0h-44c-46.318 0-84 37.683-84 84v98.059l-56.971 56.97c-9.373 9.373-9.373 24.568 0 33.941L64 329.941V428c0 46.317 37.682 84 84 84h44c13.255 0 24-10.745 24-24s-10.745-24-24-24h-44c-19.851 0-36-16.149-36-36V320c0-6.365-2.529-12.47-7.029-16.971L57.941 256l47.029-47.029A24.002 24.002 0 0 0 112 192z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="copy">
+    <path d="M366.345 406.069H66.207c-9.751 0-17.655-7.904-17.655-17.655V17.655C48.552 7.904 56.456 0 66.207 0h300.138C376.096 0 384 7.904 384 17.655v370.759c0 9.751-7.904 17.655-17.655 17.655z" fill="#f1f4fb"></path>
+    <path d="M384 388.414v-76.992c-.907.322-1.869.494-2.751.882-6.307-6.593-14.733-11.025-24.111-11.964a40.49 40.49 0 0 0-8.448.039v-92.93c0-21.903-17.82-39.723-39.723-39.724a40.5 40.5 0 0 0-4.036.202c-20.012 2.004-35.689 19.916-35.689 40.781v101.773l-21.581 21.581c-15.241 15.241-21.393 36.866-16.456 57.847l3.802 16.16h131.338c9.75 0 17.655-7.905 17.655-17.655z"
+      fill="#d5dced"></path>
+    <circle cx="128" cy="105.931" r="26.483" fill="#b4e66e"></circle>
+    <circle cx="128" cy="203.034" r="26.483" fill="#dae169"></circle>
+    <circle cx="128" cy="300.138" r="26.483" fill="#ffdc64"></circle>
+    <path d="M331.034 229.517H189.793c-4.879 0-8.828-3.953-8.828-8.828s3.948-8.828 8.828-8.828h141.241c4.879 0 8.828 3.953 8.828 8.828s-3.948 8.828-8.828 8.828z" fill="#7f8499"></path>
+    <path d="M295.724 194.207H189.793a8.826 8.826 0 0 1-8.828-8.828 8.826 8.826 0 0 1 8.828-8.828h105.931a8.826 8.826 0 0 1 8.828 8.828 8.826 8.826 0 0 1-8.828 8.828z" fill="#5b5d6e"></path>
+    <path d="M331.034 326.621H189.793c-4.879 0-8.828-3.953-8.828-8.828s3.948-8.828 8.828-8.828h141.241c4.879 0 8.828 3.953 8.828 8.828s-3.948 8.828-8.828 8.828z" fill="#7f8499"></path>
+    <path d="M295.724 291.31H189.793c-4.879 0-8.828-3.953-8.828-8.828s3.948-8.828 8.828-8.828h105.931c4.879 0 8.828 3.953 8.828 8.828s-3.948 8.828-8.828 8.828z" fill="#5b5d6e"></path>
+    <path d="M331.034 132.414H189.793a8.826 8.826 0 0 1-8.828-8.828 8.826 8.826 0 0 1 8.828-8.828h141.241a8.826 8.826 0 0 1 8.828 8.828 8.826 8.826 0 0 1-8.828 8.828z" fill="#7f8499"></path>
+    <path d="M295.724 97.103H189.793a8.826 8.826 0 0 1-8.828-8.828 8.826 8.826 0 0 1 8.828-8.828h105.931a8.826 8.826 0 0 1 8.828 8.828 8.825 8.825 0 0 1-8.828 8.828z" fill="#5b5d6e"></path>
+    <path d="M443.656 335.563c-13.21-1.323-24.345 9.015-24.345 21.954v-7.569c0-11.544-8.306-22.063-19.794-23.213-13.209-1.323-24.344 9.015-24.344 21.954v-7.569c0-11.544-8.306-22.063-19.794-23.213-13.209-1.323-24.344 9.015-24.344 21.954V207.448c0-12.939-11.135-23.277-24.345-21.954-11.486 1.15-19.793 11.669-19.793 23.213v109.086l-26.752 26.752a44.14 44.14 0 0 0-11.754 41.32l18.47 78.495c6.567 27.913 31.475 47.64 60.15 47.64h74.645c34.127 0 61.793-27.666 61.793-61.793v-91.431c-.001-11.544-8.306-22.063-19.793-23.213z"
+      fill="#f0c087"></path>
+    <path d="M339.862 361.377a8.829 8.829 0 0 0 8.828-8.828v-34.194c-10.052 2.061-17.655 10.844-17.655 21.506v12.687a8.827 8.827 0 0 0 8.827 8.829zM384 370.205a8.829 8.829 0 0 0 8.828-8.828v-34.194c-10.052 2.061-17.655 10.844-17.655 21.506v12.687a8.827 8.827 0 0 0 8.827 8.829zm44.138 8.827a8.829 8.829 0 0 0 8.828-8.828V336.01c-10.052 2.061-17.655 10.844-17.655 21.506v12.687a8.827 8.827 0 0 0 8.827 8.829zM288.885 464.36l-20.467-86.985a28.482 28.482 0 0 1 7.585-26.663l10.893-10.894v22.113a8.829 8.829 0 0 0 17.656 0V185.933c-10.344 2.173-17.655 11.972-17.655 22.773v109.087l-26.752 26.752a44.14 44.14 0 0 0-11.754 41.32l18.47 78.495c6.567 27.913 31.475 47.64 60.15 47.64h22.026c-28.677 0-53.584-19.727-60.152-47.64z"
+      fill="#e6af78"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001" id="closeme">
+    <path d="M284.286 256.002L506.143 34.144c7.811-7.811 7.811-20.475 0-28.285-7.811-7.81-20.475-7.811-28.285 0L256 227.717 34.143 5.859c-7.811-7.811-20.475-7.811-28.285 0-7.81 7.811-7.811 20.475 0 28.285l221.857 221.857L5.858 477.859c-7.811 7.811-7.811 20.475 0 28.285a19.938 19.938 0 0 0 14.143 5.857 19.94 19.94 0 0 0 14.143-5.857L256 284.287l221.857 221.857c3.905 3.905 9.024 5.857 14.143 5.857s10.237-1.952 14.143-5.857c7.811-7.811 7.811-20.475 0-28.285L284.286 256.002z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="open-menu">
+    <path d="M492 236H20c-11.046 0-20 8.954-20 20s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20zm0-160H20C8.954 76 0 84.954 0 96s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20zm0 320H20c-11.046 0-20 8.954-20 20s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20z"></path>
+  </symbol>
+</svg>
+<footer class = 'footer'>
+  <div class = 'footer_inner wrap pale'>
+    <img src = 'https://jangari-ntk.github.io/icons/apple-touch-icon.png' class = 'icon icon_2 transparent'>
+    <p>Copyright &copy;&nbsp;<span class = 'year'></span>&nbsp;VSOLILOQUY. All Rights Reserved</p>
+<a class='to_top' href="#documentTop">
+  <svg class="icon">
+    <use xlink:href="#arrow"></use>
+  </svg>
+</a>
+
+  </div>
+</footer>
+    <script src = 'https://jangari-ntk.github.io/js/bundle.f11fd62745d1a773065645eb6f90461f96d1918737e6ef9fc05cd1bce00b9322930bd58a337f67c368af62503f6dd7eb4389876b64a4a035183afe83443bd34d.js'></script>
+  </body>
+</html>
