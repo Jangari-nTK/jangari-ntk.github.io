@@ -183,7 +183,7 @@
 <span class="ln">6</span>192.168.0.130             00:50:56:ad:ce:76  vmk0     1139 sec         Unknown
 <span class="ln">7</span>192.168.0.3               00:d8:61:a5:e9:d3  vmk0     1199 sec         Unknown
 <span class="ln">8</span>fe80::21b:8bff:feae:d28a  00:1b:8b:ae:d2:8a  vmk0    78801 sec  Stale  Unknown
-</code></pre></div><p>NSX-T の vxlan スタック(GENEVE で通信する TEP のカスタム TCP/IP スタック)のように、カスタム TCP/IP スタックが使われている場合は -N オプションでデフォルト以外の TCP/IP スタックを指定して確認することも出来ます。</p>
+</code></pre></div><p>カスタム TCP/IP スタックが使われている場合は -N オプションでデフォルト以外の TCP/IP スタックを指定して確認することも出来ます。以下は NSX-T の vxlan スタック (GENEVE で通信する TEP のカスタム TCP/IP スタック) に対しての実行結果です。</p>
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span># esxcli network ip neighbor list -N vxlan
 <span class="ln">2</span>Neighbor    Mac Address        Vmknic    Expiry  State  Type
 <span class="ln">3</span>----------  -----------------  ------  --------  -----  ----
