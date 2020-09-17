@@ -196,7 +196,7 @@
 <span class="ln">24</span>---------------------------------------------------------------------------------
 </code></pre></div><p>実行結果の列は左から順に以下の通りです。上述の結果では特にバルーンやスワップは発生していません。</p>
 <ul>
-<li>name - 観測対象の名前 (vm.<!-- raw HTML omitted -->)</li>
+<li>name - 観測対象の名前 (vm.&lt;Cartel ID&gt;)</li>
 <li>memSize - メモリサイズ</li>
 <li>balloonTgt - バルーンで解放しよう試みているメモリ量</li>
 <li>ballooned - バルーンで解放済みのメモリ量</li>
@@ -223,7 +223,7 @@
 <span class="ln">16</span>----------------------------------------------------------------
 </code></pre></div><p>オプションは左から順に以下です。</p>
 <ul>
-<li>name - 観測対象の名前 (vm.<!-- raw HTML omitted -->)</li>
+<li>name - 観測対象の名前 (vm.&lt;Cartel ID&gt;)</li>
 <li>isSwapping - スワップが進行中かどうか</li>
 <li>swapped - スワップで解放済みのメモリ量</li>
 <li>swapIn - スワップインの速度</li>
@@ -302,7 +302,7 @@
 <p>ここまで pktcap-uw でのキャプチャの概略を簡単に説明しましたが、セッションでは pktcap-uw のディープな使い方として &ndash;trace オプションによるトレースが紹介されています。</p>
 <p><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.networking.doc/GUID-638693EE-0F53-4885-B6D4-B65DAB43DB38.html">pktcap-uw ユーティリティを使用したパケットのトレース</a></p>
 <p>この &ndash;trace オプションは何に使うかというと、ESXi 上を流れるパケットが何の処理に時間がかかっているか、どこでドロップされているかといった、ESXi のネットワークスタック上のパケットの流れをトレースすることが出来ます。</p>
-<p>以下は IP アドレスが 192.168.0.130 の仮想マシンが任意のパケット1個を受信する様子がトレースされた場合の例です。トレースの場合は仮想ポートやキャプチャポイントの指定が無いので、要件ではないですがフィルタの指定が実質的に必須になると思います。</p>
+<p>以下は IP アドレスが 192.168.0.130 の仮想マシンが任意のパケット1個を受信する様子がトレースされた場合の例です。トレースの場合は仮想ポートやキャプチャポイントが指定できないので、フィルタの指定が実質的に必須になると思います。</p>
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span># pktcap-uw --trace --srcip 192.168.0.130 -c 1
 <span class="ln"> 2</span>The trace session is enabled.
 <span class="ln"> 3</span>The session filter source IP address is 192.168.0.130.
@@ -441,7 +441,7 @@
 <span class="ln">6</span>          +- [12:17:04.977865] |                      PreDVFilter |            |
 <span class="ln">7</span>          +- [12:17:04.977879] |                             Drop |            |
 <span class="ln">8</span>          +- [12:17:04.977881] |                          PktFree |            |
-</code></pre></div><p>これも summarize-dvfilter でホスト上の dvFilter を見てみると、VMkernel ポートには ESXi-Firewall という dvFilter のエージェントが構成されているため、dvFilter を通過する際に ESXi-Firewall によってパケットがドロップされたと考えることが出来ます<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>。</p>
+</code></pre></div><p>summarize-dvfilter でホスト上の dvFilter を見てみると、VMkernel ポートには ESXi-Firewall という dvFilter のエージェントが構成されているため、dvFilter を通過する際に ESXi-Firewall によってパケットがドロップされたと考えることが出来ます<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>。</p>
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span># summarize-dvfilter
 <span class="ln"> 2</span>Fastpaths:
 <span class="ln"> 3</span>agent: dvfilter-faulter, refCount: 1, rev: 0x1010000, apiRev: 0x1010000, module: dvfilter
