@@ -169,7 +169,7 @@
 <li><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.resmgmt.doc/GUID-5B45CEFA-6CC6-49F4-A3C7-776AAA22C2A2.html">メモリ バルーン ドライバ</a></li>
 <li><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.resmgmt.doc/GUID-B55F4F6B-44E6-46DE-B8FF-75950020A181.html">スワップ ファイルの使用</a></li>
 </ul>
-<p>memstats -r vm-stats -s <!-- raw HTML omitted --> としてコマンドを実行することで、実行中の仮想マシンのメモリの状態を見ることが出来ます。以下は観測対象の仮想マシンの Cartel ID (ps の2列目) を確認し、メモリのバルーンとスワップの状態を見ています。ホスト上で複数の仮想マシンが実行されている場合は全て一覧で表示されます。</p>
+<p>memstats -r vm-stats -s &lt;columns&gt; としてコマンドを実行することで、実行中の仮想マシンのメモリの状態を見ることが出来ます。以下は観測対象の仮想マシンの Cartel ID (ps の2列目) を確認し、メモリのバルーンとスワップの状態を見ています。ホスト上で複数の仮想マシンが実行されている場合は全て一覧で表示されます。</p>
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span># ps | grep vmx
 <span class="ln"> 2</span>604326  604326  vmx
 <span class="ln"> 3</span>604331  604326  vmx-vthread-604
