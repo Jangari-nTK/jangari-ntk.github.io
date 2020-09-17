@@ -6,10 +6,25 @@
     <description>Recent content in ESXi on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Sun, 13 Sep 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 17 Sep 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/tags/esxi/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>【Part.3-2】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</title>
+      <link>https://jangari-ntk.github.io/post/2020-09-17/</link>
+      <pubDate>Thu, 17 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2020-09-17/</guid>
+      <description>はじめに VMworld 2017 SER2965BU のセッションでの 27:00 ～ 48:20 頃までの内容、七つ道具2セット目である７つのコマンドについて見ていきます。
+ esxcli vsish vim-cmd vmkfstools memstats pktcap-uw esxtop  今回は残りのコマンドである memstats, pktcap-uw, esxtop を見ていきます(esxtop は概観だけ)。
+memstats - 詳細なメモリ統計情報 通常、リアルタイムなメモリの性能情報を見る場合は esxtop を使うと思います。ファイルとして保存する場合はバッチモードを使うかもしれません。
+memstats コマンドは公開情報がほとんど無い1コマンドですが、こちらを使うとコマンド実行時点の様々なメモリ統計情報を取得することが出来ます。
+セッションではホストがメモリ不足になり仮想マシンでメモリのバルーンやスワップが発生した場合、memstats コマンドで状態を見てみる方法が解説されています。メモリオーバーコミットによるバルーンやスワップの動作は割愛しますが、これらの動作の詳細は以下のドキュメントを参照してください。
+ メモリの解放 メモリ バルーン ドライバ スワップ ファイルの使用  memstats -r vm-stats -s としてコマンドを実行することで、実行中の仮想マシンのメモリの状態を見ることが出来ます。以下は観測対象の仮想マシンの Cartel ID (ps の2列目) を確認し、メモリのバルーンとスワップの状態を見ています。ホスト上で複数の仮想マシンが実行されている場合は全て一覧で表示されます。
+1# ps | grep vmx 2604326 604326 vmx 3604331 604326 vmx-vthread-604 4604332 604326 vmx-filtPoll:Photon 5604333 604326 vmx-mks:Photon 6604334 604326 vmx-svga:Photon 7604335 604326 vmx-vcpu-0:Photon 8 9# memstats -r vm-stats -s name:balloonTgt:ballooned:swapTgt:swapped:memSize:mapped 10 11 VIRTUAL MACHINE STATS: Sat Sep 12 15:45:22 2020 12 ----------------------------------------------- 13 Start Group ID : 0 14 No.</description>
+    </item>
     
     <item>
       <title>【Part.3-1】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</title>
