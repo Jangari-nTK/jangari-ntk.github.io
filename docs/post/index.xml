@@ -6,10 +6,25 @@
     <description>Recent content on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Thu, 17 Sep 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 19 Sep 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>【備忘録】vSAN HCI Mesh Tech Note を読む</title>
+      <link>https://jangari-ntk.github.io/post/2020-09-19/</link>
+      <pubDate>Sat, 19 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2020-09-19/</guid>
+      <description>はじめに vSAN 7.0 Update 1 で HCI Mesh なる気になる機能が出てきたようなので、Tech Note を読んで咀嚼して「これポイントかな～」と思ったものを自分用の備忘録としてメモしておく。本記事時点では vSAN 7.0 Update 1 もリリースされていないので検証もしておらず、また、ほとんど落書きに近い内容のため、情報の正確さ等は保証できないことに留意されたし。
+VMware vSAN HCI Mesh Tech Note
+Why HCI Mesh 従来の vSAN はホストの追加で Computing と Storage の両方を同時にスケールできる。このため、アプリケーションのワークロードの増加に合わせて Computing と Storage が共に自然に増加すれば、長期的なキャパシティプランニングを行いやすい。
+その一方で、以下のようなイベントが起きると Computing と Storage のどちらかにリソース要求が偏ったり、キャパシティプランニングが難しくなったりする。このため一方のリソースを使い切る or 無駄なリソースが余るといったように、vSAN として適切なサイジングが難しくなる可能性がある。
+ アプリケーションの改修でログ出力用にストレージが大量に必要になる。 新しい分析サービスの提供にあたって大量のコンピューティングリソースが消費される。 企業の M&amp;amp;A で新部門にストレージが必要になるが事前に見積もれない。 NSX などのネットワーク仮想化で既存のレガシーなクラスタを統合／移行したい。  伝統的なストレージでは、複数のストレージアレイを1つにまとめて仮想化するソリューション(多分 EMC ViPR みたいなのを指してる)があるものの、レイテンシや構成の複雑さも追加されるため、管理者がベーシックなオペレーションだったりトラブルシューティングだったりで複数の UI やツールの使用を強いられるケースがある。
+vSAN でも同じ実装にすると色々と辛いのでネイティブの通信プロトコルを使ったアプローチを取ったらしい。確かに、もう一段階抽象レイヤーを加えて複数の vSAN データストアを統合、みたいなアプローチだと更に複雑になりそうなので妥当な印象。
+また、vSAN では既に iSCSI や NFS としてエクスポート出来るにも関わらず、あえてネイティブな vSAN プロトコルで実装した理由は主に以下のようなもの。</description>
+    </item>
     
     <item>
       <title>【Part.3-2】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</title>

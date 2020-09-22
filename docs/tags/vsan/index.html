@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" data-figures="" class="page">
-  <head>  <title>vCenter Server 7.0 のイベントをテキストで取得 | vSoliloquy</title>
+<html lang="en" data-figures="">
+  <head>  <title>vSAN | vSoliloquy</title>
   <meta charset='utf-8'>
   <meta name="generator" content="Hugo 0.74.3" />
   <meta name = 'viewport' content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
@@ -12,17 +12,16 @@
   gtag('js', new Date());
   gtag('config', 'UA-175306204-1');
 </script>
-  
 <meta property = "og:locale" content = "en_US" />
 <meta property="og:type" content="article">
-<meta name="description" content="vSphere Web Client (Flash 版) が vSphere 7 で遂に廃止となりました。vSphere Client (HTML5 版) は動作もスムーズで良いのですが、どうやら現時点では従来のイベントのエクスポートが行えないようです。">
+<meta name="description" content="">
 <meta name = "twitter:card" content = "summary" />
 <meta name = "twitter:creator" content = "@Jangari_nTK">
-<meta name = "twitter:title" content = "vCenter Server 7.0 のイベントをテキストで取得" />
-<meta property = "og:url" content = "https://jangari-ntk.github.io/post/2020-08-01/" />
-<meta property = "og:title" content = "vCenter Server 7.0 のイベントをテキストで取得" />
-<meta property = "og:description" content = "vSphere Web Client (Flash 版) が vSphere 7 で遂に廃止となりました。vSphere Client (HTML5 版) は動作もスムーズで良いのですが、どうやら現時点では従来のイベントのエクスポートが行えないようです。" />
-<meta property = "og:image" content = "https://jangari-ntk.github.io/images/building.png" />
+<meta name = "twitter:title" content = "vSAN" />
+<meta property = "og:url" content = "https://jangari-ntk.github.io/tags/vsan/" />
+<meta property = "og:title" content = "vSAN" />
+<meta property = "og:description" content = "" />
+<meta property = "og:image" content = "https://jangari-ntk.github.io/images/thumbnail.png" />
 <link rel='apple-touch-icon' sizes='180x180' href='https://jangari-ntk.github.io/icons/apple-touch-icon.png'>
 <link rel='icon' type='image/png' sizes='32x32' href='https://jangari-ntk.github.io/icons/favicon-32x32.png'>
 <link rel='icon' type='image/png' sizes='16x16' href='https://jangari-ntk.github.io/icons/favicon-16x16.png'>
@@ -31,7 +30,7 @@
 <meta name="msapplication-TileColor" content="#002538">
 <meta name="theme-color" content="#002538">
 
-  <link rel='canonical' href='https://jangari-ntk.github.io/post/2020-08-01/'>
+  <link rel='canonical' href='https://jangari-ntk.github.io/tags/vsan/'>
     
 
     
@@ -85,139 +84,49 @@
 </header>
 
     <main>
-  
-<div class = 'grid-inverse wrap content'>
-  <article class='post_content'>
-    <h1 class='post_title'>vCenter Server 7.0 のイベントをテキストで取得</h1><div class = 'post_meta'>
+
+<div class='grid-inverse wrap content'>
+  <ul class='posts' id = 'posts'>
+      
+<li class = 'post_item'>
+  <div class = 'excerpt'>
+    <div class = 'excerpt_header'>
+      <h3 class = 'post_link'>
+        <a href='https://jangari-ntk.github.io/post/2020-09-19/'>【備忘録】vSAN HCI Mesh Tech Note を読む</a>
+      </h3>
+      <div class = 'post_meta'>
   <svg class="icon">
     <use xlink:href="#calendar"></use>
   </svg>
   <span class="post_date">
-    Aug 1, 2020</span>
-  <a href = 'https://jangari-ntk.github.io/tags/tips' class = 'post_tag button button_translucent'>Tips
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vcenter-server' class = 'post_tag button button_translucent'>vCenter Server
-  </a>
+    Sep 19, 2020</span>
   <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere-7.0' class = 'post_tag button button_translucent'>vSphere 7.0
+  <a href = 'https://jangari-ntk.github.io/tags/vsan' class = 'post_tag button button_translucent'>vSAN
   </a>
 </div>
 
-    <div class='post_share'>
-  Share on:
-  <a href="https://twitter.com/intent/tweet?text=vCenter%20Server%207.0%20%e3%81%ae%e3%82%a4%e3%83%99%e3%83%b3%e3%83%88%e3%82%92%e3%83%86%e3%82%ad%e3%82%b9%e3%83%88%e3%81%a7%e5%8f%96%e5%be%97&url=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2020-08-01%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
-    <svg class="icon">
-      <use xlink:href="#twitter"></use>
-    </svg>
-  </a>
+    </div>
+    <div class = 'excerpt_footer partition'>
+      <div class = 'excerpt_thumbnail'>
+      <img src = '/images/2020-09-19/thumbnail.PNG'>
+      </div>
+      
+        <div>
+          <p class = 'pale'>はじめに vSAN 7.0 Update 1 で HCI Mesh なる気になる機能が出てきたようなので、Tech Note を読んで咀嚼して「これポイントかな～」と思ったものを自分用の備忘録としてメモしておく。本記事時点では vSAN 7.0 Update 1 もリリースされていないので検証もしておらず、また、ほとんど落書きに近い内容のため、情報の正確さ等は保証できないことに留意されたし。
+VMware vSAN HCI Mesh Tech Note
+Why HCI Mesh 従来の vSAN はホストの追加で Computing と Storage の両方を同時にスケールできる。このため、アプリケーションのワークロードの増加に合 …</p>
+          <a href='https://jangari-ntk.github.io/post/2020-09-19/' class='excerpt_more button'>Read More</a>
+        </div>
+      </div>
+    </div>
+  </li>
   
-  <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2020-08-01%2f&t=vCenter%20Server%207.0%20%e3%81%ae%e3%82%a4%e3%83%99%e3%83%b3%e3%83%88%e3%82%92%e3%83%86%e3%82%ad%e3%82%b9%e3%83%88%e3%81%a7%e5%8f%96%e5%be%97" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
-    <svg class="icon">
-      <use xlink:href="#facebook"></use>
-    </svg>
-  </a>
-  <script>
-    function shareViaLinkedin() {
-      window.open('http://www.linkedin.com/shareArticle?mini=true&url='+encodeURIComponent("https://jangari-ntk.github.io/post/2020-08-01/"), '', 'left=0,top=0,width=650,height=420,personalbar=0,toolbar=0,scrollbars=0,resizable=0');
-    }
-  </script>
-  <a href="#linkedinshare" id = "linkedinshare" class="linkedin" title="Share on LinkedIn" rel="nofollow" onclick="shareViaLinkedin()">
-    <svg class="icon">
-      <use xlink:href="#linkedin"></use>
-    </svg>
-  </a>
-  <a href="https://jangari-ntk.github.io/post/2020-08-01/" title="Copy Link" class="link link_yank">
-    <svg class="icon">
-      <use xlink:href="#yank"></use>
-    </svg>
-  </a>
-</div>
+    <li>
 
-    
-    
-    <h2>Table of contents</h2>
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#はじめに">はじめに</a></li>
-    <li><a href="#vcsa-のイベントストリーミングで転送してみる">VCSA のイベントストリーミングで転送してみる</a></li>
-    <li><a href="#powercli-でエクスポートしてみる">PowerCLI でエクスポートしてみる</a></li>
-    <li><a href="#おわりに">おわりに</a></li>
+
+    </li>
   </ul>
-</nav>
-    <h2 id="はじめに">はじめに</h2>
-<p>vSphere Web Client (Flash 版) が vSphere 7 で遂に廃止となりました。vSphere Client (HTML5 版) は動作もスムーズで良いのですが、どうやら現時点では従来のイベントのエクスポートが行えないようです。</p>
-<p><a href="https://kb.vmware.com/s/article/2008204">Exporting virtual machine events from the Tasks &amp; Events tab (2008204)</a></p>
-<blockquote>
-<p>Note: The export tasks/Events option is only available on the vSphere Web Client (Flex). The HTML client does not include this feature at this time.</p>
-</blockquote>
-<p>このため、別の方法でイベントを取得する方法を試してみました。試した方法は以下の２パターンです。</p>
-<ul>
-<li>イベントストリーミングで転送してみる</li>
-<li>PowerCLI でエクスポートしてみる</li>
-</ul>
-<p>なお、どちらの方法もメッセージの言語のローカライズは行われないためご注意ください。</p>
-<h2 id="vcsa-のイベントストリーミングで転送してみる">VCSA のイベントストリーミングで転送してみる</h2>
-<p>イベントストリーミングでの転送では以下の２点の設定が必要ですが、後者は既定で設定済みなので、実質的には前者のリモート Syslog 転送の設定だけ行うことでイベントが転送されるようになります。</p>
-<ul>
-<li><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.monitoring.doc/GUID-9633A961-A5C3-4658-B099-B81E0512DC21.html">vCenter Server のログ ファイルを リモート Syslog サーバへ転送</a></li>
-<li><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.monitoring.doc/GUID-FD51CE83-8B2A-4EBA-A16C-75DB2E384E95.html">リモートの Syslog サーバへのイベント ストリーミングの構成</a></li>
-</ul>
-<p>Syslog 転送の構成はアプライアンス管理インターフェイス (VAMI) から行います。まず root ユーザーで VAMI にログインして以下のように [syslog] を開きましょう。</p>
-<p><img src="/images/2020-08-01/event-streaming-001.PNG" alt="VAMI 画面 > syslog "></p>
-<p>転送設定の [設定] をクリックすると以下のダイアログがポップアップします。syslog サーバ側のネットワーク情報を入力して [保存] ボタンを押下します。</p>
-<p><img src="/images/2020-08-01/event-streaming-002.PNG" alt="syslog 設定ダイアログ"></p>
-<p>これでリモート Syslog 転送の構成ができました。なお、プロトコルに UDP を使用する場合は [接続状態:] 列が &ldquo;不明&rdquo; になります。</p>
-<p><img src="/images/2020-08-01/event-streaming-003.PNG" alt="syslog 設定後"></p>
-<p>なお、[テスト メッセージの送信] を実行すると以下のメッセージが syslog サーバに送信されます。ただ、実際にはリモート syslog 転送を構成した時点から vCenter Server のログが syslog サーバにリダイレクトされるので確認する意味は薄いかもしれません。</p>
-<blockquote>
-<p>2020-08-05T03:15:33.757329+00:00 vcsa01a  This is a diagnostic syslog test message from vCenter Server.</p>
-</blockquote>
-<p>では実際に vCenter Server のイベントを確認してみましょう。アラームをクリアするとイベントとして登録されるので、一例として「ホストの接続と電源状態」アラームを手動でクリアしてみます。</p>
-<p><img src="/images/2020-08-01/event-streaming-004.PNG" alt="アラームのクリア"></p>
-<p>上の画像の赤枠で囲った部分は syslog サーバ側では以下のようなメッセージとして確認できます。メッセージの頭に &ldquo;Event&rdquo; がついている点がポイントです。</p>
-<blockquote>
-<p>2020-08-05T03:23:22.872302+00:00 vcsa01a vpxd[8225] Event [189190] [1-1] [2020-08-05T03:23:22.871617Z] [vim.event.AlarmStatusChangedEvent] [info] [VSPHERE.LOCAL\Administrator] [002 Nested Datacenter] [189190] [Alarm &lsquo;Host connection and power state&rsquo; on esxi70-01.jangari.local changed from Red to Green]</p>
-<p>2020-08-05T03:23:22.873174+00:00 vcsa01a vpxd[8225] Event [189191] [1-1] [2020-08-05T03:23:22.872082Z] [vim.event.AlarmClearedEvent] [info] [VSPHERE.LOCAL\Administrator] [002 Nested Datacenter] [189191] [Manually cleared alarm &lsquo;Host connection and power state&rsquo; on esxi70-01.jangari.local from Red]</p>
-</blockquote>
-<p>メッセージの具体的なフォーマットや設定などは以下のVMware社ドキュメントやナレッジベースに記載されています。</p>
-<ul>
-<li><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.monitoring.doc/GUID-F92A08A1-646A-4DCD-8DB0-47E6D2B49C5D.html">リモート Syslog サーバへのイベントのストリーミング</a></li>
-<li><a href="https://kb.vmware.com/s/article/2147620">Configuration options related to event syslog messages (2147620)</a></li>
-</ul>
-<p>なお、元々はログの転送機能を使用しているのでイベント以外のログも大量に転送されます。このため、現実では syslog サーバ側でフィルタリングなどが必要になってくると思います。</p>
-<p>補足として、今回は syslog サーバ側は CentOS 8 に rsyslog をインストールして試していますが rsyslog の構成は主旨と関係ないため割愛します。</p>
-<h2 id="powercli-でエクスポートしてみる">PowerCLI でエクスポートしてみる</h2>
-<p>vSphere で独自のレポートを手軽に作りたいな、という時に使うものといえば PowerCLI ですよね。</p>
-<p>PowerCLI には Get-VIEvent というそのものズバリのコマンドレットが存在します。これにより vCenter Server のイベントを Event オブジェクトの配列として取得することができます。</p>
-<p><a href="https://code.vmware.com/docs/11794/cmdlet-reference/doc/Get-VIEvent.html">Get-VIEvent - Cmdlet Reference - VMware {code}</a></p>
-<p>今回は Get-VIEvent で取得した Event オブジェクトを Export-Csv にパイプラインで渡すことで、CSV ファイルとしてエクスポートしてみます。</p>
-<p><a href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/export-csv?view=powershell-7">Export-Csv (Microsoft.PowerShell.Utility) - PowerShell</a></p>
-<p>まずは Connect-VIServer で vCenter Server に接続しましょう。</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>&gt; Connect-VIServer vcsa01a.jangari.local -User administrator@vsphere.local -Password VMware1!
-<span class="ln">2</span>
-<span class="ln">3</span>Name                           Port  User
-<span class="ln">4</span>----                           ----  ----
-<span class="ln">5</span>vcsa01a.jangari.local          443   VSPHERE.LOCAL\Administrator
-</code></pre></div><p>次に、Get-VIEvent を実行します。以下は MaxSamples パラメータで取得件数を 200 件としています。既定は 100 件です。</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>&gt; $events = Get-VIEvent -MaxSamples 200
-</code></pre></div><p>あとは、取得した Event オブジェクトの配列を Export-Csv に流し込んであげればイベントの CSV ファイルの出来上がりです。</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>&gt; $events | Export-Csv -Path events.csv
-</code></pre></div><p>ちなみに以下のように -Start と -Finish を指定して採取期間の範囲指定も出来ます。</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>Get-VIEvent -Start &#34;YYYY/MM/DD hh:mm:ss&#34; -Finish &#34;YYYY/MM/DD hh:mm:ss&#34;
-</code></pre></div><p>Get-VIEvent で取得したイベントのオブジェクトにはプロパティが多いので<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>、実際には Select-Object でエクスポートするプロパティを選択しておく、エクスポートした CSV から必要なカラムを抽出するなど、データの加工を行った方が良いと思います。</p>
-<h2 id="おわりに">おわりに</h2>
-<p>イベントは普段はあまり見ないかもしれませんが、何か問題が出たときはイベントを見ると vCenter Server システム全体の状況を俯瞰できたりもします。自力でトラブルシューティングする場合などにお役に立てば幸いです。</p>
-<section class="footnotes" role="doc-endnotes">
-<hr>
-<ol>
-<li id="fn:1" role="doc-endnote">
-<p>Get-VIEvent で取得したオブジェクトは厳密には VMware.Vim.UserLogoutSessionEvent などの Event を継承したオブジェクトになっています。このため、取得した配列内のオブジェクトがすべて同じプロパティを持っているわけではありません。<a href="https://code.vmware.com/apis/968/vsphere">vSphere Web Services API</a> の Data Object Types から個別の型の詳細を確認できます。 <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-</li>
-</ol>
-</section>
-
-  </article>
 <aside class="sidebar">
   <section class="sidebar_inner">
     <h2>Jangari</h2>
@@ -439,6 +348,8 @@
 </aside>
 
 </div>
+
+
     </main><svg width="0" height="0" class="hidden">
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="facebook">
     <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h151V331h-60v-90h60v-61c0-49.629 40.371-90 90-90h91v90h-91v61h91l-15 90h-76v181h121c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zm0 0"></path>
