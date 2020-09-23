@@ -6,10 +6,26 @@
     <description>Recent content in vSphere on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Sat, 19 Sep 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 23 Sep 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/categories/vsphere/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>【Part.4】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</title>
+      <link>https://jangari-ntk.github.io/post/2020-09-23/</link>
+      <pubDate>Wed, 23 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2020-09-23/</guid>
+      <description>はじめに VMworld 2017 SER2965BU のセッションの記事シリーズの最後です。今回は 48:21 ～ 52:40 頃までの内容、七つ道具3セット目の構成ファイルを見ていきます。
+ /etc/vmware/esx.conf /etc/vmware/hostd/vmInventory.xml /etc/vmware/hostd/authorization.xml /etc/vmware/vpxa/vpxa.cfg /etc/vmware/vmkiscsid/* /etc/opt/vmware/fdm/* /etc/vmware/license.cfg  セッションでの説明も5分かからない程度でさらっと説明されており、ログに比べれば構成ファイルは参照する頻度も低いので概要を簡単に見ていきたいと思います。
+なお、ナレッジベースなどで情報公開されている操作でない限り構成ファイルの編集はサポートされる操作ではないので、基本的には確認のみに留めておくことを推奨します。
+ESXi の構成情報のバックアップ 一番重要な点として、ESXi の構成ファイルは多岐にわたり公開情報が無いものがほとんどのため、その全てを網羅するのは不可能です。加えて、特定の構成ファイルの破損時にどう修正すれば良いかなどの情報が公開されていない場合もありますので、ESXi の構成情報は KB2042141 の手順でバックアップしておくことを推奨します。
+ESXi ホストの構成のバックアップ方法 (2042141)
+/etc/vmware/esx.conf - ESXi の構成情報(主にハードウェア、ネットワーク、ストレージ) esx.conf にはハードウェアやストレージ、ネットワークなどの構成情報が含まれています(全てではない)。
+KB1016106 の RDM LUN 向け永久予約設定も esx.conf に記載されるので、ホスト単位で調べる場合は esx.conf を grep してみても良いかもしれません。ただし、そもそも KB1016106 には esxcli や PowerCLI で確認する方法も書いてあるので、通常運用時は KB の手順に沿って実施すべきです。
+1# grep &amp;#34;perennialResvd&amp;#34; /etc/vmware/esx.conf 2/storage/lun[/vmfs/devices/disks/naa.6000c29bb59f25dfb1a670841fd458d9]/perennialResvd = &amp;#34;true&amp;#34; 3/storage/lun[/vmfs/devices/disks/naa.6000c296e29dc4a8f763719d8d832792]/perennialResvd = &amp;#34;true&amp;#34; esxcli system uuid get で取得できる ESXi の UUID もこちらに記載されています。</description>
+    </item>
     
     <item>
       <title>【備忘録】vSAN HCI Mesh Tech Note を読む</title>

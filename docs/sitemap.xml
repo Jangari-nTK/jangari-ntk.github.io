@@ -4,22 +4,57 @@
   
   <url>
     <loc>https://jangari-ntk.github.io/</loc>
-    <lastmod>2020-09-19T00:00:00+00:00</lastmod>
+    <lastmod>2020-09-23T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://jangari-ntk.github.io/post/</loc>
-    <lastmod>2020-09-19T00:00:00+00:00</lastmod>
+    <lastmod>2020-09-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jangari-ntk.github.io/tags/architecture/</loc>
+    <lastmod>2020-09-23T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://jangari-ntk.github.io/categories/</loc>
-    <lastmod>2020-09-19T00:00:00+00:00</lastmod>
+    <lastmod>2020-09-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jangari-ntk.github.io/tags/cli/</loc>
+    <lastmod>2020-09-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jangari-ntk.github.io/tags/esxi/</loc>
+    <lastmod>2020-09-23T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://jangari-ntk.github.io/tags/</loc>
-    <lastmod>2020-09-19T00:00:00+00:00</lastmod>
+    <lastmod>2020-09-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jangari-ntk.github.io/tags/troubleshooting/</loc>
+    <lastmod>2020-09-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jangari-ntk.github.io/tags/vsphere/</loc>
+    <lastmod>2020-09-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jangari-ntk.github.io/categories/vsphere/</loc>
+    <lastmod>2020-09-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jangari-ntk.github.io/post/2020-09-23/</loc>
+    <lastmod>2020-09-23T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -28,38 +63,8 @@
   </url>
   
   <url>
-    <loc>https://jangari-ntk.github.io/tags/vsphere/</loc>
-    <lastmod>2020-09-19T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://jangari-ntk.github.io/categories/vsphere/</loc>
-    <lastmod>2020-09-19T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://jangari-ntk.github.io/post/2020-09-19/</loc>
     <lastmod>2020-09-19T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://jangari-ntk.github.io/tags/architecture/</loc>
-    <lastmod>2020-09-17T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://jangari-ntk.github.io/tags/cli/</loc>
-    <lastmod>2020-09-17T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://jangari-ntk.github.io/tags/esxi/</loc>
-    <lastmod>2020-09-17T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://jangari-ntk.github.io/tags/troubleshooting/</loc>
-    <lastmod>2020-09-17T00:00:00+00:00</lastmod>
   </url>
   
   <url>

@@ -6,33 +6,15 @@
     <description>Recent content in Tags on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Sat, 19 Sep 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 23 Sep 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>vSAN</title>
-      <link>https://jangari-ntk.github.io/tags/vsan/</link>
-      <pubDate>Sat, 19 Sep 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jangari-ntk.github.io/tags/vsan/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>vSphere</title>
-      <link>https://jangari-ntk.github.io/tags/vsphere/</link>
-      <pubDate>Sat, 19 Sep 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jangari-ntk.github.io/tags/vsphere/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Architecture</title>
       <link>https://jangari-ntk.github.io/tags/architecture/</link>
-      <pubDate>Thu, 17 Sep 2020 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 23 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jangari-ntk.github.io/tags/architecture/</guid>
       <description></description>
@@ -41,7 +23,7 @@
     <item>
       <title>CLI</title>
       <link>https://jangari-ntk.github.io/tags/cli/</link>
-      <pubDate>Thu, 17 Sep 2020 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 23 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jangari-ntk.github.io/tags/cli/</guid>
       <description></description>
@@ -50,7 +32,7 @@
     <item>
       <title>ESXi</title>
       <link>https://jangari-ntk.github.io/tags/esxi/</link>
-      <pubDate>Thu, 17 Sep 2020 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 23 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jangari-ntk.github.io/tags/esxi/</guid>
       <description></description>
@@ -59,9 +41,27 @@
     <item>
       <title>Troubleshooting</title>
       <link>https://jangari-ntk.github.io/tags/troubleshooting/</link>
-      <pubDate>Thu, 17 Sep 2020 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 23 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jangari-ntk.github.io/tags/troubleshooting/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>vSphere</title>
+      <link>https://jangari-ntk.github.io/tags/vsphere/</link>
+      <pubDate>Wed, 23 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/tags/vsphere/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>vSAN</title>
+      <link>https://jangari-ntk.github.io/tags/vsan/</link>
+      <pubDate>Sat, 19 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/tags/vsan/</guid>
       <description></description>
     </item>
     

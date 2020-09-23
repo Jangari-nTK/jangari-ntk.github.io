@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" data-figures="">
-  <head>  <title>Architecture | vSoliloquy</title>
+<html lang="en" data-figures="" class="page">
+  <head>  <title>【Part.4】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus | vSoliloquy</title>
   <meta charset='utf-8'>
   <meta name="generator" content="Hugo 0.74.3" />
   <meta name = 'viewport' content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
@@ -12,16 +12,17 @@
   gtag('js', new Date());
   gtag('config', 'UA-175306204-1');
 </script>
+  
 <meta property = "og:locale" content = "en_US" />
 <meta property="og:type" content="article">
-<meta name="description" content="">
+<meta name="description" content="VMworld 2017 SER2965BU のセッションでの 48:21 ～ 52:40 頃までの内容、七つ道具3セット目の構成ファイルを見ていきます。今回で本記事シリーズは完結です。">
 <meta name = "twitter:card" content = "summary" />
 <meta name = "twitter:creator" content = "@Jangari_nTK">
-<meta name = "twitter:title" content = "Architecture" />
-<meta property = "og:url" content = "https://jangari-ntk.github.io/tags/architecture/" />
-<meta property = "og:title" content = "Architecture" />
-<meta property = "og:description" content = "" />
-<meta property = "og:image" content = "https://jangari-ntk.github.io/images/thumbnail.png" />
+<meta name = "twitter:title" content = "【Part.4】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus" />
+<meta property = "og:url" content = "https://jangari-ntk.github.io/post/2020-09-23/" />
+<meta property = "og:title" content = "【Part.4】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus" />
+<meta property = "og:description" content = "VMworld 2017 SER2965BU のセッションでの 48:21 ～ 52:40 頃までの内容、七つ道具3セット目の構成ファイルを見ていきます。今回で本記事シリーズは完結です。" />
+<meta property = "og:image" content = "https://jangari-ntk.github.io/images/2020-09-13/thumbnail.PNG" />
 <link rel='apple-touch-icon' sizes='180x180' href='https://jangari-ntk.github.io/icons/apple-touch-icon.png'>
 <link rel='icon' type='image/png' sizes='32x32' href='https://jangari-ntk.github.io/icons/favicon-32x32.png'>
 <link rel='icon' type='image/png' sizes='16x16' href='https://jangari-ntk.github.io/icons/favicon-16x16.png'>
@@ -30,7 +31,7 @@
 <meta name="msapplication-TileColor" content="#002538">
 <meta name="theme-color" content="#002538">
 
-  <link rel='canonical' href='https://jangari-ntk.github.io/tags/architecture/'>
+  <link rel='canonical' href='https://jangari-ntk.github.io/post/2020-09-23/'>
     
 
     
@@ -84,17 +85,10 @@
 </header>
 
     <main>
-
-<div class='grid-inverse wrap content'>
-  <ul class='posts' id = 'posts'>
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2020-09-23/'>【Part.4】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</a>
-      </h3>
-      <div class = 'post_meta'>
+  
+<div class = 'grid-inverse wrap content'>
+  <article class='post_content'>
+    <h1 class='post_title'>【Part.4】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</h1><div class = 'post_meta'>
   <svg class="icon">
     <use xlink:href="#calendar"></use>
   </svg>
@@ -112,185 +106,158 @@
   </a>
 </div>
 
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2020-09-13/thumbnail.PNG'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>はじめに VMworld 2017 SER2965BU のセッションの記事シリーズの最後です。今回は 48:21 ～ 52:40 頃までの内容、七つ道具3セット目の構成ファイルを見ていきます。
- /etc/vmware/esx.conf /etc/vmware/hostd/vmInventory.xml /etc/vmware/hostd/authorization.xml /etc/vmware/vpxa/vpxa.cfg /etc/vmware/vmkiscsid/* /etc/opt/vmware/fdm/* /etc/vmware/license.cfg  セッションでの説明も5分かからない程度でさらっと説明されており、ログ …</p>
-          <a href='https://jangari-ntk.github.io/post/2020-09-23/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
+    <div class='post_share'>
+  Share on:
+  <a href="https://twitter.com/intent/tweet?text=%e3%80%90Part.4%e3%80%91Advanced%20Troubleshooting%20of%20VMware%20ESXi%20Server%206.x%20for%20vSphere%20Gurus&url=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2020-09-23%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
+    <svg class="icon">
+      <use xlink:href="#twitter"></use>
+    </svg>
+  </a>
   
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2020-09-17/'>【Part.3-2】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</a>
-      </h3>
-      <div class = 'post_meta'>
-  <svg class="icon">
-    <use xlink:href="#calendar"></use>
-  </svg>
-  <span class="post_date">
-    Sep 17, 2020</span>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
+  <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2020-09-23%2f&t=%e3%80%90Part.4%e3%80%91Advanced%20Troubleshooting%20of%20VMware%20ESXi%20Server%206.x%20for%20vSphere%20Gurus" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
+    <svg class="icon">
+      <use xlink:href="#facebook"></use>
+    </svg>
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
+  <script>
+    function shareViaLinkedin() {
+      window.open('http://www.linkedin.com/shareArticle?mini=true&url='+encodeURIComponent("https://jangari-ntk.github.io/post/2020-09-23/"), '', 'left=0,top=0,width=650,height=420,personalbar=0,toolbar=0,scrollbars=0,resizable=0');
+    }
+  </script>
+  <a href="#linkedinshare" id = "linkedinshare" class="linkedin" title="Share on LinkedIn" rel="nofollow" onclick="shareViaLinkedin()">
+    <svg class="icon">
+      <use xlink:href="#linkedin"></use>
+    </svg>
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/troubleshooting' class = 'post_tag button button_translucent'>Troubleshooting
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/cli' class = 'post_tag button button_translucent'>CLI
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/architecture' class = 'post_tag button button_translucent'>Architecture
+  <a href="https://jangari-ntk.github.io/post/2020-09-23/" title="Copy Link" class="link link_yank">
+    <svg class="icon">
+      <use xlink:href="#yank"></use>
+    </svg>
   </a>
 </div>
 
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2020-09-13/thumbnail.PNG'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>はじめに VMworld 2017 SER2965BU のセッションでの 27:00 ～ 48:20 頃までの内容、七つ道具2セット目である７つのコマンドについて見ていきます。
- esxcli vsish vim-cmd vmkfstools memstats pktcap-uw esxtop  今回は残りのコマンドである memstats, pktcap-uw, esxtop を見ていきます(esxtop は概観だけ)。
-memstats - 詳細なメモリ統計情報 通常、リアルタイムなメモリの性能情報を見る場合は esxtop を使うと思います。ファイルとして保存する場合はバッチモードを使うかもしれません。
-memstats コマ …</p>
-          <a href='https://jangari-ntk.github.io/post/2020-09-17/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
-  
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2020-09-13/'>【Part.3-1】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</a>
-      </h3>
-      <div class = 'post_meta'>
-  <svg class="icon">
-    <use xlink:href="#calendar"></use>
-  </svg>
-  <span class="post_date">
-    Sep 13, 2020</span>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/troubleshooting' class = 'post_tag button button_translucent'>Troubleshooting
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/cli' class = 'post_tag button button_translucent'>CLI
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/architecture' class = 'post_tag button button_translucent'>Architecture
-  </a>
-</div>
-
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2020-09-13/thumbnail.PNG'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>はじめに VMworld 2017 SER2965BU のセッションでの 27:00 ～ 48:20 頃までの内容、七つ道具2セット目である７つのコマンドについて見ていきます。
- esxcli - ESXi の設定の確認や変更 vsish - VMkernel Sysinfo Shell vim-cmd - ESXi と仮想マシンの構成の管理 vmkfstools - データストアや仮想ディスクの管理 memstats- 詳細なメモリ統計情報 pktcap-uw - パケットのキャプチャ＆トレース esxtop - パフォーマンスモニタリング  今回の記事では esxcli ～ vmkfstools までのコマンドを見ていきます。こ …</p>
-          <a href='https://jangari-ntk.github.io/post/2020-09-13/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
-  
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2020-09-06/'>【Part.2】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</a>
-      </h3>
-      <div class = 'post_meta'>
-  <svg class="icon">
-    <use xlink:href="#calendar"></use>
-  </svg>
-  <span class="post_date">
-    Sep 6, 2020</span>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/troubleshooting' class = 'post_tag button button_translucent'>Troubleshooting
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/architecture' class = 'post_tag button button_translucent'>Architecture
-  </a>
-</div>
-
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2020-09-06/thumbnail.PNG'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>はじめに 前回の記事の続きです。今回は VMworld 2017 SER2965BU のセッションでの 4:28 ～ 26:54 頃までの内容、七つ道具x3セットの１セット目である７つのログについて見ていきます。
- vmksummary.log boot.gz.log hostd.log &amp; hostd-probe.log vmware.log vmkernel.log vobd.log fdm.log  この辺りの基本的なログの特徴を理解しつつログとの対話を重ねていくと、障害時などにログから原因の推測などがしやすくなると思います。なお、実際に出力されるメッセージは事象によりケースバイケースで異なるため、今回の記事ではセッシ …</p>
-          <a href='https://jangari-ntk.github.io/post/2020-09-06/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
-  
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2020-09-01/'>【Part.1】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</a>
-      </h3>
-      <div class = 'post_meta'>
-  <svg class="icon">
-    <use xlink:href="#calendar"></use>
-  </svg>
-  <span class="post_date">
-    Sep 1, 2020</span>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/troubleshooting' class = 'post_tag button button_translucent'>Troubleshooting
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/architecture' class = 'post_tag button button_translucent'>Architecture
-  </a>
-</div>
-
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2020-09-01/ESXi-Architecture.PNG'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>はじめに 以前開催された VMworld 2017 のセッションが VMworld の公式 YouTube チャンネルで一般公開されています。
-  こちらの SER2965BU のセッションは ESXi のトラブルシューティングで使うツールとユースケースを解説している非常に貴重な資料です。しかし、ただでさえトラブルシューティングの話でそこそこハードルが高いことに加えて英語のセッションのため、可能な範囲で日本語で補足もしつつ見ていきたいと思います。
-本記事シリーズについて SER2965BU のセッション動画は vSphere の管理者が ESXi の障害に直面した時に自力でトラブルシューティングをするためのステップが解説されていま …</p>
-          <a href='https://jangari-ntk.github.io/post/2020-09-01/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
-  
-    <li>
-
-
-    </li>
+    
+    
+    <h2>Table of contents</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#はじめに">はじめに</a></li>
+    <li><a href="#esxi-の構成情報のバックアップ">ESXi の構成情報のバックアップ</a></li>
+    <li><a href="#etcvmwareesxconf---esxi-の構成情報主にハードウェアネットワークストレージ">/etc/vmware/esx.conf - ESXi の構成情報(主にハードウェア、ネットワーク、ストレージ)</a></li>
+    <li><a href="#etcvmwarehostdvminventoryxml---esxi-の仮想マシンインベントリ">/etc/vmware/hostd/vmInventory.xml - ESXi の仮想マシンインベントリ</a></li>
+    <li><a href="#etcvmwarehostdauthorizationxml---esxi-のローカルユーザーの認可">/etc/vmware/hostd/authorization.xml - ESXi のローカルユーザーの認可</a></li>
+    <li><a href="#etcvmwarevpxavpxacfg---vcenter-server-エージェントの構成情報">/etc/vmware/vpxa/vpxa.cfg - vCenter Server エージェントの構成情報</a></li>
+    <li><a href="#etcvmwarevmkiscsid---iscsi-構成情報">/etc/vmware/vmkiscsid/* - iSCSI 構成情報</a></li>
+    <li><a href="#etcoptvmwarefdm---vsphere-ha-の構成情報">/etc/opt/vmware/fdm/* - vSphere HA の構成情報</a></li>
+    <li><a href="#etcvmwarelicensecfg---esxi-のライセンス情報">/etc/vmware/license.cfg - ESXi のライセンス情報</a></li>
+    <li><a href="#おわりに">おわりに</a></li>
   </ul>
+</nav>
+    <h2 id="はじめに">はじめに</h2>
+<p>VMworld 2017 SER2965BU のセッションの記事シリーズの最後です。今回は 48:21 ～ 52:40 頃までの内容、七つ道具3セット目の構成ファイルを見ていきます。</p>
+<ol>
+<li>/etc/vmware/esx.conf</li>
+<li>/etc/vmware/hostd/vmInventory.xml</li>
+<li>/etc/vmware/hostd/authorization.xml</li>
+<li>/etc/vmware/vpxa/vpxa.cfg</li>
+<li>/etc/vmware/vmkiscsid/*</li>
+<li>/etc/opt/vmware/fdm/*</li>
+<li>/etc/vmware/license.cfg</li>
+</ol>
+<p>セッションでの説明も5分かからない程度でさらっと説明されており、ログに比べれば構成ファイルは参照する頻度も低いので概要を簡単に見ていきたいと思います。</p>
+<p>なお、ナレッジベースなどで情報公開されている操作でない限り構成ファイルの編集はサポートされる操作ではないので、基本的には確認のみに留めておくことを推奨します。</p>
+<h2 id="esxi-の構成情報のバックアップ">ESXi の構成情報のバックアップ</h2>
+<p>一番重要な点として、ESXi の構成ファイルは多岐にわたり公開情報が無いものがほとんどのため、その全てを網羅するのは不可能です。加えて、特定の構成ファイルの破損時にどう修正すれば良いかなどの情報が公開されていない場合もありますので、ESXi の構成情報は KB2042141 の手順でバックアップしておくことを推奨します。</p>
+<p><a href="https://kb.vmware.com/s/article/2042141?lang=ja">ESXi ホストの構成のバックアップ方法 (2042141)</a></p>
+<h2 id="etcvmwareesxconf---esxi-の構成情報主にハードウェアネットワークストレージ">/etc/vmware/esx.conf - ESXi の構成情報(主にハードウェア、ネットワーク、ストレージ)</h2>
+<p>esx.conf にはハードウェアやストレージ、ネットワークなどの構成情報が含まれています(全てではない)。</p>
+<p><a href="https://kb.vmware.com/s/article/1016106?lang=ja">KB1016106</a> の RDM LUN 向け永久予約設定も esx.conf に記載されるので、ホスト単位で調べる場合は esx.conf を grep してみても良いかもしれません。ただし、そもそも KB1016106 には esxcli や PowerCLI で確認する方法も書いてあるので、通常運用時は KB の手順に沿って実施すべきです。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span># grep &#34;perennialResvd&#34; /etc/vmware/esx.conf
+<span class="ln">2</span>/storage/lun[/vmfs/devices/disks/naa.6000c29bb59f25dfb1a670841fd458d9]/perennialResvd = &#34;true&#34;
+<span class="ln">3</span>/storage/lun[/vmfs/devices/disks/naa.6000c296e29dc4a8f763719d8d832792]/perennialResvd = &#34;true&#34;
+</code></pre></div><p>esxcli system uuid get で取得できる ESXi の UUID もこちらに記載されています。</p>
+<h2 id="etcvmwarehostdvminventoryxml---esxi-の仮想マシンインベントリ">/etc/vmware/hostd/vmInventory.xml - ESXi の仮想マシンインベントリ</h2>
+<p>vmInventory.xml は名前の通り、ESXi の仮想マシンインベントリの情報です。個々の ESXi に登録されている仮想マシンが一覧として記載されているので、ホスト間での仮想マシンの登録状態の違いを確認する場合などに役立ちます。</p>
+<p>こちらのファイルが破損したり、vSphere HA による仮想マシンのフェイルオーバーが失敗してファイルの内容の整合性が取れなくなった等のケースでは、ESXi のインベントリから仮想マシンが消える、vCenter Server のインベントリ上で仮想マシンが親なしになる場合があります。この場合は以下のドキュメントを参考に仮想マシンをインベントリに再登録する必要があります。</p>
+<p><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.vm_admin.doc/GUID-BFD8C9BC-30FB-4A92-AFEC-2FC9FF387920.html">親なし状態の仮想マシンのリカバリ</a></p>
+<h2 id="etcvmwarehostdauthorizationxml---esxi-のローカルユーザーの認可">/etc/vmware/hostd/authorization.xml - ESXi のローカルユーザーの認可</h2>
+<p>ESXi ホスト上で権限(ロール)が割り当てられた ESXi のローカルユーザーの一覧が記載されているファイルです。通常はまず見ることはありませんが、何らかの要因で root ユーザーに必要な権限が割り当てられておらず vCenter Server に追加できない等で、当該ファイルの再生成が必要になるケースはあります。</p>
+<ul>
+<li><a href="https://kb.vmware.com/s/article/3824568?lang=ja">vCenter Server にホストを追加すると、一般的なシステム エラーまたは vim.fault.NoPermission で失敗する (3824568)</a></li>
+</ul>
+<p>なお、ロールが割り当てられていない(＝認可されていない)ユーザーは一覧には表示されないため、確認する際はその点に注意が必要です。</p>
+<h2 id="etcvmwarevpxavpxacfg---vcenter-server-エージェントの構成情報">/etc/vmware/vpxa/vpxa.cfg - vCenter Server エージェントの構成情報</h2>
+<p>vpxa の構成ファイルです。vCenter Server の IP アドレスやポート、ログ設定などが記載されています。こちらのファイルが破損すると vCenter Server と ESXi の間の通信が正常に行えなくなります。</p>
+<h2 id="etcvmwarevmkiscsid---iscsi-構成情報">/etc/vmware/vmkiscsid/* - iSCSI 構成情報</h2>
+<p>/etc/vmware/vmkiscsid ディレクトリの配下には ESXi の iSCSI アダプタの構成情報が含まれています。これらのファイルが破損した場合、KB1038065 のように iSCSI 構成の再初期化が必要になります。</p>
+<p><a href="https://kb.vmware.com/s/article/1038065?lang=ja">ESX/ESXi ホストの再起動またはアップグレード後、ソフトウェア iSCSI LUN が表示されなくなる (1038065)</a></p>
+<h2 id="etcoptvmwarefdm---vsphere-ha-の構成情報">/etc/opt/vmware/fdm/* - vSphere HA の構成情報</h2>
+<p>/etc/opt/vmware/fdm ディレクトリの配下には vSphere HA の構成情報が含まれています。</p>
+<p>vSphere HA の構成情報には clusterconfig (クラスタの構成)、hostlist (ホスト一覧)、vmmetadata (仮想マシンの一覧と互換のあるホスト) がありますが、hostlist 以外はバイナリデータのため中を見るには prettyPrint.sh というスクリプトを使う必要があります。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span># /opt/vmware/fdm/fdm/prettyPrint.sh clusterconfig
+<span class="ln"> 2</span>25403&lt;obj xmlns:xsd=&#34;http://www.w3.org/2001/XMLSchema&#34; xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34; xmlns=&#34;urn:csi&#34; versionId=&#34;1.0&#34; xsi:type=&#34;CsiConfigInfoEx&#34;&gt;
+<span class="ln"> 3</span>   &lt;vmSwapPlacement&gt;vmDirectory&lt;/vmSwapPlacement&gt;
+<span class="ln"> 4</span>   &lt;spbmEnabled&gt;true&lt;/spbmEnabled&gt;
+<span class="ln"> 5</span>   &lt;dasConfig&gt;
+<span class="ln"> 6</span>      &lt;enabled&gt;true&lt;/enabled&gt;
+<span class="ln"> 7</span>      &lt;vmMonitoring&gt;vmMonitoringDisabled&lt;/vmMonitoring&gt;
+<span class="ln"> 8</span>      &lt;hostMonitoring&gt;enabled&lt;/hostMonitoring&gt;
+<span class="ln"> 9</span>      &lt;vmComponentProtecting&gt;enabled&lt;/vmComponentProtecting&gt;
+<span class="ln">10</span>      &lt;failoverLevel&gt;1&lt;/failoverLevel&gt;
+<span class="ln">11</span>      &lt;admissionControlPolicy xsi:type=&#34;ClusterFailoverResourcesAdmissionControlPolicy&#34;&gt;
+<span class="ln">12</span>         &lt;resourceReductionToToleratePercent&gt;100&lt;/resourceReductionToToleratePercent&gt;
+<span class="ln">13</span>         &lt;cpuFailoverResourcesPercent&gt;0&lt;/cpuFailoverResourcesPercent&gt;
+<span class="ln">14</span>           (略)
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span># /opt/vmware/fdm/fdm/prettyPrint.sh hostlist
+<span class="ln"> 2</span>host-118995&lt;obj xmlns:xsd=&#34;http://www.w3.org/2001/XMLSchema&#34; xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34; xmlns=&#34;urn:csi&#34; versionId=&#34;1.0&#34; xsi:type=&#34;CsiHostList&#34;&gt;
+<span class="ln"> 3</span>   &lt;faultDomainId&gt;acf001e5-2449-46a7-a882-82c069b29111-118991-1597c71-vcsa01a&lt;/faultDomainId&gt;
+<span class="ln"> 4</span>   &lt;version&gt;19&lt;/version&gt;
+<span class="ln"> 5</span>   &lt;host&gt;
+<span class="ln"> 6</span>      &lt;hostId&gt;host-118995&lt;/hostId&gt;
+<span class="ln"> 7</span>      &lt;hostName&gt;esxi70-01.jangari.local&lt;/hostName&gt;
+<span class="ln"> 8</span>      &lt;sslThumbprint&gt;D3:84:F7:54:84:6C:19:14:C0:DA:4F:CC:D0:25:19:57:D7:24:5F:CF&lt;/sslThumbprint&gt;
+<span class="ln"> 9</span>      &lt;ipAddress&gt;10.0.2.1&lt;/ipAddress&gt;
+<span class="ln">10</span>      &lt;mac&gt;00:50:56:ad:c9:82&lt;/mac&gt;
+<span class="ln">11</span>      &lt;mac&gt;00:50:56:ad:d9:49&lt;/mac&gt;
+<span class="ln">12</span>      &lt;mac&gt;00:50:56:ad:9c:fb&lt;/mac&gt;
+<span class="ln">13</span>      &lt;mac&gt;00:50:56:ad:7f:b8&lt;/mac&gt;
+<span class="ln">14</span>      &lt;vmkNics&gt;vmk2&lt;/vmkNics&gt;
+<span class="ln">15</span>      &lt;hostdPort&gt;443&lt;/hostdPort&gt;
+<span class="ln">16</span>        (略)
+<span class="ln">17</span>&lt;/obj&gt;
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span># /opt/vmware/fdm/fdm/prettyPrint.sh vmmetadata
+<span class="ln"> 2</span>780&lt;obj xmlns:xsd=&#34;http://www.w3.org/2001/XMLSchema&#34; xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34; xmlns=&#34;urn:csi&#34; versionId=&#34;1.0&#34; xsi:type=&#34;CsiVirtualMachineMetadata&#34;&gt;
+<span class="ln"> 3</span>   &lt;faultDomainId&gt;acf001e5-2449-46a7-a882-82c069b29111-118991-1597c71-vcsa01a&lt;/faultDomainId&gt;
+<span class="ln"> 4</span>   &lt;version&gt;26&lt;/version&gt;
+<span class="ln"> 5</span>   &lt;dictionary&gt;
+<span class="ln"> 6</span>      &lt;hosts&gt;
+<span class="ln"> 7</span>         &lt;index&gt;3&lt;/index&gt;
+<span class="ln"> 8</span>         &lt;name&gt;host-119004&lt;/name&gt;
+<span class="ln"> 9</span>      &lt;/hosts&gt;
+<span class="ln">10</span>        (略)
+<span class="ln">11</span>      &lt;hosts&gt;
+<span class="ln">12</span>         &lt;index&gt;2&lt;/index&gt;
+<span class="ln">13</span>         &lt;name&gt;host-119001&lt;/name&gt;
+<span class="ln">14</span>      &lt;/hosts&gt;
+<span class="ln">15</span>      &lt;vms&gt;
+<span class="ln">16</span>         &lt;index&gt;0&lt;/index&gt;
+<span class="ln">17</span>         &lt;name&gt;/vmfs/volumes/vsan:52314ecbfed7acc6-b41378aa485c8abd/be93505f-43a9-269e-7f16-005056adc982/Photon.vmx&lt;/name&gt;
+<span class="ln">18</span>      &lt;/vms&gt;
+<span class="ln">19</span>   &lt;/dictionary&gt;
+<span class="ln">20</span>   &lt;compatMatrix&gt;
+<span class="ln">21</span>      &lt;restartCompat&gt;
+<span class="ln">22</span>         &lt;index&gt;0&lt;/index&gt;
+<span class="ln">23</span>         &lt;compatMask&gt;0,1,2,3&lt;/compatMask&gt;
+<span class="ln">24</span>      &lt;/restartCompat&gt;
+<span class="ln">25</span>   &lt;/compatMatrix&gt;
+<span class="ln">26</span>&lt;/obj&gt;
+</code></pre></div><h2 id="etcvmwarelicensecfg---esxi-のライセンス情報">/etc/vmware/license.cfg - ESXi のライセンス情報</h2>
+<p>ESXi ホストのライセンス情報が含まれます。このファイルが破損するとホストのライセンス周りで問題が発生します。</p>
+<h2 id="おわりに">おわりに</h2>
+<p>本記事シリーズでは VMworld 2017 の SER2965BU - Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus のセッションの内容を見ていきました。今回の記事シリーズで挙げた内容は ESXi のトラブルシューティングの一部ですが、この辺りを理解しておくと障害発生時に被疑箇所がつかみやすいかなと思います。</p>
+<p>ただし「生兵法は大怪我の基」ということわざにもあるように、生半可な知識を使って自力でトラブルシューティングに挑むと時間のみが経過したり障害を悪化させてしまう可能性も十分にあります。このため、問題が発生して自力で解決できそうにない場合には、可能な限り早い段階でログバンドルなどを採取してテクニカルサポートの指示に従って対応していくことを強く推奨したいと思います。</p>
+
+  </article>
 <aside class="sidebar">
   <section class="sidebar_inner">
     <h2>Jangari</h2>
@@ -321,9 +288,6 @@ memstats コマ …</p>
     <h2 class="mt-4">Recent Posts</h2>
     <ul class="flex-column">
       
-      <li>
-        <a href="https://jangari-ntk.github.io/post/2020-09-23/" class="nav-link">【Part.4】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</a>
-      </li>
       <li>
         <a href="https://jangari-ntk.github.io/post/2020-09-19/" class="nav-link">【備忘録】vSAN HCI Mesh Tech Note を読む</a>
       </li>
@@ -512,8 +476,6 @@ memstats コマ …</p>
 </aside>
 
 </div>
-
-
     </main><svg width="0" height="0" class="hidden">
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="facebook">
     <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h151V331h-60v-90h60v-61c0-49.629 40.371-90 90-90h91v90h-91v61h91l-15 90h-76v181h121c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zm0 0"></path>
