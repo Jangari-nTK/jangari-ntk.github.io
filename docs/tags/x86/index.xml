@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>x86 on vSoliloquy</title>
+    <link>https://jangari-ntk.github.io/tags/x86/</link>
+    <description>Recent content in x86 on vSoliloquy</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
+    <lastBuildDate>Fri, 02 Oct 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://jangari-ntk.github.io/tags/x86/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>VMware 社の新プロジェクト「Project Monterey」？</title>
+      <link>https://jangari-ntk.github.io/post/2020-10-02/</link>
+      <pubDate>Fri, 02 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2020-10-02/</guid>
+      <description>はじめに VMworld 2020 のタイミングに合わせて、9/29 に VMware 社の各種ブログにて新しい製品やサービス、プロジェクトが発表されていました。いくつか見ていたのですが、それらの中でも以下の新しいプロジェクト「Project Monterey」が画期的な内容で個人的に興味をそそられました。知らない＆分からない＆そもそも初めて見る内容も多く、調べながら何とかブログ記事から読み取れた範囲の内容にはなりますが頑張って紹介してみたいと思います。
+Not only is #ProjectMontery really cool but its also 1st validation of #ESXionARM as most SmartNICs have an @Arm processor. This tech will extend to VMware Cloud Foundation &amp;amp; reimagine vSphere “Cluster”https://t.co/ZfldM5IY71
+Congrats to @esxi_arm Team, they must be proud! 🥳
+&amp;mdash; William Lam (@lamw) September 29, 2020  Project Monterey の概要 従来はハイパーバイザー(VMM)、vSAN、NSX などの機能はすべて単一のハードウェア上の単一の ESXi で動作していました。1つのハードウェア上で1つの OS やハイパーバイザーが実行されることは、ESXi に限らず Windows や Linux といった汎用的な OS でも同じですね。</description>
+    </item>
+    
+  </channel>
+</rss>
