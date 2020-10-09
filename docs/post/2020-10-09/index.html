@@ -209,7 +209,8 @@ This issue occurs because the usbarbitrator service has claimed the device to ma
 <p>このため、ESXi Shell から usbarbitrator サービスを止めて VMFS データストアや vSAN などに使用できるようにします。</p>
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span># /etc/init.d/usbarbitrator stop
 <span class="ln">2</span># chkconfig usbarbitrator off
-</code></pre></div><h2 id="usb-デバイスを-ssd-としてマークできるようにする">USB デバイスを SSD としてマークできるようにする</h2>
+</code></pre></div><p>なお、usbarbitrator サービスを止めるとホスト USB デバイスを仮想マシンにパススルー接続できなくなりますのでご注意ください。</p>
+<h2 id="usb-デバイスを-ssd-としてマークできるようにする">USB デバイスを SSD としてマークできるようにする</h2>
 <p>vSAN は最低でもホストに1つ SSD としてマークされたデバイスが必要ですが、既定では USB デバイスは SSD としてマークできないよう制限がかけられています。ホストの詳細設定 Disk.AllowUsbClaimedAsSSD を 1 に変更することで USB デバイスを SSD としてマークすることが出来るようになります。</p>
 <p><img src="/images/2020-10-09/Disk-AllowUsbClaimedAsSSD.PNG" alt=""></p>
 <p>こちらのホストの詳細設定はコマンドでも変更が可能です。</p>
