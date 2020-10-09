@@ -6,10 +6,25 @@
     <description>Recent content in vSphere on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Fri, 02 Oct 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 09 Oct 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/categories/vsphere/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>【HomeLab】ホストの USB デバイスを vSAN で使用するための設定</title>
+      <link>https://jangari-ntk.github.io/post/2020-10-09/</link>
+      <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2020-10-09/</guid>
+      <description>はじめに Project Monterey の発表で ESXi on SmartNIC が言及されていましたが、先日の vSphere 7.0 Update 1 のリリース時に合わせて ESXi on Arm が Flings として公開されました。
+ESXi Arm Edition | VMware Flings
+ESXi-Arm インストール完了！
+ラズパイで ESXi 動いてるの感動する pic.twitter.com/3fi8QqCuHE
+&amp;mdash; Jangari (@Jangari_nTK) October 6, 2020  私も Raspberry Pi 4b 8GB にインストールして遊んでみており、ESXi on Arm を監視ホスト(Witness Host)とした 2ノード vSAN を組んでみました。ESXi on Arm が使えるようになったら真っ先に試してみたかった構成の一つです。
+I&amp;#39;ve tried to configure 2-node vSAN with #ESXionARM as a witness host. It works! pic.twitter.com/f2XMaGMMW3
+&amp;mdash; Jangari (@Jangari_nTK) October 7, 2020  ESXi on Arm を使った 2ノード vSAN を組んでいる中で、Raspberry Pi 4b の場合は USB 接続のディスクを利用することになりますが、USB デバイスを vSAN のキャッシュデバイスやキャパシティデバイスに使おうとするとトリッキーな設定が必要でしたので、備忘録として残しておきたいと思います。</description>
+    </item>
     
     <item>
       <title>VMware 社の新プロジェクト「Project Monterey」？</title>

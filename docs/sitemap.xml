@@ -4,12 +4,52 @@
   
   <url>
     <loc>https://jangari-ntk.github.io/</loc>
-    <lastmod>2020-10-02T00:00:00+00:00</lastmod>
+    <lastmod>2020-10-09T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://jangari-ntk.github.io/post/</loc>
-    <lastmod>2020-10-02T00:00:00+00:00</lastmod>
+    <lastmod>2020-10-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jangari-ntk.github.io/categories/</loc>
+    <lastmod>2020-10-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jangari-ntk.github.io/tags/esxi/</loc>
+    <lastmod>2020-10-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jangari-ntk.github.io/tags/esxi-on-arm/</loc>
+    <lastmod>2020-10-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jangari-ntk.github.io/tags/raspberry-pi/</loc>
+    <lastmod>2020-10-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jangari-ntk.github.io/tags/</loc>
+    <lastmod>2020-10-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jangari-ntk.github.io/tags/vsan/</loc>
+    <lastmod>2020-10-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jangari-ntk.github.io/categories/vsphere/</loc>
+    <lastmod>2020-10-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jangari-ntk.github.io/post/2020-10-09/</loc>
+    <lastmod>2020-10-09T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -23,32 +63,12 @@
   </url>
   
   <url>
-    <loc>https://jangari-ntk.github.io/categories/</loc>
-    <lastmod>2020-10-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://jangari-ntk.github.io/tags/esxi/</loc>
-    <lastmod>2020-10-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://jangari-ntk.github.io/tags/</loc>
-    <lastmod>2020-10-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://jangari-ntk.github.io/tags/vmware-cloud-foundation/</loc>
     <lastmod>2020-10-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://jangari-ntk.github.io/post/2020-10-02/</loc>
-    <lastmod>2020-10-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://jangari-ntk.github.io/categories/vsphere/</loc>
     <lastmod>2020-10-02T00:00:00+00:00</lastmod>
   </url>
   
@@ -75,11 +95,6 @@
   <url>
     <loc>https://jangari-ntk.github.io/post/2020-09-23/</loc>
     <lastmod>2020-09-23T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://jangari-ntk.github.io/tags/vsan/</loc>
-    <lastmod>2020-09-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
