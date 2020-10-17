@@ -6,7 +6,7 @@
     <description>Recent content in ESXi on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Fri, 09 Oct 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 17 Oct 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/tags/esxi/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>open-vm-tools を CentOS 8 aarch64 でビルド＆インストール</title>
       <link>https://jangari-ntk.github.io/post/2020-10-17/</link>
-      <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 17 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jangari-ntk.github.io/post/2020-10-17/</guid>
       <description>はじめに ESXi on Arm でゲストOSを実行する場合、ARM64 アーキテクチャ向けにビルドされた OS をインストールすることになります。現時点で殆どの Linux ディストリビューションでは open-vm-tools が公式リポジトリで配布されていません。このため、VMware 公式の GitHub リポジトリからソースを取ってきてビルド＆インストールしたいと思います。

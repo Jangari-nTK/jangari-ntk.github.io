@@ -6,7 +6,7 @@
     <description>Recent content in Tags on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Fri, 09 Oct 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 17 Oct 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>CentOS</title>
       <link>https://jangari-ntk.github.io/tags/centos/</link>
-      <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 17 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jangari-ntk.github.io/tags/centos/</guid>
       <description></description>
@@ -23,7 +23,7 @@
     <item>
       <title>ESXi</title>
       <link>https://jangari-ntk.github.io/tags/esxi/</link>
-      <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 17 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jangari-ntk.github.io/tags/esxi/</guid>
       <description></description>
@@ -32,7 +32,7 @@
     <item>
       <title>ESXi on Arm</title>
       <link>https://jangari-ntk.github.io/tags/esxi-on-arm/</link>
-      <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 17 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jangari-ntk.github.io/tags/esxi-on-arm/</guid>
       <description></description>
@@ -41,9 +41,18 @@
     <item>
       <title>Linux</title>
       <link>https://jangari-ntk.github.io/tags/linux/</link>
-      <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 17 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jangari-ntk.github.io/tags/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>VMware Tools</title>
+      <link>https://jangari-ntk.github.io/tags/vmware-tools/</link>
+      <pubDate>Sat, 17 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/tags/vmware-tools/</guid>
       <description></description>
     </item>
     
@@ -53,15 +62,6 @@
       <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jangari-ntk.github.io/tags/raspberry-pi/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>VMware Tools</title>
-      <link>https://jangari-ntk.github.io/tags/vmware-tools/</link>
-      <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jangari-ntk.github.io/tags/vmware-tools/</guid>
       <description></description>
     </item>
     
