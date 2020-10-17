@@ -12,6 +12,15 @@
     
     
     <item>
+      <title>CentOS</title>
+      <link>https://jangari-ntk.github.io/tags/centos/</link>
+      <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/tags/centos/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>ESXi</title>
       <link>https://jangari-ntk.github.io/tags/esxi/</link>
       <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
@@ -30,11 +39,29 @@
     </item>
     
     <item>
+      <title>Linux</title>
+      <link>https://jangari-ntk.github.io/tags/linux/</link>
+      <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/tags/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Raspberry Pi</title>
       <link>https://jangari-ntk.github.io/tags/raspberry-pi/</link>
       <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jangari-ntk.github.io/tags/raspberry-pi/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>VMware Tools</title>
+      <link>https://jangari-ntk.github.io/tags/vmware-tools/</link>
+      <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/tags/vmware-tools/</guid>
       <description></description>
     </item>
     

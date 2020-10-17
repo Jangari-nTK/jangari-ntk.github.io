@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>CentOS on vSoliloquy</title>
+    <link>https://jangari-ntk.github.io/tags/centos/</link>
+    <description>Recent content in CentOS on vSoliloquy</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
+    <lastBuildDate>Fri, 09 Oct 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://jangari-ntk.github.io/tags/centos/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>open-vm-tools を CentOS 8 aarch64 でビルド＆インストール</title>
+      <link>https://jangari-ntk.github.io/post/2020-10-17/</link>
+      <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2020-10-17/</guid>
+      <description>はじめに ESXi on Arm でゲストOSを実行する場合、ARM64 アーキテクチャ向けにビルドされた OS をインストールすることになります。現時点で殆どの Linux ディストリビューションでは open-vm-tools が公式リポジトリで配布されていません。このため、VMware 公式の GitHub リポジトリからソースを取ってきてビルド＆インストールしたいと思います。
+私の GitHub リポジトリに自動化した CentOS 8 向けのスクリプトを置いてあります。もし良ければこちらもどうぞ。
+Jangari-nTK/ovt-installation-centos8-aarch64
+Twitter で中の人が引用リツイートしてくれたのはちょっと嬉しかったです。
+Awesome! Thanks for sharing script for installing VMware Tools for Arm on CentOS #ESXionARM https://t.co/D42peyNHuR
+&amp;mdash; William Lam (@lamw) October 11, 2020  なお、ゲストが Raspberry Pi OS (旧 Raspbian) の場合は中の人が記事を書いてくれましたので、こちらを参照してもらえればと思います。
+Installing VMware Tools on Raspberry Pi OS for ESXi-Arm
+おおまかな流れ open-vm-tools を一からビルドしてインストールする場合、大まかな流れとしては以下のようになります。
+ CentOS 8 (aarch64) を仮想マシンにインストール。 ビルドに必要な開発ツールのパッケージをインストール vmware/open-vm-tools の GitHub リポジトリをクローン。 configure スクリプトを生成・実行して Makefile を生成。 make でビルドして make install でインストール。 systemd の Unit ファイルを作成して systemctl から有効化。 Host Client から VMware Tools の状態を確認。  順番に見ていきます。</description>
+    </item>
+    
+  </channel>
+</rss>
