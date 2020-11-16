@@ -171,9 +171,9 @@
 <p><img src="/images/2020-08-11/ID_Federation_diagram.PNG" alt="Identity Federation の流れ"></p>
 <p>まず、ブラウザで vCenter Server にアクセスするとユーザー名の入力を促されます。次に Active Directory ドメインユーザーを入力すると AD FS の画面にリダイレクトされます。その後、AD FS 経由でパスワード等による認証をおこなうと、vCenter Server は AD FS から発行された ID トークンでユーザーのログインを許可します<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>。</p>
 <p>上図を見てもらえると、パスワードなどの認証情報は AD FS / AD DS しか使用せず、vCenter Server は経由しないことが分かると思います。</p>
-<p>一方、従来の vCenter SSO による認証では下図のように、Active Directory や OpenLDAP といった外部の ID ソースを利用して認証を行う場合も vCenter SSO (Platform Services Controller<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>) が認証情報を仲介する必要がありました<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>。ユーザーが vSphere のコンポーネントに認証情報を渡す必要があるかどうか、という点が最も大きな違いといえます。</p>
+<p>一方、従来の vCenter SSO による認証では下図のように、Active Directory や OpenLDAP といった外部の ID ソースを利用して認証を行う場合も vCenter SSO (Platform Services Controller<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>) が認証情報を仲介する必要がありました。ユーザーが vSphere のコンポーネントに認証情報を渡す必要があるかどうか、という点が最も大きな違いといえます。</p>
 <p><img src="/images/2020-08-11/Traditional_vCenter_SSO_diagram.PNG" alt="従来の vCenter SSO による認証"></p>
-<p>また、複数の vCenter Server 間で vCenter SSO の認証をフェデレーションさせる場合、従来は拡張リンクモードが必要でした。Identity Federation では拡張リンクモードを構成していない場合も AD FS を介して vCenter Server 間で認証をフェデレーションできます。もちろん、拡張リンクモードと併用することも可能です<sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup>。</p>
+<p>また、複数の vCenter Server 間で vCenter SSO の認証をフェデレーションさせる場合、従来は拡張リンクモードが必要でした。Identity Federation では拡張リンクモードを構成していない場合も AD FS を介して vCenter Server 間で認証をフェデレーションできます。もちろん、拡張リンクモードと併用することも可能です<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>。</p>
 <h2 id="実際のブラウザでの画面遷移">実際のブラウザでの画面遷移</h2>
 <p>それでは実際にユーザーから見えるブラウザ上での画面遷移を見ていきます。</p>
 <p>まず vCenter Server (vSphere Client) にアクセスすると以下のようなユーザー名の入力画面が表示されます。</p>
@@ -240,10 +240,7 @@
 <p>vSphere 6.7 以前に存在していた Platform Services Controller は vCenter Server 7.0 に完全に統合されたため、「Platform Services Controller」という言葉は vSphere 7 の文脈上では使われなくなったようです。詳しいところは<a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vcenter.upgrade.doc/GUID-2360F9C9-EDBD-4362-B898-0B291AF1560E.html">こちらの VMware Docs</a> をご参照ください。 <a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 <li id="fn:3" role="doc-endnote">
-<p>ソリューションユーザーに関しては vSphere 7 でも従来の vCenter SSO + SAML の認証が利用されます。こちらは vCenter Server 内部のサービスが使用するユーザーで、認証も vCenter Server に閉じて行われるため、さほど意識することは無いかなと思います。 <a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-</li>
-<li id="fn:4" role="doc-endnote">
-<p>複数の vCenter Server で Identity Federation と拡張リンクモードを併用する場合の動作や注意点などは<a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-4B4E336B-75E4-47D9-9BDE-E835071E71F9.html">こちらの VMware Docs</a> を参照してください。 <a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<p>複数の vCenter Server で Identity Federation と拡張リンクモードを併用する場合の動作や注意点などは<a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-4B4E336B-75E4-47D9-9BDE-E835071E71F9.html">こちらの VMware Docs</a> を参照してください。 <a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 </ol>
 </section>
