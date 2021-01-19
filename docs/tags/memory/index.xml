@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Memory on vSoliloquy</title>
+    <link>https://jangari-ntk.github.io/tags/memory/</link>
+    <description>Recent content in Memory on vSoliloquy</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
+    <lastBuildDate>Tue, 19 Jan 2021 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://jangari-ntk.github.io/tags/memory/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>仮想マシンのメモリの Active と Comsumed の違い</title>
+      <link>https://jangari-ntk.github.io/post/2021-01-19/</link>
+      <pubDate>Tue, 19 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2021-01-19/</guid>
+      <description>はじめに vSphere には仮想マシンのメモリ使用量を測るカウンタとして Active (有効なゲストメモリ) と Consumed (消費) の2種類があります。
+ Understanding the Memory Active and Memory Usage indicators on the Performance tab (1002604) Understanding vSphere Active Memory - VMware vSphere Blog メモリ （データ カウンタ）- vSphere の監視とパフォーマンス  仮想マシンのサイジングや性能監視などの際によく見られますが、それぞれ以下のメモリ使用量を測定しています。
+ Active：直近で仮想マシンが積極的にアクセスしていたメモリ(統計値) Consumed：現在 ESXi が仮想マシンへ実際に割り当てている物理メモリ  これらはゲストOS内から観測できるメモリ使用量とは観測対象が異なるため、OS のメモリ使用状況とは観測できる値も異なります。今回の記事では Linux ゲストでのページキャッシュの動作を一例として、仮想マシンのメモリの Active / Consumed の値がどのように変化するか見ていきたいと思います。
+なお、Linux のページキャッシュの説明はしませんが、この辺りは @sat 様の YouTube チャンネルでの解説動画(その20～その26あたり)や書籍「［試して理解］Linuxのしくみ ～実験と図解で学ぶOSとハードウェアの基礎知識」が非常に分かりやすいと思います。
+初期状態 Linux ゲストが起動された直後に実行した free コマンドの状態です。ゲストOSは仮想マシンに構成されているメモリ 8GB を認識しています。
+1# free -h 2 total used free shared buff/cache available 3Mem: 7.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -6,10 +6,37 @@
     <description>Recent content in Tags on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Sat, 17 Oct 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 19 Jan 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>ESXi</title>
+      <link>https://jangari-ntk.github.io/tags/esxi/</link>
+      <pubDate>Tue, 19 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/tags/esxi/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Memory</title>
+      <link>https://jangari-ntk.github.io/tags/memory/</link>
+      <pubDate>Tue, 19 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/tags/memory/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Resource Management</title>
+      <link>https://jangari-ntk.github.io/tags/resource-management/</link>
+      <pubDate>Tue, 19 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/tags/resource-management/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>CentOS</title>
@@ -17,15 +44,6 @@
       <pubDate>Sat, 17 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jangari-ntk.github.io/tags/centos/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>ESXi</title>
-      <link>https://jangari-ntk.github.io/tags/esxi/</link>
-      <pubDate>Sat, 17 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jangari-ntk.github.io/tags/esxi/</guid>
       <description></description>
     </item>
     
