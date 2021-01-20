@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-figures="" class="page">
-  <head>  <title>仮想マシンのメモリの Active と Comsumed の違い | vSoliloquy</title>
+  <head>  <title>仮想マシンのメモリの Active と Comsumed の動きを見る | vSoliloquy</title>
   <meta charset='utf-8'>
   <meta name="generator" content="Hugo 0.74.3" />
   <meta name = 'viewport' content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
@@ -18,9 +18,9 @@
 <meta name="description" content="vSphere には仮想マシンのメモリ使用量を測るカウンタとして Active (有効なゲストメモリ) と Consumed (消費) の2種類があります。今回の記事では Linux ゲストでのページキャッシュの動作を一例として、仮想マシンのメモリの Active / Consumed の値がどのように変化するか見てい …">
 <meta name = "twitter:card" content = "summary" />
 <meta name = "twitter:creator" content = "@Jangari_nTK">
-<meta name = "twitter:title" content = "仮想マシンのメモリの Active と Comsumed の違い" />
+<meta name = "twitter:title" content = "仮想マシンのメモリの Active と Comsumed の動きを見る" />
 <meta property = "og:url" content = "https://jangari-ntk.github.io/post/2021-01-19/" />
-<meta property = "og:title" content = "仮想マシンのメモリの Active と Comsumed の違い" />
+<meta property = "og:title" content = "仮想マシンのメモリの Active と Comsumed の動きを見る" />
 <meta property = "og:description" content = "vSphere には仮想マシンのメモリ使用量を測るカウンタとして Active (有効なゲストメモリ) と Consumed (消費) の2種類があります。今回の記事では Linux ゲストでのページキャッシュの動作を一例として、仮想マシンのメモリの Active / Consumed の値がどのように変化するか見てい …" />
 <meta property = "og:image" content = "https://jangari-ntk.github.io/images/2021-01-19/thumbnail.PNG" />
 <link rel='apple-touch-icon' sizes='180x180' href='https://jangari-ntk.github.io/icons/apple-touch-icon.png'>
@@ -88,7 +88,7 @@
   
 <div class = 'grid-inverse wrap content'>
   <article class='post_content'>
-    <h1 class='post_title'>仮想マシンのメモリの Active と Comsumed の違い</h1><div class = 'post_meta'>
+    <h1 class='post_title'>仮想マシンのメモリの Active と Comsumed の動きを見る</h1><div class = 'post_meta'>
   <svg class="icon">
     <use xlink:href="#calendar"></use>
   </svg>
@@ -104,13 +104,13 @@
 
     <div class='post_share'>
   Share on:
-  <a href="https://twitter.com/intent/tweet?text=%e4%bb%ae%e6%83%b3%e3%83%9e%e3%82%b7%e3%83%b3%e3%81%ae%e3%83%a1%e3%83%a2%e3%83%aa%e3%81%ae%20Active%20%e3%81%a8%20Comsumed%20%e3%81%ae%e9%81%95%e3%81%84&url=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2021-01-19%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
+  <a href="https://twitter.com/intent/tweet?text=%e4%bb%ae%e6%83%b3%e3%83%9e%e3%82%b7%e3%83%b3%e3%81%ae%e3%83%a1%e3%83%a2%e3%83%aa%e3%81%ae%20Active%20%e3%81%a8%20Comsumed%20%e3%81%ae%e5%8b%95%e3%81%8d%e3%82%92%e8%a6%8b%e3%82%8b&url=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2021-01-19%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
     <svg class="icon">
       <use xlink:href="#twitter"></use>
     </svg>
   </a>
   
-  <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2021-01-19%2f&t=%e4%bb%ae%e6%83%b3%e3%83%9e%e3%82%b7%e3%83%b3%e3%81%ae%e3%83%a1%e3%83%a2%e3%83%aa%e3%81%ae%20Active%20%e3%81%a8%20Comsumed%20%e3%81%ae%e9%81%95%e3%81%84" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
+  <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2021-01-19%2f&t=%e4%bb%ae%e6%83%b3%e3%83%9e%e3%82%b7%e3%83%b3%e3%81%ae%e3%83%a1%e3%83%a2%e3%83%aa%e3%81%ae%20Active%20%e3%81%a8%20Comsumed%20%e3%81%ae%e5%8b%95%e3%81%8d%e3%82%92%e8%a6%8b%e3%82%8b" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
     <svg class="icon">
       <use xlink:href="#facebook"></use>
     </svg>
