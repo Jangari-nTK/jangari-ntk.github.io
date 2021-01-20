@@ -137,7 +137,8 @@
     <h2>Table of contents</h2>
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#はじめに">はじめに</a></li>
+    <li><a href="#はじめにメモリの-active-と-consumed-の概要">はじめに：メモリの Active と Consumed の概要</a></li>
+    <li><a href="#メモリカウンタの動きを実験で見てみる">メモリカウンタの動きを実験で見てみる</a></li>
     <li><a href="#初期状態">初期状態</a></li>
     <li><a href="#ゲストosのページキャッシュを動作させる">ゲストOSのページキャッシュを動作させる</a></li>
     <li><a href="#ページキャッシュが機能した後に時間を置く">ページキャッシュが機能した後に時間を置く</a></li>
@@ -148,7 +149,7 @@
     <li><a href="#参考３vsphere-drs-とメモリの-active--consumed">参考３：vSphere DRS とメモリの Active / Consumed</a></li>
   </ul>
 </nav>
-    <h2 id="はじめに">はじめに</h2>
+    <h2 id="はじめにメモリの-active-と-consumed-の概要">はじめに：メモリの Active と Consumed の概要</h2>
 <p>vSphere には仮想マシンのメモリ使用量を測るカウンタとして Active (有効なゲストメモリ) と Consumed (消費) の2種類があります。</p>
 <ul>
 <li><a href="https://kb.vmware.com/s/article/1002604">Understanding the Memory Active and Memory Usage indicators on the Performance tab (1002604)</a></li>
@@ -160,6 +161,7 @@
 <li>Active：直近で仮想マシンが積極的にアクセスしていたメモリ(統計値)</li>
 <li>Consumed：現在 ESXi が仮想マシンへ実際に割り当てている物理メモリ</li>
 </ul>
+<h2 id="メモリカウンタの動きを実験で見てみる">メモリカウンタの動きを実験で見てみる</h2>
 <p>これらはゲストOS内から観測できるメモリ使用量とは観測対象が異なるため、OS のメモリ使用状況とは観測できる値も異なります。今回の記事では Linux ゲストでのページキャッシュの動作を一例として、仮想マシンのメモリの Active / Consumed の値がどのように変化するか見ていきたいと思います。</p>
 <p>なお、Linux のページキャッシュの説明はしませんが、この辺りは <a href="https://twitter.com/satoru_takeuchi">@sat</a> 様の <a href="https://www.youtube.com/channel/UCgrUyRFiHhV607Orhriau6w/">YouTube チャンネル</a>での解説動画(その20～その26あたり)や書籍「<a href="https://gihyo.jp/book/2018/978-4-7741-9607-7">［試して理解］Linuxのしくみ ～実験と図解で学ぶOSとハードウェアの基礎知識</a>」が非常に分かりやすいと思います。</p>
 <h2 id="初期状態">初期状態</h2>
