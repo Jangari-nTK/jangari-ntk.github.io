@@ -197,7 +197,7 @@
 <span class="ln">11</span> ip_config       | text                   |           |          |
 <span class="ln">12</span> net_bios_config | text                   |           |          |
 <span class="ln">13</span> surr_key        | integer                |           | not null | nextval(&#39;vpx_nic_surr_key_seq&#39;::regclass)
-<span class="ln">14</span>   (略)
+<span class="ln">14</span>   ～略～
 <span class="ln">15</span>Foreign-key constraints:
 <span class="ln">16</span>    &#34;fk_vpx_vn_ref_vpx_vm&#34; FOREIGN KEY (entity_id) REFERENCES vpx_entity(id) ON DELETE CASCADE
 <span class="ln">17</span>
@@ -211,7 +211,7 @@
 <span class="ln">25</span> parent_id | bigint                 |           |          |
 <span class="ln">26</span>Indexes:
 <span class="ln">27</span>    &#34;pk_vpx_entity&#34; PRIMARY KEY, btree (id)
-<span class="ln">28</span>    (略)
+<span class="ln">28</span>    ～略～
 </code></pre></div><p>ということで、これらのテーブルを結合して SELECT してみました。なお、名前が esxi-01.tanzu.local (試した環境の ESXi 名) の行が2行ありますが、これらは GUI の情報と比較したところ VMkernel ポート(＝ESXi の仮想ポート)の MAC アドレスでした。</p>
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span>VCDB=# SELECT name, device_id, mac_address FROM vpx_nic JOIN vpx_entity ON vpx_nic.entity_id = vpx_entity.id;
 <span class="ln"> 2</span>                     name                      | device_id |    mac_address
