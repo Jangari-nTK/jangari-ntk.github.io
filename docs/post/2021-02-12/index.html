@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" data-figures="">
-  <head>  <title>x86 | vSoliloquy</title>
+<html lang="en" data-figures="" class="page">
+  <head>  <title>journalctl コマンドで vCenter Server のイベントを見てみる | vSoliloquy</title>
   <meta charset='utf-8'>
   <meta name="generator" content="Hugo 0.74.3" />
   <meta name = 'viewport' content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
@@ -12,16 +12,17 @@
   gtag('js', new Date());
   gtag('config', 'UA-175306204-1');
 </script>
+  
 <meta property = "og:locale" content = "en_US" />
 <meta property="og:type" content="article">
-<meta name="description" content="">
+<meta name="description" content="vCenter Server Appliance 6.5 以降ではイベントストリーミングが追加され既定で有効になっていますが、syslog 転送は手動で構成する必要がありました。syslog で転送できるのであればデータベース以外のどこかに記録されてないかなと思い色々と試してみたところ、journalctl …">
 <meta name = "twitter:card" content = "summary" />
 <meta name = "twitter:creator" content = "@Jangari_nTK">
-<meta name = "twitter:title" content = "x86" />
-<meta property = "og:url" content = "https://jangari-ntk.github.io/tags/x86/" />
-<meta property = "og:title" content = "x86" />
-<meta property = "og:description" content = "" />
-<meta property = "og:image" content = "https://jangari-ntk.github.io/images/thumbnail.png" />
+<meta name = "twitter:title" content = "journalctl コマンドで vCenter Server のイベントを見てみる" />
+<meta property = "og:url" content = "https://jangari-ntk.github.io/post/2021-02-12/" />
+<meta property = "og:title" content = "journalctl コマンドで vCenter Server のイベントを見てみる" />
+<meta property = "og:description" content = "vCenter Server Appliance 6.5 以降ではイベントストリーミングが追加され既定で有効になっていますが、syslog 転送は手動で構成する必要がありました。syslog で転送できるのであればデータベース以外のどこかに記録されてないかなと思い色々と試してみたところ、journalctl …" />
+<meta property = "og:image" content = "https://jangari-ntk.github.io/images/2021-02-12/thumbnail.PNG" />
 <link rel='apple-touch-icon' sizes='180x180' href='https://jangari-ntk.github.io/icons/apple-touch-icon.png'>
 <link rel='icon' type='image/png' sizes='32x32' href='https://jangari-ntk.github.io/icons/favicon-32x32.png'>
 <link rel='icon' type='image/png' sizes='16x16' href='https://jangari-ntk.github.io/icons/favicon-16x16.png'>
@@ -30,7 +31,7 @@
 <meta name="msapplication-TileColor" content="#002538">
 <meta name="theme-color" content="#002538">
 
-  <link rel='canonical' href='https://jangari-ntk.github.io/tags/x86/'>
+  <link rel='canonical' href='https://jangari-ntk.github.io/post/2021-02-12/'>
     
 
     
@@ -84,54 +85,142 @@
 </header>
 
     <main>
-
-<div class='grid-inverse wrap content'>
-  <ul class='posts' id = 'posts'>
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2020-10-02/'>VMware 社の新プロジェクト「Project Monterey」？</a>
-      </h3>
-      <div class = 'post_meta'>
+  
+<div class = 'grid-inverse wrap content'>
+  <article class='post_content'>
+    <h1 class='post_title'>journalctl コマンドで vCenter Server のイベントを見てみる</h1><div class = 'post_meta'>
   <svg class="icon">
     <use xlink:href="#calendar"></use>
   </svg>
   <span class="post_date">
-    Oct 2, 2020</span>
-  <a href = 'https://jangari-ntk.github.io/tags/vmware-cloud-foundation' class = 'post_tag button button_translucent'>VMware Cloud Foundation
+    Feb 12, 2021</span>
+  <a href = 'https://jangari-ntk.github.io/tags/tips' class = 'post_tag button button_translucent'>Tips
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
+  <a href = 'https://jangari-ntk.github.io/tags/vcenter-server' class = 'post_tag button button_translucent'>vCenter Server
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/x86' class = 'post_tag button button_translucent'>x86
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/arm' class = 'post_tag button button_translucent'>ARM
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/architecture' class = 'post_tag button button_translucent'>Architecture
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere-7.0' class = 'post_tag button button_translucent'>vSphere 7.0
   </a>
 </div>
 
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2020-10-02/Project-Monterey-new-VCF-architecture.png'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>はじめに VMworld 2020 のタイミングに合わせて、9/29 に VMware 社の各種ブログにて新しい製品やサービス、プロジェクトが発表されていました。いくつか見ていたのですが、それらの中でも以下の新しいプロジェクト「Project Monterey」が画期的な内容で個人的に興味をそそられました。知らない＆分からない＆そもそも初めて見る内容も多く、調べながら何とかブログ記事から読み取れた範囲の内容にはなりますが頑張って紹介してみたいと思います。
-Not only is #ProjectMontery really cool but its also 1st validation of #ESXionARM as most …</p>
-          <a href='https://jangari-ntk.github.io/post/2020-10-02/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
+    <div class='post_share'>
+  Share on:
+  <a href="https://twitter.com/intent/tweet?text=journalctl%20%e3%82%b3%e3%83%9e%e3%83%b3%e3%83%89%e3%81%a7%20vCenter%20Server%20%e3%81%ae%e3%82%a4%e3%83%99%e3%83%b3%e3%83%88%e3%82%92%e8%a6%8b%e3%81%a6%e3%81%bf%e3%82%8b&url=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2021-02-12%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
+    <svg class="icon">
+      <use xlink:href="#twitter"></use>
+    </svg>
+  </a>
   
-    <li>
+  <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2021-02-12%2f&t=journalctl%20%e3%82%b3%e3%83%9e%e3%83%b3%e3%83%89%e3%81%a7%20vCenter%20Server%20%e3%81%ae%e3%82%a4%e3%83%99%e3%83%b3%e3%83%88%e3%82%92%e8%a6%8b%e3%81%a6%e3%81%bf%e3%82%8b" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
+    <svg class="icon">
+      <use xlink:href="#facebook"></use>
+    </svg>
+  </a>
+  <script>
+    function shareViaLinkedin() {
+      window.open('http://www.linkedin.com/shareArticle?mini=true&url='+encodeURIComponent("https://jangari-ntk.github.io/post/2021-02-12/"), '', 'left=0,top=0,width=650,height=420,personalbar=0,toolbar=0,scrollbars=0,resizable=0');
+    }
+  </script>
+  <a href="#linkedinshare" id = "linkedinshare" class="linkedin" title="Share on LinkedIn" rel="nofollow" onclick="shareViaLinkedin()">
+    <svg class="icon">
+      <use xlink:href="#linkedin"></use>
+    </svg>
+  </a>
+  <a href="https://jangari-ntk.github.io/post/2021-02-12/" title="Copy Link" class="link link_yank">
+    <svg class="icon">
+      <use xlink:href="#yank"></use>
+    </svg>
+  </a>
+</div>
 
-
-    </li>
+    
+    
+    <h2>Table of contents</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#概要">概要</a></li>
+    <li><a href="#vmware-service-lifecycle-manager-vmon">VMware Service Lifecycle Manager (vMon)</a></li>
+    <li><a href="#journalctl-で-vmon-のジャーナルを見てみる">journalctl で vMon のジャーナルを見てみる</a></li>
+    <li><a href="#おわりに">おわりに</a></li>
   </ul>
+</nav>
+    <h2 id="概要">概要</h2>
+<p>以前、<a href="/post/2020-08-01">こちらの記事</a>で vCenter Server 7.0 でのイベントのエクスポート方法 (PowerCLI / syslog) について書いていました。記事でも書いたとおり、vCenter Server Appliance 6.5 以降ではイベントストリーミングが追加され既定で有効になっていますが、syslog 転送は手動で構成する必要がありました。</p>
+<p><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.monitoring.doc/GUID-FD51CE83-8B2A-4EBA-A16C-75DB2E384E95.html">リモートの Syslog サーバへのイベント ストリーミングの構成</a></p>
+<blockquote>
+<p>vCenter Serverストリーミング機能へのイベントの書き込みを構成することもできます。イベントのストリーミングは、vCenter Server でのみサポートされます。リモート Syslog サーバに対するイベントのストリーミングは、デフォルトで無効になっています。リモート Syslog サーバへの vCenter Server イベントのストリーミングは、vCenter Server 管理インターフェイスで有効にして設定することができます。</p>
+</blockquote>
+<blockquote>
+<ol start="6">
+<li>vpxd.event.syslogオプションを有効または無効にします。<br>
+この設定のデフォルト値は「有効」です。</li>
+</ol>
+</blockquote>
+<p>syslog で転送できるのであればデータベース以外のどこかに記録されてないかなと思い色々と試してみたところ、journalctl コマンドで vMon のジャーナルを参照すると syslog 転送時と同じイベントの記録が確認できたので、参考までに見つけた流れなどを備忘録として残しておきたいと思います。</p>
+<p>なお、公式マニュアルやナレッジベースなどの公開情報は見当たらなかったのでサポート外の操作になるとは思われます。vCenter Server Appliance が壊れるような操作では無いはずですが実施する場合は自己責任でお願いします。</p>
+<h2 id="vmware-service-lifecycle-manager-vmon">VMware Service Lifecycle Manager (vMon)</h2>
+<p>vSphere 6.5 以降では vCenter Server のアーキテクチャが変わっており、多くの vCenter Server 関連サービスは VMware Service Lifecycle Manager サービス (vMon) の子プロセスとして動作するようになっています(PSC 関連など一部のサービスは対象外)<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>。</p>
+<p><a href="https://kb.vmware.com/s/article/2109881?lang=ja">vCenter Server 6.x のサービスを停止、開始、再起動する方法 (2109881)</a></p>
+<blockquote>
+<p>注：vSphere 6.5 から、vCenter Server サービスは、Windows Service Control Manager (SCM) のスタンドアロンのサービスではなくなりました。vCenter Server Appliance サービスは、VMware Service Lifecycle Manager サービスの子プロセスとして動作します。</p>
+</blockquote>
+<p>試しに systemctl list-units を grep してみると vMon が systemd の Unit として登録されていることが分かります。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span># systemctl list-units --no-pager | grep vmon
+<span class="ln">2</span>vmware-vmon.service                                                                         loaded active running   VMware Service Lifecycle Manager
+</code></pre></div><p>systemctl status で Unit のランタイム情報が色々見られますが、最後の方に出力される直近のジャーナルを見てみるとリモート syslog ストリーミングと同じ出力があります。このため、どうやら journalctl で vMon のジャーナルを見ればリモート syslog ストリーミングと同じようなイベントが見られそうです。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span># systemctl status vmware-vmon.service
+<span class="ln"> 2</span>● vmware-vmon.service - VMware Service Lifecycle Manager
+<span class="ln"> 3</span>   Loaded: loaded (/lib/systemd/system/vmware-vmon.service; enabled; vendor preset: enabled)
+<span class="ln"> 4</span>  Drop-In: /etc/systemd/system.control/vmware-vmon.service.d
+<span class="ln"> 5</span>           └─50-BlockIOAccounting.conf, 50-CPUAccounting.conf, 50-MemoryAccounting.conf
+<span class="ln"> 6</span>           /etc/systemd/system/vmware-vmon.service.d
+<span class="ln"> 7</span>           └─dep_override.conf
+<span class="ln"> 8</span>   Active: active (running) since Thu 2021-02-11 17:28:30 UTC; 1h 8min ago
+<span class="ln"> 9</span> Main PID: 40011 (vmon)
+<span class="ln">10</span>    Tasks: 3425
+<span class="ln">11</span>   Memory: 42.6M
+<span class="ln">12</span>      CPU: 2min 518ms
+<span class="ln">13</span>   CGroup: /system.slice/vmware-vmon.service
+<span class="ln">14</span>           ├─ 2713 /usr/bin/python /usr/lib/applmgmt/ddns/py/ddns.py --enable
+<span class="ln">15</span>           ├─40011 /usr/lib/vmware-vmon/vmon -s NONE
+<span class="ln">16</span>          (略)
+<span class="ln">17</span>           ├─53846 postgres: vc VCDB 127.0.0.1(46562) idle
+<span class="ln">18</span>           └─55357 postgres: wcpuser VCDB [local] idle
+<span class="ln">19</span>
+<span class="ln">20</span>Feb 11 18:36:32 vcsa.tanzu.local vpxd[42887]: Event [239262] [1-1] [2021-02-11T18:36:32.030659Z] [vim.event.EventEx] [info] [VSPHERE.LOCAL\machine-5cdf52ed-90c2-4fdc-bf47-2ca30a0f266c] [] [239262] [vCenter Image Builder File System Resource status changed from Yellow to Green on vcsa.tanzu.local  ]
+<span class="ln">21</span>Feb 11 18:36:32 vcsa.tanzu.local vpxd[42887]: Event [239263] [1-1] [2021-02-11T18:36:32.03918Z] [vim.event.EventEx] [info] [VSPHERE.LOCAL\machine-5cdf52ed-90c2-4fdc-bf47-2ca30a0f266c] [] [239263] [vCenter Log File System Resource status changed from Yellow to Green on vcsa.tanzu.local  ]
+<span class="ln">22</span>Feb 11 18:36:32 vcsa.tanzu.local vpxd[42887]: Event [239264] [1-1] [2021-02-11T18:36:32.046504Z] [vim.event.EventEx] [info] [VSPHERE.LOCAL\machine-5cdf52ed-90c2-4fdc-bf47-2ca30a0f266c] [] [239264] [vCenter ESXi Dump Collector File System Resource status changed from Yellow to Green on vcsa.tanzu.local  ]
+<span class="ln">23</span>Feb 11 18:36:32 vcsa.tanzu.local vpxd[42887]: Event [239265] [1-1] [2021-02-11T18:36:32.052491Z] [vim.event.EventEx] [info] [VSPHERE.LOCAL\machine-5cdf52ed-90c2-4fdc-bf47-2ca30a0f266c] [] [239265] [vCenter Update Manager File System Resource status changed from Yellow to Green on vcsa.tanzu.local  ]
+<span class="ln">24</span>Feb 11 18:36:32 vcsa.tanzu.local vpxd[42887]: Event [239266] [1-1] [2021-02-11T18:36:32.058669Z] [vim.event.UserLogoutSessionEvent] [info] [VSPHERE.LOCAL\machine-5cdf52ed-90c2-4fdc-bf47-2ca30a0f266c] [] [239266] [User VSPHERE.LOCAL\machine-5cdf52ed-90c2-4fdc-bf47-2ca30a0f266c@127.0.0.1 logged out (login time: Thursday, 11 February, 2021 06:36:31 PM, number of API invocations: 34, user agent: pyvmomi Python/3.7.5 (Linux; 4.19.126-2.ph3; x86_64))]
+</code></pre></div><h2 id="journalctl-で-vmon-のジャーナルを見てみる">journalctl で vMon のジャーナルを見てみる</h2>
+<p>ということで journalctl コマンドで vMon のジャーナルを見てみるとリモート syslog ストリーミングと同じフォーマットでイベントが取れました。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span># journalctl -b -u vmware-vmon.service --no-pager | tail
+<span class="ln"> 2</span>Feb 11 17:38:49 vcsa.tanzu.local vpxd[42887]: Event [238747] [1-1] [2021-02-11T17:38:49.654764Z] [vim.event.UserLoginSessionEvent] [info] [VSPHERE.LOCAL\wcp-vmop-user-domain-c8-5cdf52ed-90c2-4fdc-bf47-2ca30a0f266c] [] [238747] [User VSPHERE.LOCAL\wcp-vmop-user-domain-c8-5cdf52ed-90c2-4fdc-bf47-2ca30a0f266c@192.168.0.106 logged in as Go-http-client/1.1]
+<span class="ln"> 3</span>Feb 11 17:38:55 vcsa.tanzu.local vpxd[42887]: Event [238748] [1-1] [2021-02-11T17:38:55.532846Z] [vim.event.UserLoginSessionEvent] [info] [VSPHERE.LOCAL\vpxd-extension-5cdf52ed-90c2-4fdc-bf47-2ca30a0f266c] [] [238748] [User VSPHERE.LOCAL\vpxd-extension-5cdf52ed-90c2-4fdc-bf47-2ca30a0f266c@127.0.0.1 logged in as VMware vim-java 1.0]
+<span class="ln"> 4</span>Feb 11 17:38:55 vcsa.tanzu.local vpxd[42887]: Event [238749] [1-1] [2021-02-11T17:38:55.687111Z] [vim.event.UserLogoutSessionEvent] [info] [VSPHERE.LOCAL\vpxd-extension-5cdf52ed-90c2-4fdc-bf47-2ca30a0f266c] [] [238749] [User VSPHERE.LOCAL\vpxd-extension-5cdf52ed-90c2-4fdc-bf47-2ca30a0f266c@127.0.0.1 logged out (login time: Thursday, 11 February, 2021 05:38:55 PM, number of API invocations: 3, user agent: VMware vim-java 1.0)]
+<span class="ln"> 5</span>Feb 11 17:39:05 vcsa.tanzu.local vpxd[42887]: Event [238750] [1-1] [2021-02-11T17:39:05.923455Z] [vim.event.AlarmStatusChangedEvent] [info] [] [Tanzu-Datacenter] [238750] [Alarm &#39;Virtual machine CPU usage&#39; on jangari-tkc-01-control-plane-sp8lp changed from Gray to Green]
+<span class="ln"> 6</span>Feb 11 17:39:05 vcsa.tanzu.local vpxd[42887]: Event [238751] [1-1] [2021-02-11T17:39:05.923743Z] [vim.event.AlarmStatusChangedEvent] [info] [] [Tanzu-Datacenter] [238751] [Alarm &#39;Virtual machine memory usage&#39; on jangari-tkc-01-control-plane-sp8lp changed from Gray to Green]
+<span class="ln"> 7</span>Feb 11 17:39:15 vcsa.tanzu.local vpxd[42887]: Event [238752] [1-1] [2021-02-11T17:39:15.924946Z] [vim.event.AlarmStatusChangedEvent] [info] [] [Tanzu-Datacenter] [238752] [Alarm &#39;Virtual machine CPU usage&#39; on jangari-tkc-01-workers-v5ctf-77dc5dc95c-dmvfk changed from Gray to Green]
+<span class="ln"> 8</span>Feb 11 17:39:15 vcsa.tanzu.local vpxd[42887]: Event [238753] [1-1] [2021-02-11T17:39:15.925262Z] [vim.event.AlarmStatusChangedEvent] [info] [] [Tanzu-Datacenter] [238753] [Alarm &#39;Virtual machine memory usage&#39; on jangari-tkc-01-workers-v5ctf-77dc5dc95c-dmvfk changed from Gray to Green]
+<span class="ln"> 9</span>Feb 11 17:39:15 vcsa.tanzu.local vpxd[42887]: Event [238754] [1-1] [2021-02-11T17:39:15.925485Z] [vim.event.AlarmStatusChangedEvent] [info] [] [Tanzu-Datacenter] [238754] [Alarm &#39;Virtual machine CPU usage&#39; on jangari-tkc-01-workers-v5ctf-77dc5dc95c-79pwj changed from Gray to Green]
+<span class="ln">10</span>Feb 11 17:39:15 vcsa.tanzu.local vpxd[42887]: Event [238755] [1-1] [2021-02-11T17:39:15.925652Z] [vim.event.AlarmStatusChangedEvent] [info] [] [Tanzu-Datacenter] [238755] [Alarm &#39;Virtual machine memory usage&#39; on jangari-tkc-01-workers-v5ctf-77dc5dc95c-79pwj changed from Gray to Green]
+<span class="ln">11</span>Feb 11 17:39:20 vcsa.tanzu.local vpxd[42887]: Event [238756] [1-1] [2021-02-11T17:39:20.803896Z] [vim.event.TaskEvent] [info] [VSPHERE.LOCAL\wcp-vmop-user-domain-c8-5cdf52ed-90c2-4fdc-bf47-2ca30a0f266c] [] [238756] [Task: Fetch Content of a Library Item]
+</code></pre></div><p>ファイルにリダイレクトすればテキストファイルとして保存もできると思います。なお、vCenter Server のイベント以外にも systemd によって vmon が起動されたメッセージなどもあったので、イベントだけ取るなら vpxd や Event で grep した方が良いかもしれません。</p>
+<h2 id="おわりに">おわりに</h2>
+<p>今回の記事では journalctl で vCenter Server のイベント(厳密には vMon のジャーナル)を取得してみました。</p>
+<p>「vSphere 7.0 を使ってます。PowerCLI はインストールできません。syslog サーバも無いです。でもどうしてもイベントをテキストで保存したいです。」みたいな超限定的な要件がある場合にはもしかしたら使えるかもしれません。</p>
+<p>なお、冒頭に記載した通り、公開情報は見当たらずサポートもされないと思いますので使用する場合は自己責任でお願いします。</p>
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p>VMware vCenter Server (vpxd) サービスや vSphere Client (vsphere-ui) サービスなどの起動や停止はこの vMon が管理しています。<a href="https://kb.vmware.com/s/article/2109881?lang=ja">KB2109881</a> にも記載されていますが、個別のサービスを操作する場合は GUI か service-control コマンドで操作する必要があります。Windows のサービスとしての操作や Linux の systemctl による操作などはやめましょう。 <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+
+  </article>
 <aside class="sidebar">
   <section class="sidebar_inner">
     <h2>Jangari</h2>
@@ -162,9 +251,6 @@ Not only is #ProjectMontery really cool but its also 1st validation of #ESXionAR
     <h2 class="mt-4">Recent Posts</h2>
     <ul class="flex-column">
       
-      <li>
-        <a href="https://jangari-ntk.github.io/post/2021-02-12/" class="nav-link">journalctl コマンドで vCenter Server のイベントを見てみる</a>
-      </li>
       <li>
         <a href="https://jangari-ntk.github.io/post/2021-02-10/" class="nav-link">VCDB から MAC アドレスの一覧を SELECT してみる</a>
       </li>
@@ -410,8 +496,6 @@ Not only is #ProjectMontery really cool but its also 1st validation of #ESXionAR
 </aside>
 
 </div>
-
-
     </main><svg width="0" height="0" class="hidden">
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="facebook">
     <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h151V331h-60v-90h60v-61c0-49.629 40.371-90 90-90h91v90h-91v61h91l-15 90h-76v181h121c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zm0 0"></path>

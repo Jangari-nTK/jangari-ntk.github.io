@@ -6,10 +6,25 @@
     <description>Recent content in vSphere on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Wed, 23 Sep 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 12 Feb 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/tags/vsphere/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>journalctl コマンドで vCenter Server のイベントを見てみる</title>
+      <link>https://jangari-ntk.github.io/post/2021-02-12/</link>
+      <pubDate>Fri, 12 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2021-02-12/</guid>
+      <description>概要 以前、こちらの記事で vCenter Server 7.0 でのイベントのエクスポート方法 (PowerCLI / syslog) について書いていました。記事でも書いたとおり、vCenter Server Appliance 6.5 以降ではイベントストリーミングが追加され既定で有効になっていますが、syslog 転送は手動で構成する必要がありました。
+リモートの Syslog サーバへのイベント ストリーミングの構成
+ vCenter Serverストリーミング機能へのイベントの書き込みを構成することもできます。イベントのストリーミングは、vCenter Server でのみサポートされます。リモート Syslog サーバに対するイベントのストリーミングは、デフォルトで無効になっています。リモート Syslog サーバへの vCenter Server イベントのストリーミングは、vCenter Server 管理インターフェイスで有効にして設定することができます。
+  vpxd.event.syslogオプションを有効または無効にします。
+この設定のデフォルト値は「有効」です。   syslog で転送できるのであればデータベース以外のどこかに記録されてないかなと思い色々と試してみたところ、journalctl コマンドで vMon のジャーナルを参照すると syslog 転送時と同じイベントの記録が確認できたので、参考までに見つけた流れなどを備忘録として残しておきたいと思います。
+なお、公式マニュアルやナレッジベースなどの公開情報は見当たらなかったのでサポート外の操作になるとは思われます。vCenter Server Appliance が壊れるような操作では無いはずですが実施する場合は自己責任でお願いします。
+VMware Service Lifecycle Manager (vMon) vSphere 6.5 以降では vCenter Server のアーキテクチャが変わっており、多くの vCenter Server 関連サービスは VMware Service Lifecycle Manager サービス (vMon) の子プロセスとして動作するようになっています(PSC 関連など一部のサービスは対象外)1。</description>
+    </item>
     
     <item>
       <title>【Part.4】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</title>
