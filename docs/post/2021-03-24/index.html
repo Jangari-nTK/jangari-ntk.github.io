@@ -174,26 +174,29 @@
 <h2 id="署名済み証明書のインポート">署名済み証明書のインポート</h2>
 <p>vSphere Client の [ホーム] &gt; [管理] &gt; [証明書の管理] を開き、[アクション] から [証明書をインポートして置き換え] をクリックします。</p>
 <p><img src="/images/2021-03-24/replace-certificate-gui-001.PNG" alt=""></p>
-<p>[証明書の置き換え] のダイアログでは、vCenter Server で生成した CSR から証明書を発行した場合は<a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-15A4FD99-37E2-41E5-8A35-247B8FDB019D.html">マニュアル</a>に沿って [vCenter Server で生成された証明書に置き換え] を選択します。</p>
+<p>[証明書の置き換え] のダイアログでは、vCenter Server で生成した CSR から証明書を発行した場合は<a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-15A4FD99-37E2-41E5-8A35-247B8FDB019D.html">マニュアル</a>に沿って [vCenter Server で生成された証明書に置き換え]<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> を選択します。</p>
 <p><img src="/images/2021-03-24/replace-certificate-gui-004.PNG" alt=""></p>
-<p>※vCenter Server で生成したのは CSR なので文言に違和感がありましたが、原文も &ldquo;Replace with certificate generated from vCenter server&rdquo; だったので割り切りました。</p>
 <p>マシン SSL 証明書のファイルを [ファイルの参照] から選択します。CA 証明書チェーンも同様に選択してから [REPLACE] をクリックします。</p>
 <p><img src="/images/2021-03-24/replace-certificate-gui-005.PNG" alt=""></p>
 <p>このタイミングでサービスの再起動が行われますので、サービスの起動まで待ってから再度 [ホーム] &gt; [管理] &gt; [証明書の管理] にアクセスすると、更新されたマシン SSL 証明書とその CA 証明書が確認できます。</p>
 <p><img src="/images/2021-03-24/replace-certificate-gui-006.PNG" alt=""></p>
 <p><img src="/images/2021-03-24/replace-certificate-gui-007.PNG" alt=""></p>
 <h2 id="csr--証明書の秘密鍵について">CSR / 証明書の秘密鍵について</h2>
-<p>一般に CSR を生成するには事前に秘密鍵を用意しておく必要がありますが、vCenter Server で CSR を生成する場合、vCenter Server が秘密鍵を生成して一時的に vCenter Server の証明書ストア (VECS) 内に格納し<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>、署名済み証明書のインポート時に改めてマシン SSL 証明書と秘密鍵のペアとして VECS 内に保存するようです。</p>
+<p>一般に CSR を生成するには事前に秘密鍵を用意しておく必要がありますが、vCenter Server で CSR を生成する場合、vCenter Server が秘密鍵を生成して一時的に vCenter Server の証明書ストア (VECS) 内に格納し<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>、署名済み証明書のインポート時に改めてマシン SSL 証明書と秘密鍵のペアとして VECS 内に保存するようです。</p>
 <p>vCenter Server で CSR の生成を行うごとに新しい秘密鍵も生成されるため、署名済み証明書を発行した後に vCenter Server 側で再度 CSR を生成(新しい秘密鍵を生成)してしまうと、署名済み証明書と vCenter Server 上の秘密鍵が対応しなくなりインポートに失敗しますので注意が必要です。</p>
 <h2 id="vcenter-server-外で生成した-csr-を使用する場合">vCenter Server 外で生成した CSR を使用する場合</h2>
 <p>秘密鍵の生成から CA による署名済み証明書の発行まで一般的な証明書の発行手順 (OpenSSL や cfssl を使うなど) で実施した場合には、証明書のインポート時に [vCenter Server で生成された証明書に置き換え] でなく [外部 CA 証明書に置き換え（プライベート キーが必要）] を使用することになります。</p>
 <p>この場合、マシン SSL 証明書と CA 証明書チェーンに加えて、証明書に対応する秘密鍵も必要になるためインポートを実施する前に用意しておきます。</p>
 <p><img src="/images/2021-03-24/replace-certificate-gui-008.PNG" alt=""></p>
+<p><img src="/images/2021-03-24/replace-certificate-gui-009.PNG" alt=""></p>
 <section class="footnotes" role="doc-endnotes">
 <hr>
 <ol>
 <li id="fn:1" role="doc-endnote">
-<p>CSR 生成後に vecs-cli で MACHINE_SSL_CERT ストアを見ると __MACHINE_CSR というエントリが存在していました。証明書のインポートが完了するとエントリは削除されるようです。 <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<p>vCenter Server で生成したのは CSR なので文言に違和感がありましたが、原文も &ldquo;Replace with certificate generated from vCenter server&rdquo; だったので割り切りました。 <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p>CSR 生成後に vecs-cli で MACHINE_SSL_CERT ストアを見ると __MACHINE_CSR というエントリが存在していました。証明書のインポートが完了するとエントリは削除されるようです。 <a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 </ol>
 </section>
