@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" data-figures="">
-  <head>  <title>vSoliloquy</title>
+<html lang="en" data-figures="" class="page">
+  <head>  <title>vCenter Server 7.0 で CSR を生成してカスタム証明書に置き換える | vSoliloquy</title>
   <meta charset='utf-8'>
   <meta name="generator" content="Hugo 0.74.3" />
   <meta name = 'viewport' content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
@@ -15,14 +15,14 @@
   
 <meta property = "og:locale" content = "en_US" />
 <meta property="og:type" content="article">
-<meta name="description" content="">
+<meta name="description" content="vSphere 6.7 以降では vSphere Client から証明書の管理が可能になっています。カスタム証明書の CSR を vCenter Server で生成する手順について文言など多少混乱した点があったので、記録として残しておきたいと思います。">
 <meta name = "twitter:card" content = "summary" />
 <meta name = "twitter:creator" content = "@Jangari_nTK">
-<meta name = "twitter:title" content = "" />
-<meta property = "og:url" content = "https://jangari-ntk.github.io/post/" />
-<meta property = "og:title" content = "" />
-<meta property = "og:description" content = "" />
-<meta property = "og:image" content = "https://jangari-ntk.github.io/images/thumbnail.png" />
+<meta name = "twitter:title" content = "vCenter Server 7.0 で CSR を生成してカスタム証明書に置き換える" />
+<meta property = "og:url" content = "https://jangari-ntk.github.io/post/2021-03-24/" />
+<meta property = "og:title" content = "vCenter Server 7.0 で CSR を生成してカスタム証明書に置き換える" />
+<meta property = "og:description" content = "vSphere 6.7 以降では vSphere Client から証明書の管理が可能になっています。カスタム証明書の CSR を vCenter Server で生成する手順について文言など多少混乱した点があったので、記録として残しておきたいと思います。" />
+<meta property = "og:image" content = "https://jangari-ntk.github.io/images/2021-03-24/thumbnail.PNG" />
 <link rel='apple-touch-icon' sizes='180x180' href='https://jangari-ntk.github.io/icons/apple-touch-icon.png'>
 <link rel='icon' type='image/png' sizes='32x32' href='https://jangari-ntk.github.io/icons/favicon-32x32.png'>
 <link rel='icon' type='image/png' sizes='16x16' href='https://jangari-ntk.github.io/icons/favicon-16x16.png'>
@@ -31,7 +31,7 @@
 <meta name="msapplication-TileColor" content="#002538">
 <meta name="theme-color" content="#002538">
 
-  <link rel='canonical' href='https://jangari-ntk.github.io/post/'>
+  <link rel='canonical' href='https://jangari-ntk.github.io/post/2021-03-24/'>
     
 
     
@@ -85,349 +85,120 @@
 </header>
 
     <main>
-
-<div class='grid-inverse wrap content'>
-  <ul class='posts' id = 'posts'>
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2020-09-19/'>【備忘録】vSAN HCI Mesh Tech Note を読む</a>
-      </h3>
-      <div class = 'post_meta'>
-  <svg class="icon">
-    <use xlink:href="#calendar"></use>
-  </svg>
-  <span class="post_date">
-    Sep 19, 2020</span>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vsan' class = 'post_tag button button_translucent'>vSAN
-  </a>
-</div>
-
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2020-09-19/thumbnail.PNG'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>はじめに vSAN 7.0 Update 1 で HCI Mesh なる気になる機能が出てきたようなので、Tech Note を読んで咀嚼して「これポイントかな～」と思ったものを自分用の備忘録としてメモしておく。本記事時点では vSAN 7.0 Update 1 もリリースされていないので検証もしておらず、また、ほとんど落書きに近い内容のため、情報の正確さ等は保証できないことに留意されたし。
-VMware vSAN HCI Mesh Tech Note
-Why HCI Mesh 従来の vSAN はホストの追加で Computing と Storage の両方を同時にスケールできる。このため、アプリケーションのワークロードの増加に合 …</p>
-          <a href='https://jangari-ntk.github.io/post/2020-09-19/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
   
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2020-09-17/'>【Part.3-2】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</a>
-      </h3>
-      <div class = 'post_meta'>
+<div class = 'grid-inverse wrap content'>
+  <article class='post_content'>
+    <h1 class='post_title'>vCenter Server 7.0 で CSR を生成してカスタム証明書に置き換える</h1><div class = 'post_meta'>
   <svg class="icon">
     <use xlink:href="#calendar"></use>
   </svg>
   <span class="post_date">
-    Sep 17, 2020</span>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/troubleshooting' class = 'post_tag button button_translucent'>Troubleshooting
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/cli' class = 'post_tag button button_translucent'>CLI
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/architecture' class = 'post_tag button button_translucent'>Architecture
-  </a>
-</div>
-
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2020-09-13/thumbnail.PNG'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>はじめに VMworld 2017 SER2965BU のセッションでの 27:00 ～ 48:20 頃までの内容、七つ道具2セット目である７つのコマンドについて見ていきます。
- esxcli vsish vim-cmd vmkfstools memstats pktcap-uw esxtop  今回は残りのコマンドである memstats, pktcap-uw, esxtop を見ていきます(esxtop は概観だけ)。
-memstats - 詳細なメモリ統計情報 通常、リアルタイムなメモリの性能情報を見る場合は esxtop を使うと思います。ファイルとして保存する場合はバッチモードを使うかもしれません。
-memstats コマ …</p>
-          <a href='https://jangari-ntk.github.io/post/2020-09-17/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
-  
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2020-09-13/'>【Part.3-1】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</a>
-      </h3>
-      <div class = 'post_meta'>
-  <svg class="icon">
-    <use xlink:href="#calendar"></use>
-  </svg>
-  <span class="post_date">
-    Sep 13, 2020</span>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/troubleshooting' class = 'post_tag button button_translucent'>Troubleshooting
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/cli' class = 'post_tag button button_translucent'>CLI
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/architecture' class = 'post_tag button button_translucent'>Architecture
-  </a>
-</div>
-
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2020-09-13/thumbnail.PNG'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>はじめに VMworld 2017 SER2965BU のセッションでの 27:00 ～ 48:20 頃までの内容、七つ道具2セット目である７つのコマンドについて見ていきます。
- esxcli - ESXi の設定の確認や変更 vsish - VMkernel Sysinfo Shell vim-cmd - ESXi と仮想マシンの構成の管理 vmkfstools - データストアや仮想ディスクの管理 memstats- 詳細なメモリ統計情報 pktcap-uw - パケットのキャプチャ＆トレース esxtop - パフォーマンスモニタリング  今回の記事では esxcli ～ vmkfstools までのコマンドを見ていきます。こ …</p>
-          <a href='https://jangari-ntk.github.io/post/2020-09-13/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
-  
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2020-09-06/'>【Part.2】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</a>
-      </h3>
-      <div class = 'post_meta'>
-  <svg class="icon">
-    <use xlink:href="#calendar"></use>
-  </svg>
-  <span class="post_date">
-    Sep 6, 2020</span>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/troubleshooting' class = 'post_tag button button_translucent'>Troubleshooting
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/architecture' class = 'post_tag button button_translucent'>Architecture
-  </a>
-</div>
-
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2020-09-06/thumbnail.PNG'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>はじめに 前回の記事の続きです。今回は VMworld 2017 SER2965BU のセッションでの 4:28 ～ 26:54 頃までの内容、七つ道具x3セットの１セット目である７つのログについて見ていきます。
- vmksummary.log boot.gz.log hostd.log &amp; hostd-probe.log vmware.log vmkernel.log vobd.log fdm.log  この辺りの基本的なログの特徴を理解しつつログとの対話を重ねていくと、障害時などにログから原因の推測などがしやすくなると思います。なお、実際に出力されるメッセージは事象によりケースバイケースで異なるため、今回の記事ではセッシ …</p>
-          <a href='https://jangari-ntk.github.io/post/2020-09-06/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
-  
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2020-09-01/'>【Part.1】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</a>
-      </h3>
-      <div class = 'post_meta'>
-  <svg class="icon">
-    <use xlink:href="#calendar"></use>
-  </svg>
-  <span class="post_date">
-    Sep 1, 2020</span>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/troubleshooting' class = 'post_tag button button_translucent'>Troubleshooting
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/architecture' class = 'post_tag button button_translucent'>Architecture
-  </a>
-</div>
-
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2020-09-01/ESXi-Architecture.PNG'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>はじめに 以前開催された VMworld 2017 のセッションが VMworld の公式 YouTube チャンネルで一般公開されています。
-  こちらの SER2965BU のセッションは ESXi のトラブルシューティングで使うツールとユースケースを解説している非常に貴重な資料です。しかし、ただでさえトラブルシューティングの話でそこそこハードルが高いことに加えて英語のセッションのため、可能な範囲で日本語で補足もしつつ見ていきたいと思います。
-本記事シリーズについて SER2965BU のセッション動画は vSphere の管理者が ESXi の障害に直面した時に自力でトラブルシューティングをするためのステップが解説されていま …</p>
-          <a href='https://jangari-ntk.github.io/post/2020-09-01/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
-  
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2020-08-30/'>vRealize Automation 8.1 で Nested ESXi の Blueprint を作ってみた</a>
-      </h3>
-      <div class = 'post_meta'>
-  <svg class="icon">
-    <use xlink:href="#calendar"></use>
-  </svg>
-  <span class="post_date">
-    Aug 30, 2020</span>
+    Mar 24, 2021</span>
   <a href = 'https://jangari-ntk.github.io/tags/tips' class = 'post_tag button button_translucent'>Tips
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/nested' class = 'post_tag button button_translucent'>Nested
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vrealize-automation' class = 'post_tag button button_translucent'>vRealize Automation
-  </a>
-</div>
-
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2020-08-30/vRA-CloudAssembly-05.PNG'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>はじめに VMUG Advantage の Eval Experience に vRealize Suite 2019 Enterprise の評価ライセンスがありましたので、試しに自宅の vSphere に vRealize Automation (以下 vRA) 8.1 をデプロイして遊んでみています。
-今回、Nested ESXi が展開できるブループリントでも作ってみたら面白いかなと思い、新しい UI 等に慣れるのを半分、ネタを半分にやってみました。vRA は過去に 7.x 系を少し触っていただけの初心者のため詳細な解説などは難しいですが、せっかくなので記事にしてみたいと思います。
-vRealize Automation の …</p>
-          <a href='https://jangari-ntk.github.io/post/2020-08-30/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
-  
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2020-08-23/'>Nested ESXi のテンプレート作りに必要な設定と解説</a>
-      </h3>
-      <div class = 'post_meta'>
-  <svg class="icon">
-    <use xlink:href="#calendar"></use>
-  </svg>
-  <span class="post_date">
-    Aug 23, 2020</span>
-  <a href = 'https://jangari-ntk.github.io/tags/tips' class = 'post_tag button button_translucent'>Tips
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/nested' class = 'post_tag button button_translucent'>Nested
-  </a>
-</div>
-
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/building.png'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>はじめに みなさん Nested ESXi、使ってますか？vSphere の学習や実験にとても便利ですよね。
-最近は Nested ESXi の作り方を Google 検索で調べれば日本語の情報も出てきますし、中の人も各種 Tips や OVF テンプレート／コンテンツライブラリの URLまで公開してくれています。
-そこで、今回はある程度クリーンな Nested ESXi 7.0 のテンプレートを作るために必要な設定と、その設定の詳細について少し踏み込んで見ていきたいと思います。
-仮想マシンの作成 仮想マシンの作成時のポイントとしては3つほどあります。
-ゲストOSの種類に VMware ESXi 6.5 以降を選択 仮想マシンの作成 …</p>
-          <a href='https://jangari-ntk.github.io/post/2020-08-23/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
-  
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2020-08-18/'>Active Directory over LDAPS の ID ソースを構成する</a>
-      </h3>
-      <div class = 'post_meta'>
-  <svg class="icon">
-    <use xlink:href="#calendar"></use>
-  </svg>
-  <span class="post_date">
-    Aug 18, 2020</span>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
   </a>
   <a href = 'https://jangari-ntk.github.io/tags/vcenter-server' class = 'post_tag button button_translucent'>vCenter Server
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/security' class = 'post_tag button button_translucent'>Security
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/featured' class = 'post_tag button button_translucent'>Featured
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere-7.0' class = 'post_tag button button_translucent'>vSphere 7.0
   </a>
 </div>
 
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2020-08-11/Traditional_vCenter_SSO_diagram.PNG'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>はじめに 前回、3記事に渡って vSphere 7 の新機能である Identity Federation の構成を行っていきました。しかし、いきなり AD FS を用意するのはシステム的／コスト的に難しい場合もあると思いますので、今回の記事では従来の vCenter SSO で Active Directory over LDAPS の ID ソースを構成していきたいと思います。
-vCenter Single Sign-On とは？ vCenter Single Sign-On (以下 vCenter SSO) は vSpehre Web Client (Flash) と併せて vSphere 5.1 で初めて導入され …</p>
-          <a href='https://jangari-ntk.github.io/post/2020-08-18/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
+    <div class='post_share'>
+  Share on:
+  <a href="https://twitter.com/intent/tweet?text=vCenter%20Server%207.0%20%e3%81%a7%20CSR%20%e3%82%92%e7%94%9f%e6%88%90%e3%81%97%e3%81%a6%e3%82%ab%e3%82%b9%e3%82%bf%e3%83%a0%e8%a8%bc%e6%98%8e%e6%9b%b8%e3%81%ab%e7%bd%ae%e3%81%8d%e6%8f%9b%e3%81%88%e3%82%8b&url=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2021-03-24%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
+    <svg class="icon">
+      <use xlink:href="#twitter"></use>
+    </svg>
+  </a>
   
-    <li>
-<ul class="pagination">
-  <li class="page-item">
-    <a href="/post/" class="page-link" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
-  </li>
-  <li class="page-item">
-    <a href="/post/" class="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-  </li>
-  <li class="page-item">
-    <a class="page-link" href="/post/">1</a>
-  </li>
-  <li class="page-item active">
-    <a class="page-link" href="/post/page/2/">2</a>
-  </li>
-  <li class="page-item">
-    <a class="page-link" href="/post/page/3/">3</a>
-  </li>
-  <li class="page-item">
-    <a href="/post/page/3/" class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-  </li>
-  <li class="page-item">
-    <a href="/post/page/3/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
-  </li>
-</ul>
+  <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2021-03-24%2f&t=vCenter%20Server%207.0%20%e3%81%a7%20CSR%20%e3%82%92%e7%94%9f%e6%88%90%e3%81%97%e3%81%a6%e3%82%ab%e3%82%b9%e3%82%bf%e3%83%a0%e8%a8%bc%e6%98%8e%e6%9b%b8%e3%81%ab%e7%bd%ae%e3%81%8d%e6%8f%9b%e3%81%88%e3%82%8b" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
+    <svg class="icon">
+      <use xlink:href="#facebook"></use>
+    </svg>
+  </a>
+  <script>
+    function shareViaLinkedin() {
+      window.open('http://www.linkedin.com/shareArticle?mini=true&url='+encodeURIComponent("https://jangari-ntk.github.io/post/2021-03-24/"), '', 'left=0,top=0,width=650,height=420,personalbar=0,toolbar=0,scrollbars=0,resizable=0');
+    }
+  </script>
+  <a href="#linkedinshare" id = "linkedinshare" class="linkedin" title="Share on LinkedIn" rel="nofollow" onclick="shareViaLinkedin()">
+    <svg class="icon">
+      <use xlink:href="#linkedin"></use>
+    </svg>
+  </a>
+  <a href="https://jangari-ntk.github.io/post/2021-03-24/" title="Copy Link" class="link link_yank">
+    <svg class="icon">
+      <use xlink:href="#yank"></use>
+    </svg>
+  </a>
+</div>
 
-
-    </li>
+    
+    
+    <h2>Table of contents</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#概要">概要</a></li>
+    <li><a href="#注意カスタム証明書の置き換えに関する既知問題">注意：カスタム証明書の置き換えに関する既知問題</a></li>
+    <li><a href="#証明書署名要求-csr-の生成">証明書署名要求 (CSR) の生成</a></li>
+    <li><a href="#署名済み証明書の発行">署名済み証明書の発行</a></li>
+    <li><a href="#署名済み証明書のインポート">署名済み証明書のインポート</a></li>
+    <li><a href="#csr--証明書の秘密鍵について">CSR / 証明書の秘密鍵について</a></li>
+    <li><a href="#vcenter-server-外で生成した-csr-を使用する場合">vCenter Server 外で生成した CSR を使用する場合</a></li>
   </ul>
+</nav>
+    <h2 id="概要">概要</h2>
+<p>vSphere 6.7 以降では vSphere Client から証明書の管理が可能になっています。カスタム証明書の CSR を vCenter Server で生成する手順について文言など多少混乱した点があったので、記録として残しておきたいと思います。</p>
+<p>流れは一般的な証明書の発行と同じく以下の３つです。今回のケースでは手順1, 3 は vCenter Server 側、手順 2 は CA 側で実施する操作になります。</p>
+<ol>
+<li>証明書署名要求 (CSR) の生成</li>
+<li>署名済み証明書の発行</li>
+<li>署名済み証明書のインポート</li>
+</ol>
+<h2 id="注意カスタム証明書の置き換えに関する既知問題">注意：カスタム証明書の置き換えに関する既知問題</h2>
+<p>vCenter Server 7.0 ではマシン SSL 証明書をカスタム証明書に置き換えると vCenter Server のサービスが起動に失敗する既知問題があります。vCenter Server 7.0 Update 1c で修正されていますが、それ以前のリリースで発生した場合のワークアラウンドは無いようです。</p>
+<p><a href="https://kb.vmware.com/s/article/82168">vCenter Server 7.0 fails to start after replacing VMCA certificates with CA-signed certificates. (82168)</a></p>
+<p>私の環境では再現できませんでしたが修正リリース以降へのアップデートの実施が推奨されますので、カスタム証明書を使用する場合は事前に既知問題に該当する vCenter Server 7.0 リリースか確認するようにしましょう。</p>
+<h2 id="証明書署名要求-csr-の生成">証明書署名要求 (CSR) の生成</h2>
+<p>vSphere Client の [ホーム] &gt; [管理] &gt; [証明書の管理] を開き、[アクション] から [証明書署名要求 (CSR) の生成] をクリックします。</p>
+<p><img src="/images/2021-03-24/replace-certificate-gui-001.PNG" alt=""></p>
+<p>[CSR の生成] のダイアログが表示されるので、証明書の各種フィールドを入力し [次へ] をクリックします。</p>
+<p><img src="/images/2021-03-24/replace-certificate-gui-002.PNG" alt=""></p>
+<p>CSR のテキストが表示されるので、[ダウンロード] をクリックしてファイルとしてダウンロードするか、テキストファイルにコピーしておきます。</p>
+<p><img src="/images/2021-03-24/replace-certificate-gui-003.PNG" alt=""></p>
+<h2 id="署名済み証明書の発行">署名済み証明書の発行</h2>
+<p>CSR が生成されたので CA に署名してもらい、署名済み証明書 (PEM 形式) を発行してもらいます。私の場合は KB2112014 のように Microsoft CA (AD CS) で証明書を発行しましたが、特にどの認証局で署名しろといった規定はありません。テスト環境であれば OpenSSL や cfssl で簡易的にプライベート認証局を立てるなどでも特に問題ないと思います。</p>
+<p><a href="https://kb.vmware.com/s/article/2112014?lang=ja">Microsoft 認証局から vSphere 証明書を取得する (2112014)</a></p>
+<p>なお、証明書のインポート時に CA 証明書チェーンも必要になるため用意しておきます。</p>
+<h2 id="署名済み証明書のインポート">署名済み証明書のインポート</h2>
+<p>vSphere Client の [ホーム] &gt; [管理] &gt; [証明書の管理] を開き、[アクション] から [証明書をインポートして置き換え] をクリックします。</p>
+<p><img src="/images/2021-03-24/replace-certificate-gui-001.PNG" alt=""></p>
+<p>[証明書の置き換え] のダイアログでは、vCenter Server で生成した CSR から証明書を発行した場合は<a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-15A4FD99-37E2-41E5-8A35-247B8FDB019D.html">マニュアル</a>に沿って [vCenter Server で生成された証明書に置き換え] を選択します。</p>
+<p><img src="/images/2021-03-24/replace-certificate-gui-004.PNG" alt=""></p>
+<p>※vCenter Server で生成したのは CSR なので文言に違和感がありましたが、原文も &ldquo;Replace with certificate generated from vCenter server&rdquo; だったので割り切りました。</p>
+<p>マシン SSL 証明書のファイルを [ファイルの参照] から選択します。CA 証明書チェーンも同様に選択してから [REPLACE] をクリックします。</p>
+<p><img src="/images/2021-03-24/replace-certificate-gui-005.PNG" alt=""></p>
+<p>このタイミングでサービスの再起動が行われますので、サービスの起動まで待ってから再度 [ホーム] &gt; [管理] &gt; [証明書の管理] にアクセスすると、更新されたマシン SSL 証明書とその CA 証明書が確認できます。</p>
+<p><img src="/images/2021-03-24/replace-certificate-gui-006.PNG" alt=""></p>
+<p><img src="/images/2021-03-24/replace-certificate-gui-007.PNG" alt=""></p>
+<h2 id="csr--証明書の秘密鍵について">CSR / 証明書の秘密鍵について</h2>
+<p>一般に CSR を生成するには事前に秘密鍵を用意しておく必要がありますが、vCenter Server で CSR を生成する場合、vCenter Server が秘密鍵を生成して一時的に vCenter Server の証明書ストア (VECS) 内に格納し<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>、署名済み証明書のインポート時に改めてマシン SSL 証明書と秘密鍵のペアとして VECS 内に保存するようです。</p>
+<p>vCenter Server で CSR の生成を行うごとに新しい秘密鍵も生成されるため、署名済み証明書を発行した後に vCenter Server 側で再度 CSR を生成(新しい秘密鍵を生成)してしまうと、署名済み証明書と vCenter Server 上の秘密鍵が対応しなくなりインポートに失敗しますので注意が必要です。</p>
+<h2 id="vcenter-server-外で生成した-csr-を使用する場合">vCenter Server 外で生成した CSR を使用する場合</h2>
+<p>秘密鍵の生成から CA による署名済み証明書の発行まで一般的な証明書の発行手順 (OpenSSL や cfssl を使うなど) で実施した場合には、証明書のインポート時に [vCenter Server で生成された証明書に置き換え] でなく [外部 CA 証明書に置き換え（プライベート キーが必要）] を使用することになります。</p>
+<p>この場合、マシン SSL 証明書と CA 証明書チェーンに加えて、証明書に対応する秘密鍵も必要になるためインポートを実施する前に用意しておきます。</p>
+<p><img src="/images/2021-03-24/replace-certificate-gui-008.PNG" alt=""></p>
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p>CSR 生成後に vecs-cli で MACHINE_SSL_CERT ストアを見ると __MACHINE_CSR というエントリが存在していました。証明書のインポートが完了するとエントリは削除されるようです。 <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+
+  </article>
 <aside class="sidebar">
   <section class="sidebar_inner">
     <h2>Jangari</h2>
@@ -458,9 +229,6 @@ vCenter Single Sign-On とは？ vCenter Single Sign-On (以下 vCenter SSO) は
     <h2 class="mt-4">Recent Posts</h2>
     <ul class="flex-column">
       
-      <li>
-        <a href="https://jangari-ntk.github.io/post/2021-03-24/" class="nav-link">vCenter Server 7.0 で CSR を生成してカスタム証明書に置き換える</a>
-      </li>
       <li>
         <a href="https://jangari-ntk.github.io/post/2021-02-12/" class="nav-link">journalctl コマンドで vCenter Server のイベントを見てみる</a>
       </li>
@@ -706,8 +474,6 @@ vCenter Single Sign-On とは？ vCenter Single Sign-On (以下 vCenter SSO) は
 </aside>
 
 </div>
-
-
     </main><svg width="0" height="0" class="hidden">
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="facebook">
     <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h151V331h-60v-90h60v-61c0-49.629 40.371-90 90-90h91v90h-91v61h91l-15 90h-76v181h121c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zm0 0"></path>
