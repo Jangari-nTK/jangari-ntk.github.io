@@ -22,6 +22,7 @@
  証明書署名要求 (CSR) の生成 署名済み証明書の発行 署名済み証明書のインポート  注意：カスタム証明書の置き換えに関する既知問題 vCenter Server 7.0 ではマシン SSL 証明書をカスタム証明書に置き換えると vCenter Server のサービスが起動に失敗する既知問題があります。vCenter Server 7.0 Update 1c で修正されていますが、それ以前のリリースで発生した場合のワークアラウンドは無いようです。
 vCenter Server 7.0 fails to start after replacing VMCA certificates with CA-signed certificates. (82168)
 私の環境では再現できませんでしたが修正リリース以降へのアップデートの実施が推奨されますので、カスタム証明書を使用する場合は事前に既知問題に該当する vCenter Server 7.0 リリースか確認するようにしましょう。
+2021/03/28 追記：インポートする証明書の改行コードなどに起因する既知問題を観測したので、本記事の末尾に内容などを追記しました。
 証明書署名要求 (CSR) の生成 vSphere Client の [ホーム] &amp;gt; [管理] &amp;gt; [証明書の管理] を開き、[アクション] から [証明書署名要求 (CSR) の生成] をクリックします。</description>
     </item>
     

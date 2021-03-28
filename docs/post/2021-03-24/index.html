@@ -146,6 +146,7 @@
     <li><a href="#署名済み証明書のインポート">署名済み証明書のインポート</a></li>
     <li><a href="#csr--証明書の秘密鍵について">CSR / 証明書の秘密鍵について</a></li>
     <li><a href="#vcenter-server-外で生成した-csr-を使用する場合">vCenter Server 外で生成した CSR を使用する場合</a></li>
+    <li><a href="#20210328-追記改行コードなどに起因する既知問題">2021/03/28 追記：改行コードなどに起因する既知問題</a></li>
   </ul>
 </nav>
     <h2 id="概要">概要</h2>
@@ -160,6 +161,7 @@
 <p>vCenter Server 7.0 ではマシン SSL 証明書をカスタム証明書に置き換えると vCenter Server のサービスが起動に失敗する既知問題があります。vCenter Server 7.0 Update 1c で修正されていますが、それ以前のリリースで発生した場合のワークアラウンドは無いようです。</p>
 <p><a href="https://kb.vmware.com/s/article/82168">vCenter Server 7.0 fails to start after replacing VMCA certificates with CA-signed certificates. (82168)</a></p>
 <p>私の環境では再現できませんでしたが修正リリース以降へのアップデートの実施が推奨されますので、カスタム証明書を使用する場合は事前に既知問題に該当する vCenter Server 7.0 リリースか確認するようにしましょう。</p>
+<p>2021/03/28 追記：インポートする証明書の改行コードなどに起因する既知問題を観測したので、本記事の末尾に内容などを追記しました。</p>
 <h2 id="証明書署名要求-csr-の生成">証明書署名要求 (CSR) の生成</h2>
 <p>vSphere Client の [ホーム] &gt; [管理] &gt; [証明書の管理] を開き、[アクション] から [証明書署名要求 (CSR) の生成] をクリックします。</p>
 <p><img src="/images/2021-03-24/replace-certificate-gui-001.PNG" alt=""></p>
@@ -189,6 +191,13 @@
 <p>この場合、マシン SSL 証明書と CA 証明書チェーンに加えて、証明書に対応する秘密鍵も必要になるためインポートを実施する前に用意しておきます。</p>
 <p><img src="/images/2021-03-24/replace-certificate-gui-008.PNG" alt=""></p>
 <p><img src="/images/2021-03-24/replace-certificate-gui-009.PNG" alt=""></p>
+<h2 id="20210328-追記改行コードなどに起因する既知問題">2021/03/28 追記：改行コードなどに起因する既知問題</h2>
+<p>私の環境で vCenter Server の証明書の置き換え後に CPU 使用率が高い状態が継続したため調べてみたところ、以下の KB80803 の既知問題にヒットしていました。</p>
+<p><a href="https://kb.vmware.com/s/article/80803">vCenter Appliance /storage/log partition full due to excessive pod-startup.log files (80803)</a></p>
+<p>既知問題の原因としてはマシン SSL 証明書が不正なフォーマットとして扱われた場合に発生するとのことで、改行コードの違いによっても発生してしまうようです。</p>
+<p>Windows の場合は改行コードが CR+LF ですが Linux の場合は LF のため、インポートする際のマシン SSL 証明書に CR+LF の改行コードが含まれると vmware-pod サービスが適切な PEM フォーマットとして解釈できず、サービスの起動が繰り返し失敗することで KB の Symptom のようにログの大量出力(や CPU 使用率の高騰)が発生する状況を確認しました。top で見る限りはその他のサービスは問題なさそうだったので、おそらくは vmware-pod サービス周りの実装の問題じゃないかと推測しています。</p>
+<p>ADCS で発行した証明書で実際に事象が発生した後、KB の Resolution のように vi で不正な文字を削除して修正したところ解消しました。</p>
+<p>また、ADCS の証明書 Web 登録や certreq.exe で証明書を要求すると改行コードが CR+LF ですが、改行コードを CR+LF から LF に変換した証明書をインポートすれば、そもそも事象の発生自体を回避できました。</p>
 <section class="footnotes" role="doc-endnotes">
 <hr>
 <ol>
