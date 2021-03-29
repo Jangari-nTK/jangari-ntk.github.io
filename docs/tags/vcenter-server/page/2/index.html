@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" data-figures="" class="page">
-  <head>  <title>vCenter Server 7.0 で Identity Federation を構成【Part 3】 | vSoliloquy</title>
+<html lang="en" data-figures="">
+  <head>  <title>vCenter Server | vSoliloquy</title>
   <meta charset='utf-8'>
   <meta name="generator" content="Hugo 0.74.3" />
   <meta name = 'viewport' content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
@@ -12,17 +12,16 @@
   gtag('js', new Date());
   gtag('config', 'UA-175306204-1');
 </script>
-  
 <meta property = "og:locale" content = "en_US" />
 <meta property="og:type" content="article">
-<meta name="description" content="本記事は Identity Federation の構成記事の Part 3 となります。前回は AD FS 側の構成をおこないました。今回はいよいよ vCenter Server 側での構成を行っていきます。">
+<meta name="description" content="">
 <meta name = "twitter:card" content = "summary" />
 <meta name = "twitter:creator" content = "@Jangari_nTK">
-<meta name = "twitter:title" content = "vCenter Server 7.0 で Identity Federation を構成【Part 3】" />
-<meta property = "og:url" content = "https://jangari-ntk.github.io/post/2020-08-14/" />
-<meta property = "og:title" content = "vCenter Server 7.0 で Identity Federation を構成【Part 3】" />
-<meta property = "og:description" content = "本記事は Identity Federation の構成記事の Part 3 となります。前回は AD FS 側の構成をおこないました。今回はいよいよ vCenter Server 側での構成を行っていきます。" />
-<meta property = "og:image" content = "https://jangari-ntk.github.io/images/2020-08-11/ID_Federation_diagram.PNG" />
+<meta name = "twitter:title" content = "vCenter Server" />
+<meta property = "og:url" content = "https://jangari-ntk.github.io/tags/vcenter-server/" />
+<meta property = "og:title" content = "vCenter Server" />
+<meta property = "og:description" content = "" />
+<meta property = "og:image" content = "https://jangari-ntk.github.io/images/thumbnail.png" />
 <link rel='apple-touch-icon' sizes='180x180' href='https://jangari-ntk.github.io/icons/apple-touch-icon.png'>
 <link rel='icon' type='image/png' sizes='32x32' href='https://jangari-ntk.github.io/icons/favicon-32x32.png'>
 <link rel='icon' type='image/png' sizes='16x16' href='https://jangari-ntk.github.io/icons/favicon-16x16.png'>
@@ -31,7 +30,7 @@
 <meta name="msapplication-TileColor" content="#002538">
 <meta name="theme-color" content="#002538">
 
-  <link rel='canonical' href='https://jangari-ntk.github.io/post/2020-08-14/'>
+  <link rel='canonical' href='https://jangari-ntk.github.io/tags/vcenter-server/'>
     
 
     
@@ -85,153 +84,73 @@
 </header>
 
     <main>
-  
-<div class = 'grid-inverse wrap content'>
-  <article class='post_content'>
-    <h1 class='post_title'>vCenter Server 7.0 で Identity Federation を構成【Part 3】</h1><div class = 'post_meta'>
+
+<div class='grid-inverse wrap content'>
+  <ul class='posts' id = 'posts'>
+      
+<li class = 'post_item'>
+  <div class = 'excerpt'>
+    <div class = 'excerpt_header'>
+      <h3 class = 'post_link'>
+        <a href='https://jangari-ntk.github.io/post/2020-08-01/'>vCenter Server 7.0 のイベントをテキストで取得</a>
+      </h3>
+      <div class = 'post_meta'>
   <svg class="icon">
     <use xlink:href="#calendar"></use>
   </svg>
   <span class="post_date">
-    Aug 14, 2020</span>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
+    Aug 1, 2020</span>
+  <a href = 'https://jangari-ntk.github.io/tags/tips' class = 'post_tag button button_translucent'>Tips
   </a>
   <a href = 'https://jangari-ntk.github.io/tags/vcenter-server' class = 'post_tag button button_translucent'>vCenter Server
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/security' class = 'post_tag button button_translucent'>Security
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/featured' class = 'post_tag button button_translucent'>Featured
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere-7.0' class = 'post_tag button button_translucent'>vSphere 7.0
   </a>
 </div>
 
-    <div class='post_share'>
-  Share on:
-  <a href="https://twitter.com/intent/tweet?text=vCenter%20Server%207.0%20%e3%81%a7%20Identity%20Federation%20%e3%82%92%e6%a7%8b%e6%88%90%e3%80%90Part%203%e3%80%91&url=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2020-08-14%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
-    <svg class="icon">
-      <use xlink:href="#twitter"></use>
-    </svg>
-  </a>
+    </div>
+    <div class = 'excerpt_footer partition'>
+      <div class = 'excerpt_thumbnail'>
+      <img src = '/images/building.png'>
+      </div>
+      
+        <div>
+          <p class = 'pale'>はじめに vSphere Web Client (Flash 版) が vSphere 7 で遂に廃止となりました。vSphere Client (HTML5 版) は動作もスムーズで良いのですが、どうやら現時点では従来のイベントのエクスポートが行えないようです。
+Exporting virtual machine events from the Tasks &amp; Events tab (2008204)
+ Note: The export tasks/Events option is only available on the vSphere Web Client (Flex). The HTML client does …</p>
+          <a href='https://jangari-ntk.github.io/post/2020-08-01/' class='excerpt_more button'>Read More</a>
+        </div>
+      </div>
+    </div>
+  </li>
   
-  <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2020-08-14%2f&t=vCenter%20Server%207.0%20%e3%81%a7%20Identity%20Federation%20%e3%82%92%e6%a7%8b%e6%88%90%e3%80%90Part%203%e3%80%91" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
-    <svg class="icon">
-      <use xlink:href="#facebook"></use>
-    </svg>
-  </a>
-  <script>
-    function shareViaLinkedin() {
-      window.open('http://www.linkedin.com/shareArticle?mini=true&url='+encodeURIComponent("https://jangari-ntk.github.io/post/2020-08-14/"), '', 'left=0,top=0,width=650,height=420,personalbar=0,toolbar=0,scrollbars=0,resizable=0');
-    }
-  </script>
-  <a href="#linkedinshare" id = "linkedinshare" class="linkedin" title="Share on LinkedIn" rel="nofollow" onclick="shareViaLinkedin()">
-    <svg class="icon">
-      <use xlink:href="#linkedin"></use>
-    </svg>
-  </a>
-  <a href="https://jangari-ntk.github.io/post/2020-08-14/" title="Copy Link" class="link link_yank">
-    <svg class="icon">
-      <use xlink:href="#yank"></use>
-    </svg>
-  </a>
-</div>
-
-    
-    
-    <h2>Table of contents</h2>
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#はじめに">はじめに</a></li>
-    <li><a href="#vcenter-server-での作業に入る前に確認">vCenter Server での作業に入る前に確認</a></li>
-    <li><a href="#active-directory-の-ldaps-の-ssltls-証明書の取得">Active Directory の LDAPS の SSL/TLS 証明書の取得</a></li>
-    <li><a href="#vcenter-server-での-identity-federation-の構成">vCenter Server での Identity Federation の構成</a></li>
-    <li><a href="#権限の割り当てとログイン">権限の割り当てとログイン</a></li>
-    <li><a href="#新しい-vcenter-server-で拡張リンクモードを構成した場合">新しい vCenter Server で拡張リンクモードを構成した場合</a></li>
-    <li><a href="#補足-拡張リンクモードでのプライベート-ca-証明書のインポート">補足: 拡張リンクモードでのプライベート CA 証明書のインポート</a></li>
-    <li><a href="#おわりに">おわりに</a></li>
-  </ul>
-</nav>
-    <h2 id="はじめに">はじめに</h2>
-<p>本記事は<a href="/post/2020-08-11/">Identity Federation の構成記事</a>の Part 3 となります。<a href="/post/2020-08-12/">前回</a>は AD FS 側の構成をおこないました。今回はいよいよ vCenter Server 側での構成を行っていきます。</p>
-<blockquote>
-<p>注意: 本機能の <a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-0A3A19E6-150A-493B-8B57-37E19AB420F2.html">VMware Docs</a> での名称は vCenter Server ID プロバイダ フェデレーション (vCenter Server Identity Provider Federation)、<a href="https://blogs.vmware.com/vsphere/2020/03/vsphere-7-identity-federation.html">公式 Blog の記事</a>などでは Identity Federation と呼称されています。本記事では文字数の便宜上、当該機能を Identity Federation として呼称することとします。</p>
-</blockquote>
-<blockquote>
-<p>2020/08/18 追記: 当方の <a href="https://portal.msrc.microsoft.com/en-us/security-guidance/advisory/ADV190023">ADV190023</a>の対応に関する認識に誤りがあり、[おわりに] で「AD LDAP のデフォルトの動作が変更される」旨を記載していましたが、正しくは「設定変更が推奨であるものの既存の設定は変更されない」でした。このため、記事の内容を修正したとともに、誤った情報を記載したことをお詫び申し上げます。</p>
-<p>なお、ADV190023 周りの詳細は「<a href="https://support.microsoft.com/en-ie/help/4520412/2020-ldap-channel-binding-and-ldap-signing-requirements-for-windows">2020 LDAP channel binding and LDAP signing requirements for Windows</a>」を参照しています。</p>
-</blockquote>
-<h2 id="vcenter-server-での作業に入る前に確認">vCenter Server での作業に入る前に確認</h2>
-<p>再掲になりますが、まずは前回の作業で使用した AD FS でのアプリケーショングループの以下の３点の情報を揃えておきます。</p>
-<ul>
-<li>クライアント識別子</li>
-<li>共有シークレット</li>
-<li>AD FS の openid-configuration の URL</li>
+    <li>
+<ul class="pagination">
+  <li class="page-item">
+    <a href="/tags/vcenter-server/" class="page-link" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+  </li>
+  <li class="page-item">
+    <a href="/tags/vcenter-server/" class="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+  </li>
+  <li class="page-item">
+    <a class="page-link" href="/tags/vcenter-server/">1</a>
+  </li>
+  <li class="page-item active">
+    <a class="page-link" href="/tags/vcenter-server/page/2/">2</a>
+  </li>
+  <li class="page-item disabled">
+    <a  class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+  </li>
+  <li class="page-item">
+    <a href="/tags/vcenter-server/page/2/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+  </li>
 </ul>
-<h2 id="active-directory-の-ldaps-の-ssltls-証明書の取得">Active Directory の LDAPS の SSL/TLS 証明書の取得</h2>
-<p>認証には使われない(はず)ですが、vCenter Server 側でのロールによる認可にあたり Active Directory のユーザーの一覧が必要になります<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>。この一覧の取得にあたり、vCenter Server から Active Directory の LDAPS への接続が必要になります。</p>
-<p>vCenter Server からの LDAPS 接続にあたっては Active Directory 側(LDAPS サーバ)のサーバ証明書を用意しておく必要があります。</p>
-<p>AD DS の場合はローカルコンピューターの [個人] ストア、もしくはサービスアカウント(Active Directory Domain Services)の [NTDS\個人] ストアに存在するんじゃないかと思います。こちらからエクスポートしておくと良いでしょう。私の環境では色々と実験していたので後者の証明書ストアに LDAPS の証明書が置いてありました。</p>
-<p><img src="/images/2020-08-14/ad-ldaps-cert-export.PNG" alt="LDAPS のサーバ証明書のエクスポート"></p>
-<p>もしくは、openssl コマンドの showcerts オプションを使うことで Base64 エンコードの証明書が表示できるので、こちらからコピー＆ペーストして証明書ファイルにする方法もあります。</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>$ openssl s_client -showcerts -host &lt;AD DS の FQDN&gt; -port 636
-</code></pre></div><h2 id="vcenter-server-での-identity-federation-の構成">vCenter Server での Identity Federation の構成</h2>
-<p>これで事前に揃えておくべき必要な情報が揃ったので、いよいよ vCenter Server で Identity Federation を構成していきます。</p>
-<p>まずは [ホーム] &gt; [管理] &gt; [Single Sign-On] &gt; [設定] から [ID プロバイダ] を開きましょう。</p>
-<p><img src="/images/2020-08-14/config-id-federation-vcenter-001.PNG" alt="Single Sign-On - ID プロバイダ"></p>
-<p>[ID プロバイダの変更] をクリックするとダイアログがポップアップします。[Microsoft ADFS] を選択し [次へ] をクリックして進みます。</p>
-<p><img src="/images/2020-08-14/config-id-federation-vcenter-002.PNG" alt="ID プロバイダ"></p>
-<p>[ADFS サーバ] ページでは AD FS 側でメモしておいた３点の情報を入力し、[次へ] をクリックして進みます。</p>
-<p><img src="/images/2020-08-14/config-id-federation-vcenter-003.PNG" alt="ADFS サーバ"></p>
-<p>[ユーザーおよびグループ] ページでは Active Directory のベース DN や LDAPS 接続の情報を入力し、[次へ] をクリックして進みます。接続するドメインユーザーには指定したそれぞれのベース DN に対する読み取り権限が必要です。</p>
-<p><img src="/images/2020-08-14/config-id-federation-vcenter-004.PNG" alt="ユーザーおよびグループ"></p>
-<p>最後に設定を確認して [完了] をクリックすると、以下のように [ID プロバイダ] タブのタイプが Microsoft ADFS に変わります。</p>
-<p><img src="/images/2020-08-14/config-id-federation-vcenter-005.PNG" alt="Identity Federation 構成後の ID プロバイダ"></p>
-<p>また、[Single Sign-On] &gt; [ユーザーおよびグループ] で [ドメイン] に Microsoft ADFS が追加されているため、こちらで LDAPS 経由でのユーザーの一覧取得が出来ているか確認します。</p>
-<p><img src="/images/2020-08-14/config-id-federation-vcenter-006.PNG" alt="Microsoft ADFS のユーザー"></p>
-<p>ここまで来たら Identity Federation の構成は完了です。</p>
-<h2 id="権限の割り当てとログイン">権限の割り当てとログイン</h2>
-<p>この後にログインのテストをすることになりますが、Active Directory のドメインユーザーには権限が割り当てられていないのでログインできません。このため、インベントリのどこかでドメインユーザーに権限(ロール)を割り当ててください。</p>
-<p>※例えば、以下のように vCenter Server オブジェクトの [権限] タブから割り当てるなど。</p>
-<p><img src="/images/2020-08-14/config-id-federation-vcenter-007.PNG" alt="ユーザーへの権限の割り当て"></p>
-<p>その後、一度 vSphere Client からログアウトすると初回記事でも記載したログイン画面が見られると思います。</p>
-<p><img src="/images/2020-08-11/idfederation-page-001.png" alt="vCenter Server のログイン画面"></p>
-<p>ここで Active Directory ドメインユーザー (上記では <a href="mailto:administrator@jangari.local">administrator@jangari.local</a>) を入力すると、外部 ID プロバイダのユーザーと判断されて以下のような AD FS のログイン画面に遷移します。</p>
-<p><img src="/images/2020-08-11/idfederation-page-002.png" alt="AD FS のログイン画面"></p>
-<p>ドメインユーザーのユーザー名とパスワードでログインすると、最後に vSphere Client で右上のアカウント名がログインしたドメインユーザーとなっていることが確認できます。</p>
-<p><img src="/images/2020-08-14/config-id-federation-vcenter-008.PNG" alt="vSphere Client"></p>
-<h2 id="新しい-vcenter-server-で拡張リンクモードを構成した場合">新しい vCenter Server で拡張リンクモードを構成した場合</h2>
-<p>拡張リンクモードを構成した場合、<a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-4B4E336B-75E4-47D9-9BDE-E835071E71F9.html">こちらのドキュメント</a>にも記載があるように vCenter Server 間で AD FS の構成が複製されます。</p>
-<p>実際にどうなるのか確認するため、AD FS を構成した vCenter Server をポイントするように新しく vCenter Server をデプロイしてみたところ、ID プロバイダの画面上でリダイレクト URI 以外の設定 (クライアント識別子も含む) が複製されました。</p>
-<p><img src="/images/2020-08-14/id-federation-with-elm-001.PNG" alt="拡張リンクモードの vCenter Server 2台目"></p>
-<p>このため、ドキュメントに記載がある通り、AD FS 側ではアプリケーショングループにリダイレクト URI を追加してあげれば OK です。</p>
-<p><img src="/images/2020-08-14/id-federation-with-elm-002.PNG" alt="アプリケーショングループへのリダイレクト URI 追加"></p>
-<h2 id="補足-拡張リンクモードでのプライベート-ca-証明書のインポート">補足: 拡張リンクモードでのプライベート CA 証明書のインポート</h2>
-<blockquote>
-<p>重要：以下の補足はあくまでも私個人が機能を試している中で遭遇した事象、かつ私見による考察や推測が含まれています。従って、すべてが公式のドキュメントやナレッジベースで裏付けられるものではない単なる一個人の見解であること、同じエラーメッセージが必ずしも同じ事象を示しているとは限らないことを、予めご理解ご了承をお願いいたします。</p>
-</blockquote>
-<p><a href="/post/2020-08-11">初回の記事</a>で JRE トラストストアにプライベート CA の CA 証明書をインポートしていましたが、keytool で確認すると、特にこちらは vCenter Server 間でレプリケーションされないようでした<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>。ホームラボなどの検証環境でプライベート CA を使用する場合、2台目以降の VCSA の JRE トラストストアにも CA 証明書のインポートが必要になるようです。</p>
-<p>こちらの<a href="https://docs.microsoft.com/en-us/windows-server/identity/ad-fs/overview/ad-fs-requirements">Microsoft社ドキュメント</a>にも<a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-A916B60D-E2F0-461B-9F5E-CD7447BD97F2.html">VMware社ドキュメント</a>では「本番環境では AD FS で使用する SSL/TLS 証明書は公的な認証局により署名された証明書を使用してください」といった旨が記載されていますので、システムが各製品の要件などを遵守していれば本番環境では遭遇しにくいかと思いたいです。</p>
-<p>参考までに、私が何も考えずに拡張リンクモードだけ構成してみたところ、2台目の vCenter Server 側で「[400] OAuth 2 の認証コードのアサーション要求の処理でエラーが発生しました」というエラーに遭遇しました。</p>
-<p><img src="/images/2020-08-14/id-federation-with-elm-003.PNG" alt="CA 証明書の未インポート時のエラー"></p>
-<p>エラーメッセージの内容や OpenID Connect を使っていることを考えると、vCenter Server が OpenID Connect の認可コードを利用して AD FS にトークンリクエストを発行する際に何かが失敗したと推測しています。この後に JRE トラストストアへの CA 証明書をインポートして解消された状況を鑑みれば、恐らく AD FS のサーバ証明書の検証時に問題が起きていたんだろうと思います。</p>
-<h2 id="おわりに">おわりに</h2>
-<p>今回は３記事に渡って vSphere 7 における Identity Federation の構成を見ていきました。</p>
-<p>VMware 側では<a href="https://kb.vmware.com/s/article/78506?lang=ja">統合 Windows 認証の今後の vSphere リリースでの廃止</a>が予定されており、Microsoft 側では統合 Windows 認証に影響を及ぼす Active Directory LDAP のセキュリティを強化する設定が追加<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>されています。</p>
-<p>これらにより、今後 Active Directory を認証に使用している環境ではシステムの構成変更が求められる可能性もありますので、現在の自システムの vSphere の認証がどういう構成になっているか、今後 Identity Federation を使用するか他の認証方式を選択するか今のうちから検討しておくことをお勧めしたいと思います。</p>
-<section class="footnotes" role="doc-endnotes">
-<hr>
-<ol>
-<li id="fn:1" role="doc-endnote">
-<p>ディレクトリサービスとの同期間隔などは<a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.vcenter.configuration.doc/GUID-007C02A8-C853-4FBC-B0F0-933F19768DD4.html">こちらの設定</a>である程度の調整が可能です。 <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-</li>
-<li id="fn:2" role="doc-endnote">
-<p>vSphere Client の <a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-F36D22EC-B89B-4A31-B7AF-1110A6CBFC77.html">[管理] &gt; [証明書] &gt; [証明書の管理]</a> にも証明書が確認できますが、こちらは <a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-EB2D4685-D9B1-4F87-B02D-934FDEECE3F2.html">VMware Endpoint 証明書ストア(VECS)</a>に保持されている証明書となります。VECS は JRE トラストストアとは別の証明書ストアで、<a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-4469A6D3-048A-471C-9CB4-518A15EA2AC0.html">VMCA</a> が発行した証明書などが保持されています。VECS 内の証明書はライセンスなどと同じく<a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-689D2340-A0CB-432F-88F6-2609AA3D6CB6.html">リンクされた vCenter Server (PSC) 間でレプリケーションされます</a>。 <a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-</li>
-<li id="fn:3" role="doc-endnote">
-<p>Active Directory LDAP の動作変更は<a href="https://blogs.vmware.com/vsphere/2020/05/vsphere-authentication-active-directory-ldap-event-2889.html">こちらの vSphere Blog の記事</a> や <a href="https://portal.msrc.microsoft.com/en-US/security-guidance/advisory/ADV190023">Microsoft 社の Advisory</a>を参照してください。 <a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-</li>
-</ol>
-</section>
 
-  </article>
+
+    </li>
+  </ul>
 <aside class="sidebar">
   <section class="sidebar_inner">
     <h2>Jangari</h2>
@@ -246,6 +165,9 @@
         <a href="https://jangari-ntk.github.io/post/2020-08-18/" class="nav-link">Active Directory over LDAPS の ID ソースを構成する</a>
       </li>
     
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2020-08-14/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 3】</a>
+      </li>
     
       <li>
         <a href="https://jangari-ntk.github.io/post/2020-08-12/" class="nav-link">vCenter Server 7.0 で Identity Federation を構成【Part 2】</a>
@@ -507,6 +429,8 @@
 </aside>
 
 </div>
+
+
     </main><svg width="0" height="0" class="hidden">
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="facebook">
     <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h151V331h-60v-90h60v-61c0-49.629 40.371-90 90-90h91v90h-91v61h91l-15 90h-76v181h121c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zm0 0"></path>

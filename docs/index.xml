@@ -6,10 +6,22 @@
     <description>Recent content on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Wed, 24 Mar 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 29 Mar 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>REST API で vCenter Server のマシンSSL証明書を置き換える</title>
+      <link>https://jangari-ntk.github.io/post/2021-03-29/</link>
+      <pubDate>Mon, 29 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2021-03-29/</guid>
+      <description>概要 前回の記事では vSphere Client から vCenter Server のマシン SSL 証明書の CSR を発行して置き換えました。今回の記事では vCenter Server の REST API (vSphere Automation API) を使用して同様の作業を行ってみたいと思います。
+vSphere Automation API vSphere Automation API は vSphere 6.5 から追加された vCenter Server の API です。SOAP ベースだった従来の vSphere Web Services API (VMOMI) とは異なり、REST ベースの API となっています。
+VMOMI の機能を完全に網羅して実装しているわけではなさそうですが、基本的な vCenter Server のインベントリ操作の他にも vCenter Server Appliance の構成や管理、証明書の構成なども vSphere Automation API から実行することが可能になっています。
+また、vSphere Client の [ホーム] &amp;gt; [デベロッパー センター] にある API Explorer を使用することで、vSphere Automation API に含まれる個々の API の URL や必要なパラメータ、実際の実行結果の確認などを行うことが出来ます。</description>
+    </item>
     
     <item>
       <title>vCenter Server 7.0 で CSR を生成してカスタム証明書に置き換える</title>
