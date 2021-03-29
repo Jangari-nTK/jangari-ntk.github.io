@@ -287,7 +287,7 @@
 <p>今回の記事では vSphere Automation API を使用して vCenter Server での CSR 生成やマシンSSL証明書の置き換えを行いました。CSR を vCenter Server で生成しているため発行された証明書の有効期限は2年固定になりますが、openssl などを使って自前で秘密鍵 / CSR / 証明書を作成すれば有効期限がより短い証明書をインポートすることも出来ます。</p>
 <p>vCenter Server 外部で一から作成した証明書は秘密鍵もインポートが必要になるため、PUT /rest/vcenter/certificate-management/vcenter/tls のリクエストボディに追加する必要がありますが、実装次第では Let&rsquo;s Encrypt のように証明書を90日ごとに自動更新するなども出来そうかなと思います。</p>
 <p>なお、上述したコードをまとめたサンプルファイルを GitHub に置いています。だいぶ雑な作りですが必要に応じて参照いただけたら幸いです。</p>
-<p><a href="https://github.com/Jangari-nTK/machine-ssl-cert-replace-powershell">Jangari-nTK / machine-ssl-cert-replace-powershell</a></p>
+<p><a href="https://github.com/Jangari-nTK/machine-ssl-cert-replace-powershell">Jangari-nTK/machine-ssl-cert-replace-powershell</a></p>
 
   </article>
 <aside class="sidebar">
