@@ -146,7 +146,7 @@
 <p>VMware Workstation 16 Pro 上に Fedora 33 をインストールしたのですが、VMware Workstation のウィンドウサイズにゲストの解像度が追従しない状況が発生しました。</p>
 <p>本来は VMware Tools (open-vm-tools) によってゲストの解像度が追従するはずなので、open-vm-tools の動きが怪しいと思いワークアラウンドを調べてみました。</p>
 <h2 id="原因">原因</h2>
-<p>BugZilla や GitHub の Issue を見る限りでは、VMware Tools が Xorg 用のドライバ検知に失敗して resolutionKMS / resolutionSet プラグインが自動で有効にならず、解像度変更が動作しないといった問題のようです。</p>
+<p>Bugzilla や GitHub の Issue を見る限りでは、VMware Tools が Xorg 用のドライバ検知に失敗して resolutionKMS / resolutionSet プラグインが自動で有効にならず、解像度変更が動作しないといった問題のようです。</p>
 <ul>
 <li><a href="https://bugzilla.redhat.com/show_bug.cgi?id=1890815">https://bugzilla.redhat.com/show_bug.cgi?id=1890815</a></li>
 <li><a href="https://github.com/vmware/open-vm-tools/issues/491">https://github.com/vmware/open-vm-tools/issues/491</a></li>
