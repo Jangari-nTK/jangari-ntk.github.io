@@ -6,10 +6,25 @@
     <description>Recent content on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Thu, 08 Apr 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 10 Jun 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>プレシジョンクロックデバイスで ESXi とゲストOSを時刻同期</title>
+      <link>https://jangari-ntk.github.io/post/2021-06-10/</link>
+      <pubDate>Thu, 10 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2021-06-10/</guid>
+      <description>はじめに vSphere 7.0 ではゲストの時刻同期に関する新機能としてプレシジョンクロックデバイスという新しい仮想デバイスが追加されています。
+ Highlights of New Features and Improvements in vSphere 7/vSAN 7/NSX-T 3 for High Performance Computing and Machine Learning 仮想マシンへのプレシジョン クロック デバイスの追加  仮想マシンにプレシジョンクロックデバイスを構成すると、ゲストOSからは PTP ハードウェアクロック(PHC)というデバイスとして見えます。ゲストOSはこのデバイスを参照することで、ESXi のシステム時刻を取得して同期できるようになります。
+今回の記事では Windows Server 2019 と Red Hat Enterprise Linux 8.3 でプレシジョンクロックデバイスを使用したホスト－ゲスト間の時刻同期を試してみたいと思います。
+PTP (Precision Time Protocol) 時刻同期に広く使われているネットワークプロトコルとして NTP がありますが、NTP の精度は一般にミリ秒レベルです。これに対して PTP ではハードウェア(NIC)によるタイムスタンプと正確な転送遅延時間の測定により、ナノ秒以下の精度を目標として時刻同期を行うためのプロトコルとなっています。
+PTP はマスター／スレーブ型のプロトコルで、(誤解を恐れずに言うと)グランドマスタークロックがタイムスタンプ情報をマルチキャストで配信、スレーブ(NIC)は受信したタイムスタンプ情報から自身のハードウェアタイムスタンプを限りなくマスターに近づけ、OS のシステム時刻は NIC から取得したハードウェアタイムスタンプを使用して同期します。
+PTP の概要は日本語だと以下のセイコーソリューションズ社の Web サイトや Interop 2016 の資料、Red Hat 社の linuxptp のドキュメントなどが参考になるかなと思います。
+ セイコーの｢うるう秒｣対策（第５回）　「うるう秒」を全く使わない時間系 | セイコーソリューションズ</description>
+    </item>
     
     <item>
       <title>Fedora 33 で VMware Tools による解像度変更が効かない問題と対処</title>
