@@ -6,10 +6,27 @@
     <description>Recent content in Tips on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Thu, 10 Jun 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 20 Jun 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/tags/tips/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PTP を使用して ESXi を時刻同期する</title>
+      <link>https://jangari-ntk.github.io/post/2021-06-20/</link>
+      <pubDate>Sun, 20 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2021-06-20/</guid>
+      <description>はじめに 前回の記事では vSphere 7 で実装された PTP 関連の機能のうち、仮想マシンのプレシジョンクロックデバイスを取り上げました。今回の記事ではもう一つの機能である ESXi の PTP による時刻同期を試してみたいと思います。
+なお、PTP のプロトコルの概要は省きますが、前回の記事で挙げた参考 URL のほか、Cisco の有志の方が書かれている以下の記事も参考になると思います。
+【初心者向け】時刻同期101 - PTP の基本動作
+グランドマスタークロックのセットアップ 前置き：今回の記事の構成 本来はグランドマスタークロックとして PTP 対応の原子時計などを用意し、境界クロック(BC)やトランスペアレントクロック(TC)として機能するスイッチなどを経由して、末端のスレーブクロックに接続することでマイクロ秒～ナノ秒レベルの同期精度が維持されます。
+今回の記事では単純な機能のテスト目的のため、グランドマスタークロックを仮想マシンの CentOS 8 Stream ＋ ptp4l で用意し、ESXi と同じネットワークセグメントに接続するだけの構成としています。
+クロック精度のハードウェア支援や BC/TC も無いため同期精度は完全に無視していますので、あくまでもテスト目的であり、決して本番環境向けの構成ではないことを予めご認識おきください。
+セットアップ手順 まずは CentOS 8 Stream をインストールした後、linuxptp パッケージをインストールします。linuxptp パッケージに PTPv2 を実装したプログラム(ptp4l 等)が含まれています。
+1# yum install linuxptp 次に、ソフトウェアタイムスタンプを利用するよう ptp4l を構成します。ptp4l.conf の time_stamping オプションを hardware から software に編集することで可能です。
+1# vi /etc/ptp4l.conf 2 3 (略) 4time_stamping software また、適切な NIC を使用するように ptp4l の -i オプションを指定します。/etc/sysconfig/ptp4l を編集することで可能です。</description>
+    </item>
     
     <item>
       <title>プレシジョンクロックデバイスで ESXi とゲストOSを時刻同期</title>
