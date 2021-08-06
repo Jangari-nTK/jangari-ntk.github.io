@@ -6,10 +6,25 @@
     <description>Recent content in Tips on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Sun, 20 Jun 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 07 Aug 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/tags/tips/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>【メモ】ESXi 7.0 の Kickstart の %post で boot.cfg を触る</title>
+      <link>https://jangari-ntk.github.io/post/2021-08-07/</link>
+      <pubDate>Sat, 07 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2021-08-07/</guid>
+      <description>はじめに 以前の Nested ESXi の記事や KB2149444 等でも言及されていますが、ESXi のブートオプションは /bootbank/boot.cfg の kernelopt 行に記載されます。
+ESXi は キックスタートファイルを使用した自動インストールが可能なので、%post や %firstboot のセクションで編集できないかと思い、各セクションで以下のような sed コマンドを実行して試してみました。
+1sed -i &amp;#34;s/kernelopt=.*/kernelopt=autoPartition=FALSE allowLegacyCPU=true/&amp;#34; /bootbank/boot.cfg 今回の環境は ESXi 7.0 Update 2 です。
+結果 %firstboot セクションでは sed により boot.cfg の内容が置換されました。しかし、%post セクションでは sed の実行がエラーになり置換されませんでした。
+原因 sed コマンドがエラーになっていることから /bootbank の状態が気になるので、ks.cfg 内で以下のコマンドを実行して %post の時の状態を覗いてみました。
+1%post --interpreter=busybox 2ls -laR / &amp;gt; /vmfs/volumes/datastore1/_ks_post_ls_-laR.txt 結果としては、%post 時点では /bootbank のリンク先が /tmp になっていました。また、/tmp には boot.cfg が存在していなかったので、/bootbank/boot.cfg が無いために sed がエラーになっていることが分かりました。
+1/: 2total 885 3drwxr-xr-x 1 root root 512 Aug 6 14:54 .</description>
+    </item>
     
     <item>
       <title>PTP を使用して ESXi を時刻同期する</title>

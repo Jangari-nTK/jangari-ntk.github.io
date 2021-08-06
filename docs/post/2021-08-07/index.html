@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-figures="" class="page">
-  <head>  <title>pyVmomi から API 操作で Instant Clone をやってみる | vSoliloquy</title>
+  <head>  <title>【メモ】ESXi 7.0 の Kickstart の %post で boot.cfg を触る | vSoliloquy</title>
   <meta charset='utf-8'>
   <meta name="generator" content="Hugo 0.74.3" />
   <meta name = 'viewport' content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
@@ -15,14 +15,14 @@
   
 <meta property = "og:locale" content = "en_US" />
 <meta property="og:type" content="article">
-<meta name="description" content="本記事では pyVmomi を使って vSphere 単体で Instant Clone を行う方法について書いていきます。">
+<meta name="description" content="ESXi はキックスタートファイルを使用した自動インストールが可能になっています。%post や %firstboot のセクションで boot.cfg が編集できないかと思い、各セクションで sed コマンドを実行して試してみました。">
 <meta name = "twitter:card" content = "summary" />
 <meta name = "twitter:creator" content = "@Jangari_nTK">
-<meta name = "twitter:title" content = "pyVmomi から API 操作で Instant Clone をやってみる" />
-<meta property = "og:url" content = "https://jangari-ntk.github.io/post/2020-08-07/" />
-<meta property = "og:title" content = "pyVmomi から API 操作で Instant Clone をやってみる" />
-<meta property = "og:description" content = "本記事では pyVmomi を使って vSphere 単体で Instant Clone を行う方法について書いていきます。" />
-<meta property = "og:image" content = "https://jangari-ntk.github.io/images/building.png" />
+<meta name = "twitter:title" content = "【メモ】ESXi 7.0 の Kickstart の %post で boot.cfg を触る" />
+<meta property = "og:url" content = "https://jangari-ntk.github.io/post/2021-08-07/" />
+<meta property = "og:title" content = "【メモ】ESXi 7.0 の Kickstart の %post で boot.cfg を触る" />
+<meta property = "og:description" content = "ESXi はキックスタートファイルを使用した自動インストールが可能になっています。%post や %firstboot のセクションで boot.cfg が編集できないかと思い、各セクションで sed コマンドを実行して試してみました。" />
+<meta property = "og:image" content = "https://jangari-ntk.github.io/images/2021-08-07/thumbnail.PNG" />
 <link rel='apple-touch-icon' sizes='180x180' href='https://jangari-ntk.github.io/icons/apple-touch-icon.png'>
 <link rel='icon' type='image/png' sizes='32x32' href='https://jangari-ntk.github.io/icons/favicon-32x32.png'>
 <link rel='icon' type='image/png' sizes='16x16' href='https://jangari-ntk.github.io/icons/favicon-16x16.png'>
@@ -31,7 +31,7 @@
 <meta name="msapplication-TileColor" content="#002538">
 <meta name="theme-color" content="#002538">
 
-  <link rel='canonical' href='https://jangari-ntk.github.io/post/2020-08-07/'>
+  <link rel='canonical' href='https://jangari-ntk.github.io/post/2021-08-07/'>
     
 
     
@@ -88,40 +88,38 @@
   
 <div class = 'grid-inverse wrap content'>
   <article class='post_content'>
-    <h1 class='post_title'>pyVmomi から API 操作で Instant Clone をやってみる</h1><div class = 'post_meta'>
+    <h1 class='post_title'>【メモ】ESXi 7.0 の Kickstart の %post で boot.cfg を触る</h1><div class = 'post_meta'>
   <svg class="icon">
     <use xlink:href="#calendar"></use>
   </svg>
   <span class="post_date">
-    Aug 7, 2020</span>
+    Aug 7, 2021</span>
   <a href = 'https://jangari-ntk.github.io/tags/tips' class = 'post_tag button button_translucent'>Tips
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/nested' class = 'post_tag button button_translucent'>Nested
+  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
   </a>
   <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/instant-clone' class = 'post_tag button button_translucent'>Instant Clone
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/sdk/api' class = 'post_tag button button_translucent'>SDK/API
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere-7.0' class = 'post_tag button button_translucent'>vSphere 7.0
   </a>
 </div>
 
     <div class='post_share'>
   Share on:
-  <a href="https://twitter.com/intent/tweet?text=pyVmomi%20%e3%81%8b%e3%82%89%20API%20%e6%93%8d%e4%bd%9c%e3%81%a7%20Instant%20Clone%20%e3%82%92%e3%82%84%e3%81%a3%e3%81%a6%e3%81%bf%e3%82%8b&url=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2020-08-07%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
+  <a href="https://twitter.com/intent/tweet?text=%e3%80%90%e3%83%a1%e3%83%a2%e3%80%91ESXi%207.0%20%e3%81%ae%20Kickstart%20%e3%81%ae%20%25post%20%e3%81%a7%20boot.cfg%20%e3%82%92%e8%a7%a6%e3%82%8b&url=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2021-08-07%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
     <svg class="icon">
       <use xlink:href="#twitter"></use>
     </svg>
   </a>
   
-  <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2020-08-07%2f&t=pyVmomi%20%e3%81%8b%e3%82%89%20API%20%e6%93%8d%e4%bd%9c%e3%81%a7%20Instant%20Clone%20%e3%82%92%e3%82%84%e3%81%a3%e3%81%a6%e3%81%bf%e3%82%8b" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
+  <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2021-08-07%2f&t=%e3%80%90%e3%83%a1%e3%83%a2%e3%80%91ESXi%207.0%20%e3%81%ae%20Kickstart%20%e3%81%ae%20%25post%20%e3%81%a7%20boot.cfg%20%e3%82%92%e8%a7%a6%e3%82%8b" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
     <svg class="icon">
       <use xlink:href="#facebook"></use>
     </svg>
   </a>
   <script>
     function shareViaLinkedin() {
-      window.open('http://www.linkedin.com/shareArticle?mini=true&url='+encodeURIComponent("https://jangari-ntk.github.io/post/2020-08-07/"), '', 'left=0,top=0,width=650,height=420,personalbar=0,toolbar=0,scrollbars=0,resizable=0');
+      window.open('http://www.linkedin.com/shareArticle?mini=true&url='+encodeURIComponent("https://jangari-ntk.github.io/post/2021-08-07/"), '', 'left=0,top=0,width=650,height=420,personalbar=0,toolbar=0,scrollbars=0,resizable=0');
     }
   </script>
   <a href="#linkedinshare" id = "linkedinshare" class="linkedin" title="Share on LinkedIn" rel="nofollow" onclick="shareViaLinkedin()">
@@ -129,7 +127,7 @@
       <use xlink:href="#linkedin"></use>
     </svg>
   </a>
-  <a href="https://jangari-ntk.github.io/post/2020-08-07/" title="Copy Link" class="link link_yank">
+  <a href="https://jangari-ntk.github.io/post/2021-08-07/" title="Copy Link" class="link link_yank">
     <svg class="icon">
       <use xlink:href="#yank"></use>
     </svg>
@@ -142,186 +140,67 @@
     <nav id="TableOfContents">
   <ul>
     <li><a href="#はじめに">はじめに</a></li>
-    <li><a href="#vsphere-web-services-api-と-pyvmomi">vSphere Web Services API と pyVmomi</a></li>
-    <li><a href="#インスタントクローンと-vsphere-web-services-api">インスタントクローンと vSphere Web Services API</a></li>
-    <li><a href="#pyvmomi-でインスタントクローン">pyVmomi でインスタントクローン</a></li>
-    <li><a href="#python-実行環境と-pyvmomi-のインストール手順">Python 実行環境と pyVmomi のインストール手順</a></li>
-    <li><a href="#サンプルコードとその解説">サンプルコードとその解説</a></li>
+    <li><a href="#結果">結果</a></li>
+    <li><a href="#原因">原因</a></li>
+    <li><a href="#対処">対処</a></li>
     <li><a href="#おわりに">おわりに</a></li>
-    <li><a href="#補足">補足</a></li>
   </ul>
 </nav>
     <h2 id="はじめに">はじめに</h2>
-<p>本記事では pyVmomi を使って vSphere 単体で Instant Clone を行う方法について書いていきます。</p>
-<p>事の発端は以下のVMware社の中の人が PowerCLI から Nested ESXi をインスタントクローンする記事です。</p>
-<p><a href="https://www.virtuallyghetto.com/2018/05/leveraging-instant-clone-in-vsphere-6-7-for-extremely-fast-nested-esxi-provisioning.html">Leveraging Instant Clone in vSphere 6.7 for extremely fast Nested ESXi provisioning</a></p>
-<h2 id="vsphere-web-services-api-と-pyvmomi">vSphere Web Services API と pyVmomi</h2>
-<p>vCenter Server のタスクをコマンドで実行する場合、PowerCLI を使うことが多いと思います。もしくは、開発やトラブルシューティングなどの一環で MOB (Managed Object Browser) を使用したことがある方もいらっしゃるかもしれません。</p>
-<ul>
-<li><a href="https://code.vmware.com/web/tool/12.0.0/vmware-powercli">VMware PowerCLI - VMware {code}</a></li>
-<li><a href="https://code.vmware.com/docs/6536/vsphere-sdk-for-perl-programming-guide/doc/GUID-9D615A34-EEA5-4BBE-A612-E4600F47B555.html">Online Documentation - vSphere SDK for Perl Programming Guide - VMware {code}</a></li>
-</ul>
-<p>これらのツールは「vSphere Web Services API」という vSphere のローレベルな SOAP API を操作しています<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>。</p>
-<ul>
-<li><a href="https://code.vmware.com/web/sdk/7.0/vsphere-management">vSphere Management SDK - VMware {code}</a></li>
-<li><a href="https://code.vmware.com/apis/968/vsphere">vSphere Web Services API - VMware API Explorer - VMware {code}</a></li>
-</ul>
-<p>今回の記事で紹介する「pyVmomi」という Python SDK も PowerCLI と同様に vSphere Web Services API を操作することが出来ます。</p>
-<p>pyVmomi のインストール手順やコミュニティのサンプルコードは GitHub の以下のリポジトリで公開されています。</p>
-<ul>
-<li><a href="https://github.com/vmware/pyvmomi">vmware/pyvmomi: VMware vSphere API Python Bindings</a></li>
-<li><a href="https://github.com/vmware/pyvmomi-community-samples">vmware/pyvmomi-community-samples: A place for community contributed samples for the pyVmomi library.</a></li>
-</ul>
-<h2 id="インスタントクローンと-vsphere-web-services-api">インスタントクローンと vSphere Web Services API</h2>
-<p>インスタントクローンといえば Horizon 7 で利用できる非常に高速な仮想マシンのクローンです。パワーオン状態の仮想マシンが2秒程度で複製でき、親仮想マシンとメモリを共有するためリソースを節約できるという極めて強力な機能で、vSphere Integrated Containers でもコンテナを Photon OS 仮想マシンで隔離するために利用されています。</p>
-<ul>
-<li><a href="https://docs.vmware.com/jp/VMware-Horizon-7/7.0/rn/horizon-70-view-release-notes.html">VMware Horizon 7 バージョン 7.0 リリース ノート</a></li>
-<li><a href="https://blogs.vmware.com/jp-cim/2015/10/vsphere-integrated-containers-tech.html">vSphere Integrated Containers テクノロジー ウォークスルー</a></li>
-</ul>
-<p>vSphere 6.5 以前では Horizon など vSphere 外部の製品のみ使用できましたが、vSphere 6.7 から vSphere Web Services API で仮想マシンオブジェクトに InstantClone_Task メソッドが追加されており vSphere 単体でも API 経由なら実行できるようになっています。</p>
-<p><a href="https://vdc-download.vmware.com/vmwb-repository/dcr-public/fb07ebe8-b565-4aa8-ba36-f1ec77671c80/da3f8c40-c818-4733-a403-17877eaefd7e/vsphere-web-services-sdk-67-release-notes.html">vSphere Web Services SDK 6.7 Release Notes</a></p>
-<blockquote>
-<p>New InstantClone method added.</p>
-<p>The vSphere 6.7 release includes the InstantClone_Task() method for low-latency deployment of cloned virtual machines from a running or frozen source virtual machine.</p>
-</blockquote>
-<p>なお、インスタントクローン自体は上述の通り Horizon 7 でだいぶ前から使われている機能で、具体的な仕組みは既に色々な方がブログなどで解説を書いてくれていますので Google などで検索してみていただければと思います。本記事では VMware Docs だけ置いておきます。</p>
-<p><a href="https://docs.vmware.com/jp/VMware-vSphere/6.7/com.vmware.vsphere.vm_admin.doc/GUID-853B1E2B-76CE-4240-A654-3806912820EB.html">インスタント クローンを使用した仮想マシンのクローン作成</a></p>
-<h2 id="pyvmomi-でインスタントクローン">pyVmomi でインスタントクローン</h2>
-<p>冒頭に記載した中の人の記事やリンクされている GitHub リポジトリのコードを読むと分かるのですが、PowerCLI から vSphere Web Services API の InstantClone_Task メソッドを呼び出す実装になっています。このため「もしかしたら pyVmomi でもインスタントクローンが出来るのでは？」という発想になりました。</p>
-<p>1年半ほど前に試しに作ってみた際にかなり便利だったので検証用の Nested ESXi などの払い出しに使っていましたが、せっかくブログを立ち上げましたのでサンプルコードと合わせて解説をしていきたいと思います。</p>
-<h2 id="python-実行環境と-pyvmomi-のインストール手順">Python 実行環境と pyVmomi のインストール手順</h2>
-<p>今回使用した私の実行環境は以下の通りです。</p>
-<ul>
-<li>WSL2 の Ubuntu 18.04 LTS</li>
-<li>Python 3.6.9 および pyVmomi 7.0</li>
-<li>vCenter Server 7.0 / ESXi 6.7 Update 3</li>
-</ul>
-<p>pyVmomi は PyPI で提供されていますので pip によるインストールが可能です。pip をインストールしてから pyvmomi パッケージをインストールします。</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>$ sudo apt-get install python3-pip
-<span class="ln">2</span>$ pip3 install --upgrade pyvmomi
-</code></pre></div><h2 id="サンプルコードとその解説">サンプルコードとその解説</h2>
-<p>サンプルコードは<a href="https://github.com/Jangari-nTK/pyvmomi-instant-clone-sample">こちらの GitHub リポジトリ</a>に置いてあります。基本的に vmware/pyvmomi-community-samples のサンプルコード <a href="https://github.com/vmware/pyvmomi-community-samples/blob/master/samples/clone_vm.py">clone_vm.py</a> をベースにしていますが、少し長いので一番主要な部分にコメントを入れたものを以下に抜粋します。</p>
-<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="ln"> 1</span><span class="c1"># インスタントクローンを実行する関数。</span>
-<span class="ln"> 2</span><span class="k">def</span> <span class="nf">instant_clone_vm</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">parent_vm</span><span class="p">,</span> <span class="n">vm_name</span><span class="p">,</span> <span class="n">datacenter_name</span><span class="p">,</span> <span class="n">vm_folder</span><span class="p">,</span> <span class="n">resource_pool</span><span class="p">):</span>
-<span class="ln"> 3</span>
-<span class="ln"> 4</span>    <span class="c1"># 指定の仮想マシンフォルダを取得します(無ければルート仮想マシンフォルダ)。</span>
-<span class="ln"> 5</span>    <span class="n">datacenter</span> <span class="o">=</span> <span class="n">get_obj</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="p">[</span><span class="n">vim</span><span class="o">.</span><span class="n">Datacenter</span><span class="p">],</span> <span class="n">datacenter_name</span><span class="p">)</span>
-<span class="ln"> 6</span>    <span class="k">if</span> <span class="n">vm_folder</span><span class="p">:</span>
-<span class="ln"> 7</span>        <span class="n">dst_folder</span> <span class="o">=</span> <span class="n">get_obj</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="p">[</span><span class="n">vim</span><span class="o">.</span><span class="n">Folder</span><span class="p">],</span> <span class="n">vm_folder</span><span class="p">)</span>
-<span class="ln"> 8</span>    <span class="k">else</span><span class="p">:</span>
-<span class="ln"> 9</span>        <span class="n">dst_folder</span> <span class="o">=</span> <span class="n">datacenter</span><span class="o">.</span><span class="n">vmFolder</span>
-<span class="ln">10</span>
-<span class="ln">11</span>    <span class="c1"># 特定のリソースプールの明示的な指定が必要です(当記事の補足参照)。</span>
-<span class="ln">12</span>    <span class="n">resource_pool</span> <span class="o">=</span> <span class="n">get_obj</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="p">[</span><span class="n">vim</span><span class="o">.</span><span class="n">ResourcePool</span><span class="p">],</span> <span class="n">resource_pool</span><span class="p">)</span>
-<span class="ln">13</span>
-<span class="ln">14</span>    <span class="c1"># RelocateSpec オブジェクトで仮想マシンの配置情報を指定します。</span>
-<span class="ln">15</span>    <span class="n">vm_relocate_spec</span> <span class="o">=</span> <span class="n">vim</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">RelocateSpec</span><span class="p">()</span>
-<span class="ln">16</span>    <span class="n">vm_relocate_spec</span><span class="o">.</span><span class="n">folder</span> <span class="o">=</span> <span class="n">dst_folder</span>
-<span class="ln">17</span>    <span class="n">vm_relocate_spec</span><span class="o">.</span><span class="n">pool</span> <span class="o">=</span> <span class="n">resource_pool</span>
-<span class="ln">18</span>
-<span class="ln">19</span>    <span class="c1"># InstantCloneSpec オブジェクトでインスタントクローンの</span>
-<span class="ln">20</span>    <span class="c1"># 各種パラメータを指定します。</span>
-<span class="ln">21</span>    <span class="n">instant_clone_spec</span> <span class="o">=</span> <span class="n">vim</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">InstantCloneSpec</span><span class="p">()</span>
-<span class="ln">22</span>    <span class="n">instant_clone_spec</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">vm_name</span>
-<span class="ln">23</span>    <span class="n">instant_clone_spec</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">vm_relocate_spec</span>
-<span class="ln">24</span>
-<span class="ln">25</span>    <span class="c1"># InstantClone_Task メソッドに作成した InstantCloneSpec オブジェクト</span>
-<span class="ln">26</span>    <span class="c1"># を渡すことでインスタントクローンを実行します。メソッドの戻り値は Task</span>
-<span class="ln">27</span>    <span class="c1"># オブジェクトのため、WaitForTask 関数に渡してタスクの完了を待ちます。</span>
-<span class="ln">28</span>    <span class="n">WaitForTask</span><span class="p">(</span><span class="n">parent_vm</span><span class="o">.</span><span class="n">InstantClone_Task</span><span class="p">(</span><span class="n">spec</span><span class="o">=</span><span class="n">instant_clone_spec</span><span class="p">))</span>
-<span class="ln">29</span>
-<span class="ln">30</span><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-<span class="ln">31</span>    <span class="n">args</span> <span class="o">=</span> <span class="n">get_args</span><span class="p">()</span>
-<span class="ln">32</span>
-<span class="ln">33</span>    <span class="c1"># vCenter Server のマシン SSL 証明書が信頼されていない場合も</span>
-<span class="ln">34</span>    <span class="c1"># 多いので、サーバ証明書の検証は無視して進むようにしています。</span>
-<span class="ln">35</span>    <span class="n">context</span> <span class="o">=</span> <span class="bp">None</span>
-<span class="ln">36</span>    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ssl</span><span class="p">,</span> <span class="s2">&#34;_create_unverified_context&#34;</span><span class="p">):</span>
-<span class="ln">37</span>        <span class="n">context</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">_create_unverified_context</span><span class="p">()</span>
-<span class="ln">38</span>
-<span class="ln">39</span>    <span class="c1"># vCenter Server に接続して、インベントリ全体のルートに相当する</span>
-<span class="ln">40</span>    <span class="c1"># ServiceInstance / ServiceContent オブジェクトを取得します。</span>
-<span class="ln">41</span>    <span class="n">si</span> <span class="o">=</span> <span class="n">SmartConnect</span><span class="p">(</span>
-<span class="ln">42</span>                    <span class="n">host</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">host</span><span class="p">,</span>
-<span class="ln">43</span>                    <span class="n">user</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
-<span class="ln">44</span>                    <span class="n">pwd</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">password</span><span class="p">,</span>
-<span class="ln">45</span>                    <span class="n">port</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">port</span><span class="p">,</span>
-<span class="ln">46</span>                    <span class="n">sslContext</span><span class="o">=</span><span class="n">context</span><span class="p">)</span>
-<span class="ln">47</span>    <span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Disconnect</span><span class="p">,</span> <span class="n">si</span><span class="p">)</span>
-<span class="ln">48</span>    <span class="n">content</span> <span class="o">=</span> <span class="n">si</span><span class="o">.</span><span class="n">content</span>
-<span class="ln">49</span>
-<span class="ln">50</span>    <span class="c1"># 親仮想マシンを VirtualMachine オブジェクトとして取得します。</span>
-<span class="ln">51</span>    <span class="n">parent_vm</span> <span class="o">=</span> <span class="n">get_obj</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="p">[</span><span class="n">vim</span><span class="o">.</span><span class="n">VirtualMachine</span><span class="p">],</span> <span class="n">args</span><span class="o">.</span><span class="n">parent_vm</span><span class="p">)</span>
-<span class="ln">52</span>
-<span class="ln">53</span>    <span class="c1"># 上述の instant_clone_vm 関数を呼び出してインスタントクローンを実行します。</span>
-<span class="ln">54</span>    <span class="k">if</span> <span class="n">parent_vm</span><span class="p">:</span>
-<span class="ln">55</span>        <span class="n">instant_clone_vm</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">parent_vm</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">vm_name</span><span class="p">,</span>
-<span class="ln">56</span>            <span class="n">args</span><span class="o">.</span><span class="n">datacenter_name</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">vm_folder</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">resource_pool</span><span class="p">)</span>
-<span class="ln">57</span>    <span class="k">else</span><span class="p">:</span>
-<span class="ln">58</span>        <span class="k">print</span><span class="p">(</span><span class="s2">&#34;parent_vm not found&#34;</span><span class="p">)</span>
-<span class="ln">59</span>        <span class="n">quit</span><span class="p">()</span>
-<span class="ln">60</span>
-<span class="ln">61</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-<span class="ln">62</span>    <span class="n">main</span><span class="p">()</span>
-</code></pre></div><p>上述のコードを見てもらえると、VirtualMachine オブジェクトのメソッドとして InstantClone_Task が呼び出されていることが分かると思います。</p>
-<p><a href="https://vdc-download.vmware.com/vmwb-repository/dcr-public/b50dcbbf-051d-4204-a3e7-e1b618c1e384/538cf2ec-b34f-4bae-a332-3820ef9e7773/vim.VirtualMachine.html#instantClone">InstantClone_Task(instantClone) | Managed Object - VirtualMachine(vim.VirtualMachine)</a></p>
-<p>コード全体としても実質的に行っていることは単純で、要約すると以下の流れになっています。</p>
-<ol>
-<li>vCenter Server にログインする。</li>
-<li>vCenter Server のインベントリから親仮想マシンを取得する。</li>
-<li>クローン仮想マシンの配置先を指定する。</li>
-<li>仮想マシン名と3.の配置先をインスタントクローンのパラメータに指定する。</li>
-<li>2.の親仮想マシンに対して4.の内容に基づきインスタントクローンを実行する。</li>
-</ol>
-<p>この Python スクリプトを実行する場合は以下のようなフォーマットになります。</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>$ git clone https://github.com/Jangari-nTK/pyvmomi-instant-clone-sample.git
-<span class="ln">2</span>$ cd pyvmomi-instant-clone-sample
-<span class="ln">3</span>$ python3 instant_clone.py --host vcsa01.corp.local --user administrator@vsphere.local \
-<span class="ln">4</span>    --password VMware1! --vm-name &#34;New_VM&#34; --parent-vm &#34;Parent_VM&#34; --resource-pool &#34;Destination-Pool&#34;
-</code></pre></div><p>実行すると以下のようにインスタントクローンが実行されます。タスクの実行時間(赤枠)を見ると、開始～完了までが3秒と極めて高速です。通常のクローンのようにゲストOSの起動も必要がないため複製後に即座に使用できるようになります。</p>
-<p><img src="/images/2020-08-08/pyvmomi-instant-clone-001.PNG" alt="インスタントクローンの実行後"></p>
-<h2 id="おわりに">おわりに</h2>
-<p>今回の記事では pyVmomi でインスタントクローンを行う方法について見てきました。</p>
-<p>これだけでも良いのですが、以下の中の人のブログにも記載がある通り、親仮想マシンが動いている状態でインスタントクローンを行うとリソース周りが最適化されません<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>。加えて、現状のスクリプトではゲストにカスタマイズを何も加えないため、クローン前後の仮想マシンでネットワーク情報の競合が発生してしまいます。</p>
-<p><a href="http://www.yellow-bricks.com/2018/05/01/instant-clone-vsphere-67/">Instant Clone in vSphere 6.7 rocks!</a></p>
-<p>これに対しては、<a href="https://www.virtuallyghetto.com/2018/04/new-instant-clone-architecture-in-vsphere-6-7-part-2.html">この中の人の記事</a>や<a href="https://github.com/lamw/instantclone-community-customization-scripts/blob/master/ubuntu16/customize.sh">カスタマイズスクリプト</a>のように、vmware-rpcinfo を使った仮想マシンの freeze、NIC ドライバの unbind/bind で認識中の MAC アドレスの更新からの IP アドレス再設定、VMware Tools の guestinfo 変数でゲスト上のスクリプトに値を渡すなどのテクニックがあります。<br>
-※ゲスト上スクリプトで guestinfo 変数を使う場合はインスタントクローンのスクリプト側も修正が必要になるはずです。</p>
-<p>私は Nested ESXi の払い出しには (いちいちネットワーク情報の指定が面倒なので) DHCP でネットワーク情報を払い出していましたが、この辺りは気力が続けば別途続きとして記事を作成・公開しようかなと思います。</p>
-<h2 id="補足">補足</h2>
-<p>GitHub の vmware/pyvmomi-community-samples リポジトリにあるサンプルコード clone_vm.py とは異なり、今回のコードではリソースプールの指定を必須にしています。</p>
-<p>これは、リソースプールを明示せずに(ルートリソースプールを使用して) InstantClone_Task メソッドを呼び出したところ、 RelocateSpec の pool プロパティが不正な値とみなされてタスクが失敗したためです。</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span>pyVmomi.VmomiSupport.InvalidArgument: (vmodl.fault.InvalidArgument) {
-<span class="ln"> 2</span>   dynamicType = &lt;unset&gt;,
-<span class="ln"> 3</span>   dynamicProperty = (vmodl.DynamicProperty) [],
-<span class="ln"> 4</span>   msg = &#39;A specified parameter was not correct: spec.pool&#39;,
-<span class="ln"> 5</span>   faultCause = &lt;unset&gt;,
-<span class="ln"> 6</span>   faultMessage = (vmodl.LocalizableMessage) [
-<span class="ln"> 7</span>      (vmodl.LocalizableMessage) {
-<span class="ln"> 8</span>         dynamicType = &lt;unset&gt;,
-<span class="ln"> 9</span>         dynamicProperty = (vmodl.DynamicProperty) [],
-<span class="ln">10</span>         key = &#39;com.vmware.vim.vpxd.vmcheck.hostPoolMismatch&#39;,
-<span class="ln">11</span>         arg = (vmodl.KeyAnyValue) [],
-<span class="ln">12</span>         message = &#39;Resource pool and host do not belong to the same compute resource.&#39;
-<span class="ln">13</span>      }
-<span class="ln">14</span>   ],
-<span class="ln">15</span>   invalidProperty = &#39;spec.pool&#39;
-<span class="ln">16</span>}
-</code></pre></div><p>エラーの詳細メッセージをそのまま読むと「ホストとリソースプールが同じ計算リソースに所属してはいけない」となりますが、この状況は (クラスタやスタンドアロンホストの) ルートリソースプールをクローン先として使用する場合に限られるかと考えています。</p>
-<p><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.resmgmt.doc/GUID-60077B40-66FF-4625-934A-641703ED7601.html">リソース プールの管理</a></p>
-<blockquote>
-<p>各スタンドアロン ホストと各 DRS クラスタには、（非表示の） ルート リソース プールがあり、そのホストまたはクラスタのリソースがグループ分けされています。ホスト （またはクラスタ） のリソースとルート リソース プールのリソースは常に同じであるため、ルート リソース プールは表示されません。</p>
-</blockquote>
-<section class="footnotes" role="doc-endnotes">
-<hr>
-<ol>
-<li id="fn:1" role="doc-endnote">
-<p>PowerCLI と vSphere Web Services API の関係は「<a href="https://blogs.vmware.com/PowerCLI/2019/02/documentation-walkthrough.html">Documentation Walkthrough - VMware PowerCLI Blog</a>」の記事が参考になります。 <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-</li>
-<li id="fn:2" role="doc-endnote">
-<p>親仮想マシンにスナップショットの差分ディスク(*-00000n.vmdk)が毎回作成されてしまいます。なお、そのままでは削除や統合が出来なかったため、ダミーのスナップショットを作成してから [すべてのスナップショットの削除] で削除しました。この削除方法は何らかの要因で変に差分ディスクが残った時に便利です。 <a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-</li>
-</ol>
-</section>
+<p><a href="/post/2020-08-23/">以前の Nested ESXi の記事</a>や <a href="https://kb.vmware.com/s/article/2149444?lang=ja">KB2149444</a> 等でも言及されていますが、ESXi のブートオプションは /bootbank/boot.cfg の kernelopt 行に記載されます。</p>
+<p>ESXi は <a href="https://docs.vmware.com/jp/VMware-vSphere/6.5/com.vmware.vsphere.install.doc/GUID-870A07BC-F8B4-47AF-9476-D542BA53F1F5.html">キックスタートファイルを使用した自動インストール</a>が可能なので、%post や %firstboot のセクションで編集できないかと思い、各セクションで以下のような sed コマンドを実行して試してみました。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>sed -i &#34;s/kernelopt=.*/kernelopt=autoPartition=FALSE allowLegacyCPU=true/&#34; /bootbank/boot.cfg
+</code></pre></div><p>今回の環境は ESXi 7.0 Update 2 です。</p>
+<h2 id="結果">結果</h2>
+<p>%firstboot セクションでは sed により boot.cfg の内容が置換されました。しかし、%post セクションでは sed の実行がエラーになり置換されませんでした。</p>
+<h2 id="原因">原因</h2>
+<p>sed コマンドがエラーになっていることから /bootbank の状態が気になるので、ks.cfg 内で以下のコマンドを実行して %post の時の状態を覗いてみました。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>%post --interpreter=busybox
+<span class="ln">2</span>ls -laR / &gt; /vmfs/volumes/datastore1/_ks_post_ls_-laR.txt
+</code></pre></div><p>結果としては、%post 時点では /bootbank のリンク先が /tmp になっていました。また、/tmp には boot.cfg が存在していなかったので、/bootbank/boot.cfg が無いために sed がエラーになっていることが分かりました。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span>/:
+<span class="ln"> 2</span>total 885
+<span class="ln"> 3</span>drwxr-xr-x    1 root     root           512 Aug  6 14:54 .
+<span class="ln"> 4</span>drwxr-xr-x    1 root     root           512 Aug  6 14:54 ..
+<span class="ln"> 5</span>-r--r--r--    1 root     root            20 Feb 17 23:19 .mtoolsrc
+<span class="ln"> 6</span>drwxr-xr-x    1 root     root           512 Aug  6 14:51 bin
+<span class="ln"> 7</span>lrwxrwxrwx    1 root     root             4 Aug  6 14:54 bootbank -&gt; /tmp
+<span class="ln"> 8</span>
+<span class="ln"> 9</span>/tmp:
+<span class="ln">10</span>total 204
+<span class="ln">11</span>drwxrwxrwt    1 root     root           512 Aug  6 14:57 .
+<span class="ln">12</span>drwxr-xr-x    1 root     root           512 Aug  6 14:54 ..
+<span class="ln">13</span>drwx------    1 root     root           512 Aug  6 14:52 _bootbank4uex0li5
+<span class="ln">14</span>-rwx------    1 root     root            51 Aug  6 14:57 ks-script
+<span class="ln">15</span>drwxr-xr-x    1 root     root           512 Aug  6 14:57 onetime
+<span class="ln">16</span>-rw-r--r--    1 root     root        175616 Aug  6 14:57 onetime.tar
+<span class="ln">17</span>drwxr-xr-x    1 root     root           512 Aug  6 14:54 scratch
+<span class="ln">18</span>drwx------    1 root     root           512 Aug  6 14:51 vmware-root
+<span class="ln">19</span>drwx------    1 root     root           512 Aug  6 14:52 vmware-root_67638-4085508114
+</code></pre></div><h2 id="対処">対処</h2>
+<p>%post 時点でも /vmfs/volumes/BOOTBANK1 と /vmfs/volumes/BOOTBANK2 は各 Bootbank にシンボリックリンクが張られていたので、それらのパスを指定すれば問題なさそうでした。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span>/vmfs/volumes:
+<span class="ln"> 2</span>total 2564
+<span class="ln"> 3</span>  (略)
+<span class="ln"> 4</span>lrwxr-xr-x    1 root     root            35 Aug  6 14:57 BOOTBANK1 -&gt; 942316fe-674efb8b-d7b0-301624c483db
+<span class="ln"> 5</span>lrwxr-xr-x    1 root     root            35 Aug  6 14:57 BOOTBANK2 -&gt; 20e8e950-984ae7c3-a2bb-a996b5042d09
+<span class="ln"> 6</span>
+<span class="ln"> 7</span>/vmfs/volumes/942316fe-674efb8b-d7b0-301624c483db:
+<span class="ln"> 8</span>total 200447
+<span class="ln"> 9</span>drwxr-xr-x    1 root     root             8 Jan  1  1970 .
+<span class="ln">10</span>drwxr-xr-x    1 root     root           512 Aug  6 14:57 ..
+<span class="ln">11</span>-rwx------    1 root     root        249930 Aug  6 14:56 atlantic.v00
+<span class="ln">12</span>-rwx------    1 root     root        142168 Aug  6 14:54 b.b00
+<span class="ln">13</span>-rwx------    1 root     root       1896323 Aug  6 14:57 basemisc.tgz
+<span class="ln">14</span>-rwx------    1 root     root        261369 Aug  6 14:56 bnxtnet.v00
+<span class="ln">15</span>-rwx------    1 root     root        113370 Aug  6 14:56 bnxtroce.v00
+<span class="ln">16</span>-rwx------    1 root     root          1583 Aug  6 14:57 boot.cfg
+</code></pre></div><p>ということで %post セクションを以下のようにして、まとめて sed で置換しました。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>%post --interpreter=busybox
+<span class="ln">2</span>sed -i &#34;s/kernelopt=.*/kernelopt=autoPartition=FALSE allowLegacyCPU=true/&#34; /vmfs/volumes/BOOTBANK*/boot.cfg
+</code></pre></div><h2 id="おわりに">おわりに</h2>
+<p>今回は ESXi のインストール時に boot.cfg のブートオプションを編集するという普通はやらない作業のため手間取りました。</p>
+<p>%post セクションでも単純なコマンドの実行であれば問題なく動くと思いますが、必要に駆られなければ ESXi の再起動後の %firstboot セクションの利用で十分じゃないかと思います。</p>
 
   </article>
 <aside class="sidebar">
@@ -354,9 +233,6 @@
     <h2 class="mt-4">Recent Posts</h2>
     <ul class="flex-column">
       
-      <li>
-        <a href="https://jangari-ntk.github.io/post/2021-08-07/" class="nav-link">【メモ】ESXi 7.0 の Kickstart の %post で boot.cfg を触る</a>
-      </li>
       <li>
         <a href="https://jangari-ntk.github.io/post/2021-06-20/" class="nav-link">PTP を使用して ESXi を時刻同期する</a>
       </li>
