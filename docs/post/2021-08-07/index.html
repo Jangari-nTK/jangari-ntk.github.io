@@ -153,6 +153,7 @@
 </code></pre></div><p>今回の環境は ESXi 7.0 Update 2 です。</p>
 <h2 id="結果">結果</h2>
 <p>%firstboot セクションでは sed により boot.cfg の内容が置換されました。しかし、%post セクションでは sed の実行がエラーになり置換されませんでした。</p>
+<p><img src="/images/2021-08-07/esxi-ks-post-failed.PNG" alt=""></p>
 <h2 id="原因">原因</h2>
 <p>sed コマンドがエラーになっていることから /bootbank の状態が気になるので、ks.cfg 内で以下のコマンドを実行して %post の時の状態を覗いてみました。</p>
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>%post --interpreter=busybox
