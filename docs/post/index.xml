@@ -6,10 +6,23 @@
     <description>Recent content on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Sat, 07 Aug 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 17 Aug 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>【Tips】共有ストレージなし＆VCSA デプロイ済みのクラスタで EVC を有効にする【自宅ラボ用】</title>
+      <link>https://jangari-ntk.github.io/post/2021-08-17/</link>
+      <pubDate>Tue, 17 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2021-08-17/</guid>
+      <description>背景 仮想マシンとしてデプロイされた vCenter Server が存在するクラスタ上で EVC を有効にする場合、KB2147821 のように EVC がそれぞれ無効／有効な2つのクラスタを用意し、そのクラスタ間で vCenter Server 仮想マシンをインベントリ上で再登録する必要があります。
+vCenter Server 6.5 および 6.7 で vCenter Server 自身の仮想マシンが実行されるクラスタの EVC を有効にする方法 (2147821)
+先日、Intel NUC 10 1台で構成していた自宅ラボに Intel NUC 11 の ESXi 7.0 を追加したため EVC を有効にしようとしたのですが、共有ストレージを用意していなかったためホスト間でのインベントリの再登録が行えませんでした。
+概要 遊びで使っている自宅ラボでの EVC の有効化のためだけに共有ストレージを追加するのも面倒でしたので、以下のような少々トリッキーな手段で EVC を有効にしてみました。
+ vCenter Server 仮想マシンを停止＆スナップショットを作成 ハードウェアバージョン14以降へのアップグレード 仮想マシンに Per-VM EVC のパラメータを追加 vCenter Server 仮想マシンをパワーオンしてクラスタの EVC を有効化 1.のスナップショットにリストアして再度クラスタの EVC を有効化  vCenter Server 仮想マシンが存在するクラスタ上で EVC を有効にする場合、vCenter Server 仮想マシン自身の CPU 互換性が問題になります。</description>
+    </item>
     
     <item>
       <title>【メモ】ESXi 7.0 の Kickstart の %post で boot.cfg を触る</title>
