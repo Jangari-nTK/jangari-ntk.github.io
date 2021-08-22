@@ -139,6 +139,7 @@
     <h2>Table of contents</h2>
     <nav id="TableOfContents">
   <ul>
+    <li><a href="#20210822-追記esxi-70-u2-以降では安全なブート領域の複製が不可">2021/08/22 追記：ESXi 7.0 U2 以降では安全なブート領域の複製が不可</a></li>
     <li><a href="#はじめに">はじめに</a></li>
     <li><a href="#仮想マシンの作成">仮想マシンの作成</a>
       <ul>
@@ -175,7 +176,29 @@
     <li><a href="#おわりに">おわりに</a></li>
   </ul>
 </nav>
-    <h2 id="はじめに">はじめに</h2>
+    <h2 id="20210822-追記esxi-70-u2-以降では安全なブート領域の複製が不可">2021/08/22 追記：ESXi 7.0 U2 以降では安全なブート領域の複製が不可</h2>
+<blockquote class="twitter-tweet"><p lang="ja" dir="ltr">Nested ESXi のクローン、ESXi 7.0 U2 以降は完全に終了みたい。多分 configstore 周りの変更とかだろうなぁ・・・<br><br>After upgrading to ESXi 7.0U2, corruption can occur on VMFS datastores if the ESXi hosts sharing those LUNs had their boot devices cloned (84349)<a href="https://t.co/mJOY0iPvc8">https://t.co/mJOY0iPvc8</a></p>&mdash; Jangari (@Jangari_nTK) <a href="https://twitter.com/Jangari_nTK/status/1422894456567595015?ref_src=twsrc%5Etfw">August 4, 2021</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>ESXi 7.0 Update 2 以降では ESXi の UUID への依存関係が増えているようで、esx.conf 内の UUID の修正のみでは足りなくなったようで、安全なブート領域のクローンが行えなくなりました。</p>
+<ul>
+<li>
+<p><a href="https://williamlam.com/2013/12/how-to-properly-clone-nested-esxi-vm.html">How to properly clone a Nested ESXi VM? - WilliamLam.com</a></p>
+<blockquote>
+<p>UPDATE (07/01/21) - As of ESXi 7.0 Update 2, cloning an ESXi boot volume (Nested or Physical) is no longer safe and can lead to data corruption. Please refer to the following two VMware KB articles for more information on this topic <a href="https://kb.vmware.com/kb/84280">https://kb.vmware.com/kb/84280</a> and <a href="https://kb.vmware.com/kb/84349">https://kb.vmware.com/kb/84349</a></p>
+</blockquote>
+</li>
+<li>
+<p><a href="https://kb.vmware.com/s/article/84280">Statement about supportability of cloning ESXi boot devices for deployments (84280)</a></p>
+</li>
+<li>
+<p><a href="https://kb.vmware.com/s/article/84349">After upgrading to ESXi 7.0U2, corruption can occur on VMFS datastores if the ESXi hosts sharing those LUNs had their boot devices cloned (84349)</a></p>
+</li>
+</ul>
+<p>元々 ESXi のブート領域の複製自体がサポートされない操作ですが、ESXi 7.0 Update 2 以降では同一 UUID を持つ(持っていた) ESXi から VMFS を共有すると VMFS が破損する可能性があるそうです。</p>
+<p>ESXi 7.0 Update 2 以降のリリースは正規の手順で新規インストールすることが対応方法です。Nested ESXi なら TPM 等も無いので Configuration Reset の後に再設定でも良いような気はしますが、Kickstart スクリプトで自動インストールするなど正規の手順を踏むのが良いとは思います。</p>
+<p>以降は ESXi 7.0 Update 1 以前の Nested ESXi 用の手順です。ESXi 7.0 Update 2 以降は対象としませんのでご注意ください。また、間違っても本番環境で同様の手順は実施しないようお願いします。</p>
+<h2 id="はじめに">はじめに</h2>
 <p>みなさん Nested ESXi、使ってますか？vSphere の学習や実験にとても便利ですよね。</p>
 <p>最近は Nested ESXi の作り方を Google 検索で調べれば日本語の情報も出てきますし、中の人も<a href="https://www.virtuallyghetto.com/nested-virtualization">各種 Tips</a> や <a href="https://www.virtuallyghetto.com/nested-virtualization/nested-esxi-virtual-appliance">OVF テンプレート／コンテンツライブラリの URL</a>まで公開してくれています。</p>
 <p>そこで、今回はある程度クリーンな Nested ESXi 7.0 のテンプレートを作るために必要な設定と、その設定の詳細について少し踏み込んで見ていきたいと思います。</p>
