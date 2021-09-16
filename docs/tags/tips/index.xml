@@ -91,10 +91,9 @@ VMware Tools Service
       <pubDate>Mon, 29 Mar 2021 00:00:00 +0000</pubDate>
       
       <guid>https://jangari-ntk.github.io/post/2021-03-29/</guid>
-      <description>概要 前回の記事では vSphere Client から vCenter Server のマシン SSL 証明書の CSR を発行して置き換えました。今回の記事では vCenter Server の REST API (vSphere Automation API) を使用して同様の作業を行ってみたいと思います。
-vSphere Automation API vSphere Automation API は vSphere 6.5 から追加された vCenter Server の API です。SOAP ベースだった従来の vSphere Web Services API (VMOMI) とは異なり、REST ベースの API となっています。
-VMOMI の機能を完全に網羅して実装しているわけではなさそうですが、基本的な vCenter Server のインベントリ操作の他にも vCenter Server Appliance の構成や管理、証明書の構成なども vSphere Automation API から実行することが可能になっています。
-また、vSphere Client の [ホーム] &amp;gt; [デベロッパー センター] にある API Explorer を使用することで、vSphere Automation API に含まれる個々の API の URL や必要なパラメータ、実際の実行結果の確認などを行うことが出来ます。</description>
+      <description>2021/09/16 追記: PowerCLI 12.4 で証明書管理が追加 2021/09/16 にリリースされた PowerCLI 12.4 で vSphere Automation API のモジュールが追加されました。このモジュールには vCenter Server の証明書管理のコマンドレットが含まれています。
+PowerCLI 12.4 - What&amp;rsquo;s New - VMware PowerCLI Blog
+ The new vSphere Management Module A new module is introduced for vSphere Management. It is a PowerShell-based module backed by the newly introduced vSphere Automation API SDK modules. &amp;hellip; Currently, the module contains 6 cmdlets to complement certificate management. Explore the cmdlet documentation to know more.</description>
     </item>
     
     <item>

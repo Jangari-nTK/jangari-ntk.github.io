@@ -139,6 +139,7 @@
     <h2>Table of contents</h2>
     <nav id="TableOfContents">
   <ul>
+    <li><a href="#20210916-追記-powercli-124-で証明書管理が追加">2021/09/16 追記: PowerCLI 12.4 で証明書管理が追加</a></li>
     <li><a href="#概要">概要</a></li>
     <li><a href="#vsphere-automation-api">vSphere Automation API</a></li>
     <li><a href="#認証および-api-セッションの作成">認証および API セッションの作成</a></li>
@@ -148,7 +149,24 @@
     <li><a href="#おわりに">おわりに</a></li>
   </ul>
 </nav>
-    <h2 id="概要">概要</h2>
+    <h2 id="20210916-追記-powercli-124-で証明書管理が追加">2021/09/16 追記: PowerCLI 12.4 で証明書管理が追加</h2>
+<p>2021/09/16 にリリースされた PowerCLI 12.4 で vSphere Automation API のモジュールが追加されました。このモジュールには vCenter Server の証明書管理のコマンドレットが含まれています。</p>
+<p><a href="https://blogs.vmware.com/PowerCLI/2021/09/powercli-12-4-whats-new.html">PowerCLI 12.4 - What&rsquo;s New - VMware PowerCLI Blog</a></p>
+<blockquote>
+<p>The new vSphere Management Module
+A new module is introduced for vSphere Management. It is a PowerShell-based module backed by the newly introduced vSphere Automation API SDK modules. &hellip; Currently, the module contains 6 cmdlets to complement certificate management. Explore the cmdlet documentation to know more.</p>
+<ul>
+<li>Add-VITrustedCertificate</li>
+<li>Get-VIMachineCertificate</li>
+<li>Get-VITrustedCertificate</li>
+<li>New-VIMachineCertificateSigningRequest</li>
+<li>Remove-VITrustedCertificate</li>
+<li>Set-VIMachineCertificate</li>
+</ul>
+</blockquote>
+<p>本記事では PowerShell から Invoke-WebRequest で直接 vCenter Server の REST API (vSphere Automation API) を叩いて証明書の置き換えを行っていましたが、VMware 公式から PowerCLI のコマンドレットが用意されましたので、わざわざ PowerShell から REST API を直接操作する必要性はなくなりました。</p>
+<p>今後、PowerShell から vCenter Server のマシン SSL 証明書を管理したい場合は素直に公式の PowerCLI コマンドレットを使用するのが良いと思います。</p>
+<h2 id="概要">概要</h2>
 <p><a href="/post/2021-03-24/">前回の記事</a>では vSphere Client から vCenter Server のマシン SSL 証明書の CSR を発行して置き換えました。今回の記事では vCenter Server の REST API (vSphere Automation API) を使用して同様の作業を行ってみたいと思います。</p>
 <h2 id="vsphere-automation-api">vSphere Automation API</h2>
 <p>vSphere Automation API は <a href="https://www.vmware.com/content/dam/digitalmarketing/vmware/en/pdf/whitepaper/vsphere/vmw-white-paper-vsphr-whats-new-6-5.pdf">vSphere 6.5 から追加された vCenter Server の API</a> です。SOAP ベースだった従来の vSphere Web Services API (VMOMI) とは異なり、REST ベースの API となっています。</p>
