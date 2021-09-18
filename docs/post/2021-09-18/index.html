@@ -254,19 +254,19 @@ A new module is introduced for vSphere Management. It is a PowerShell-based modu
 <span class="ln">75</span>    <span class="n">Online</span> <span class="n">Version</span><span class="err">:</span> <span class="n">https</span><span class="err">:</span><span class="p">//</span><span class="n">developer</span><span class="p">.</span><span class="n">vmware</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">docs</span><span class="p">/</span><span class="n">vsphere-automation</span><span class="p">/</span><span class="n">latest</span><span class="p">/</span><span class="n">vcenter</span><span class="p">/</span><span class="n">api</span><span class="p">/</span><span class="n">vcenter</span><span class="p">/</span><span class="n">certificate-management</span><span class="p">/</span><span class="n">vcenter</span><span class="p">/</span><span class="n">tlsactionrenew</span><span class="p">/</span><span class="n">post</span><span class="p">/</span> 
 </code></pre></div><h2 id="invoke-renewtls-で証明書を更新してみる">Invoke-RenewTls で証明書を更新してみる</h2>
 <p>やることは単純で、Connect-VIServer で vCenter Server に接続後、Invoke-RenewTls を実行するだけです。</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span>&gt; Connect-VIServer vcsa.api.lab
+<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="ln"> 1</span><span class="p">&gt;</span> <span class="nb">Connect-VIServer</span> <span class="n">vcsa</span><span class="p">.</span><span class="n">api</span><span class="p">.</span><span class="n">lab</span>
 <span class="ln"> 2</span>
-<span class="ln"> 3</span>Specify Credential
-<span class="ln"> 4</span>Please specify server credential
-<span class="ln"> 5</span>User: administrator@vsphere.local
-<span class="ln"> 6</span>Password for user administrator@vsphere.local: ********
+<span class="ln"> 3</span><span class="n">Specify</span> <span class="n">Credential</span>
+<span class="ln"> 4</span><span class="n">Please</span> <span class="n">specify</span> <span class="n">server</span> <span class="n">credential</span>
+<span class="ln"> 5</span><span class="n">User</span><span class="err">:</span> <span class="n">administrator</span><span class="nv">@vsphere</span><span class="p">.</span><span class="n">local</span>
+<span class="ln"> 6</span><span class="n">Password</span> <span class="k">for</span> <span class="n">user</span> <span class="n">administrator</span><span class="nv">@vsphere</span><span class="p">.</span><span class="n">local</span><span class="err">:</span> <span class="p">********</span>
 <span class="ln"> 7</span>
 <span class="ln"> 8</span>
-<span class="ln"> 9</span>Name                           Port  User
-<span class="ln">10</span>----                           ----  ----
-<span class="ln">11</span>vcsa.api.lab                   443   VSPHERE.LOCAL\Administrator
+<span class="ln"> 9</span><span class="n">Name</span>                           <span class="n">Port</span>  <span class="n">User</span>
+<span class="ln">10</span><span class="p">----</span>                           <span class="p">----</span>  <span class="p">----</span>
+<span class="ln">11</span><span class="n">vcsa</span><span class="p">.</span><span class="n">api</span><span class="p">.</span><span class="n">lab</span>                   <span class="n">443</span>   <span class="n">VSPHERE</span><span class="p">.</span><span class="n">LOCAL</span><span class="p">\</span><span class="n">Administrator</span>
 <span class="ln">12</span>
-<span class="ln">13</span>&gt; Invoke-RenewTls
+<span class="ln">13</span><span class="p">&gt;</span> <span class="nb">Invoke-RenewTls</span>
 </code></pre></div><p>これを実行すると vCenter Server のサービスが再起動されるので、サービスが起動するまでしばらく待ちます。サービスが起動すればマシン SSL 証明書の更新は完了です。</p>
 <h2 id="おわりに">おわりに</h2>
 <p>今回の記事は PowerCLI 12.4 で追加された vSphere Automation API の PowerShell モジュールを使って vCenter Server のマシン SSL 証明書を更新してみました。</p>
