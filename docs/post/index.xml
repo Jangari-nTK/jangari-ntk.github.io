@@ -6,10 +6,22 @@
     <description>Recent content on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Tue, 17 Aug 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 18 Sep 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PowerCLI の vSphere Automation API SDK モジュールで vCenter Server のマシン SSL 証明書を更新する</title>
+      <link>https://jangari-ntk.github.io/post/2021-09-18/</link>
+      <pubDate>Sat, 18 Sep 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2021-09-18/</guid>
+      <description>概要 以前の記事で REST API を使って vCenter Server のマシン SSL 証明書を置き換えていましたが、先日の PowerCLI 12.4 のリリースで PowerCLI のコマンドレットが追加されました。
+PowerCLI 12.4 – What’s New
+ The new vSphere Management Module A new module is introduced for vSphere Management. It is a PowerShell-based module backed by the newly introduced vSphere Automation API SDK modules. &amp;hellip; Currently, the module contains 6 cmdlets to complement certificate management. Explore the cmdlet documentation to know more.
+ Add-VITrustedCertificate Get-VIMachineCertificate Get-VITrustedCertificate New-VIMachineCertificateSigningRequest Remove-VITrustedCertificate Set-VIMachineCertificate   PowerCLI のリファレンスを見ると Set-VIMachineCertificate コマンドレットによりカスタム証明書でマシン SSL 証明書を置き換えることが出来るようです。</description>
+    </item>
     
     <item>
       <title>【Tips】共有ストレージなし＆VCSA デプロイ済みのクラスタで EVC を有効にする【自宅ラボ用】</title>

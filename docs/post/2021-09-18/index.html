@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" data-figures="">
-  <head>  <title>vSoliloquy</title>
+<html lang="en" data-figures="" class="page">
+  <head>  <title>PowerCLI の vSphere Automation API SDK モジュールで vCenter Server のマシン SSL 証明書を更新する | vSoliloquy</title>
   <meta charset='utf-8'>
   <meta name="generator" content="Hugo 0.74.3" />
   <meta name = 'viewport' content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
@@ -14,15 +14,15 @@
 </script>
   
 <meta property = "og:locale" content = "en_US" />
-<meta property="og:type" content="website">
-<meta name="description" content="本ブログでは私が日頃から触っている＆勉強している VMware 製品に関して、自分の知識の定着も兼ねてアウトプットしていきたいと思います。">
+<meta property="og:type" content="article">
+<meta name="description" content="先日の PowerCLI 12.4 のリリースで PowerCLI のコマンドレットが追加されました。VMCA 署名付き証明書でのマシン SSL 証明書の更新はコマンドレットは未実装のようですが、REST API を叩くための関数は既に実装されているようだったので、これを使って vCenter Server …">
 <meta name = "twitter:card" content = "summary" />
 <meta name = "twitter:creator" content = "@Jangari_nTK">
-<meta name = "twitter:title" content = "" />
-<meta property = "og:url" content = "https://jangari-ntk.github.io/" />
-<meta property = "og:title" content = "" />
-<meta property = "og:description" content = "本ブログでは私が日頃から触っている＆勉強している VMware 製品に関して、自分の知識の定着も兼ねてアウトプットしていきたいと思います。" />
-<meta property = "og:image" content = "https://jangari-ntk.github.io/images/thumbnail.png" />
+<meta name = "twitter:title" content = "PowerCLI の vSphere Automation API SDK モジュールで vCenter Server のマシン SSL 証明書を更新する" />
+<meta property = "og:url" content = "https://jangari-ntk.github.io/post/2021-09-18/" />
+<meta property = "og:title" content = "PowerCLI の vSphere Automation API SDK モジュールで vCenter Server のマシン SSL 証明書を更新する" />
+<meta property = "og:description" content = "先日の PowerCLI 12.4 のリリースで PowerCLI のコマンドレットが追加されました。VMCA 署名付き証明書でのマシン SSL 証明書の更新はコマンドレットは未実装のようですが、REST API を叩くための関数は既に実装されているようだったので、これを使って vCenter Server …" />
+<meta property = "og:image" content = "https://jangari-ntk.github.io/images/2021-09-18/thumbnail.PNG" />
 <link rel='apple-touch-icon' sizes='180x180' href='https://jangari-ntk.github.io/icons/apple-touch-icon.png'>
 <link rel='icon' type='image/png' sizes='32x32' href='https://jangari-ntk.github.io/icons/favicon-32x32.png'>
 <link rel='icon' type='image/png' sizes='16x16' href='https://jangari-ntk.github.io/icons/favicon-16x16.png'>
@@ -31,7 +31,7 @@
 <meta name="msapplication-TileColor" content="#002538">
 <meta name="theme-color" content="#002538">
 
-  <link rel='canonical' href='https://jangari-ntk.github.io/'>
+  <link rel='canonical' href='https://jangari-ntk.github.io/post/2021-09-18/'>
     
 
     
@@ -62,7 +62,7 @@
       </div>
     </a>
     <div class = 'nav_body nav_body_left'>
-      <div class = 'nav_parent nav_active'>
+      <div class = 'nav_parent'>
         <a href = 'https://jangari-ntk.github.io/' class = 'nav_item'>Home </a>
       </div>
       <div class = 'nav_parent'>
@@ -85,19 +85,10 @@
 </header>
 
     <main>
-
   
-
-<div class='grid-inverse wrap content'>
-  <ul class='posts' id = 'posts'>
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2021-09-18/'>PowerCLI の vSphere Automation API SDK モジュールで vCenter Server のマシン SSL 証明書を更新する</a>
-      </h3>
-      <div class = 'post_meta'>
+<div class = 'grid-inverse wrap content'>
+  <article class='post_content'>
+    <h1 class='post_title'>PowerCLI の vSphere Automation API SDK モジュールで vCenter Server のマシン SSL 証明書を更新する</h1><div class = 'post_meta'>
   <svg class="icon">
     <use xlink:href="#calendar"></use>
   </svg>
@@ -113,326 +104,175 @@
   </a>
 </div>
 
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2021-09-18/thumbnail.PNG'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>概要 以前の記事で REST API を使って vCenter Server のマシン SSL 証明書を置き換えていましたが、先日の PowerCLI 12.4 のリリースで PowerCLI のコマンドレットが追加されました。
-PowerCLI 12.4 – What’s New
- The new vSphere Management Module A new module is introduced for vSphere Management. It is a PowerShell-based module backed by the newly introduced vSphere Automation API SDK …</p>
-          <a href='https://jangari-ntk.github.io/post/2021-09-18/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
+    <div class='post_share'>
+  Share on:
+  <a href="https://twitter.com/intent/tweet?text=PowerCLI%20%e3%81%ae%20vSphere%20Automation%20API%20SDK%20%e3%83%a2%e3%82%b8%e3%83%a5%e3%83%bc%e3%83%ab%e3%81%a7%20vCenter%20Server%20%e3%81%ae%e3%83%9e%e3%82%b7%e3%83%b3%20SSL%20%e8%a8%bc%e6%98%8e%e6%9b%b8%e3%82%92%e6%9b%b4%e6%96%b0%e3%81%99%e3%82%8b&url=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2021-09-18%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
+    <svg class="icon">
+      <use xlink:href="#twitter"></use>
+    </svg>
+  </a>
   
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2021-08-17/'>【Tips】共有ストレージなし＆VCSA デプロイ済みのクラスタで EVC を有効にする【自宅ラボ用】</a>
-      </h3>
-      <div class = 'post_meta'>
-  <svg class="icon">
-    <use xlink:href="#calendar"></use>
-  </svg>
-  <span class="post_date">
-    Aug 17, 2021</span>
-  <a href = 'https://jangari-ntk.github.io/tags/tips' class = 'post_tag button button_translucent'>Tips
+  <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2021-09-18%2f&t=PowerCLI%20%e3%81%ae%20vSphere%20Automation%20API%20SDK%20%e3%83%a2%e3%82%b8%e3%83%a5%e3%83%bc%e3%83%ab%e3%81%a7%20vCenter%20Server%20%e3%81%ae%e3%83%9e%e3%82%b7%e3%83%b3%20SSL%20%e8%a8%bc%e6%98%8e%e6%9b%b8%e3%82%92%e6%9b%b4%e6%96%b0%e3%81%99%e3%82%8b" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
+    <svg class="icon">
+      <use xlink:href="#facebook"></use>
+    </svg>
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
+  <script>
+    function shareViaLinkedin() {
+      window.open('http://www.linkedin.com/shareArticle?mini=true&url='+encodeURIComponent("https://jangari-ntk.github.io/post/2021-09-18/"), '', 'left=0,top=0,width=650,height=420,personalbar=0,toolbar=0,scrollbars=0,resizable=0');
+    }
+  </script>
+  <a href="#linkedinshare" id = "linkedinshare" class="linkedin" title="Share on LinkedIn" rel="nofollow" onclick="shareViaLinkedin()">
+    <svg class="icon">
+      <use xlink:href="#linkedin"></use>
+    </svg>
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vcenter-server' class = 'post_tag button button_translucent'>vCenter Server
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere-7.0' class = 'post_tag button button_translucent'>vSphere 7.0
+  <a href="https://jangari-ntk.github.io/post/2021-09-18/" title="Copy Link" class="link link_yank">
+    <svg class="icon">
+      <use xlink:href="#yank"></use>
+    </svg>
   </a>
 </div>
 
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2021-08-17/thumbnail.PNG'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>背景 仮想マシンとしてデプロイされた vCenter Server が存在するクラスタ上で EVC を有効にする場合、KB2147821 のように EVC がそれぞれ無効／有効な2つのクラスタを用意し、そのクラスタ間で vCenter Server 仮想マシンをインベントリ上で再登録する必要があります。
-vCenter Server 6.5 および 6.7 で vCenter Server 自身の仮想マシンが実行されるクラスタの EVC を有効にする方法 (2147821)
-先日、Intel NUC 10 1台で構成していた自宅ラボに Intel NUC 11 の ESXi 7.0 を追加したため EVC を有効にしようとしたのです …</p>
-          <a href='https://jangari-ntk.github.io/post/2021-08-17/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
-  
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2021-08-07/'>【メモ】ESXi 7.0 の Kickstart の %post で boot.cfg を触る</a>
-      </h3>
-      <div class = 'post_meta'>
-  <svg class="icon">
-    <use xlink:href="#calendar"></use>
-  </svg>
-  <span class="post_date">
-    Aug 7, 2021</span>
-  <a href = 'https://jangari-ntk.github.io/tags/tips' class = 'post_tag button button_translucent'>Tips
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere-7.0' class = 'post_tag button button_translucent'>vSphere 7.0
-  </a>
-</div>
-
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2021-08-07/thumbnail.PNG'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>はじめに 以前の Nested ESXi の記事や KB2149444 等でも言及されていますが、ESXi のブートオプションは /bootbank/boot.cfg の kernelopt 行に記載されます。
-ESXi は キックスタートファイルを使用した自動インストールが可能なので、%post や %firstboot のセクションで編集できないかと思い、各セクションで以下のような sed コマンドを実行して試してみました。
-1sed -i &#34;s/kernelopt=.*/kernelopt=autoPartition=FALSE allowLegacyCPU=true/&#34; /bootbank/boot.cfg  …</p>
-          <a href='https://jangari-ntk.github.io/post/2021-08-07/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
-  
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2021-06-20/'>PTP を使用して ESXi を時刻同期する</a>
-      </h3>
-      <div class = 'post_meta'>
-  <svg class="icon">
-    <use xlink:href="#calendar"></use>
-  </svg>
-  <span class="post_date">
-    Jun 20, 2021</span>
-  <a href = 'https://jangari-ntk.github.io/tags/tips' class = 'post_tag button button_translucent'>Tips
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere-7.0' class = 'post_tag button button_translucent'>vSphere 7.0
-  </a>
-</div>
-
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2021-06-20/thumbnail.PNG'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>はじめに 前回の記事では vSphere 7 で実装された PTP 関連の機能のうち、仮想マシンのプレシジョンクロックデバイスを取り上げました。今回の記事ではもう一つの機能である ESXi の PTP による時刻同期を試してみたいと思います。
-なお、PTP のプロトコルの概要は省きますが、前回の記事で挙げた参考 URL のほか、Cisco の有志の方が書かれている以下の記事も参考になると思います。
-【初心者向け】時刻同期101 - PTP の基本動作
-グランドマスタークロックのセットアップ 前置き：今回の記事の構成 本来はグランドマスタークロックとして PTP 対応の原子時計などを用意し、境界クロック(BC)やトランスペアレントクロ …</p>
-          <a href='https://jangari-ntk.github.io/post/2021-06-20/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
-  
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2021-06-10/'>プレシジョンクロックデバイスで ESXi とゲストOSを時刻同期</a>
-      </h3>
-      <div class = 'post_meta'>
-  <svg class="icon">
-    <use xlink:href="#calendar"></use>
-  </svg>
-  <span class="post_date">
-    Jun 10, 2021</span>
-  <a href = 'https://jangari-ntk.github.io/tags/tips' class = 'post_tag button button_translucent'>Tips
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere-7.0' class = 'post_tag button button_translucent'>vSphere 7.0
-  </a>
-</div>
-
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2021-06-10/configure_precision_clock.PNG'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>はじめに vSphere 7.0 ではゲストの時刻同期に関する新機能としてプレシジョンクロックデバイスという新しい仮想デバイスが追加されています。
- Highlights of New Features and Improvements in vSphere 7/vSAN 7/NSX-T 3 for High Performance Computing and Machine Learning 仮想マシンへのプレシジョン クロック デバイスの追加  仮想マシンにプレシジョンクロックデバイスを構成すると、ゲストOSからは PTP ハードウェアクロック(PHC)というデバイスとして見えます。ゲストOSはこのデバイスを参照すること …</p>
-          <a href='https://jangari-ntk.github.io/post/2021-06-10/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
-  
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2021-04-08/'>Fedora 33 で VMware Tools による解像度変更が効かない問題と対処</a>
-      </h3>
-      <div class = 'post_meta'>
-  <svg class="icon">
-    <use xlink:href="#calendar"></use>
-  </svg>
-  <span class="post_date">
-    Apr 8, 2021</span>
-  <a href = 'https://jangari-ntk.github.io/tags/tips' class = 'post_tag button button_translucent'>Tips
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vmware-workstation' class = 'post_tag button button_translucent'>VMware Workstation
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/fedora' class = 'post_tag button button_translucent'>Fedora
-  </a>
-</div>
-
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2021-04-08/thumbnail.PNG'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>概要 VMware Workstation 16 Pro 上に Fedora 33 をインストールしたのですが、VMware Workstation のウィンドウサイズにゲストの解像度が追従しない状況が発生しました。
-本来は VMware Tools (open-vm-tools) によってゲストの解像度が追従するはずなので、open-vm-tools の動きが怪しいと思いワークアラウンドを調べてみました。
-原因 Bugzilla や GitHub の Issue を見る限りでは、VMware Tools が Xorg 用のドライバ検知に失敗して resolutionKMS / resolutionSet プラグインが自動で有効にな …</p>
-          <a href='https://jangari-ntk.github.io/post/2021-04-08/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
-  
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2021-03-29/'>REST API で vCenter Server のマシンSSL証明書を置き換える</a>
-      </h3>
-      <div class = 'post_meta'>
-  <svg class="icon">
-    <use xlink:href="#calendar"></use>
-  </svg>
-  <span class="post_date">
-    Mar 29, 2021</span>
-  <a href = 'https://jangari-ntk.github.io/tags/tips' class = 'post_tag button button_translucent'>Tips
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vcenter-server' class = 'post_tag button button_translucent'>vCenter Server
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere-7.0' class = 'post_tag button button_translucent'>vSphere 7.0
-  </a>
-</div>
-
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2021-03-29/thumbnail.PNG'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>2021/09/16 追記: PowerCLI 12.4 で証明書管理が追加 2021/09/16 にリリースされた PowerCLI 12.4 で vSphere Automation API のモジュールが追加されました。このモジュールには vCenter Server の証明書管理のコマンドレットが含まれています。
-PowerCLI 12.4 - What&rsquo;s New - VMware PowerCLI Blog
- The new vSphere Management Module A new module is introduced for vSphere Management. It is a …</p>
-          <a href='https://jangari-ntk.github.io/post/2021-03-29/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
-  
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2021-03-24/'>vCenter Server 7.0 で CSR を生成してカスタム証明書に置き換える</a>
-      </h3>
-      <div class = 'post_meta'>
-  <svg class="icon">
-    <use xlink:href="#calendar"></use>
-  </svg>
-  <span class="post_date">
-    Mar 24, 2021</span>
-  <a href = 'https://jangari-ntk.github.io/tags/tips' class = 'post_tag button button_translucent'>Tips
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vcenter-server' class = 'post_tag button button_translucent'>vCenter Server
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere-7.0' class = 'post_tag button button_translucent'>vSphere 7.0
-  </a>
-</div>
-
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2021-03-24/thumbnail.PNG'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>概要 vSphere 6.7 以降では vSphere Client から証明書の管理が可能になっています。カスタム証明書の CSR を vCenter Server で生成する手順について文言など多少混乱した点があったので、記録として残しておきたいと思います。
-流れは一般的な証明書の発行と同じく以下の３つです。今回のケースでは手順1, 3 は vCenter Server 側、手順 2 は CA 側で実施する操作になります。
- 証明書署名要求 (CSR) の生成 署名済み証明書の発行 署名済み証明書のインポート  注意：カスタム証明書の置き換えに関する既知問題 vCenter Server 7.0 ではマシン SSL 証明書をカス …</p>
-          <a href='https://jangari-ntk.github.io/post/2021-03-24/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
-  
-    <li>
-<ul class="pagination">
-  <li class="page-item">
-    <a href="/" class="page-link" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
-  </li>
-  <li class="page-item disabled">
-    <a  class="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-  </li>
-  <li class="page-item active">
-    <a class="page-link" href="/">1</a>
-  </li>
-  <li class="page-item">
-    <a class="page-link" href="/page/2/">2</a>
-  </li>
-  <li class="page-item">
-    <a class="page-link" href="/page/3/">3</a>
-  </li>
-  <li class="page-item">
-    <a class="page-link" href="/page/4/">4</a>
-  </li>
-  <li class="page-item">
-    <a href="/page/2/" class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-  </li>
-  <li class="page-item">
-    <a href="/page/4/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
-  </li>
-</ul>
-
-
-    </li>
+    
+    
+    <h2>Table of contents</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#概要">概要</a></li>
+    <li><a href="#vsphere-automation-sdk-for-powershell-について">vSphere Automation SDK for PowerShell について</a></li>
+    <li><a href="#どのモジュールのどの関数を使うのか">どのモジュールのどの関数を使うのか？</a></li>
+    <li><a href="#invoke-renewtls-で証明書を更新してみる">Invoke-RenewTls で証明書を更新してみる</a></li>
+    <li><a href="#おわりに">おわりに</a></li>
   </ul>
+</nav>
+    <h2 id="概要">概要</h2>
+<p><a href="/post/2021-03-29/">以前の記事</a>で REST API を使って vCenter Server のマシン SSL 証明書を置き換えていましたが、先日の PowerCLI 12.4 のリリースで PowerCLI のコマンドレットが追加されました。</p>
+<p><a href="https://blogs.vmware.com/PowerCLI/2021/09/powercli-12-4-whats-new.html">PowerCLI 12.4 – What’s New</a></p>
+<blockquote>
+<p>The new vSphere Management Module
+A new module is introduced for vSphere Management. It is a PowerShell-based module backed by the newly introduced vSphere Automation API SDK modules. &hellip; Currently, the module contains 6 cmdlets to complement certificate management. Explore the cmdlet documentation to know more.</p>
+<ul>
+<li>Add-VITrustedCertificate</li>
+<li>Get-VIMachineCertificate</li>
+<li>Get-VITrustedCertificate</li>
+<li>New-VIMachineCertificateSigningRequest</li>
+<li>Remove-VITrustedCertificate</li>
+<li>Set-VIMachineCertificate</li>
+</ul>
+</blockquote>
+<p>PowerCLI のリファレンスを見ると <a href="https://developer.vmware.com/docs/powercli/latest/vmware.powercli.vcenter/commands/set-vimachinecertificate/#VCenter">Set-VIMachineCertificate</a> コマンドレットによりカスタム証明書でマシン SSL 証明書を置き換えることが出来るようです。</p>
+<p><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-B37C5887-04AD-4AC7-91C3-178935852719.html">VMCA 署名付き証明書でのマシン SSL 証明書の更新</a>を行うためのコマンドレットは実装されていないようでしたが、REST API を叩くための関数(Invoke-*)は既に実装されているようだったので、これを試してみたいと思います。</p>
+<h2 id="vsphere-automation-sdk-for-powershell-について">vSphere Automation SDK for PowerShell について</h2>
+<p>PowerCLI 12.4 では以下の3つのモジュールが追加されており、このうち VMware.Sdk.VSphere.* が vSphere Automation API を PowerShell から叩くためのローレベルな関数が含まれるモジュールで、VMware.PowerCLI.VCenter.* はそれらのラッパーのコマンドレットが含まれるモジュールのようです。</p>
+<blockquote>
+<p>In VMware PowerCLI 12.4.0, the following modules have been added:</p>
+<ul>
+<li>VMware.Sdk.VSphere.*: Provide functionality for the vSphere Automation SDK for PowerShell.</li>
+<li>VMware.PowerCLI.VCenter.*: Provide PowerShell-based cmdlets for automated administration of the vSphere environment.</li>
+<li>VMware.PowerCLI.Sdk.*: Provide help functionalities for the PowerShell-based cmdlets. These modules have no cmdlets but are required for other modules to function correctly.</li>
+</ul>
+</blockquote>
+<p>今回の VMCA 署名付き証明書でのマシン SSL 証明書の更新はコマンドレットが未実装のようなので、後者のモジュールに含まれる PowerShell 関数を使っていきます。</p>
+<h2 id="どのモジュールのどの関数を使うのか">どのモジュールのどの関数を使うのか？</h2>
+<p>モジュールのディレクトリ構成を見ると VMware.Sdk.vSphere.vCenter.CertManagement に証明書管理に関する vSphere Automation API の PowerShell 関数が含まれており、その中の TlsApi.ps1 に Invoke-RenewTls 関数がありました。</p>
+<p>以下は Get-Help で確認できるヘルプですが、必須のオプションは特になさそうですのでそのまま使ってみます。</p>
+<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="ln"> 1</span><span class="p">&gt;</span> <span class="nb">Get-Help</span> <span class="nb">Invoke-RenewTls</span> <span class="n">-Full</span>
+<span class="ln"> 2</span>
+<span class="ln"> 3</span><span class="n">NAME</span>
+<span class="ln"> 4</span>    <span class="nb">Invoke-RenewTls</span>
+<span class="ln"> 5</span>    
+<span class="ln"> 6</span><span class="n">SYNOPSIS</span>
+<span class="ln"> 7</span>    <span class="n">Renews</span> <span class="n">the</span> <span class="n">TLS</span> <span class="n">certificate</span> <span class="k">for</span> <span class="n">the</span> <span class="n">given</span> <span class="n">duration</span> <span class="n">period</span><span class="p">.</span>  <span class="n">After</span> <span class="n">this</span> <span class="n">operation</span> <span class="n">completes</span><span class="p">,</span> <span class="n">the</span> <span class="n">services</span> <span class="n">using</span> <span class="n">the</span> <span class="n">certificate</span> <span class="n">will</span> <span class="n">be</span> <span class="n">restarted</span> <span class="k">for</span> <span class="n">the</span> <span class="n">new</span> <span class="n">certificate</span> <span class="n">to</span> <span class="n">take</span> <span class="n">effect</span><span class="p">.</span>  <span class="k">if</span> <span class="n">you</span> <span class="k">do</span> <span class="n">not</span> <span class="n">have</span> <span class="n">all</span> <span class="n">of</span> <span class="n">the</span> <span class="n">privileges</span> <span class="n">described</span> <span class="n">as</span> <span class="n">follows</span><span class="err">:</span>     <span class="p">-</span>  <span class="n">Operation</span> <span class="n">execution</span> <span class="n">requires</span> <span class="n">CertificateManagement</span><span class="p">.</span><span class="n">Administer</span><span class="p">.</span>
+<span class="ln"> 8</span>    
+<span class="ln"> 9</span>    
+<span class="ln">10</span><span class="n">SYNTAX</span>
+<span class="ln">11</span>    <span class="nb">Invoke-RenewTls</span> <span class="p">[[</span><span class="n">-CertificateManagementVcenterTlsRenewRequestBody</span><span class="p">]</span> <span class="p">&lt;</span><span class="n">PSObject</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-Server</span> <span class="p">&lt;</span><span class="n">Object</span><span class="p">&gt;]</span> <span class="p">[</span><span class="n">-WithHttpInfo</span><span class="p">]</span> <span class="p">[</span><span class="n">-WhatIf</span><span class="p">]</span> <span class="p">[</span><span class="n">-Confirm</span><span class="p">]</span> <span class="p">[&lt;</span><span class="n">CommonParameters</span><span class="p">&gt;]</span>
+<span class="ln">12</span>    
+<span class="ln">13</span>    
+<span class="ln">14</span><span class="n">DESCRIPTION</span>
+<span class="ln">15</span>    <span class="n">No</span> <span class="n">description</span> <span class="n">available</span><span class="p">.</span>
+<span class="ln">16</span>    
+<span class="ln">17</span>
+<span class="ln">18</span><span class="n">PARAMETERS</span>
+<span class="ln">19</span>    <span class="n">-CertificateManagementVcenterTlsRenewRequestBody</span> <span class="p">&lt;</span><span class="n">PSObject</span><span class="p">&gt;</span>
+<span class="ln">20</span>        <span class="n">No</span> <span class="n">description</span> <span class="n">available</span><span class="p">.</span>
+<span class="ln">21</span>        
+<span class="ln">22</span>        <span class="n">Required</span><span class="p">?</span>                    <span class="n">false</span>
+<span class="ln">23</span>        <span class="k">Position</span><span class="p">?</span>                    <span class="n">1</span>
+<span class="ln">24</span>        <span class="k">Default</span> <span class="n">value</span>                
+<span class="ln">25</span>        <span class="n">Accept</span> <span class="n">pipeline</span> <span class="n">input</span><span class="p">?</span>       <span class="n">true</span> <span class="p">(</span><span class="n">ByValue</span><span class="p">,</span> <span class="n">ByPropertyName</span><span class="p">)</span>
+<span class="ln">26</span>        <span class="n">Accept</span> <span class="n">wildcard</span> <span class="n">characters</span><span class="p">?</span>  <span class="n">false</span>
+<span class="ln">27</span>        
+<span class="ln">28</span>    <span class="n">-Server</span> <span class="p">&lt;</span><span class="n">Object</span><span class="p">&gt;</span>
+<span class="ln">29</span>        
+<span class="ln">30</span>        <span class="n">Required</span><span class="p">?</span>                    <span class="n">false</span>
+<span class="ln">31</span>        <span class="k">Position</span><span class="p">?</span>                    <span class="n">named</span>
+<span class="ln">32</span>        <span class="k">Default</span> <span class="n">value</span>                
+<span class="ln">33</span>        <span class="n">Accept</span> <span class="n">pipeline</span> <span class="n">input</span><span class="p">?</span>       <span class="n">false</span>
+<span class="ln">34</span>        <span class="n">Accept</span> <span class="n">wildcard</span> <span class="n">characters</span><span class="p">?</span>  <span class="n">false</span>
+<span class="ln">35</span>        
+<span class="ln">36</span>    <span class="n">-WithHttpInfo</span> <span class="p">[&lt;</span><span class="n">SwitchParameter</span><span class="p">&gt;]</span>
+<span class="ln">37</span>        <span class="n">A</span> <span class="k">switch</span> <span class="n">when</span> <span class="n">turned</span> <span class="n">on</span> <span class="n">will</span> <span class="k">return</span> <span class="n">a</span> <span class="n">hash</span> <span class="n">table</span> <span class="n">of</span> <span class="n">Response</span><span class="p">,</span> <span class="n">StatusCode</span> <span class="n">and</span> <span class="n">Headers</span> <span class="n">instead</span> <span class="n">of</span> <span class="n">just</span> <span class="n">the</span> <span class="n">Response</span>
+<span class="ln">38</span>        
+<span class="ln">39</span>        <span class="n">Required</span><span class="p">?</span>                    <span class="n">false</span>
+<span class="ln">40</span>        <span class="k">Position</span><span class="p">?</span>                    <span class="n">named</span>
+<span class="ln">41</span>        <span class="k">Default</span> <span class="n">value</span>                <span class="n">False</span>
+<span class="ln">42</span>        <span class="n">Accept</span> <span class="n">pipeline</span> <span class="n">input</span><span class="p">?</span>       <span class="n">false</span>
+<span class="ln">43</span>        <span class="n">Accept</span> <span class="n">wildcard</span> <span class="n">characters</span><span class="p">?</span>  <span class="n">false</span>
+<span class="ln">44</span>        
+<span class="ln">45</span>    <span class="n">-WhatIf</span> <span class="p">[&lt;</span><span class="n">SwitchParameter</span><span class="p">&gt;]</span>
+<span class="ln">46</span>        
+<span class="ln">47</span>        <span class="n">Required</span><span class="p">?</span>                    <span class="n">false</span>
+<span class="ln">48</span>        <span class="k">Position</span><span class="p">?</span>                    <span class="n">named</span>
+<span class="ln">49</span>        <span class="k">Default</span> <span class="n">value</span>                
+<span class="ln">50</span>        <span class="n">Accept</span> <span class="n">pipeline</span> <span class="n">input</span><span class="p">?</span>       <span class="n">false</span>
+<span class="ln">51</span>        <span class="n">Accept</span> <span class="n">wildcard</span> <span class="n">characters</span><span class="p">?</span>  <span class="n">false</span>
+<span class="ln">52</span>        
+<span class="ln">53</span>    <span class="n">-Confirm</span> <span class="p">[&lt;</span><span class="n">SwitchParameter</span><span class="p">&gt;]</span>
+<span class="ln">54</span>        
+<span class="ln">55</span>        <span class="n">Required</span><span class="p">?</span>                    <span class="n">false</span>
+<span class="ln">56</span>        <span class="k">Position</span><span class="p">?</span>                    <span class="n">named</span>
+<span class="ln">57</span>        <span class="k">Default</span> <span class="n">value</span>                
+<span class="ln">58</span>        <span class="n">Accept</span> <span class="n">pipeline</span> <span class="n">input</span><span class="p">?</span>       <span class="n">false</span>
+<span class="ln">59</span>        <span class="n">Accept</span> <span class="n">wildcard</span> <span class="n">characters</span><span class="p">?</span>  <span class="n">false</span>
+<span class="ln">60</span>        
+<span class="ln">61</span>    <span class="p">&lt;</span><span class="n">CommonParameters</span><span class="p">&gt;</span>
+<span class="ln">62</span>        <span class="n">This</span> <span class="n">cmdlet</span> <span class="n">supports</span> <span class="n">the</span> <span class="n">common</span> <span class="n">parameters</span><span class="err">:</span> <span class="n">Verbose</span><span class="p">,</span> <span class="n">Debug</span><span class="p">,</span>
+<span class="ln">63</span>        <span class="n">ErrorAction</span><span class="p">,</span> <span class="n">ErrorVariable</span><span class="p">,</span> <span class="n">WarningAction</span><span class="p">,</span> <span class="n">WarningVariable</span><span class="p">,</span>
+<span class="ln">64</span>        <span class="n">OutBuffer</span><span class="p">,</span> <span class="n">PipelineVariable</span><span class="p">,</span> <span class="n">and</span> <span class="n">OutVariable</span><span class="p">.</span> <span class="k">For</span> <span class="n">more</span> <span class="n">information</span><span class="p">,</span> <span class="n">see</span>
+<span class="ln">65</span>        <span class="n">about_CommonParameters</span> <span class="p">(</span><span class="n">https</span><span class="err">:</span><span class="p">//</span><span class="n">go</span><span class="p">.</span><span class="n">microsoft</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">fwlink</span><span class="p">/</span><span class="k">?</span><span class="n">LinkID</span><span class="p">=</span><span class="n">113216</span><span class="p">).</span> 
+<span class="ln">66</span>    
+<span class="ln">67</span><span class="n">INPUTS</span>
+<span class="ln">68</span>    
+<span class="ln">69</span><span class="n">OUTPUTS</span>
+<span class="ln">70</span>    <span class="n">None</span>
+<span class="ln">71</span>    
+<span class="ln">72</span>    
+<span class="ln">73</span>    
+<span class="ln">74</span><span class="n">RELATED</span> <span class="n">LINKS</span>
+<span class="ln">75</span>    <span class="n">Online</span> <span class="n">Version</span><span class="err">:</span> <span class="n">https</span><span class="err">:</span><span class="p">//</span><span class="n">developer</span><span class="p">.</span><span class="n">vmware</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">docs</span><span class="p">/</span><span class="n">vsphere-automation</span><span class="p">/</span><span class="n">latest</span><span class="p">/</span><span class="n">vcenter</span><span class="p">/</span><span class="n">api</span><span class="p">/</span><span class="n">vcenter</span><span class="p">/</span><span class="n">certificate-management</span><span class="p">/</span><span class="n">vcenter</span><span class="p">/</span><span class="n">tlsactionrenew</span><span class="p">/</span><span class="n">post</span><span class="p">/</span> 
+</code></pre></div><h2 id="invoke-renewtls-で証明書を更新してみる">Invoke-RenewTls で証明書を更新してみる</h2>
+<p>やることは単純で、Connect-VIServer で vCenter Server に接続後、Invoke-RenewTls を実行するだけです。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span>&gt; Connect-VIServer vcsa.api.lab
+<span class="ln"> 2</span>
+<span class="ln"> 3</span>Specify Credential
+<span class="ln"> 4</span>Please specify server credential
+<span class="ln"> 5</span>User: administrator@vsphere.local
+<span class="ln"> 6</span>Password for user administrator@vsphere.local: ********
+<span class="ln"> 7</span>
+<span class="ln"> 8</span>
+<span class="ln"> 9</span>Name                           Port  User
+<span class="ln">10</span>----                           ----  ----
+<span class="ln">11</span>vcsa.api.lab                   443   VSPHERE.LOCAL\Administrator
+<span class="ln">12</span>
+<span class="ln">13</span>&gt; Invoke-RenewTls
+</code></pre></div><p>これを実行すると vCenter Server のサービスが再起動されるので、サービスが起動するまでしばらく待ちます。サービスが起動すればマシン SSL 証明書の更新は完了です。</p>
+<h2 id="おわりに">おわりに</h2>
+<p>今回の記事は PowerCLI 12.4 で追加された vSphere Automation API の PowerShell モジュールを使って vCenter Server のマシン SSL 証明書を更新してみました。</p>
+<p>PowerCLI 12.4 の時点では当該モジュールを使ったコマンドレットは6個だけですが、おそらく追加のコマンドレットも今後どんどん実装されていくと思いますので期待したいところですね。</p>
+
+  </article>
 <aside class="sidebar">
   <section class="sidebar_inner">
     <h2>Jangari</h2>
@@ -463,9 +303,6 @@ PowerCLI 12.4 - What&rsquo;s New - VMware PowerCLI Blog
     <h2 class="mt-4">Recent Posts</h2>
     <ul class="flex-column">
       
-      <li>
-        <a href="https://jangari-ntk.github.io/post/2021-09-18/" class="nav-link">PowerCLI の vSphere Automation API SDK モジュールで vCenter Server のマシン SSL 証明書を更新する</a>
-      </li>
       <li>
         <a href="https://jangari-ntk.github.io/post/2021-08-17/" class="nav-link">【Tips】共有ストレージなし＆VCSA デプロイ済みのクラスタで EVC を有効にする【自宅ラボ用】</a>
       </li>
@@ -719,8 +556,6 @@ PowerCLI 12.4 - What&rsquo;s New - VMware PowerCLI Blog
 </aside>
 
 </div>
-
-
     </main><svg width="0" height="0" class="hidden">
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="facebook">
     <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h151V331h-60v-90h60v-61c0-49.629 40.371-90 90-90h91v90h-91v61h91l-15 90h-76v181h121c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zm0 0"></path>
