@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" data-figures="">
-  <head>  <title>ESXi on Arm | vSoliloquy</title>
+<html lang="en" data-figures="" class="page">
+  <head>  <title>【小ネタ】vCenter Server 7.0 Update 3 でイベントのエクスポート機能が追加 | vSoliloquy</title>
   <meta charset='utf-8'>
   <meta name="generator" content="Hugo 0.74.3" />
   <meta name = 'viewport' content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
@@ -12,16 +12,17 @@
   gtag('js', new Date());
   gtag('config', 'UA-175306204-1');
 </script>
+  
 <meta property = "og:locale" content = "en_US" />
 <meta property="og:type" content="article">
-<meta name="description" content="">
+<meta name="description" content="リリースノートなどに情報が載っていなかったのですが、vCenter Server 7.0 Update 3 でイベントコンソールでのイベント一覧のエクスポート機能が追加されているようです。1ページ分＝最大100件までエクスポートが可能なようです。">
 <meta name = "twitter:card" content = "summary" />
 <meta name = "twitter:creator" content = "@Jangari_nTK">
-<meta name = "twitter:title" content = "ESXi on Arm" />
-<meta property = "og:url" content = "https://jangari-ntk.github.io/tags/esxi-on-arm/" />
-<meta property = "og:title" content = "ESXi on Arm" />
-<meta property = "og:description" content = "" />
-<meta property = "og:image" content = "https://jangari-ntk.github.io/images/thumbnail.png" />
+<meta name = "twitter:title" content = "【小ネタ】vCenter Server 7.0 Update 3 でイベントのエクスポート機能が追加" />
+<meta property = "og:url" content = "https://jangari-ntk.github.io/post/2021-11-13/" />
+<meta property = "og:title" content = "【小ネタ】vCenter Server 7.0 Update 3 でイベントのエクスポート機能が追加" />
+<meta property = "og:description" content = "リリースノートなどに情報が載っていなかったのですが、vCenter Server 7.0 Update 3 でイベントコンソールでのイベント一覧のエクスポート機能が追加されているようです。1ページ分＝最大100件までエクスポートが可能なようです。" />
+<meta property = "og:image" content = "https://jangari-ntk.github.io/images/2021-09-18/thumbnail.PNG" />
 <link rel='apple-touch-icon' sizes='180x180' href='https://jangari-ntk.github.io/icons/apple-touch-icon.png'>
 <link rel='icon' type='image/png' sizes='32x32' href='https://jangari-ntk.github.io/icons/favicon-32x32.png'>
 <link rel='icon' type='image/png' sizes='16x16' href='https://jangari-ntk.github.io/icons/favicon-16x16.png'>
@@ -30,7 +31,7 @@
 <meta name="msapplication-TileColor" content="#002538">
 <meta name="theme-color" content="#002538">
 
-  <link rel='canonical' href='https://jangari-ntk.github.io/tags/esxi-on-arm/'>
+  <link rel='canonical' href='https://jangari-ntk.github.io/post/2021-11-13/'>
     
 
     
@@ -84,96 +85,84 @@
 </header>
 
     <main>
-
-<div class='grid-inverse wrap content'>
-  <ul class='posts' id = 'posts'>
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2020-10-17/'>open-vm-tools を CentOS 8 aarch64 でビルド＆インストール</a>
-      </h3>
-      <div class = 'post_meta'>
+  
+<div class = 'grid-inverse wrap content'>
+  <article class='post_content'>
+    <h1 class='post_title'>【小ネタ】vCenter Server 7.0 Update 3 でイベントのエクスポート機能が追加</h1><div class = 'post_meta'>
   <svg class="icon">
     <use xlink:href="#calendar"></use>
   </svg>
   <span class="post_date">
-    Oct 17, 2020</span>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
+    Nov 13, 2021</span>
+  <a href = 'https://jangari-ntk.github.io/tags/tips' class = 'post_tag button button_translucent'>Tips
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/linux' class = 'post_tag button button_translucent'>Linux
+  <a href = 'https://jangari-ntk.github.io/tags/vcenter-server' class = 'post_tag button button_translucent'>vCenter Server
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/centos' class = 'post_tag button button_translucent'>CentOS
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi-on-arm' class = 'post_tag button button_translucent'>ESXi on Arm
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vmware-tools' class = 'post_tag button button_translucent'>VMware Tools
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere-7.0' class = 'post_tag button button_translucent'>vSphere 7.0
   </a>
 </div>
 
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2020-10-09/thumbnail.PNG'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>はじめに ESXi on Arm でゲストOSを実行する場合、ARM64 アーキテクチャ向けにビルドされた OS をインストールすることになります。現時点で殆どの Linux ディストリビューションでは ARM64 向けの open-vm-tools は公式リポジトリで配布されていないようです。このため、VMware 公式の GitHub リポジトリからソースを取ってきてビルド＆インストールしたいと思います。
-私の GitHub リポジトリに自動化した CentOS 8 向けのスクリプトを置いてあります。もし良ければこちらもどうぞ。
-Jangari-nTK/ovt-installation-centos8-aarch64 …</p>
-          <a href='https://jangari-ntk.github.io/post/2020-10-17/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
+    <div class='post_share'>
+  Share on:
+  <a href="https://twitter.com/intent/tweet?text=%e3%80%90%e5%b0%8f%e3%83%8d%e3%82%bf%e3%80%91vCenter%20Server%207.0%20Update%203%20%e3%81%a7%e3%82%a4%e3%83%99%e3%83%b3%e3%83%88%e3%81%ae%e3%82%a8%e3%82%af%e3%82%b9%e3%83%9d%e3%83%bc%e3%83%88%e6%a9%9f%e8%83%bd%e3%81%8c%e8%bf%bd%e5%8a%a0&url=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2021-11-13%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
+    <svg class="icon">
+      <use xlink:href="#twitter"></use>
+    </svg>
+  </a>
   
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2020-10-09/'>【HomeLab】ホストの USB デバイスを vSAN で使用するための設定</a>
-      </h3>
-      <div class = 'post_meta'>
-  <svg class="icon">
-    <use xlink:href="#calendar"></use>
-  </svg>
-  <span class="post_date">
-    Oct 9, 2020</span>
-  <a href = 'https://jangari-ntk.github.io/tags/vsan' class = 'post_tag button button_translucent'>vSAN
+  <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2021-11-13%2f&t=%e3%80%90%e5%b0%8f%e3%83%8d%e3%82%bf%e3%80%91vCenter%20Server%207.0%20Update%203%20%e3%81%a7%e3%82%a4%e3%83%99%e3%83%b3%e3%83%88%e3%81%ae%e3%82%a8%e3%82%af%e3%82%b9%e3%83%9d%e3%83%bc%e3%83%88%e6%a9%9f%e8%83%bd%e3%81%8c%e8%bf%bd%e5%8a%a0" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
+    <svg class="icon">
+      <use xlink:href="#facebook"></use>
+    </svg>
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
+  <script>
+    function shareViaLinkedin() {
+      window.open('http://www.linkedin.com/shareArticle?mini=true&url='+encodeURIComponent("https://jangari-ntk.github.io/post/2021-11-13/"), '', 'left=0,top=0,width=650,height=420,personalbar=0,toolbar=0,scrollbars=0,resizable=0');
+    }
+  </script>
+  <a href="#linkedinshare" id = "linkedinshare" class="linkedin" title="Share on LinkedIn" rel="nofollow" onclick="shareViaLinkedin()">
+    <svg class="icon">
+      <use xlink:href="#linkedin"></use>
+    </svg>
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi-on-arm' class = 'post_tag button button_translucent'>ESXi on Arm
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/raspberry-pi' class = 'post_tag button button_translucent'>Raspberry Pi
+  <a href="https://jangari-ntk.github.io/post/2021-11-13/" title="Copy Link" class="link link_yank">
+    <svg class="icon">
+      <use xlink:href="#yank"></use>
+    </svg>
   </a>
 </div>
 
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2020-10-09/thumbnail.PNG'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>はじめに Project Monterey の発表で ESXi on SmartNIC が言及されていましたが、先日の vSphere 7.0 Update 1 のリリース時に合わせて ESXi on Arm が Flings として公開されました。
-ESXi Arm Edition | VMware Flings
-ESXi-Arm インストール完了！
-ラズパイで ESXi 動いてるの感動する pic.twitter.com/3fi8QqCuHE
-&mdash; Jangari (@Jangari_nTK) October 6, 2020  私も Raspberry Pi 4b 8GB にインストールして遊んでみており、ESXi …</p>
-          <a href='https://jangari-ntk.github.io/post/2020-10-09/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
-  
-    <li>
-
-
-    </li>
+    
+    
+    <h2>Table of contents</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#概要">概要</a></li>
+    <li><a href="#イベントのエクスポート手順">イベントのエクスポート手順</a></li>
+    <li><a href="#注意点">注意点</a></li>
+    <li><a href="#おわりに">おわりに</a></li>
   </ul>
+</nav>
+    <h2 id="概要">概要</h2>
+<p><a href="/post/2020-08-01/">以前の記事</a>で vCenter Server 7.0 でイベントをエクスポートする方法をいくつか記載していました。</p>
+<p>リリースノートなどに情報が載っていなかったのですが、vCenter Server 7.0 Update 3 で vSphere Client のイベントコンソールでのイベント一覧のエクスポート機能が追加されたようです。</p>
+<p>VMware Docs にもエクスポートに関するドキュメントが追加されていました。</p>
+<ul>
+<li><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.monitoring.doc/GUID-1A7FF15C-FC88-4BEF-B5AB-4BDA54D17F96.html">vSphere Client 内のイベントのエクスポート</a></li>
+</ul>
+<p>ドキュメントの更新日が VC 7.0 U3 のリリースより2ヶ月ほど古いのが気になりますが、少なくとも直前の VC 7.0 U2d で確認する限り本機能は未実装のようだったので、VC 7.0 U3 で追加された機能と考えて良さそうです。</p>
+<h2 id="イベントのエクスポート手順">イベントのエクスポート手順</h2>
+<p>vSphere Client のインベントリで、各オブジェクトの [監視] タブ &gt; [イベント] から [エクスポート] をクリックすると、&ldquo;ExportEventsLog.csv.csv&rdquo; といったファイル名でダウンロードが始まります。</p>
+<p><img src="/images/2021-11-13/event-export.PNG" alt=""></p>
+<h2 id="注意点">注意点</h2>
+<p>エクスポートされるイベントは一覧に表示されている1ページ分のみなので、表示件数に指定できる100件がエクスポート可能な最大件数となります。それ以上の件数や期間を指定してエクスポートしたい場合、現状ではやはり PowerCLI などを使う必要がありそうです。</p>
+<p>また、試した限りでは列のフィルタを行った後にエクスポートを行ってもエクスポート結果は変わらないようでした。アラームがトリガーされた際のイベントやステータスが警告のイベントのみ抽出してエクスポート、といったことはできないようです。</p>
+<h2 id="おわりに">おわりに</h2>
+<p>今回は vCenter Server 7.0 Update 3 で追加されていたイベントのエクスポート機能を試してみました。表示中の1ページ分ですがエクスポートが行えるようになったので、簡易的なイベントのエクスポートには使えそうかなと感じます。</p>
+
+  </article>
 <aside class="sidebar">
   <section class="sidebar_inner">
     <h2>Jangari</h2>
@@ -204,9 +193,6 @@ ESXi-Arm インストール完了！
     <h2 class="mt-4">Recent Posts</h2>
     <ul class="flex-column">
       
-      <li>
-        <a href="https://jangari-ntk.github.io/post/2021-11-13/" class="nav-link">【小ネタ】vCenter Server 7.0 Update 3 でイベントのエクスポート機能が追加</a>
-      </li>
       <li>
         <a href="https://jangari-ntk.github.io/post/2021-09-18/" class="nav-link">PowerCLI の vSphere Automation API SDK モジュールで vCenter Server のマシン SSL 証明書を更新する</a>
       </li>
@@ -460,8 +446,6 @@ ESXi-Arm インストール完了！
 </aside>
 
 </div>
-
-
     </main><svg width="0" height="0" class="hidden">
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="facebook">
     <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h151V331h-60v-90h60v-61c0-49.629 40.371-90 90-90h91v90h-91v61h91l-15 90h-76v181h121c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zm0 0"></path>

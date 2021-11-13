@@ -6,10 +6,26 @@
     <description>Recent content in vSphere on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Sat, 18 Sep 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 13 Nov 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/tags/vsphere/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>【小ネタ】vCenter Server 7.0 Update 3 でイベントのエクスポート機能が追加</title>
+      <link>https://jangari-ntk.github.io/post/2021-11-13/</link>
+      <pubDate>Sat, 13 Nov 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2021-11-13/</guid>
+      <description>概要 以前の記事で vCenter Server 7.0 でイベントをエクスポートする方法をいくつか記載していました。
+リリースノートなどに情報が載っていなかったのですが、vCenter Server 7.0 Update 3 で vSphere Client のイベントコンソールでのイベント一覧のエクスポート機能が追加されたようです。
+VMware Docs にもエクスポートに関するドキュメントが追加されていました。
+ vSphere Client 内のイベントのエクスポート  ドキュメントの更新日が VC 7.0 U3 のリリースより2ヶ月ほど古いのが気になりますが、少なくとも直前の VC 7.0 U2d で確認する限り本機能は未実装のようだったので、VC 7.0 U3 で追加された機能と考えて良さそうです。
+イベントのエクスポート手順 vSphere Client のインベントリで、各オブジェクトの [監視] タブ &amp;gt; [イベント] から [エクスポート] をクリックすると、&amp;ldquo;ExportEventsLog.csv.csv&amp;rdquo; といったファイル名でダウンロードが始まります。
+注意点 エクスポートされるイベントは一覧に表示されている1ページ分のみなので、表示件数に指定できる100件がエクスポート可能な最大件数となります。それ以上の件数や期間を指定してエクスポートしたい場合、現状ではやはり PowerCLI などを使う必要がありそうです。
+また、試した限りでは列のフィルタを行った後にエクスポートを行ってもエクスポート結果は変わらないようでした。アラームがトリガーされた際のイベントやステータスが警告のイベントのみ抽出してエクスポート、といったことはできないようです。
+おわりに 今回は vCenter Server 7.0 Update 3 で追加されていたイベントのエクスポート機能を試してみました。表示中の1ページ分ですがエクスポートが行えるようになったので、簡易的なイベントのエクスポートには使えそうかなと感じます。</description>
+    </item>
     
     <item>
       <title>PowerCLI の vSphere Automation API SDK モジュールで vCenter Server のマシン SSL 証明書を更新する</title>
