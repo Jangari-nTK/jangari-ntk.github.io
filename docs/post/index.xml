@@ -6,10 +6,21 @@
     <description>Recent content on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Sat, 13 Nov 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 14 Dec 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>ホストプロファイルを使って ESXi の忘れた root パスワードをリセットする</title>
+      <link>https://jangari-ntk.github.io/post/2021-12-14/</link>
+      <pubDate>Tue, 14 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2021-12-14/</guid>
+      <description>概要 ESXi の root ユーザーのパスワードを忘れてしまった場合、基本的には ESXi の再インストールが必要になりますが、vSphere Enterprise Plus のライセンスを持っている場合、vCenter Server のホストプロファイルを使用することでパスワードのリセット(上書き)が可能です。
+Steps to reset a lost or forgotten root password of an ESX/ESXi host (1317898)
+ Reinstalling the ESXi host is the only supported way to reset a password on ESXi. From ESXi 4.1 onwards, the host profile feature was introduced. If the host is managed by vCenter and is still connected, you can the reset by leveraging the host profile feature.</description>
+    </item>
     
     <item>
       <title>【小ネタ】vCenter Server 7.0 Update 3 でイベントのエクスポート機能が追加</title>
