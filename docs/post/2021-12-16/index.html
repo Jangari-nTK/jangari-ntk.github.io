@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-figures="" class="page">
-  <head>  <title>【Tips】共有ストレージなし＆VCSA デプロイ済みのクラスタで EVC を有効にする【自宅ラボ用】 | vSoliloquy</title>
+  <head>  <title>PowerCLI を使って ESXi の忘れた root パスワードをリセットする | vSoliloquy</title>
   <meta charset='utf-8'>
   <meta name="generator" content="Hugo 0.74.3" />
   <meta name = 'viewport' content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
@@ -15,14 +15,14 @@
   
 <meta property = "og:locale" content = "en_US" />
 <meta property="og:type" content="article">
-<meta name="description" content="既存の Intel NUC 10 1台の自宅ラボに Intel NUC 11 を追加したのですが、現在の環境に共有ストレージがなく KB2147821 の手順で EVC を有効に出来なかったので、少々トリッキーな手段で共有ストレージを使わずに EVC を有効にしてみました。">
+<meta name="description" content="今回の記事は PowerCLI を使用し vCenter Server 経由で ESXi の root ユーザーのパスワードをリセットしてみます。">
 <meta name = "twitter:card" content = "summary" />
 <meta name = "twitter:creator" content = "@Jangari_nTK">
-<meta name = "twitter:title" content = "【Tips】共有ストレージなし＆VCSA デプロイ済みのクラスタで EVC を有効にする【自宅ラボ用】" />
-<meta property = "og:url" content = "https://jangari-ntk.github.io/post/2021-08-17/" />
-<meta property = "og:title" content = "【Tips】共有ストレージなし＆VCSA デプロイ済みのクラスタで EVC を有効にする【自宅ラボ用】" />
-<meta property = "og:description" content = "既存の Intel NUC 10 1台の自宅ラボに Intel NUC 11 を追加したのですが、現在の環境に共有ストレージがなく KB2147821 の手順で EVC を有効に出来なかったので、少々トリッキーな手段で共有ストレージを使わずに EVC を有効にしてみました。" />
-<meta property = "og:image" content = "https://jangari-ntk.github.io/images/2021-08-17/thumbnail.PNG" />
+<meta name = "twitter:title" content = "PowerCLI を使って ESXi の忘れた root パスワードをリセットする" />
+<meta property = "og:url" content = "https://jangari-ntk.github.io/post/2021-12-16/" />
+<meta property = "og:title" content = "PowerCLI を使って ESXi の忘れた root パスワードをリセットする" />
+<meta property = "og:description" content = "今回の記事は PowerCLI を使用し vCenter Server 経由で ESXi の root ユーザーのパスワードをリセットしてみます。" />
+<meta property = "og:image" content = "https://jangari-ntk.github.io/images/2021-12-16/thumbnail.PNG" />
 <link rel='apple-touch-icon' sizes='180x180' href='https://jangari-ntk.github.io/icons/apple-touch-icon.png'>
 <link rel='icon' type='image/png' sizes='32x32' href='https://jangari-ntk.github.io/icons/favicon-32x32.png'>
 <link rel='icon' type='image/png' sizes='16x16' href='https://jangari-ntk.github.io/icons/favicon-16x16.png'>
@@ -31,7 +31,7 @@
 <meta name="msapplication-TileColor" content="#002538">
 <meta name="theme-color" content="#002538">
 
-  <link rel='canonical' href='https://jangari-ntk.github.io/post/2021-08-17/'>
+  <link rel='canonical' href='https://jangari-ntk.github.io/post/2021-12-16/'>
     
 
     
@@ -88,40 +88,38 @@
   
 <div class = 'grid-inverse wrap content'>
   <article class='post_content'>
-    <h1 class='post_title'>【Tips】共有ストレージなし＆VCSA デプロイ済みのクラスタで EVC を有効にする【自宅ラボ用】</h1><div class = 'post_meta'>
+    <h1 class='post_title'>PowerCLI を使って ESXi の忘れた root パスワードをリセットする</h1><div class = 'post_meta'>
   <svg class="icon">
     <use xlink:href="#calendar"></use>
   </svg>
   <span class="post_date">
-    Aug 17, 2021</span>
+    Dec 16, 2021</span>
   <a href = 'https://jangari-ntk.github.io/tags/tips' class = 'post_tag button button_translucent'>Tips
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
   </a>
   <a href = 'https://jangari-ntk.github.io/tags/vcenter-server' class = 'post_tag button button_translucent'>vCenter Server
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
+  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere-7.0' class = 'post_tag button button_translucent'>vSphere 7.0
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
   </a>
 </div>
 
     <div class='post_share'>
   Share on:
-  <a href="https://twitter.com/intent/tweet?text=%e3%80%90Tips%e3%80%91%e5%85%b1%e6%9c%89%e3%82%b9%e3%83%88%e3%83%ac%e3%83%bc%e3%82%b8%e3%81%aa%e3%81%97%ef%bc%86VCSA%20%e3%83%87%e3%83%97%e3%83%ad%e3%82%a4%e6%b8%88%e3%81%bf%e3%81%ae%e3%82%af%e3%83%a9%e3%82%b9%e3%82%bf%e3%81%a7%20EVC%20%e3%82%92%e6%9c%89%e5%8a%b9%e3%81%ab%e3%81%99%e3%82%8b%e3%80%90%e8%87%aa%e5%ae%85%e3%83%a9%e3%83%9c%e7%94%a8%e3%80%91&url=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2021-08-17%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
+  <a href="https://twitter.com/intent/tweet?text=PowerCLI%20%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%20ESXi%20%e3%81%ae%e5%bf%98%e3%82%8c%e3%81%9f%20root%20%e3%83%91%e3%82%b9%e3%83%af%e3%83%bc%e3%83%89%e3%82%92%e3%83%aa%e3%82%bb%e3%83%83%e3%83%88%e3%81%99%e3%82%8b&url=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2021-12-16%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
     <svg class="icon">
       <use xlink:href="#twitter"></use>
     </svg>
   </a>
   
-  <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2021-08-17%2f&t=%e3%80%90Tips%e3%80%91%e5%85%b1%e6%9c%89%e3%82%b9%e3%83%88%e3%83%ac%e3%83%bc%e3%82%b8%e3%81%aa%e3%81%97%ef%bc%86VCSA%20%e3%83%87%e3%83%97%e3%83%ad%e3%82%a4%e6%b8%88%e3%81%bf%e3%81%ae%e3%82%af%e3%83%a9%e3%82%b9%e3%82%bf%e3%81%a7%20EVC%20%e3%82%92%e6%9c%89%e5%8a%b9%e3%81%ab%e3%81%99%e3%82%8b%e3%80%90%e8%87%aa%e5%ae%85%e3%83%a9%e3%83%9c%e7%94%a8%e3%80%91" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
+  <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2021-12-16%2f&t=PowerCLI%20%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%20ESXi%20%e3%81%ae%e5%bf%98%e3%82%8c%e3%81%9f%20root%20%e3%83%91%e3%82%b9%e3%83%af%e3%83%bc%e3%83%89%e3%82%92%e3%83%aa%e3%82%bb%e3%83%83%e3%83%88%e3%81%99%e3%82%8b" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
     <svg class="icon">
       <use xlink:href="#facebook"></use>
     </svg>
   </a>
   <script>
     function shareViaLinkedin() {
-      window.open('http://www.linkedin.com/shareArticle?mini=true&url='+encodeURIComponent("https://jangari-ntk.github.io/post/2021-08-17/"), '', 'left=0,top=0,width=650,height=420,personalbar=0,toolbar=0,scrollbars=0,resizable=0');
+      window.open('http://www.linkedin.com/shareArticle?mini=true&url='+encodeURIComponent("https://jangari-ntk.github.io/post/2021-12-16/"), '', 'left=0,top=0,width=650,height=420,personalbar=0,toolbar=0,scrollbars=0,resizable=0');
     }
   </script>
   <a href="#linkedinshare" id = "linkedinshare" class="linkedin" title="Share on LinkedIn" rel="nofollow" onclick="shareViaLinkedin()">
@@ -129,7 +127,7 @@
       <use xlink:href="#linkedin"></use>
     </svg>
   </a>
-  <a href="https://jangari-ntk.github.io/post/2021-08-17/" title="Copy Link" class="link link_yank">
+  <a href="https://jangari-ntk.github.io/post/2021-12-16/" title="Copy Link" class="link link_yank">
     <svg class="icon">
       <use xlink:href="#yank"></use>
     </svg>
@@ -141,137 +139,102 @@
     <h2>Table of contents</h2>
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#背景">背景</a></li>
     <li><a href="#概要">概要</a></li>
-    <li><a href="#1-vcenter-server-仮想マシンを停止スナップショットを作成">1. vCenter Server 仮想マシンを停止＆スナップショットを作成</a></li>
-    <li><a href="#2-ハードウェアバージョン14以降へのアップグレード">2. ハードウェアバージョン14以降へのアップグレード</a></li>
-    <li><a href="#3-仮想マシンに-per-vm-evc-のパラメータを追加">3. 仮想マシンに Per-VM EVC のパラメータを追加</a></li>
-    <li><a href="#4-vcenter-server-仮想マシンをパワーオンしてクラスタの-evc-を有効化">4. vCenter Server 仮想マシンをパワーオンしてクラスタの EVC を有効化</a></li>
-    <li><a href="#5-1のスナップショットにリストアして再度クラスタの-evc-を有効化">5. 1.のスナップショットにリストアして再度クラスタの EVC を有効化</a></li>
+    <li><a href="#esxi-のローカルユーザーの管理">ESXi のローカルユーザーの管理</a></li>
+    <li><a href="#powercli-から-esxcli-を呼び出すまで">PowerCLI から esxcli を呼び出すまで</a></li>
+    <li><a href="#esxi-の-root-ユーザーのパスワードをリセット">ESXi の root ユーザーのパスワードをリセット</a></li>
+    <li><a href="#vcenter-server-によるホスト操作と-vpxuser">vCenter Server によるホスト操作と vpxuser</a></li>
     <li><a href="#おわりに">おわりに</a></li>
-    <li><a href="#補足-cpu-id-マスクの設定">補足: CPU ID マスクの設定</a></li>
   </ul>
 </nav>
-    <h2 id="背景">背景</h2>
-<p>仮想マシンとしてデプロイされた vCenter Server が存在するクラスタ上で EVC を有効にする場合、KB2147821 のように EVC がそれぞれ無効／有効な2つのクラスタを用意し、そのクラスタ間で vCenter Server 仮想マシンをインベントリ上で再登録する必要があります。</p>
-<p><a href="https://kb.vmware.com/s/article/2147821?lang=ja">vCenter Server 6.5 および 6.7 で vCenter Server 自身の仮想マシンが実行されるクラスタの EVC を有効にする方法 (2147821)</a></p>
-<p>先日、Intel NUC 10 1台で構成していた自宅ラボに Intel NUC 11 の ESXi 7.0 を追加したため EVC を有効にしようとしたのですが、共有ストレージを用意していなかったためホスト間でのインベントリの再登録が行えませんでした。</p>
-<h2 id="概要">概要</h2>
-<p>遊びで使っている自宅ラボでの EVC の有効化のためだけに共有ストレージを追加するのも面倒でしたので、以下のような少々トリッキーな手段で EVC を有効にしてみました。</p>
-<ol>
-<li>vCenter Server 仮想マシンを停止＆スナップショットを作成</li>
-<li>ハードウェアバージョン14以降へのアップグレード</li>
-<li>仮想マシンに Per-VM EVC のパラメータを追加</li>
-<li>vCenter Server 仮想マシンをパワーオンしてクラスタの EVC を有効化</li>
-<li>1.のスナップショットにリストアして再度クラスタの EVC を有効化</li>
-</ol>
-<p>vCenter Server 仮想マシンが存在するクラスタ上で EVC を有効にする場合、vCenter Server 仮想マシン自身の CPU 互換性が問題になります。</p>
-<p>一度クラスタで EVC を構成してしまえば vCenter Server が停止していてもホストの EVC モードは維持されるので、手作業で vCenter Server 仮想マシンの CPUID をマスクした後、クラスタの EVC を構成し、作業前のスナップショットにリストアすることで vCenter Server 仮想マシンをクラスタの EVC モードで起動させます。</p>
-<p>なお、製品ドキュメントやナレッジベースでサポート対象として記載されているような手順ではないので本番環境での利用は推奨しません。一般には本番環境で vMotion を利用するなら共有ストレージもあると思いますので、正規の KB2147821 の手順で実施することを強く推奨しますし、その方が楽です。</p>
-<h2 id="1-vcenter-server-仮想マシンを停止スナップショットを作成">1. vCenter Server 仮想マシンを停止＆スナップショットを作成</h2>
-<p>まず、vCenter Server 仮想マシンをシャットダウンして Host Client から仮想マシンのスナップショットを作成します。</p>
+    <h2 id="概要">概要</h2>
+<p><a href="/post/2021-12-14/">前回の記事</a>ではホストプロファイルで ESXi の root ユーザーのパスワードをリセットしました。</p>
+<p>今回の記事は PowerCLI を使用し vCenter Server 経由で ESXi の root ユーザーのパスワードをリセットしてみます。ホストプロファイルは vSphere Enterprise Plus が必要となる機能ですが、PowerCLI は vSphere Essentials 以上の全てのエディションで使用可能です。</p>
+<p>なお、前回の記事と同様に ESXi が vCenter Server に管理・接続されていることが前提となります。</p>
+<h2 id="esxi-のローカルユーザーの管理">ESXi のローカルユーザーの管理</h2>
+<p>ESXi のローカルユーザーを管理する手段としては主に以下の2つがあります。vCenter Server のユーザーが ESXi のローカルユーザーを直接管理することはできません。</p>
 <ul>
-<li><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.hostclient.doc/GUID-A0D8E8E7-629B-466D-A50C-38705ACA7613.html">VMware Host Clientでのスナップショットの作成</a></li>
+<li>Host Client を使用する</li>
+<li>esxcli system account コマンドを使用する</li>
 </ul>
-<h2 id="2-ハードウェアバージョン14以降へのアップグレード">2. ハードウェアバージョン14以降へのアップグレード</h2>
-<p>Host Client から vCenter Server 仮想マシンを Per-VM EVC が使えるハードウェアバージョン 14 以降にアップグレードしておきます。</p>
-<ul>
-<li><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.hostclient.doc/GUID-8B20DC28-3581-4DB7-A337-E3087F0A3380.html">VMware Host Client を使用した仮想マシン互換性のアップグレード</a></li>
-</ul>
-<p>なお、vCenter Server Appliance の場合は KB1010675 にハードウェアバージョンのアップグレードがサポートされないことが明記されています。</p>
-<ul>
-<li><a href="https://kb.vmware.com/s/article/1010675">Upgrading a virtual machine to the latest hardware version (multiple versions) (1010675)</a></li>
-</ul>
+<p>今回は PowerCLI を使用して後者の esxcli を呼び出すことで ESXi のローカルユーザーを操作します。</p>
+<p>なお、esxcli system account コマンドは vSphere 6.0 のリリースから追加されています。</p>
+<p><a href="https://vdc-download.vmware.com/vmwb-repository/dcr-public/5068a138-314e-45c3-87cf-e4c8c3d72df7/a31b6594-284f-4c9f-81d5-c37e737cc3fa/vsp6_60_vcli_relnotes.html">vSphere Command-Line Interface 6.0 Release Notes</a></p>
 <blockquote>
-<p>When upgrading virtual hardware, consider these points:</p>
-<ul>
-<li>Modification of the virtual hardware version on the vCenter Server Appliance is not supported. Likewise you should not manually install any additional version of VMware Tools inside the guest OS of the vCenter Server Appliance.</li>
-</ul>
+<p>ESXCLI new and changed commands — New commands have been added and one command has changed.</p>
+<p>The following commands have been added to the ESXCLI command set.
+&hellip;
+esxcli system account add
+esxcli system account list
+esxcli system account remove
+esxcli system account set</p>
 </blockquote>
-<h2 id="3-仮想マシンに-per-vm-evc-のパラメータを追加">3. 仮想マシンに Per-VM EVC のパラメータを追加</h2>
-<p>vCenter Server 仮想マシンの CPUID をマスクするため、vmx ファイルを編集して Per-VM EVC 周りの構成パラメータを追記します。</p>
-<p>ちゃんと調べてはいないのですが、Intel NUC 10 (Comet Lake 世代) や 11 (Tiger Lake 世代) だと一部の CPU 機能のサポートに互換性が無いようで Broadwell 以降の EVC モードが有効に出来なかったため、Haswell の EVC モードに設定しました<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>。</p>
-<p>適当な仮想マシンで Haswell の EVC モードを有効にしたところ、以下の構成パラメータが増えていたのでこれらを追記しました。クラスタの EVC だと vSphere Client 上で EVC 設定の [CPU 機能セット] の項目から確認できる値ですが、もしかしたら環境などによって変わるかも知れません。</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span>featMask.vm.cpuid.ABM = &#34;Val:1&#34;
-<span class="ln"> 2</span>featMask.vm.cpuid.AES = &#34;Val:1&#34;
-<span class="ln"> 3</span>featMask.vm.cpuid.AVX = &#34;Val:1&#34;
-<span class="ln"> 4</span>featMask.vm.cpuid.AVX2 = &#34;Val:1&#34;
-<span class="ln"> 5</span>featMask.vm.cpuid.BMI1 = &#34;Val:1&#34;
-<span class="ln"> 6</span>featMask.vm.cpuid.BMI2 = &#34;Val:1&#34;
-<span class="ln"> 7</span>featMask.vm.cpuid.CMPXCHG16B = &#34;Val:1&#34;
-<span class="ln"> 8</span>featMask.vm.cpuid.DS = &#34;Val:1&#34;
-<span class="ln"> 9</span>featMask.vm.cpuid.ENFSTRG = &#34;Val:1&#34;
-<span class="ln">10</span>featMask.vm.cpuid.F16C = &#34;Val:1&#34;
-<span class="ln">11</span>featMask.vm.cpuid.FAMILY = &#34;Val:6&#34;
-<span class="ln">12</span>featMask.vm.cpuid.FCMD = &#34;Val:1&#34;
-<span class="ln">13</span>featMask.vm.cpuid.FMA = &#34;Val:1&#34;
-<span class="ln">14</span>featMask.vm.cpuid.FP_SEGMENT_ZERO = &#34;Val:1&#34;
-<span class="ln">15</span>featMask.vm.cpuid.FSGSBASE = &#34;Val:1&#34;
-<span class="ln">16</span>featMask.vm.cpuid.IBPB = &#34;Val:1&#34;
-<span class="ln">17</span>featMask.vm.cpuid.IBRS = &#34;Val:1&#34;
-<span class="ln">18</span>featMask.vm.cpuid.INVPCID = &#34;Val:1&#34;
-<span class="ln">19</span>featMask.vm.cpuid.Intel = &#34;Val:1&#34;
-<span class="ln">20</span>featMask.vm.cpuid.LAHF64 = &#34;Val:1&#34;
-<span class="ln">21</span>featMask.vm.cpuid.LM = &#34;Val:1&#34;
-<span class="ln">22</span>featMask.vm.cpuid.MDCLEAR = &#34;Val:1&#34;
-<span class="ln">23</span>featMask.vm.cpuid.MODEL = &#34;Val:0x3f&#34;
-<span class="ln">24</span>featMask.vm.cpuid.MOVBE = &#34;Val:1&#34;
-<span class="ln">25</span>featMask.vm.cpuid.MWAIT = &#34;Val:1&#34;
-<span class="ln">26</span>featMask.vm.cpuid.NUMLEVELS = &#34;Val:0xd&#34;
-<span class="ln">27</span>featMask.vm.cpuid.NUM_EXT_LEVELS = &#34;Val:0x80000008&#34;
-<span class="ln">28</span>featMask.vm.cpuid.NX = &#34;Val:1&#34;
-<span class="ln">29</span>featMask.vm.cpuid.PCID = &#34;Val:1&#34;
-<span class="ln">30</span>featMask.vm.cpuid.PCLMULQDQ = &#34;Val:1&#34;
-<span class="ln">31</span>featMask.vm.cpuid.PDPE1GB = &#34;Val:1&#34;
-<span class="ln">32</span>featMask.vm.cpuid.POPCNT = &#34;Val:1&#34;
-<span class="ln">33</span>featMask.vm.cpuid.RDRAND = &#34;Val:1&#34;
-<span class="ln">34</span>featMask.vm.cpuid.RDTSCP = &#34;Val:1&#34;
-<span class="ln">35</span>featMask.vm.cpuid.SMEP = &#34;Val:1&#34;
-<span class="ln">36</span>featMask.vm.cpuid.SS = &#34;Val:1&#34;
-<span class="ln">37</span>featMask.vm.cpuid.SSBD = &#34;Val:1&#34;
-<span class="ln">38</span>featMask.vm.cpuid.SSE3 = &#34;Val:1&#34;
-<span class="ln">39</span>featMask.vm.cpuid.SSE41 = &#34;Val:1&#34;
-<span class="ln">40</span>featMask.vm.cpuid.SSE42 = &#34;Val:1&#34;
-<span class="ln">41</span>featMask.vm.cpuid.SSSE3 = &#34;Val:1&#34;
-<span class="ln">42</span>featMask.vm.cpuid.STEPPING = &#34;Val:0&#34;
-<span class="ln">43</span>featMask.vm.cpuid.STIBP = &#34;Val:1&#34;
-<span class="ln">44</span>featMask.vm.cpuid.VMX = &#34;Val:1&#34;
-<span class="ln">45</span>featMask.vm.cpuid.XCR0_MASTER_SSE = &#34;Val:1&#34;
-<span class="ln">46</span>featMask.vm.cpuid.XCR0_MASTER_YMM_H = &#34;Val:1&#34;
-<span class="ln">47</span>featMask.vm.cpuid.XSAVE = &#34;Val:1&#34;
-<span class="ln">48</span>featMask.vm.cpuid.XSAVEOPT = &#34;Val:1&#34;
-<span class="ln">49</span>featMask.vm.hv.capable = &#34;Val:1&#34;
-<span class="ln">50</span>featMask.vm.misc.cpuidFaulting = &#34;Val:1&#34;
-<span class="ln">51</span>featMask.vm.vt.realmode = &#34;Val:1&#34;
-<span class="ln">52</span>featureCompat.vm.completeMasks = &#34;TRUE&#34;
-</code></pre></div><p>なお、一応、<a href="https://blogs.vmware.com/vsphere/2019/06/enhanced-vmotion-compatibility-evc-explained.html">公式ブログの記事</a>や <a href="https://kb.vmware.com/s/article/67666">KB67666</a> で featMask.vm.cpuid.* の構成パラメータについて触れられています。</p>
-<p>ただ「上述の Per-VM EVC で追加された構成パラメータ一式を手動で追記する」操作は KB 等で指示がある手順ではないので、恐らくサポートはされないと思われます。もし本番環境で Per-VM EVC を使用するなら<a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.vm_admin.doc/GUID-EE6F4E5A-3BEA-43DD-9990-DBEB0A280F3A.html">正規の手順</a>を踏むべきです。</p>
-<h2 id="4-vcenter-server-仮想マシンをパワーオンしてクラスタの-evc-を有効化">4. vCenter Server 仮想マシンをパワーオンしてクラスタの EVC を有効化</h2>
-<p>Per-VM EVC の構成パラメータの追記後、vCenter Server 仮想マシンを起動します。vmx ファイルを直接編集しているので、念のため vmx ファイルを reload してから起動しておきます。</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span># vim-cmd vmsvc/getallvms | grep &lt;vm name&gt;
-<span class="ln">2</span># vim-cmd vmsvc/reload &lt;vmid&gt;
-<span class="ln">3</span># vim-cmd vmsvc/power.on &lt;vmid&gt;
-</code></pre></div><p>vCenter Server が起動したら、クラスタで EVC を有効にします。</p>
-<h2 id="5-1のスナップショットにリストアして再度クラスタの-evc-を有効化">5. 1.のスナップショットにリストアして再度クラスタの EVC を有効化</h2>
-<p>作業前にパワーオフ状態で作成したスナップショットに vCenter Server 仮想マシンをリストアしてパワーオンします。リストアにより3.のマスクの設定は消えていますが、KB2147821 と同様に、設定済みのホストの EVC モードに基づいて vCenter Server 仮想マシンが起動してきます。</p>
-<p>vCenter Server が起動したら、クラスタの設定上では EVC が無効に戻っているので再度 EVC を有効にします。</p>
-<p>一通り正常稼働を確認したらスナップショットはもう不要になったので削除しておきます。</p>
-<h2 id="おわりに">おわりに</h2>
-<p>今回は自宅ラボ向けに共有ストレージのない環境で vCenter Server 仮想マシンが実行されるクラスタの EVC を有効にしてみました。本番環境ではまず使えない(使いたくない)手順ですが、自宅ラボなど壊れても問題ない環境で場当たり的な対応で EVC を使いたい場合は有効かもしれません。</p>
-<p>なお繰り返しになりますが、一般に本番環境で vMotion を利用するなら共有ストレージもあると思いますので、本番環境で vCenter Server 仮想マシンが実行されるクラスタの EVC を有効にする場合は正規の KB2147821 の手順で実施しましょう。</p>
-<p><a href="https://kb.vmware.com/s/article/2147821?lang=ja">vCenter Server 6.5 および 6.7 で vCenter Server 自身の仮想マシンが実行されるクラスタの EVC を有効にする方法 (2147821)</a></p>
-<h2 id="補足-cpu-id-マスクの設定">補足: CPU ID マスクの設定</h2>
-<p>CPU ID マスク周りの操作を調べていて気づいたのですが、vSphere 6.7 以前だと以下のドキュメントにあるように仮想マシンの設定から <a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.vcenterhost.doc/GUID-713EBD74-7ACC-43BE-8797-D91BA916B76E.html">CPU ID マスク</a>の手動設定が出来たのですが、vSphere 7.0 だと UI 上から設定項目がなくなっているようでした。</p>
-<p><a href="https://docs.vmware.com/jp/VMware-vSphere/6.7/com.vmware.vsphere.vm_admin.doc/GUID-E64FC69D-E845-4562-BB8E-CCAC39E78CEA.html">CPU 識別マスク設定の変更</a></p>
-<p>推測ですが、そもそもサポートや KB の指示なしで使う設定ではないので、使うユーザーがあまりに少なかったとか Per-VM EVC で事足りるとかそういった理由で UI から消えたのかもしれません。</p>
-<section class="footnotes" role="doc-endnotes">
-<hr>
+<h2 id="powercli-から-esxcli-を呼び出すまで">PowerCLI から esxcli を呼び出すまで</h2>
+<p>以下の手順を踏むことで PowerCLI で esxcli のオブジェクトを取得できます。</p>
 <ol>
-<li id="fn:1" role="doc-endnote">
-<p><a href="https://www.virten.net/2020/03/vmware-evc-mode-to-enable-intel-gen5-gen10-nuc-vmotion/">海外のvExpertの方の記事</a>だと Sandy Bridge 相当にカスタマイズした EVC モードを自作されているようでした。 <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-</li>
+<li>Connect-VIServer で vCenter Server に接続</li>
+<li>Get-VMHost で ESXi のオブジェクトを取得</li>
+<li>Get-EsxCli で esxcli のオブジェクトを取得</li>
 </ol>
-</section>
+<p>対象のホストの esxcli オブジェクトが取得できたら、通常の esxcli コマンドを &ldquo;.&rdquo; で繋げてプロパティやメソッドとして呼び出せます。</p>
+<p><a href="https://developer.vmware.com/docs/powercli/latest/vmware.vimautomation.core/commands/get-esxcli/">Get-EsxCli Command | VMware PowerCLI Reference</a></p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>Example 6
+<span class="ln">2</span>
+<span class="ln">3</span>PS C:\&gt;  $vmHost = Get-VMHost &#34;vmHostIp&#34;
+<span class="ln">4</span>&gt;&gt;  $esxcli_v1 = Get-EsxCli -VMHost $vmHost
+<span class="ln">5</span>&gt;&gt;  $esxcli_v1.storage.nmp.device.list()
+</code></pre></div><h2 id="esxi-の-root-ユーザーのパスワードをリセット">ESXi の root ユーザーのパスワードをリセット</h2>
+<p>esxcli system account set コマンドで ESXi の既存のローカルユーザーの設定変更が可能です。このため、以下のような PowerCLI のスクリプトを実行すれば vCenter Server を経由して ESXi の root ユーザーのパスワードを変更できます。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span>$VC_HOSTNAME = &#34;vcsa.api.lab&#34;
+<span class="ln"> 2</span>$USERNAME = &#34;administrator@vsphere.local&#34;
+<span class="ln"> 3</span>$PASSWORD = &#34;VMware1!&#34;
+<span class="ln"> 4</span>
+<span class="ln"> 5</span>$TGT_HOST = &#34;esxi01.api.lab&#34;
+<span class="ln"> 6</span>$TGT_USER = &#34;root&#34;
+<span class="ln"> 7</span>$NEW_PASSWORD = &#34;Vmware@123&#34;
+<span class="ln"> 8</span>
+<span class="ln"> 9</span>$securePassword = ConvertTo-SecureString $PASSWORD -AsPlainText -Force
+<span class="ln">10</span>$cred = New-Object System.Management.Automation.PSCredential($USERNAME, $securepassword)
+<span class="ln">11</span>
+<span class="ln">12</span>Connect-VIServer -Server $VC_HOSTNAME -Credential $CRED
+<span class="ln">13</span>
+<span class="ln">14</span>$vmHost = Get-VMHost $TGT_HOST
+<span class="ln">15</span>$esxcli = Get-EsxCli -VMHost $vmHost -V2
+<span class="ln">16</span>
+<span class="ln">17</span>$arguments = $esxcli.system.account.set.CreateArgs()
+<span class="ln">18</span>$arguments.id = $TGT_USER
+<span class="ln">19</span>$arguments.password = $NEW_PASSWORD
+<span class="ln">20</span>$arguments.passwordconfirmation = $NEW_PASSWORD
+<span class="ln">21</span>
+<span class="ln">22</span>$esxcli.system.account.set.Invoke($arguments)
+</code></pre></div><p>上のスクリプトでは17行目以降が esxcli system account set コマンドを実行している部分です。esxcli に引数を指定する場合には CreateArgs メソッドを呼び出すことでコマンドに対応する引数の Hashtable オブジェクトが返されます。この Hashtable に値をセットしてから Invoke メソッドに渡すことで、esxcli コマンドを引数つきで実行しています。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>&gt; $esxcli.system.account.set.CreateArgs()
+<span class="ln">2</span>
+<span class="ln">3</span>Name                           Value
+<span class="ln">4</span>----                           -----
+<span class="ln">5</span>description                    Unset, ([string], optional)
+<span class="ln">6</span>passwordconfirmation           Unset, ([string], optional)
+<span class="ln">7</span>password                       Unset, ([string], optional)
+<span class="ln">8</span>id                             Unset, ([string])
+</code></pre></div><h2 id="vcenter-server-によるホスト操作と-vpxuser">vCenter Server によるホスト操作と vpxuser</h2>
+<p>先に記載したように、vCenter Server のユーザーが ESXi のローカルユーザーを直接管理することはできません。vCenter Server が ESXi を操作する場合は
+vpxuser という特別な ESXi のローカルユーザーを使用します。</p>
+<p><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-2215AADC-D4CD-49DD-AF92-65BED243D851.html">ESXi ホストの権限の割り当て</a></p>
+<blockquote>
+<p>vpxuser ユーザー</p>
+<p>vCenter Server では、vpxuser の権限を使用して、ホストに対するアクティビティを管理します。</p>
+<p>vCenter Server の管理者は、root ユーザーとほぼ同様のタスクをホストで実行できます。また、タスクのスケジュール設定やテンプレートの使用も可能です。ただし、vCenter Server の管理者は、ホストのユーザーおよびグループを直接作成、削除、または編集することはできません。管理者権限を持つユーザーのみが、ホストで直接これらのタスクを実行することができます。</p>
+</blockquote>
+<p>今回の PowerCLI を使用するケースも vCenter Server を経由して ESXi を操作しているため、ESXi 上では vpxuser ユーザーによりタスクが実行されています。実際に hostd のログを見てみると vpxuser によってタスクが実行されていることが分かります。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>2021-12-16T11:39:47.742Z info hostd[70723] [Originator@6876 sub=Vimsvc.TaskManager opID=27aab9-dd-9541-9542 user=vpxuser:VSPHERE.LOCAL\Administrator] Task Created : haTask--vim.EsxCLI.system.account.set-959618778
+<span class="ln">2</span>
+<span class="ln">3</span>2021-12-16T11:39:47.910Z info hostd[67477] [Originator@6876 sub=Vimsvc.TaskManager opID=3f42954a user=vpxuser] Task Created : haTask-ha-folder-root-vim.host.LocalAccountManager.updateUser-959618780
+<span class="ln">4</span>2021-12-16T11:39:47.972Z info hostd[70722] [Originator@6876 sub=Vimsvc.ha-eventmgr opID=3f42954a user=vpxuser] Event 429 : Password was changed for account root on host localhost.localdomain
+<span class="ln">5</span>2021-12-16T11:39:47.972Z info hostd[70722] [Originator@6876 sub=Vimsvc.TaskManager opID=3f42954a user=vpxuser] Task Completed : haTask-ha-folder-root-vim.host.LocalAccountManager.updateUser-959618780 Status success
+<span class="ln">6</span>
+<span class="ln">7</span>2021-12-16T11:39:48.003Z info hostd[67470] [Originator@6876 sub=Vimsvc.TaskManager opID=27aab9-dd-9541-9542 user=vpxuser:VSPHERE.LOCAL\Administrator] Task Completed : haTask--vim.EsxCLI.system.account.set-959618778 Status success
+</code></pre></div><h2 id="おわりに">おわりに</h2>
+<p>今回は PowerCLI を使用して ESXi の root ユーザーのパスワードをリセットしてみました。前回の記事と同様に vCenter Server に管理・接続されている必要はありますが、PowerCLI は全てのエディションで使用できて柔軟性もありますので、vSphere ユーザーの方は PowerCLI も使えるようにしておくと便利だと思います。</p>
 
   </article>
 <aside class="sidebar">
@@ -305,9 +268,6 @@
     <ul class="flex-column">
       
       <li>
-        <a href="https://jangari-ntk.github.io/post/2021-12-16/" class="nav-link">PowerCLI を使って ESXi の忘れた root パスワードをリセットする</a>
-      </li>
-      <li>
         <a href="https://jangari-ntk.github.io/post/2021-12-14/" class="nav-link">ホストプロファイルを使って ESXi の忘れた root パスワードをリセットする</a>
       </li>
       <li>
@@ -315,6 +275,9 @@
       </li>
       <li>
         <a href="https://jangari-ntk.github.io/post/2021-09-18/" class="nav-link">PowerCLI の vSphere Automation API SDK モジュールで vCenter Server のマシン SSL 証明書を更新する</a>
+      </li>
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2021-08-17/" class="nav-link">【Tips】共有ストレージなし＆VCSA デプロイ済みのクラスタで EVC を有効にする【自宅ラボ用】</a>
       </li>
       <li>
         <a href="https://jangari-ntk.github.io/post/2021-08-07/" class="nav-link">【メモ】ESXi 7.0 の Kickstart の %post で boot.cfg を触る</a>

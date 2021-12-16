@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" data-figures="" class="page">
-  <head>  <title>【Tips】共有ストレージなし＆VCSA デプロイ済みのクラスタで EVC を有効にする【自宅ラボ用】 | vSoliloquy</title>
+<html lang="en" data-figures="">
+  <head>  <title>vSphere | vSoliloquy</title>
   <meta charset='utf-8'>
   <meta name="generator" content="Hugo 0.74.3" />
   <meta name = 'viewport' content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
@@ -12,17 +12,16 @@
   gtag('js', new Date());
   gtag('config', 'UA-175306204-1');
 </script>
-  
 <meta property = "og:locale" content = "en_US" />
 <meta property="og:type" content="article">
-<meta name="description" content="既存の Intel NUC 10 1台の自宅ラボに Intel NUC 11 を追加したのですが、現在の環境に共有ストレージがなく KB2147821 の手順で EVC を有効に出来なかったので、少々トリッキーな手段で共有ストレージを使わずに EVC を有効にしてみました。">
+<meta name="description" content="">
 <meta name = "twitter:card" content = "summary" />
 <meta name = "twitter:creator" content = "@Jangari_nTK">
-<meta name = "twitter:title" content = "【Tips】共有ストレージなし＆VCSA デプロイ済みのクラスタで EVC を有効にする【自宅ラボ用】" />
-<meta property = "og:url" content = "https://jangari-ntk.github.io/post/2021-08-17/" />
-<meta property = "og:title" content = "【Tips】共有ストレージなし＆VCSA デプロイ済みのクラスタで EVC を有効にする【自宅ラボ用】" />
-<meta property = "og:description" content = "既存の Intel NUC 10 1台の自宅ラボに Intel NUC 11 を追加したのですが、現在の環境に共有ストレージがなく KB2147821 の手順で EVC を有効に出来なかったので、少々トリッキーな手段で共有ストレージを使わずに EVC を有効にしてみました。" />
-<meta property = "og:image" content = "https://jangari-ntk.github.io/images/2021-08-17/thumbnail.PNG" />
+<meta name = "twitter:title" content = "vSphere" />
+<meta property = "og:url" content = "https://jangari-ntk.github.io/tags/vsphere/" />
+<meta property = "og:title" content = "vSphere" />
+<meta property = "og:description" content = "" />
+<meta property = "og:image" content = "https://jangari-ntk.github.io/images/thumbnail.png" />
 <link rel='apple-touch-icon' sizes='180x180' href='https://jangari-ntk.github.io/icons/apple-touch-icon.png'>
 <link rel='icon' type='image/png' sizes='32x32' href='https://jangari-ntk.github.io/icons/favicon-32x32.png'>
 <link rel='icon' type='image/png' sizes='16x16' href='https://jangari-ntk.github.io/icons/favicon-16x16.png'>
@@ -31,7 +30,7 @@
 <meta name="msapplication-TileColor" content="#002538">
 <meta name="theme-color" content="#002538">
 
-  <link rel='canonical' href='https://jangari-ntk.github.io/post/2021-08-17/'>
+  <link rel='canonical' href='https://jangari-ntk.github.io/tags/vsphere/'>
     
 
     
@@ -85,18 +84,23 @@
 </header>
 
     <main>
-  
-<div class = 'grid-inverse wrap content'>
-  <article class='post_content'>
-    <h1 class='post_title'>【Tips】共有ストレージなし＆VCSA デプロイ済みのクラスタで EVC を有効にする【自宅ラボ用】</h1><div class = 'post_meta'>
+
+<div class='grid-inverse wrap content'>
+  <ul class='posts' id = 'posts'>
+      
+<li class = 'post_item'>
+  <div class = 'excerpt'>
+    <div class = 'excerpt_header'>
+      <h3 class = 'post_link'>
+        <a href='https://jangari-ntk.github.io/post/2020-08-01/'>vCenter Server 7.0 のイベントをテキストで取得</a>
+      </h3>
+      <div class = 'post_meta'>
   <svg class="icon">
     <use xlink:href="#calendar"></use>
   </svg>
   <span class="post_date">
-    Aug 17, 2021</span>
+    Aug 1, 2020</span>
   <a href = 'https://jangari-ntk.github.io/tags/tips' class = 'post_tag button button_translucent'>Tips
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
   </a>
   <a href = 'https://jangari-ntk.github.io/tags/vcenter-server' class = 'post_tag button button_translucent'>vCenter Server
   </a>
@@ -106,174 +110,53 @@
   </a>
 </div>
 
-    <div class='post_share'>
-  Share on:
-  <a href="https://twitter.com/intent/tweet?text=%e3%80%90Tips%e3%80%91%e5%85%b1%e6%9c%89%e3%82%b9%e3%83%88%e3%83%ac%e3%83%bc%e3%82%b8%e3%81%aa%e3%81%97%ef%bc%86VCSA%20%e3%83%87%e3%83%97%e3%83%ad%e3%82%a4%e6%b8%88%e3%81%bf%e3%81%ae%e3%82%af%e3%83%a9%e3%82%b9%e3%82%bf%e3%81%a7%20EVC%20%e3%82%92%e6%9c%89%e5%8a%b9%e3%81%ab%e3%81%99%e3%82%8b%e3%80%90%e8%87%aa%e5%ae%85%e3%83%a9%e3%83%9c%e7%94%a8%e3%80%91&url=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2021-08-17%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
-    <svg class="icon">
-      <use xlink:href="#twitter"></use>
-    </svg>
-  </a>
+    </div>
+    <div class = 'excerpt_footer partition'>
+      <div class = 'excerpt_thumbnail'>
+      <img src = '/images/building.png'>
+      </div>
+      
+        <div>
+          <p class = 'pale'>はじめに vSphere Web Client (Flash 版) が vSphere 7 で遂に廃止となりました。vSphere Client (HTML5 版) は動作もスムーズで良いのですが、どうやら現時点では従来のイベントのエクスポートが行えないようです。
+Exporting virtual machine events from the Tasks &amp; Events tab (2008204)
+ Note: The export tasks/Events option is only available on the vSphere Web Client (Flex). The HTML client does …</p>
+          <a href='https://jangari-ntk.github.io/post/2020-08-01/' class='excerpt_more button'>Read More</a>
+        </div>
+      </div>
+    </div>
+  </li>
   
-  <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2021-08-17%2f&t=%e3%80%90Tips%e3%80%91%e5%85%b1%e6%9c%89%e3%82%b9%e3%83%88%e3%83%ac%e3%83%bc%e3%82%b8%e3%81%aa%e3%81%97%ef%bc%86VCSA%20%e3%83%87%e3%83%97%e3%83%ad%e3%82%a4%e6%b8%88%e3%81%bf%e3%81%ae%e3%82%af%e3%83%a9%e3%82%b9%e3%82%bf%e3%81%a7%20EVC%20%e3%82%92%e6%9c%89%e5%8a%b9%e3%81%ab%e3%81%99%e3%82%8b%e3%80%90%e8%87%aa%e5%ae%85%e3%83%a9%e3%83%9c%e7%94%a8%e3%80%91" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
-    <svg class="icon">
-      <use xlink:href="#facebook"></use>
-    </svg>
-  </a>
-  <script>
-    function shareViaLinkedin() {
-      window.open('http://www.linkedin.com/shareArticle?mini=true&url='+encodeURIComponent("https://jangari-ntk.github.io/post/2021-08-17/"), '', 'left=0,top=0,width=650,height=420,personalbar=0,toolbar=0,scrollbars=0,resizable=0');
-    }
-  </script>
-  <a href="#linkedinshare" id = "linkedinshare" class="linkedin" title="Share on LinkedIn" rel="nofollow" onclick="shareViaLinkedin()">
-    <svg class="icon">
-      <use xlink:href="#linkedin"></use>
-    </svg>
-  </a>
-  <a href="https://jangari-ntk.github.io/post/2021-08-17/" title="Copy Link" class="link link_yank">
-    <svg class="icon">
-      <use xlink:href="#yank"></use>
-    </svg>
-  </a>
-</div>
+    <li>
+<ul class="pagination">
+  <li class="page-item">
+    <a href="/tags/vsphere/" class="page-link" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+  </li>
+  <li class="page-item">
+    <a href="/tags/vsphere/page/3/" class="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+  </li>
+  <li class="page-item">
+    <a class="page-link" href="/tags/vsphere/">1</a>
+  </li>
+  <li class="page-item">
+    <a class="page-link" href="/tags/vsphere/page/2/">2</a>
+  </li>
+  <li class="page-item">
+    <a class="page-link" href="/tags/vsphere/page/3/">3</a>
+  </li>
+  <li class="page-item active">
+    <a class="page-link" href="/tags/vsphere/page/4/">4</a>
+  </li>
+  <li class="page-item disabled">
+    <a  class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+  </li>
+  <li class="page-item">
+    <a href="/tags/vsphere/page/4/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+  </li>
+</ul>
 
-    
-    
-    <h2>Table of contents</h2>
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#背景">背景</a></li>
-    <li><a href="#概要">概要</a></li>
-    <li><a href="#1-vcenter-server-仮想マシンを停止スナップショットを作成">1. vCenter Server 仮想マシンを停止＆スナップショットを作成</a></li>
-    <li><a href="#2-ハードウェアバージョン14以降へのアップグレード">2. ハードウェアバージョン14以降へのアップグレード</a></li>
-    <li><a href="#3-仮想マシンに-per-vm-evc-のパラメータを追加">3. 仮想マシンに Per-VM EVC のパラメータを追加</a></li>
-    <li><a href="#4-vcenter-server-仮想マシンをパワーオンしてクラスタの-evc-を有効化">4. vCenter Server 仮想マシンをパワーオンしてクラスタの EVC を有効化</a></li>
-    <li><a href="#5-1のスナップショットにリストアして再度クラスタの-evc-を有効化">5. 1.のスナップショットにリストアして再度クラスタの EVC を有効化</a></li>
-    <li><a href="#おわりに">おわりに</a></li>
-    <li><a href="#補足-cpu-id-マスクの設定">補足: CPU ID マスクの設定</a></li>
+
+    </li>
   </ul>
-</nav>
-    <h2 id="背景">背景</h2>
-<p>仮想マシンとしてデプロイされた vCenter Server が存在するクラスタ上で EVC を有効にする場合、KB2147821 のように EVC がそれぞれ無効／有効な2つのクラスタを用意し、そのクラスタ間で vCenter Server 仮想マシンをインベントリ上で再登録する必要があります。</p>
-<p><a href="https://kb.vmware.com/s/article/2147821?lang=ja">vCenter Server 6.5 および 6.7 で vCenter Server 自身の仮想マシンが実行されるクラスタの EVC を有効にする方法 (2147821)</a></p>
-<p>先日、Intel NUC 10 1台で構成していた自宅ラボに Intel NUC 11 の ESXi 7.0 を追加したため EVC を有効にしようとしたのですが、共有ストレージを用意していなかったためホスト間でのインベントリの再登録が行えませんでした。</p>
-<h2 id="概要">概要</h2>
-<p>遊びで使っている自宅ラボでの EVC の有効化のためだけに共有ストレージを追加するのも面倒でしたので、以下のような少々トリッキーな手段で EVC を有効にしてみました。</p>
-<ol>
-<li>vCenter Server 仮想マシンを停止＆スナップショットを作成</li>
-<li>ハードウェアバージョン14以降へのアップグレード</li>
-<li>仮想マシンに Per-VM EVC のパラメータを追加</li>
-<li>vCenter Server 仮想マシンをパワーオンしてクラスタの EVC を有効化</li>
-<li>1.のスナップショットにリストアして再度クラスタの EVC を有効化</li>
-</ol>
-<p>vCenter Server 仮想マシンが存在するクラスタ上で EVC を有効にする場合、vCenter Server 仮想マシン自身の CPU 互換性が問題になります。</p>
-<p>一度クラスタで EVC を構成してしまえば vCenter Server が停止していてもホストの EVC モードは維持されるので、手作業で vCenter Server 仮想マシンの CPUID をマスクした後、クラスタの EVC を構成し、作業前のスナップショットにリストアすることで vCenter Server 仮想マシンをクラスタの EVC モードで起動させます。</p>
-<p>なお、製品ドキュメントやナレッジベースでサポート対象として記載されているような手順ではないので本番環境での利用は推奨しません。一般には本番環境で vMotion を利用するなら共有ストレージもあると思いますので、正規の KB2147821 の手順で実施することを強く推奨しますし、その方が楽です。</p>
-<h2 id="1-vcenter-server-仮想マシンを停止スナップショットを作成">1. vCenter Server 仮想マシンを停止＆スナップショットを作成</h2>
-<p>まず、vCenter Server 仮想マシンをシャットダウンして Host Client から仮想マシンのスナップショットを作成します。</p>
-<ul>
-<li><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.hostclient.doc/GUID-A0D8E8E7-629B-466D-A50C-38705ACA7613.html">VMware Host Clientでのスナップショットの作成</a></li>
-</ul>
-<h2 id="2-ハードウェアバージョン14以降へのアップグレード">2. ハードウェアバージョン14以降へのアップグレード</h2>
-<p>Host Client から vCenter Server 仮想マシンを Per-VM EVC が使えるハードウェアバージョン 14 以降にアップグレードしておきます。</p>
-<ul>
-<li><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.hostclient.doc/GUID-8B20DC28-3581-4DB7-A337-E3087F0A3380.html">VMware Host Client を使用した仮想マシン互換性のアップグレード</a></li>
-</ul>
-<p>なお、vCenter Server Appliance の場合は KB1010675 にハードウェアバージョンのアップグレードがサポートされないことが明記されています。</p>
-<ul>
-<li><a href="https://kb.vmware.com/s/article/1010675">Upgrading a virtual machine to the latest hardware version (multiple versions) (1010675)</a></li>
-</ul>
-<blockquote>
-<p>When upgrading virtual hardware, consider these points:</p>
-<ul>
-<li>Modification of the virtual hardware version on the vCenter Server Appliance is not supported. Likewise you should not manually install any additional version of VMware Tools inside the guest OS of the vCenter Server Appliance.</li>
-</ul>
-</blockquote>
-<h2 id="3-仮想マシンに-per-vm-evc-のパラメータを追加">3. 仮想マシンに Per-VM EVC のパラメータを追加</h2>
-<p>vCenter Server 仮想マシンの CPUID をマスクするため、vmx ファイルを編集して Per-VM EVC 周りの構成パラメータを追記します。</p>
-<p>ちゃんと調べてはいないのですが、Intel NUC 10 (Comet Lake 世代) や 11 (Tiger Lake 世代) だと一部の CPU 機能のサポートに互換性が無いようで Broadwell 以降の EVC モードが有効に出来なかったため、Haswell の EVC モードに設定しました<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>。</p>
-<p>適当な仮想マシンで Haswell の EVC モードを有効にしたところ、以下の構成パラメータが増えていたのでこれらを追記しました。クラスタの EVC だと vSphere Client 上で EVC 設定の [CPU 機能セット] の項目から確認できる値ですが、もしかしたら環境などによって変わるかも知れません。</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span>featMask.vm.cpuid.ABM = &#34;Val:1&#34;
-<span class="ln"> 2</span>featMask.vm.cpuid.AES = &#34;Val:1&#34;
-<span class="ln"> 3</span>featMask.vm.cpuid.AVX = &#34;Val:1&#34;
-<span class="ln"> 4</span>featMask.vm.cpuid.AVX2 = &#34;Val:1&#34;
-<span class="ln"> 5</span>featMask.vm.cpuid.BMI1 = &#34;Val:1&#34;
-<span class="ln"> 6</span>featMask.vm.cpuid.BMI2 = &#34;Val:1&#34;
-<span class="ln"> 7</span>featMask.vm.cpuid.CMPXCHG16B = &#34;Val:1&#34;
-<span class="ln"> 8</span>featMask.vm.cpuid.DS = &#34;Val:1&#34;
-<span class="ln"> 9</span>featMask.vm.cpuid.ENFSTRG = &#34;Val:1&#34;
-<span class="ln">10</span>featMask.vm.cpuid.F16C = &#34;Val:1&#34;
-<span class="ln">11</span>featMask.vm.cpuid.FAMILY = &#34;Val:6&#34;
-<span class="ln">12</span>featMask.vm.cpuid.FCMD = &#34;Val:1&#34;
-<span class="ln">13</span>featMask.vm.cpuid.FMA = &#34;Val:1&#34;
-<span class="ln">14</span>featMask.vm.cpuid.FP_SEGMENT_ZERO = &#34;Val:1&#34;
-<span class="ln">15</span>featMask.vm.cpuid.FSGSBASE = &#34;Val:1&#34;
-<span class="ln">16</span>featMask.vm.cpuid.IBPB = &#34;Val:1&#34;
-<span class="ln">17</span>featMask.vm.cpuid.IBRS = &#34;Val:1&#34;
-<span class="ln">18</span>featMask.vm.cpuid.INVPCID = &#34;Val:1&#34;
-<span class="ln">19</span>featMask.vm.cpuid.Intel = &#34;Val:1&#34;
-<span class="ln">20</span>featMask.vm.cpuid.LAHF64 = &#34;Val:1&#34;
-<span class="ln">21</span>featMask.vm.cpuid.LM = &#34;Val:1&#34;
-<span class="ln">22</span>featMask.vm.cpuid.MDCLEAR = &#34;Val:1&#34;
-<span class="ln">23</span>featMask.vm.cpuid.MODEL = &#34;Val:0x3f&#34;
-<span class="ln">24</span>featMask.vm.cpuid.MOVBE = &#34;Val:1&#34;
-<span class="ln">25</span>featMask.vm.cpuid.MWAIT = &#34;Val:1&#34;
-<span class="ln">26</span>featMask.vm.cpuid.NUMLEVELS = &#34;Val:0xd&#34;
-<span class="ln">27</span>featMask.vm.cpuid.NUM_EXT_LEVELS = &#34;Val:0x80000008&#34;
-<span class="ln">28</span>featMask.vm.cpuid.NX = &#34;Val:1&#34;
-<span class="ln">29</span>featMask.vm.cpuid.PCID = &#34;Val:1&#34;
-<span class="ln">30</span>featMask.vm.cpuid.PCLMULQDQ = &#34;Val:1&#34;
-<span class="ln">31</span>featMask.vm.cpuid.PDPE1GB = &#34;Val:1&#34;
-<span class="ln">32</span>featMask.vm.cpuid.POPCNT = &#34;Val:1&#34;
-<span class="ln">33</span>featMask.vm.cpuid.RDRAND = &#34;Val:1&#34;
-<span class="ln">34</span>featMask.vm.cpuid.RDTSCP = &#34;Val:1&#34;
-<span class="ln">35</span>featMask.vm.cpuid.SMEP = &#34;Val:1&#34;
-<span class="ln">36</span>featMask.vm.cpuid.SS = &#34;Val:1&#34;
-<span class="ln">37</span>featMask.vm.cpuid.SSBD = &#34;Val:1&#34;
-<span class="ln">38</span>featMask.vm.cpuid.SSE3 = &#34;Val:1&#34;
-<span class="ln">39</span>featMask.vm.cpuid.SSE41 = &#34;Val:1&#34;
-<span class="ln">40</span>featMask.vm.cpuid.SSE42 = &#34;Val:1&#34;
-<span class="ln">41</span>featMask.vm.cpuid.SSSE3 = &#34;Val:1&#34;
-<span class="ln">42</span>featMask.vm.cpuid.STEPPING = &#34;Val:0&#34;
-<span class="ln">43</span>featMask.vm.cpuid.STIBP = &#34;Val:1&#34;
-<span class="ln">44</span>featMask.vm.cpuid.VMX = &#34;Val:1&#34;
-<span class="ln">45</span>featMask.vm.cpuid.XCR0_MASTER_SSE = &#34;Val:1&#34;
-<span class="ln">46</span>featMask.vm.cpuid.XCR0_MASTER_YMM_H = &#34;Val:1&#34;
-<span class="ln">47</span>featMask.vm.cpuid.XSAVE = &#34;Val:1&#34;
-<span class="ln">48</span>featMask.vm.cpuid.XSAVEOPT = &#34;Val:1&#34;
-<span class="ln">49</span>featMask.vm.hv.capable = &#34;Val:1&#34;
-<span class="ln">50</span>featMask.vm.misc.cpuidFaulting = &#34;Val:1&#34;
-<span class="ln">51</span>featMask.vm.vt.realmode = &#34;Val:1&#34;
-<span class="ln">52</span>featureCompat.vm.completeMasks = &#34;TRUE&#34;
-</code></pre></div><p>なお、一応、<a href="https://blogs.vmware.com/vsphere/2019/06/enhanced-vmotion-compatibility-evc-explained.html">公式ブログの記事</a>や <a href="https://kb.vmware.com/s/article/67666">KB67666</a> で featMask.vm.cpuid.* の構成パラメータについて触れられています。</p>
-<p>ただ「上述の Per-VM EVC で追加された構成パラメータ一式を手動で追記する」操作は KB 等で指示がある手順ではないので、恐らくサポートはされないと思われます。もし本番環境で Per-VM EVC を使用するなら<a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.vm_admin.doc/GUID-EE6F4E5A-3BEA-43DD-9990-DBEB0A280F3A.html">正規の手順</a>を踏むべきです。</p>
-<h2 id="4-vcenter-server-仮想マシンをパワーオンしてクラスタの-evc-を有効化">4. vCenter Server 仮想マシンをパワーオンしてクラスタの EVC を有効化</h2>
-<p>Per-VM EVC の構成パラメータの追記後、vCenter Server 仮想マシンを起動します。vmx ファイルを直接編集しているので、念のため vmx ファイルを reload してから起動しておきます。</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span># vim-cmd vmsvc/getallvms | grep &lt;vm name&gt;
-<span class="ln">2</span># vim-cmd vmsvc/reload &lt;vmid&gt;
-<span class="ln">3</span># vim-cmd vmsvc/power.on &lt;vmid&gt;
-</code></pre></div><p>vCenter Server が起動したら、クラスタで EVC を有効にします。</p>
-<h2 id="5-1のスナップショットにリストアして再度クラスタの-evc-を有効化">5. 1.のスナップショットにリストアして再度クラスタの EVC を有効化</h2>
-<p>作業前にパワーオフ状態で作成したスナップショットに vCenter Server 仮想マシンをリストアしてパワーオンします。リストアにより3.のマスクの設定は消えていますが、KB2147821 と同様に、設定済みのホストの EVC モードに基づいて vCenter Server 仮想マシンが起動してきます。</p>
-<p>vCenter Server が起動したら、クラスタの設定上では EVC が無効に戻っているので再度 EVC を有効にします。</p>
-<p>一通り正常稼働を確認したらスナップショットはもう不要になったので削除しておきます。</p>
-<h2 id="おわりに">おわりに</h2>
-<p>今回は自宅ラボ向けに共有ストレージのない環境で vCenter Server 仮想マシンが実行されるクラスタの EVC を有効にしてみました。本番環境ではまず使えない(使いたくない)手順ですが、自宅ラボなど壊れても問題ない環境で場当たり的な対応で EVC を使いたい場合は有効かもしれません。</p>
-<p>なお繰り返しになりますが、一般に本番環境で vMotion を利用するなら共有ストレージもあると思いますので、本番環境で vCenter Server 仮想マシンが実行されるクラスタの EVC を有効にする場合は正規の KB2147821 の手順で実施しましょう。</p>
-<p><a href="https://kb.vmware.com/s/article/2147821?lang=ja">vCenter Server 6.5 および 6.7 で vCenter Server 自身の仮想マシンが実行されるクラスタの EVC を有効にする方法 (2147821)</a></p>
-<h2 id="補足-cpu-id-マスクの設定">補足: CPU ID マスクの設定</h2>
-<p>CPU ID マスク周りの操作を調べていて気づいたのですが、vSphere 6.7 以前だと以下のドキュメントにあるように仮想マシンの設定から <a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.vcenterhost.doc/GUID-713EBD74-7ACC-43BE-8797-D91BA916B76E.html">CPU ID マスク</a>の手動設定が出来たのですが、vSphere 7.0 だと UI 上から設定項目がなくなっているようでした。</p>
-<p><a href="https://docs.vmware.com/jp/VMware-vSphere/6.7/com.vmware.vsphere.vm_admin.doc/GUID-E64FC69D-E845-4562-BB8E-CCAC39E78CEA.html">CPU 識別マスク設定の変更</a></p>
-<p>推測ですが、そもそもサポートや KB の指示なしで使う設定ではないので、使うユーザーがあまりに少なかったとか Per-VM EVC で事足りるとかそういった理由で UI から消えたのかもしれません。</p>
-<section class="footnotes" role="doc-endnotes">
-<hr>
-<ol>
-<li id="fn:1" role="doc-endnote">
-<p><a href="https://www.virten.net/2020/03/vmware-evc-mode-to-enable-intel-gen5-gen10-nuc-vmotion/">海外のvExpertの方の記事</a>だと Sandy Bridge 相当にカスタマイズした EVC モードを自作されているようでした。 <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-</li>
-</ol>
-</section>
-
-  </article>
 <aside class="sidebar">
   <section class="sidebar_inner">
     <h2>Jangari</h2>
@@ -315,6 +198,9 @@
       </li>
       <li>
         <a href="https://jangari-ntk.github.io/post/2021-09-18/" class="nav-link">PowerCLI の vSphere Automation API SDK モジュールで vCenter Server のマシン SSL 証明書を更新する</a>
+      </li>
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2021-08-17/" class="nav-link">【Tips】共有ストレージなし＆VCSA デプロイ済みのクラスタで EVC を有効にする【自宅ラボ用】</a>
       </li>
       <li>
         <a href="https://jangari-ntk.github.io/post/2021-08-07/" class="nav-link">【メモ】ESXi 7.0 の Kickstart の %post で boot.cfg を触る</a>
@@ -557,6 +443,8 @@
 </aside>
 
 </div>
+
+
     </main><svg width="0" height="0" class="hidden">
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="facebook">
     <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h151V331h-60v-90h60v-61c0-49.629 40.371-90 90-90h91v90h-91v61h91l-15 90h-76v181h121c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zm0 0"></path>

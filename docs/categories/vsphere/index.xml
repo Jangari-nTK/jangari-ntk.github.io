@@ -6,10 +6,26 @@
     <description>Recent content in vSphere on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Tue, 14 Dec 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 16 Dec 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/categories/vsphere/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PowerCLI を使って ESXi の忘れた root パスワードをリセットする</title>
+      <link>https://jangari-ntk.github.io/post/2021-12-16/</link>
+      <pubDate>Thu, 16 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2021-12-16/</guid>
+      <description>概要 前回の記事ではホストプロファイルで ESXi の root ユーザーのパスワードをリセットしました。
+今回の記事は PowerCLI を使用し vCenter Server 経由で ESXi の root ユーザーのパスワードをリセットしてみます。ホストプロファイルは vSphere Enterprise Plus が必要となる機能ですが、PowerCLI は vSphere Essentials 以上の全てのエディションで使用可能です。
+なお、前回の記事と同様に ESXi が vCenter Server に管理・接続されていることが前提となります。
+ESXi のローカルユーザーの管理 ESXi のローカルユーザーを管理する手段としては主に以下の2つがあります。vCenter Server のユーザーが ESXi のローカルユーザーを直接管理することはできません。
+ Host Client を使用する esxcli system account コマンドを使用する  今回は PowerCLI を使用して後者の esxcli を呼び出すことで ESXi のローカルユーザーを操作します。
+なお、esxcli system account コマンドは vSphere 6.0 のリリースから追加されています。
+vSphere Command-Line Interface 6.0 Release Notes
+ ESXCLI new and changed commands — New commands have been added and one command has changed.</description>
+    </item>
     
     <item>
       <title>ホストプロファイルを使って ESXi の忘れた root パスワードをリセットする</title>
