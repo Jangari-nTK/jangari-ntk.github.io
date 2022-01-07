@@ -6,10 +6,25 @@
     <description>Recent content in vSphere on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Sun, 26 Dec 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 07 Jan 2022 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/categories/vsphere/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>OVFTool で vCenter Server Appliance をインストールする</title>
+      <link>https://jangari-ntk.github.io/post/2022-01-07/</link>
+      <pubDate>Fri, 07 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2022-01-07/</guid>
+      <description>概要 vCenter Server Appliance (以下 VCSA) の GUI インストールはステージ1とステージ2に分かれていますが、ステージ1では VCSA の OVA ファイルのインポートが行われています。
+ GUI を使用した vCenter Serverアプライアンスのデプロイ  今回の記事では GUI/CLI インストーラを使わずに、OVFTool のみを使用して vCenter Server 7.0 Update 3 のインストールを試してみたいと思います。
+Open Virtualization Format Tool (ovftool)
+インストールのステージ2まで自動実行 良い感じに OVF プロパティなどまとまっている情報がないか調べていたところ、以下の KB2110081 に OVFTool で VCSA をデプロイするコマンドのサンプルがありました。
+ Creating vSAN clusters up to 64 nodes (2110081)  KB2110081 は 32 ノード以上の vSAN を構成する場合の手順ですが、OVFTool のオプションなどは値を入れ替えればそのまま使えるので拝借しました。
+Linux で OVFTool を実行する前提で、整形したりオプションを並べ替えたものが以下です。
+1ovftool --skipManifestCheck --noSSLVerify --allowExtraConfig --acceptAllEulas --powerOn --sourceType=OVA --overwrite \ 2 --X:injectOvfEnv --X:enableHiddenProperties --X:logLevel=verbose --X:logTransferHeaderData --X:waitForIp \ 3 --name=vcsa01_jangari_lab \ 4 --datastore=local-vmfs \ 5 --deploymentOption=tiny \ 6 --diskMode=thin \ 7 --network=Management \ 8 --prop:guestinfo.</description>
+    </item>
     
     <item>
       <title>vc_log4j_mitigator.py での CVE-2021-44228 &amp; CVE-2021-45046 への対処</title>

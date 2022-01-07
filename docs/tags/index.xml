@@ -6,24 +6,24 @@
     <description>Recent content in Tags on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Sun, 26 Dec 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 07 Jan 2022 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Security</title>
-      <link>https://jangari-ntk.github.io/tags/security/</link>
-      <pubDate>Sun, 26 Dec 2021 00:00:00 +0000</pubDate>
+      <title>Installation</title>
+      <link>https://jangari-ntk.github.io/tags/installation/</link>
+      <pubDate>Fri, 07 Jan 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/tags/security/</guid>
+      <guid>https://jangari-ntk.github.io/tags/installation/</guid>
       <description></description>
     </item>
     
     <item>
       <title>vCenter Server</title>
       <link>https://jangari-ntk.github.io/tags/vcenter-server/</link>
-      <pubDate>Sun, 26 Dec 2021 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 07 Jan 2022 00:00:00 +0000</pubDate>
       
       <guid>https://jangari-ntk.github.io/tags/vcenter-server/</guid>
       <description></description>
@@ -32,9 +32,18 @@
     <item>
       <title>vSphere</title>
       <link>https://jangari-ntk.github.io/tags/vsphere/</link>
-      <pubDate>Sun, 26 Dec 2021 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 07 Jan 2022 00:00:00 +0000</pubDate>
       
       <guid>https://jangari-ntk.github.io/tags/vsphere/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Security</title>
+      <link>https://jangari-ntk.github.io/tags/security/</link>
+      <pubDate>Sun, 26 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/tags/security/</guid>
       <description></description>
     </item>
     
