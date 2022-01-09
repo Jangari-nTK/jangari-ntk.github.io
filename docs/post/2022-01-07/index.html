@@ -146,6 +146,7 @@
     </li>
     <li><a href="#インストールのステージ2開始前の状態で中断">インストールのステージ2開始前の状態で中断</a></li>
     <li><a href="#おわりに">おわりに</a></li>
+    <li><a href="#0109-追記-インストールの進行状況の確認">01/09 追記: インストールの進行状況の確認</a></li>
   </ul>
 </nav>
     <h2 id="概要">概要</h2>
@@ -243,6 +244,26 @@
 <h2 id="おわりに">おわりに</h2>
 <p>今回の記事では OVFTool を使用して vCenter Server Appliance のインストールを行ってみました。</p>
 <p>これ単体ではステージ1で中断できる点のほかに通常の CLI インストールとは大差ありませんが、例えば VCSA の REST API を組み合わせることでファイルベースバックアップを自動で行うといったことも可能になります。次回の記事では OVFTool と REST API を使用して、GUI を介さずにファイルベースバックアップを行ってみる予定です。</p>
+<h2 id="0109-追記-インストールの進行状況の確認">01/09 追記: インストールの進行状況の確認</h2>
+<p>インストールの進行状況は /rest/vcenter/deployment に HTTP GET を発行すると JSON として取得できます。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span># curl -k -X GET -H &#34;vmware-api-session-id: $TOKEN&#34; https://\&lt;VCSA IP Address\&gt;:5480/rest/vcenter/deployment | jq
+<span class="ln"> 2</span>{
+<span class="ln"> 3</span>  &#34;state&#34;: &#34;INITIALIZED&#34;,
+<span class="ln"> 4</span>  &#34;progress&#34;: {
+<span class="ln"> 5</span>    &#34;total&#34;: 1,
+<span class="ln"> 6</span>    &#34;completed&#34;: 1,
+<span class="ln"> 7</span>    &#34;message&#34;: {
+<span class="ln"> 8</span>      &#34;id&#34;: &#34;com.vmware.vcenter.deploy.task.complete.success&#34;,
+<span class="ln"> 9</span>      &#34;default_message&#34;: &#34;Task has completed successfully.&#34;,
+<span class="ln">10</span>      &#34;args&#34;: []
+<span class="ln">11</span>    }
+<span class="ln">12</span>  },
+<span class="ln">13</span>  ...
+</code></pre></div><p>ステージ1が進行中の場合は state の値が NOT_INITIALIZED、完了すると INITIALIZED になります。以下も参考に。</p>
+<ul>
+<li><a href="https://developer.vmware.com/docs/6529/vmware-vcenter-server-appliance-management-programming-guide/doc/GUID-F2538341-426B-4ACA-A5E9-E9A734095FFA.html">Setting Up a Newly Installed Appliance - VMware vCenter Server Appliance Management Programming Guide - VMware {code}</a></li>
+<li><a href="https://developer.vmware.com/docs/6529/vmware-vcenter-server-appliance-management-programming-guide/doc/GUID-C830F5F6-3D49-4D0B-BD0D-AFB9D36172A8.html">Use HTTP Requests to Set Up a Newly Deployed vCenter Server Appliance with an Embedded Platform Services Controller</a></li>
+</ul>
 
   </article>
 <aside class="sidebar">
