@@ -6,10 +6,22 @@
     <description>Recent content on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Fri, 07 Jan 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 10 Jan 2022 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>REST API で VCSA をバックアップからリストアする</title>
+      <link>https://jangari-ntk.github.io/post/2022-01-10/</link>
+      <pubDate>Mon, 10 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2022-01-10/</guid>
+      <description>概要 前回の記事では OVFTool で vCenter Server Appliance (以下 VCSA) をデプロイしました。今回の記事では VCSA のインストールのステージ1が完了したところから、REST API を使って vCenter Server のリストアを実行してみます。
+なぜ API でやろうと思ったのか vCenter Server 7.0 Update 3 時点で、VCSA の CLI インストーラにはリストアの機能だけ存在しません。VMware Docs には GUI インストーラを使う手順と、vSphere Client で OVA のデプロイ後に VAMI からステージ2を実行する方法のみが書いてあります。
+ ファイルベースのバックアップからの vCenter Server のリストア ステージ 1 - 新しいアプライアンスをデプロイ  インストール、アップグレード、マイグレーションは CLI インストーラでも可能になっています。
+ vCenter Server アプライアンスの CLI デプロイ vCenter ServerAppliance の CLI アップグレード CLI による Windows からアプライアンスへの vCenter Serverインストールの移行  このため、リストアだけコマンドラインで出来ないのもなぁ・・・と思ったのが API でやってみようとした発端です。</description>
+    </item>
     
     <item>
       <title>OVFTool で vCenter Server Appliance をインストールする</title>

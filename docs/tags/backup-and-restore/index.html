@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-figures="">
-  <head>  <title>Raspberry Pi | vSoliloquy</title>
+  <head>  <title>Backup and Restore | vSoliloquy</title>
   <meta charset='utf-8'>
   <meta name="generator" content="Hugo 0.74.3" />
   <meta name = 'viewport' content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
@@ -17,9 +17,9 @@
 <meta name="description" content="">
 <meta name = "twitter:card" content = "summary" />
 <meta name = "twitter:creator" content = "@Jangari_nTK">
-<meta name = "twitter:title" content = "Raspberry Pi" />
-<meta property = "og:url" content = "https://jangari-ntk.github.io/tags/raspberry-pi/" />
-<meta property = "og:title" content = "Raspberry Pi" />
+<meta name = "twitter:title" content = "Backup and Restore" />
+<meta property = "og:url" content = "https://jangari-ntk.github.io/tags/backup-and-restore/" />
+<meta property = "og:title" content = "Backup and Restore" />
 <meta property = "og:description" content = "" />
 <meta property = "og:image" content = "https://jangari-ntk.github.io/images/thumbnail.png" />
 <link rel='apple-touch-icon' sizes='180x180' href='https://jangari-ntk.github.io/icons/apple-touch-icon.png'>
@@ -30,7 +30,7 @@
 <meta name="msapplication-TileColor" content="#002538">
 <meta name="theme-color" content="#002538">
 
-  <link rel='canonical' href='https://jangari-ntk.github.io/tags/raspberry-pi/'>
+  <link rel='canonical' href='https://jangari-ntk.github.io/tags/backup-and-restore/'>
     
 
     
@@ -92,37 +92,32 @@
   <div class = 'excerpt'>
     <div class = 'excerpt_header'>
       <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2020-10-09/'>【HomeLab】ホストの USB デバイスを vSAN で使用するための設定</a>
+        <a href='https://jangari-ntk.github.io/post/2022-01-10/'>REST API で VCSA をバックアップからリストアする</a>
       </h3>
       <div class = 'post_meta'>
   <svg class="icon">
     <use xlink:href="#calendar"></use>
   </svg>
   <span class="post_date">
-    Oct 9, 2020</span>
-  <a href = 'https://jangari-ntk.github.io/tags/vsan' class = 'post_tag button button_translucent'>vSAN
+    Jan 10, 2022</span>
+  <a href = 'https://jangari-ntk.github.io/tags/vcenter-server' class = 'post_tag button button_translucent'>vCenter Server
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi-on-arm' class = 'post_tag button button_translucent'>ESXi on Arm
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/raspberry-pi' class = 'post_tag button button_translucent'>Raspberry Pi
+  <a href = 'https://jangari-ntk.github.io/tags/backup-and-restore' class = 'post_tag button button_translucent'>Backup and Restore
   </a>
 </div>
 
     </div>
     <div class = 'excerpt_footer partition'>
       <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2020-10-09/thumbnail.PNG'>
+      <img src = '/images/2021-12-26/thumbnail.PNG'>
       </div>
       
         <div>
-          <p class = 'pale'>はじめに Project Monterey の発表で ESXi on SmartNIC が言及されていましたが、先日の vSphere 7.0 Update 1 のリリース時に合わせて ESXi on Arm が Flings として公開されました。
-ESXi Arm Edition | VMware Flings
-ESXi-Arm インストール完了！
-ラズパイで ESXi 動いてるの感動する pic.twitter.com/3fi8QqCuHE
-&mdash; Jangari (@Jangari_nTK) October 6, 2020  私も Raspberry Pi 4b 8GB にインストールして遊んでみており、ESXi …</p>
-          <a href='https://jangari-ntk.github.io/post/2020-10-09/' class='excerpt_more button'>Read More</a>
+          <p class = 'pale'>概要 前回の記事では OVFTool で vCenter Server Appliance (以下 VCSA) をデプロイしました。今回の記事では VCSA のインストールのステージ1が完了したところから、REST API を使って vCenter Server のリストアを実行してみます。
+なぜ API でやろうと思ったのか vCenter Server 7.0 Update 3 時点で、VCSA の CLI インストーラにはリストアの機能だけ存在しません。VMware Docs には GUI インストーラを使う手順と、vSphere Client で OVA のデプロイ後に VAMI からステージ2を実行する方法のみが書いてあり …</p>
+          <a href='https://jangari-ntk.github.io/post/2022-01-10/' class='excerpt_more button'>Read More</a>
         </div>
       </div>
     </div>

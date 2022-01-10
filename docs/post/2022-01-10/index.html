@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" data-figures="">
-  <head>  <title>Raspberry Pi | vSoliloquy</title>
+<html lang="en" data-figures="" class="page">
+  <head>  <title>REST API で VCSA をバックアップからリストアする | vSoliloquy</title>
   <meta charset='utf-8'>
   <meta name="generator" content="Hugo 0.74.3" />
   <meta name = 'viewport' content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
@@ -12,16 +12,17 @@
   gtag('js', new Date());
   gtag('config', 'UA-175306204-1');
 </script>
+  
 <meta property = "og:locale" content = "en_US" />
 <meta property="og:type" content="article">
-<meta name="description" content="">
+<meta name="description" content="今回の記事では VCSA のインストールのステージ1が完了したところから、REST API を使って vCenter Server のリストアを実行してみます。">
 <meta name = "twitter:card" content = "summary" />
 <meta name = "twitter:creator" content = "@Jangari_nTK">
-<meta name = "twitter:title" content = "Raspberry Pi" />
-<meta property = "og:url" content = "https://jangari-ntk.github.io/tags/raspberry-pi/" />
-<meta property = "og:title" content = "Raspberry Pi" />
-<meta property = "og:description" content = "" />
-<meta property = "og:image" content = "https://jangari-ntk.github.io/images/thumbnail.png" />
+<meta name = "twitter:title" content = "REST API で VCSA をバックアップからリストアする" />
+<meta property = "og:url" content = "https://jangari-ntk.github.io/post/2022-01-10/" />
+<meta property = "og:title" content = "REST API で VCSA をバックアップからリストアする" />
+<meta property = "og:description" content = "今回の記事では VCSA のインストールのステージ1が完了したところから、REST API を使って vCenter Server のリストアを実行してみます。" />
+<meta property = "og:image" content = "https://jangari-ntk.github.io/images/2021-12-26/thumbnail.PNG" />
 <link rel='apple-touch-icon' sizes='180x180' href='https://jangari-ntk.github.io/icons/apple-touch-icon.png'>
 <link rel='icon' type='image/png' sizes='32x32' href='https://jangari-ntk.github.io/icons/favicon-32x32.png'>
 <link rel='icon' type='image/png' sizes='16x16' href='https://jangari-ntk.github.io/icons/favicon-16x16.png'>
@@ -30,7 +31,7 @@
 <meta name="msapplication-TileColor" content="#002538">
 <meta name="theme-color" content="#002538">
 
-  <link rel='canonical' href='https://jangari-ntk.github.io/tags/raspberry-pi/'>
+  <link rel='canonical' href='https://jangari-ntk.github.io/post/2022-01-10/'>
     
 
     
@@ -84,55 +85,252 @@
 </header>
 
     <main>
-
-<div class='grid-inverse wrap content'>
-  <ul class='posts' id = 'posts'>
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2020-10-09/'>【HomeLab】ホストの USB デバイスを vSAN で使用するための設定</a>
-      </h3>
-      <div class = 'post_meta'>
+  
+<div class = 'grid-inverse wrap content'>
+  <article class='post_content'>
+    <h1 class='post_title'>REST API で VCSA をバックアップからリストアする</h1><div class = 'post_meta'>
   <svg class="icon">
     <use xlink:href="#calendar"></use>
   </svg>
   <span class="post_date">
-    Oct 9, 2020</span>
-  <a href = 'https://jangari-ntk.github.io/tags/vsan' class = 'post_tag button button_translucent'>vSAN
+    Jan 10, 2022</span>
+  <a href = 'https://jangari-ntk.github.io/tags/vcenter-server' class = 'post_tag button button_translucent'>vCenter Server
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi-on-arm' class = 'post_tag button button_translucent'>ESXi on Arm
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/raspberry-pi' class = 'post_tag button button_translucent'>Raspberry Pi
+  <a href = 'https://jangari-ntk.github.io/tags/backup-and-restore' class = 'post_tag button button_translucent'>Backup and Restore
   </a>
 </div>
 
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2020-10-09/thumbnail.PNG'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>はじめに Project Monterey の発表で ESXi on SmartNIC が言及されていましたが、先日の vSphere 7.0 Update 1 のリリース時に合わせて ESXi on Arm が Flings として公開されました。
-ESXi Arm Edition | VMware Flings
-ESXi-Arm インストール完了！
-ラズパイで ESXi 動いてるの感動する pic.twitter.com/3fi8QqCuHE
-&mdash; Jangari (@Jangari_nTK) October 6, 2020  私も Raspberry Pi 4b 8GB にインストールして遊んでみており、ESXi …</p>
-          <a href='https://jangari-ntk.github.io/post/2020-10-09/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
+    <div class='post_share'>
+  Share on:
+  <a href="https://twitter.com/intent/tweet?text=REST%20API%20%e3%81%a7%20VCSA%20%e3%82%92%e3%83%90%e3%83%83%e3%82%af%e3%82%a2%e3%83%83%e3%83%97%e3%81%8b%e3%82%89%e3%83%aa%e3%82%b9%e3%83%88%e3%82%a2%e3%81%99%e3%82%8b&url=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2022-01-10%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
+    <svg class="icon">
+      <use xlink:href="#twitter"></use>
+    </svg>
+  </a>
   
-    <li>
+  <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2022-01-10%2f&t=REST%20API%20%e3%81%a7%20VCSA%20%e3%82%92%e3%83%90%e3%83%83%e3%82%af%e3%82%a2%e3%83%83%e3%83%97%e3%81%8b%e3%82%89%e3%83%aa%e3%82%b9%e3%83%88%e3%82%a2%e3%81%99%e3%82%8b" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
+    <svg class="icon">
+      <use xlink:href="#facebook"></use>
+    </svg>
+  </a>
+  <script>
+    function shareViaLinkedin() {
+      window.open('http://www.linkedin.com/shareArticle?mini=true&url='+encodeURIComponent("https://jangari-ntk.github.io/post/2022-01-10/"), '', 'left=0,top=0,width=650,height=420,personalbar=0,toolbar=0,scrollbars=0,resizable=0');
+    }
+  </script>
+  <a href="#linkedinshare" id = "linkedinshare" class="linkedin" title="Share on LinkedIn" rel="nofollow" onclick="shareViaLinkedin()">
+    <svg class="icon">
+      <use xlink:href="#linkedin"></use>
+    </svg>
+  </a>
+  <a href="https://jangari-ntk.github.io/post/2022-01-10/" title="Copy Link" class="link link_yank">
+    <svg class="icon">
+      <use xlink:href="#yank"></use>
+    </svg>
+  </a>
+</div>
 
-
+    
+    
+    <h2>Table of contents</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#概要">概要</a></li>
+    <li><a href="#なぜ-api-でやろうと思ったのか">なぜ API でやろうと思ったのか</a></li>
+    <li><a href="#事前準備">事前準備</a>
+      <ul>
+        <li><a href="#vcsa-のファイルベースバックアップを取得する">VCSA のファイルベースバックアップを取得する</a></li>
+        <li><a href="#インストールのステージ1が完了した-vcsa-を用意する">インストールのステージ1が完了した VCSA を用意する</a></li>
+      </ul>
     </li>
+    <li><a href="#rest-api-を叩いてリストアを実行する">REST API を叩いてリストアを実行する</a></li>
+    <li><a href="#ステージ1で-rest-api-を叩く際の注意点">ステージ1で REST API を叩く際の注意点</a>
+      <ul>
+        <li><a href="#tcp-5480-ポートに-http-リクエストを発行する">TCP 5480 ポートに HTTP リクエストを発行する</a></li>
+        <li><a href="#api-のエンドポイントは-rest-古い方を利用する">API のエンドポイントは /rest (古い方)を利用する</a></li>
+      </ul>
+    </li>
+    <li><a href="#おわりに">おわりに</a></li>
+    <li><a href="#補足-アプライアンスシェルの-api-コマンドを使う">補足: アプライアンスシェルの API コマンドを使う</a></li>
   </ul>
+</nav>
+    <h2 id="概要">概要</h2>
+<p><a href="/post/2022-01-07/">前回の記事</a>では OVFTool で vCenter Server Appliance (以下 VCSA) をデプロイしました。今回の記事では VCSA のインストールのステージ1が完了したところから、REST API を使って vCenter Server のリストアを実行してみます。</p>
+<h2 id="なぜ-api-でやろうと思ったのか">なぜ API でやろうと思ったのか</h2>
+<p>vCenter Server 7.0 Update 3 時点で、VCSA の CLI インストーラにはリストアの機能だけ存在しません。VMware Docs には GUI インストーラを使う手順と、vSphere Client で OVA のデプロイ後に VAMI からステージ2を実行する方法のみが書いてあります。</p>
+<ul>
+<li><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vcenter.install.doc/GUID-F02AF073-7CFD-45B2-ACC8-DE3B6ED28022.html">ファイルベースのバックアップからの vCenter Server のリストア</a></li>
+<li><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vcenter.install.doc/GUID-1E39EF05-1DD7-4E9B-B9FE-6F373AA81862.html">ステージ 1 - 新しいアプライアンスをデプロイ</a></li>
+</ul>
+<p>インストール、アップグレード、マイグレーションは CLI インストーラでも可能になっています。</p>
+<ul>
+<li><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vcenter.install.doc/GUID-C17AFF44-22DE-41F4-B85D-19B7A995E144.html">vCenter Server アプライアンスの CLI デプロイ</a></li>
+<li><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vcenter.upgrade.doc/GUID-97BA3A0E-CFCB-407D-81FD-FB91AE46786F.html">vCenter ServerAppliance の CLI アップグレード</a></li>
+<li><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vcenter.upgrade.doc/GUID-AFDCE942-516E-4C5B-ADBF-C1237C9BBA80.html">CLI による Windows からアプライアンスへの vCenter Serverインストールの移行</a></li>
+</ul>
+<p>このため、リストアだけコマンドラインで出来ないのもなぁ・・・と思ったのが API でやってみようとした発端です。</p>
+<h2 id="事前準備">事前準備</h2>
+<p>事前準備として、以下の2点を実施しておきます。</p>
+<ul>
+<li>VCSA のファイルベースバックアップを取得する</li>
+<li>インストールのステージ1までが完了している VCSA を用意する</li>
+</ul>
+<h3 id="vcsa-のファイルベースバックアップを取得する">VCSA のファイルベースバックアップを取得する</h3>
+<p>当然ながらバックアップがないとリストアできませんので、以下の手順で VAMI からファイルベースバックアップを取得しておきます。</p>
+<ul>
+<li><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vcenter.install.doc/GUID-8C9D5260-291C-44EB-A79C-BFFF506F2216.html">vCenter Server 管理インターフェイスを使用した vCenter Server の手動によるバックアップ</a></li>
+</ul>
+<p>なお、バックアップが完了した後は以下の情報をメモしておきます。</p>
+<ul>
+<li>VCSA のバージョン／ビルド番号</li>
+<li>バックアップの場所の URI (protocol://&lt;backup server&gt;/&hellip;)</li>
+<li>バックアップの暗号化パスワード</li>
+<li>バックアップサーバの認証情報</li>
+<li>SSO 管理者(<a href="mailto:administrator@vsphere.local">administrator@vsphere.local</a>)の認証情報</li>
+</ul>
+<p>VCSA のバージョン／ビルド番号は後述しますが、インストールのステージ1で使用するインストーラ ISO を選ぶために必要になります。その他はステージ2の実行に必要です。</p>
+<h3 id="インストールのステージ1が完了した-vcsa-を用意する">インストールのステージ1が完了した VCSA を用意する</h3>
+<p><a href="/post/2022-01-07/">前回の記事</a>では OVFTool を使ってステージ1が完了した状態でデプロイする方法を記載しました。その他には以下のような方法でもステージ1が完了した状態の VCSA を用意できます。</p>
+<ul>
+<li>GUI インストーラを実行し、ステージ1の完了時点でインストーラを終了する</li>
+<li>vSphere Client や Host Client から VCSA の OVA ファイルをデプロイする</li>
+</ul>
+<p>上述のファイルベースバックアップの取得時にメモした VCSA のビルド番号と同じインストーラの ISO を用意し、いずれかの方法でステージ1の VCSA をデプロイしておきます。テスト目的で使用する場合はステージ1の完了後に VCSA をシャットダウンしてスナップショットを取っておくと便利です。</p>
+<p>なお、VCSA のファイルベースバックアップの一般的な注意点として、デプロイする VCSA のバージョン／ビルド番号やネットワーク情報はバックアップ時のものと一致している必要があります。VCSA のビルド番号やシステム名が異なる場合はステージ2のリストアが行えませんので注意してください。</p>
+<h2 id="rest-api-を叩いてリストアを実行する">REST API を叩いてリストアを実行する</h2>
+<p>では実際に REST API を叩いてリストアを実行してみます。やることは単純で、以下の3点を実施するだけです。</p>
+<ol>
+<li>リストアのパラメータを JSON 形式で用意する</li>
+<li>VCSA の認証情報で API トークンを取得する</li>
+<li>JSON データを添えてリストアの API を叩く</li>
+</ol>
+<p>curl で VCSA の REST API を叩いたものが以下になります。JSON の整形は jq で実施しています。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span>## Appliance hostname and credential
+<span class="ln"> 2</span>VCSA_HOSTNAME=vcsa01.jangari.lab
+<span class="ln"> 3</span>VCSA_USERNAME=root
+<span class="ln"> 4</span>VCSA_PASSWORD=VMware1!
+<span class="ln"> 5</span>
+<span class="ln"> 6</span>## SSO administrator credential
+<span class="ln"> 7</span>VC_SSO_ADMIN_USERNAME=administrator
+<span class="ln"> 8</span>VC_SSO_ADMIN_PASSWORD=VMware1!
+<span class="ln"> 9</span>
+<span class="ln">10</span>## Backup location details
+<span class="ln">11</span>SFTP_LOCATION=192.168.0.4/vCenter/sn_vcsa01.jangari.lab/M_7.0.3.00200_20220106-162432_
+<span class="ln">12</span>SFTP_USERNAME=root
+<span class="ln">13</span>SFTP_PASSWORD=Vmware@123
+<span class="ln">14</span>
+<span class="ln">15</span>## Encryption password for the backup file
+<span class="ln">16</span>BACKUP_PASSWORD=VMware1!
+<span class="ln">17</span>
+<span class="ln">18</span>
+<span class="ln">19</span>RESTORE_OPTS=$(jq -c &lt;&lt;EOF
+<span class="ln">20</span>{
+<span class="ln">21</span>    &#34;piece&#34;: {
+<span class="ln">22</span>        &#34;backup_password&#34;: &#34;${BACKUP_PASSWORD}&#34;,
+<span class="ln">23</span>        &#34;ignore_warnings&#34;: false,
+<span class="ln">24</span>        &#34;location_type&#34;: &#34;SFTP&#34;,
+<span class="ln">25</span>        &#34;location&#34;: &#34;sftp://${SFTP_LOCATION}&#34;,
+<span class="ln">26</span>        &#34;location_password&#34;: &#34;${SFTP_PASSWORD}&#34;,
+<span class="ln">27</span>        &#34;location_user&#34;: &#34;${SFTP_USERNAME}&#34;,
+<span class="ln">28</span>        &#34;sso_admin_user_name&#34;: &#34;${VC_SSO_ADMIN_USERNAME}&#34;,
+<span class="ln">29</span>        &#34;sso_admin_user_password&#34;: &#34;${VC_SSO_ADMIN_PASSWORD}&#34;
+<span class="ln">30</span>    }
+<span class="ln">31</span>}
+<span class="ln">32</span>EOF
+<span class="ln">33</span>)
+<span class="ln">34</span>
+<span class="ln">35</span>## Obtain API token
+<span class="ln">36</span>TOKEN=$( \
+<span class="ln">37</span>    curl -k -X POST \
+<span class="ln">38</span>        -H &#34;Authorization: Basic $(echo -n ${VCSA_USERNAME}:${VCSA_PASSWORD} | base64)&#34; \
+<span class="ln">39</span>        -H &#34;Content-Length: 0&#34; \
+<span class="ln">40</span>        https://${VCSA_HOSTNAME}:5480/rest/com/vmware/cis/session \
+<span class="ln">41</span>    | jq .value
+<span class="ln">42</span>)
+<span class="ln">43</span>
+<span class="ln">44</span>## Invoke restore
+<span class="ln">45</span>curl -k -X POST \
+<span class="ln">46</span>  -H &#34;vmware-api-session-id: ${TOKEN}&#34; \
+<span class="ln">47</span>  -H &#34;Content-Type: application/json&#34; \
+<span class="ln">48</span>  -d &#34;${RESTORE_OPTS}&#34; \
+<span class="ln">49</span>  https://${VCSA_HOSTNAME}:5480/rest/appliance/recovery/restore/job
+</code></pre></div><p>API トークンの取得、リストアに使用する REST API はそれぞれ以下です。</p>
+<ul>
+<li><a href="https://developer.vmware.com/apis/vsphere-automation/v7.0U2-deprecated/cis/rest/com/vmware/cis/session/post/">Create Session | CIS | vSphere CIS REST APIs</a></li>
+<li><a href="https://developer.vmware.com/apis/vsphere-automation/v7.0U2-deprecated/appliance/rest/appliance/recovery/restore/job/post/">Create Restore Job | Recovery | vSphere Appliance REST APIs</a></li>
+</ul>
+<p>なお、リストアの進行状況のチェックなども含むサンプルコードが VMware {code} の Programming Guide にあったのでリンクを貼っておきます。</p>
+<ul>
+<li><a href="https://developer.vmware.com/docs/6529/vmware-vcenter-server-appliance-management-programming-guide/doc/GUID-9186ACEC-B391-4DDD-AF0A-3ECEE62939B9.html">Bash Example of Restoring the vCenter Server Instance - VMware vCenter Server Appliance Management Programming Guide - VMware {code}</a></li>
+</ul>
+<h2 id="ステージ1で-rest-api-を叩く際の注意点">ステージ1で REST API を叩く際の注意点</h2>
+<p>ステージ1で VCSA の REST API を叩く場合、以下の点に注意が必要です。</p>
+<ul>
+<li>TCP 5480 ポートに HTTP リクエストを発行する</li>
+<li>API のエンドポイントは /rest (古い方)を利用する</li>
+</ul>
+<h3 id="tcp-5480-ポートに-http-リクエストを発行する">TCP 5480 ポートに HTTP リクエストを発行する</h3>
+<p>ステージ1の完了時点では VAMI に相当する applmgmt サービスしか起動していないため、TCP 443 ポートは待ち受けすらしていません。TCP 5480 ポートにはアクセスが可能なので、VAMI に搭載されている REST API を使用します。</p>
+<ul>
+<li><a href="https://developer.vmware.com/docs/6529/vmware-vcenter-server-appliance-management-programming-guide/doc/GUID-3FF118CD-8CA1-4B4D-80B4-0C27243F1208.html#GUID-3FF118CD-8CA1-4B4D-80B4-0C27243F1208__fig_5A2E8E44C3A3475DA3D2988B55673C47">vCenter Server Appliance Management Overview</a></li>
+</ul>
+<h3 id="api-のエンドポイントは-rest-古い方を利用する">API のエンドポイントは /rest (古い方)を利用する</h3>
+<p>使用している REST API のフォーマットは vSphere Automation API と同様ですが、vCenter Server 7.0 Update 3 時点で VAMI には /api のエンドポイントは実装されていないようでした<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>。TCP 5480 の /api に対してリクエストを発行すると以下のように 404 Not Found のエラーになります。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span>curl -v -k -X POST \
+<span class="ln"> 2</span>  -H &#34;Authorization: Basic $(echo -n ${VCSA_USERNAME}:${VCSA_PASSWORD} | base64)&#34; \
+<span class="ln"> 3</span>  -H &#34;Content-Length: 0&#34; \
+<span class="ln"> 4</span>  https://${VCSA_HOSTNAME}:5480/api/session \
+<span class="ln"> 5</span>| jq
+<span class="ln"> 6</span>
+<span class="ln"> 7</span>  ...
+<span class="ln"> 8</span>&lt; HTTP/1.1 404 Not Found
+<span class="ln"> 9</span>  ...
+<span class="ln">10</span>{
+<span class="ln">11</span>  &#34;messages&#34;: [
+<span class="ln">12</span>    {
+<span class="ln">13</span>      &#34;id&#34;: &#34;vapi.method.invoke.exception&#34;,
+<span class="ln">14</span>      &#34;default_message&#34;: &#34;Error in method invocation The requested URL was not found on the server.  If you entered the URL manually please check your spelling and try again.&#34;,
+<span class="ln">15</span>      &#34;args&#34;: [
+<span class="ln">16</span>        &#34;The requested URL was not found on the server.  If you entered the URL manually please check your spelling and try again.&#34;
+<span class="ln">17</span>      ]
+<span class="ln">18</span>    }
+<span class="ln">19</span>  ],
+<span class="ln">20</span>  &#34;error_type&#34;: &#34;INVALID_REQUEST&#34;
+<span class="ln">21</span>}
+</code></pre></div><p>Programming Guide を見る限り、元からすべての機能の操作は想定していないようなので、vSphere Automation API とはバージョンが同期していないのかなと推測しています。</p>
+<ul>
+<li><a href="https://developer.vmware.com/docs/6529/vmware-vcenter-server-appliance-management-programming-guide/doc/GUID-8338C142-8C50-476D-BF7B-E5BCFD3E3E9E.html">Limitations of Programming for the vCenter Server Appliance</a></li>
+</ul>
+<p>今のところ REST API 自体は使えるため特に困ることはないですが、vSphere Automation API としては /rest のエンドポイントは VC 7.0 U2 から非推奨になっているので、VAMI に /api のエンドポイントが実装された際には書き換えた方が良いだろうとは思います。</p>
+<ul>
+<li><a href="https://core.vmware.com/blog/vsphere-7-update-2-rest-api-modernization">vSphere 7 Update 2 - REST API Modernization</a></li>
+</ul>
+<h2 id="おわりに">おわりに</h2>
+<p>今回の記事では REST API を使用して vCenter Server のリストアを実施してみました。</p>
+<p>インストールに GUI しか使えないとユーザー入力が必要になるため自動化も難しいですが、CLI や API で操作ができればユーザー入力なしで自動化するなどの応用が効きます。現状は VAMI の REST API が古そうなので今後 URL の修正などが必要になる可能性もありますが、参考になれば幸いです。</p>
+<h2 id="補足-アプライアンスシェルの-api-コマンドを使う">補足: アプライアンスシェルの API コマンドを使う</h2>
+<p>VCSA のアプライアンスシェルには API コマンドという機能が搭載されています。com.vmware.appliance.recovery.restore.job.create コマンドが今回のリストアを実行する REST API と同様の動きをします。</p>
+<ul>
+<li><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.vcenter.configuration.doc/GUID-CCC172CB-7CCB-41E4-B46A-0B5876E24EF5.html">Appliance シェルの API コマンド</a></li>
+</ul>
+<p>VCSA をステージ1の状態でデプロイした後、仮想マシンコンソールや SSH 接続でアプライアンスシェルにアクセスし、上述の API コマンドを叩くことでも同様にリストアが行えます。API コマンドのオプションなどの詳細は「help api &lt;API コマンド名&gt;」のヘルプで確認が可能です。</p>
+<ul>
+<li><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.vcenter.configuration.doc/GUID-393D8255-96CF-49C9-9B17-5EC639FA3DED.html">アプライアンス シェルへのアクセス</a></li>
+<li><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.vcenter.configuration.doc/GUID-F0F35CE1-8A15-46DB-B740-14FD326E2444.html">アプライアンスのプラグインおよび API コマンドに関するヘルプの表示</a></li>
+</ul>
+<p>VCSA の外から REST API が叩けないような場合には、アプライアンスシェルから API コマンドを実行するといったことも可能です。VCSA の API を簡易的に試すにはこちらも良いと思います。</p>
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p>applmgmt.log を漁った限りでは、VAMI には /rest しかエンドポイントとしてマッピングされていないように見えてます。 <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+
+  </article>
 <aside class="sidebar">
   <section class="sidebar_inner">
     <h2>Jangari</h2>
@@ -163,9 +361,6 @@ ESXi-Arm インストール完了！
     <h2 class="mt-4">Recent Posts</h2>
     <ul class="flex-column">
       
-      <li>
-        <a href="https://jangari-ntk.github.io/post/2022-01-10/" class="nav-link">REST API で VCSA をバックアップからリストアする</a>
-      </li>
       <li>
         <a href="https://jangari-ntk.github.io/post/2022-01-07/" class="nav-link">OVFTool で vCenter Server Appliance をインストールする</a>
       </li>
@@ -431,8 +626,6 @@ ESXi-Arm インストール完了！
 </aside>
 
 </div>
-
-
     </main><svg width="0" height="0" class="hidden">
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="facebook">
     <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h151V331h-60v-90h60v-61c0-49.629 40.371-90 90-90h91v90h-91v61h91l-15 90h-76v181h121c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zm0 0"></path>
