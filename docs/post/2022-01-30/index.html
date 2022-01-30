@@ -159,7 +159,7 @@
 <p>ただ、そもそも ESXi は NUC のサポート外 OS であり、加えて今回の壊れ方も中途半端なものだったため、サポート対象 OS での再現確認や Intel サポートとのコミュニケーションなどの手間や時間的なコストが高くつきそうです。このため自前で保守することにしました。</p>
 <p>当然ながらサポートされる方法ではありませんので交換は自己責任でお願いします。</p>
 <h2 id="背景">背景</h2>
-<p>事の発端は SATA 接続の 2.5 インチ SSD 上の VMFS データストアにコールド移行や OVF テンプレートのデプロイを実行したところエラーで失敗したことです。再現性があるので esxtop のストレージパネルを眺めてみると、ディスクへの書き込み自体は始まっているものの、しばらくするとタスクのエラーと同時に書き込みが止まるような状況でした。</p>
+<p>事の発端は SATA 接続の 2.5 インチ SSD 上の VMFS データストアにコールド移行や OVF テンプレートのデプロイを実行したところエラーで失敗したことです。再現性があるので esxtop のストレージ関連のパネルを眺めてみると、ディスクへの書き込み自体は始まっているものの、しばらくするとタスクのエラーと同時に書き込みが止まるような状況でした。</p>
 <p>このためタスク失敗日時の付近の vmkernel.log を確認してみたところ、タスクが失敗する直前に SATA コントローラのドライバ(vmw_ahci)が以下のような I/O エラーのログを吐いている状況でした。</p>
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span>2022-01-13T09:08:47.854Z cpu1:1049095)vmw_ahci[000000170]:&lt;2&gt; CompletionBottomHalf:TF/IF Error, PxIS=0x08000000, PxTFD=0x40,PxSERR=0x00400100, PxCI=0x0000000c, PxSACT=0x0000000e, ActiveTags=0x0000000e
 <span class="ln"> 2</span>2022-01-13T09:08:47.854Z cpu1:1049095)vmw_ahci[000000170]:&lt;2&gt; CompletionBottomHalf:SCSI cmd 0x2a on slot 1 lba=0x37a800, lbc=0x2a8
