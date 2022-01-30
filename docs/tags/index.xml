@@ -6,15 +6,51 @@
     <description>Recent content in Tags on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Mon, 10 Jan 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 30 Jan 2022 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Driver</title>
+      <link>https://jangari-ntk.github.io/tags/driver/</link>
+      <pubDate>Sun, 30 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/tags/driver/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ESXi</title>
+      <link>https://jangari-ntk.github.io/tags/esxi/</link>
+      <pubDate>Sun, 30 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/tags/esxi/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Hardware</title>
+      <link>https://jangari-ntk.github.io/tags/hardware/</link>
+      <pubDate>Sun, 30 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/tags/hardware/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>vSphere</title>
+      <link>https://jangari-ntk.github.io/tags/vsphere/</link>
+      <pubDate>Sun, 30 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/tags/vsphere/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Backup and Restore</title>
       <link>https://jangari-ntk.github.io/tags/backup-and-restore/</link>
-      <pubDate>Mon, 10 Jan 2022 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 11 Jan 2022 00:00:00 +0000</pubDate>
       
       <guid>https://jangari-ntk.github.io/tags/backup-and-restore/</guid>
       <description></description>
@@ -23,18 +59,9 @@
     <item>
       <title>vCenter Server</title>
       <link>https://jangari-ntk.github.io/tags/vcenter-server/</link>
-      <pubDate>Mon, 10 Jan 2022 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 11 Jan 2022 00:00:00 +0000</pubDate>
       
       <guid>https://jangari-ntk.github.io/tags/vcenter-server/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>vSphere</title>
-      <link>https://jangari-ntk.github.io/tags/vsphere/</link>
-      <pubDate>Mon, 10 Jan 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://jangari-ntk.github.io/tags/vsphere/</guid>
       <description></description>
     </item>
     
@@ -62,15 +89,6 @@
       <pubDate>Sun, 26 Dec 2021 00:00:00 +0000</pubDate>
       
       <guid>https://jangari-ntk.github.io/tags/vulnerability/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>ESXi</title>
-      <link>https://jangari-ntk.github.io/tags/esxi/</link>
-      <pubDate>Thu, 16 Dec 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://jangari-ntk.github.io/tags/esxi/</guid>
       <description></description>
     </item>
     

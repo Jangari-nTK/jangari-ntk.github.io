@@ -6,10 +6,24 @@
     <description>Recent content in ESXi on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Thu, 16 Dec 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 30 Jan 2022 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/tags/esxi/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>【備忘録】Intel NUC 10 の SATA ケーブルを交換した話</title>
+      <link>https://jangari-ntk.github.io/post/2022-01-30/</link>
+      <pubDate>Sun, 30 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2022-01-30/</guid>
+      <description>概要 Intel NUC 10 (NUC10i7FNH) で ESXi 7.0 を動かしているのですが、SATA ケーブルが故障したため互換品に交換しました。
+使用した NUC 10 互換の SATA ケーブルは以下です。色々と調べましたが NUC 10/11 向けはこれしか無いようでした1。
+ Intel NUC Internal FPC/FCC 22 Pin SATA/Power Cable for 2.5 Inch Drives (Micro Sata Cables)  なお、NUC の購入証明があれば Intel のサポートに依頼するといったことは出来るらしいです。
+ Intelのベアボーンキット「BXNUC10I7FNH」が壊れたので修理に出してみた - GIGAZINE NUC 電源トラブル - Qiita  ただ、そもそも ESXi は NUC のサポート外 OS であり、加えて今回の壊れ方も中途半端なものだったため、サポート対象 OS での再現確認や Intel サポートとのコミュニケーションなどの手間や時間的なコストが高くつきそうです。このため自前で保守することにしました。
+当然ながらサポートされる方法ではありませんので交換は自己責任でお願いします。
+背景 事の発端は SATA 接続の 2.5 インチ SSD 上の VMFS データストアにコールド移行や OVF テンプレートのデプロイを実行したところエラーで失敗したことです。再現性があるので esxtop のストレージパネルを眺めてみると、ディスクへの書き込み自体は始まっているものの、しばらくするとタスクのエラーと同時に書き込みが止まるような状況でした。</description>
+    </item>
     
     <item>
       <title>PowerCLI を使って ESXi の忘れた root パスワードをリセットする</title>

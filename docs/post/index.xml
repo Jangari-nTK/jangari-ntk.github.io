@@ -6,10 +6,43 @@
     <description>Recent content on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Mon, 10 Jan 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 30 Jan 2022 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>【備忘録】Intel NUC 10 の SATA ケーブルを交換した話</title>
+      <link>https://jangari-ntk.github.io/post/2022-01-30/</link>
+      <pubDate>Sun, 30 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2022-01-30/</guid>
+      <description>概要 Intel NUC 10 (NUC10i7FNH) で ESXi 7.0 を動かしているのですが、SATA ケーブルが故障したため互換品に交換しました。
+使用した NUC 10 互換の SATA ケーブルは以下です。色々と調べましたが NUC 10/11 向けはこれしか無いようでした1。
+ Intel NUC Internal FPC/FCC 22 Pin SATA/Power Cable for 2.5 Inch Drives (Micro Sata Cables)  なお、NUC の購入証明があれば Intel のサポートに依頼するといったことは出来るらしいです。
+ Intelのベアボーンキット「BXNUC10I7FNH」が壊れたので修理に出してみた - GIGAZINE NUC 電源トラブル - Qiita  ただ、そもそも ESXi は NUC のサポート外 OS であり、加えて今回の壊れ方も中途半端なものだったため、サポート対象 OS での再現確認や Intel サポートとのコミュニケーションなどの手間や時間的なコストが高くつきそうです。このため自前で保守することにしました。
+当然ながらサポートされる方法ではありませんので交換は自己責任でお願いします。
+背景 事の発端は SATA 接続の 2.5 インチ SSD 上の VMFS データストアにコールド移行や OVF テンプレートのデプロイを実行したところエラーで失敗したことです。再現性があるので esxtop のストレージパネルを眺めてみると、ディスクへの書き込み自体は始まっているものの、しばらくするとタスクのエラーと同時に書き込みが止まるような状況でした。</description>
+    </item>
+    
+    <item>
+      <title>REST API で VCSA のバックアップ情報の一覧を取得</title>
+      <link>https://jangari-ntk.github.io/post/2022-01-11/</link>
+      <pubDate>Tue, 11 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2022-01-11/</guid>
+      <description>概要 1VCSA_HOSTNAME=vcsa01.jangari.lab 2VCSA_USERNAME=administrator@vsphere.local 3VCSA_PASSWORD=VMware1! 4 5TOKEN=$( \ 6 curl -k -X POST \ 7 -H &amp;#34;Authorization: Basic $(echo -n ${VCSA_USERNAME}:${VCSA_PASSWORD} | base64)&amp;#34; \ 8 -H &amp;#34;Content-Length: 0&amp;#34; \ 9 https://${VCSA_HOSTNAME}/api/session \ 10 | tr -d &amp;#34;\&amp;#34;&amp;#34; 11) 12 13curl -k -X GET \ 14 -H &amp;#34;vmware-api-session-id: ${TOKEN}&amp;#34; \ 15 https://${VCSA_HOSTNAME}/api/appliance/recovery/backup/job/details \ 16| jq 1{ 2 &amp;#34;20220106-162432-18901211&amp;#34;: { 3 &amp;#34;cancelable&amp;#34;: false, 4 &amp;#34;end_time&amp;#34;: &amp;#34;2022-01-06T16:24:47.327Z&amp;#34;, 5 &amp;#34;description&amp;#34;: { 6 &amp;#34;args&amp;#34;: [], 7 &amp;#34;default_message&amp;#34;: &amp;#34;Backup job.</description>
+    </item>
+    
+    <item>
+      <title>REST API で VCSA のバックアップ情報の一覧を取得</title>
+      <link>https://jangari-ntk.github.io/post/2022-01-18/</link>
+      <pubDate>Tue, 11 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2022-01-18/</guid>
+      <description>概要 ESXi configuration files for sfcb snmp and wbem can no longer be edited (82638) https://kb.vmware.com/s/article/82638
+12022-01-17T13:51:09.987Z cpu0:1049017)WARNING: vmkusb: transfer error [22]: endpt = 0x81, nframes = 1, timeout = 0, interval = 0, max_packet_size = 1024, max_frame_size = 16384: Broken pipe 1# esxcli system syslog config logfilter set --log-filtering-enabled=true 2# esxcli system syslog config logfilter get 3 Log Filtering Enabled: true 4# esxcli system syslog config logfilter add -f &amp;#34;0 | vmkernel | .</description>
+    </item>
     
     <item>
       <title>REST API で VCSA をバックアップからリストアする</title>
