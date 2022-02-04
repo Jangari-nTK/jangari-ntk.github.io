@@ -26,25 +26,6 @@
     </item>
     
     <item>
-      <title>REST API で VCSA のバックアップ情報の一覧を取得</title>
-      <link>https://jangari-ntk.github.io/post/2022-01-11/</link>
-      <pubDate>Tue, 11 Jan 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://jangari-ntk.github.io/post/2022-01-11/</guid>
-      <description>概要 1VCSA_HOSTNAME=vcsa01.jangari.lab 2VCSA_USERNAME=administrator@vsphere.local 3VCSA_PASSWORD=VMware1! 4 5TOKEN=$( \ 6 curl -k -X POST \ 7 -H &amp;#34;Authorization: Basic $(echo -n ${VCSA_USERNAME}:${VCSA_PASSWORD} | base64)&amp;#34; \ 8 -H &amp;#34;Content-Length: 0&amp;#34; \ 9 https://${VCSA_HOSTNAME}/api/session \ 10 | tr -d &amp;#34;\&amp;#34;&amp;#34; 11) 12 13curl -k -X GET \ 14 -H &amp;#34;vmware-api-session-id: ${TOKEN}&amp;#34; \ 15 https://${VCSA_HOSTNAME}/api/appliance/recovery/backup/job/details \ 16| jq 1{ 2 &amp;#34;20220106-162432-18901211&amp;#34;: { 3 &amp;#34;cancelable&amp;#34;: false, 4 &amp;#34;end_time&amp;#34;: &amp;#34;2022-01-06T16:24:47.327Z&amp;#34;, 5 &amp;#34;description&amp;#34;: { 6 &amp;#34;args&amp;#34;: [], 7 &amp;#34;default_message&amp;#34;: &amp;#34;Backup job.</description>
-    </item>
-    
-    <item>
-      <title>REST API で VCSA のバックアップ情報の一覧を取得</title>
-      <link>https://jangari-ntk.github.io/post/2022-01-18/</link>
-      <pubDate>Tue, 11 Jan 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://jangari-ntk.github.io/post/2022-01-18/</guid>
-      <description>概要 ESXi configuration files for sfcb snmp and wbem can no longer be edited (82638) https://kb.vmware.com/s/article/82638
-12022-01-17T13:51:09.987Z cpu0:1049017)WARNING: vmkusb: transfer error [22]: endpt = 0x81, nframes = 1, timeout = 0, interval = 0, max_packet_size = 1024, max_frame_size = 16384: Broken pipe 1# esxcli system syslog config logfilter set --log-filtering-enabled=true 2# esxcli system syslog config logfilter get 3 Log Filtering Enabled: true 4# esxcli system syslog config logfilter add -f &amp;#34;0 | vmkernel | .</description>
-    </item>
-    
-    <item>
       <title>REST API で VCSA をバックアップからリストアする</title>
       <link>https://jangari-ntk.github.io/post/2022-01-10/</link>
       <pubDate>Mon, 10 Jan 2022 00:00:00 +0000</pubDate>

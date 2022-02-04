@@ -132,77 +132,6 @@
   <div class = 'excerpt'>
     <div class = 'excerpt_header'>
       <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2022-01-11/'>REST API で VCSA のバックアップ情報の一覧を取得</a>
-      </h3>
-      <div class = 'post_meta'>
-  <svg class="icon">
-    <use xlink:href="#calendar"></use>
-  </svg>
-  <span class="post_date">
-    Jan 11, 2022</span>
-  <a href = 'https://jangari-ntk.github.io/tags/vcenter-server' class = 'post_tag button button_translucent'>vCenter Server
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/backup-and-restore' class = 'post_tag button button_translucent'>Backup and Restore
-  </a>
-</div>
-
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2021-12-26/thumbnail.PNG'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>概要 1VCSA_HOSTNAME=vcsa01.jangari.lab 2VCSA_USERNAME=administrator@vsphere.local 3VCSA_PASSWORD=VMware1! 4 5TOKEN=$( \ 6 curl -k -X POST \ 7 -H &#34;Authorization: Basic $(echo -n ${VCSA_USERNAME}:${VCSA_PASSWORD} | base64)&#34; \ 8 -H &#34;Content-Length: 0&#34; \ 9 https://${VCSA_HOSTNAME}/api/session \ 10 | tr -d …</p>
-          <a href='https://jangari-ntk.github.io/post/2022-01-11/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
-  
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2022-01-18/'>REST API で VCSA のバックアップ情報の一覧を取得</a>
-      </h3>
-      <div class = 'post_meta'>
-  <svg class="icon">
-    <use xlink:href="#calendar"></use>
-  </svg>
-  <span class="post_date">
-    Jan 11, 2022</span>
-  <a href = 'https://jangari-ntk.github.io/tags/vcenter-server' class = 'post_tag button button_translucent'>vCenter Server
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/backup-and-restore' class = 'post_tag button button_translucent'>Backup and Restore
-  </a>
-</div>
-
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2021-12-26/thumbnail.PNG'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>概要 ESXi configuration files for sfcb snmp and wbem can no longer be edited (82638) https://kb.vmware.com/s/article/82638
-12022-01-17T13:51:09.987Z cpu0:1049017)WARNING: vmkusb: transfer error [22]: endpt = 0x81, nframes = 1, timeout = 0, interval = 0, max_packet_size = 1024, max_frame_size = 16384: Broken pipe 1# …</p>
-          <a href='https://jangari-ntk.github.io/post/2022-01-18/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
-  
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
         <a href='https://jangari-ntk.github.io/post/2022-01-10/'>REST API で VCSA をバックアップからリストアする</a>
       </h3>
       <div class = 'post_meta'>
@@ -389,6 +318,85 @@ Steps to reset a lost or forgotten root password of an ESX/ESXi host (1317898)
     </div>
   </li>
   
+      
+<li class = 'post_item'>
+  <div class = 'excerpt'>
+    <div class = 'excerpt_header'>
+      <h3 class = 'post_link'>
+        <a href='https://jangari-ntk.github.io/post/2021-11-13/'>【小ネタ】vCenter Server 7.0 Update 3 でイベントのエクスポート機能が追加</a>
+      </h3>
+      <div class = 'post_meta'>
+  <svg class="icon">
+    <use xlink:href="#calendar"></use>
+  </svg>
+  <span class="post_date">
+    Nov 13, 2021</span>
+  <a href = 'https://jangari-ntk.github.io/tags/tips' class = 'post_tag button button_translucent'>Tips
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/vcenter-server' class = 'post_tag button button_translucent'>vCenter Server
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere-7.0' class = 'post_tag button button_translucent'>vSphere 7.0
+  </a>
+</div>
+
+    </div>
+    <div class = 'excerpt_footer partition'>
+      <div class = 'excerpt_thumbnail'>
+      <img src = '/images/2021-11-13/thumbnail.PNG'>
+      </div>
+      
+        <div>
+          <p class = 'pale'>概要 以前の記事で vCenter Server 7.0 でイベントをエクスポートする方法をいくつか記載していました。
+リリースノートなどに情報が載っていなかったのですが、vCenter Server 7.0 Update 3 で vSphere Client のイベントコンソールでのイベント一覧のエクスポート機能が追加されたようです。
+VMware Docs にもエクスポートに関するドキュメントが追加されていました。
+ vSphere Client 内のイベントのエクスポート  ドキュメントの更新日が VC 7.0 U3 のリリースより2ヶ月ほど古いのが気になりますが、少なくとも直前の VC 7.0 U2d で確認する限り本機能は …</p>
+          <a href='https://jangari-ntk.github.io/post/2021-11-13/' class='excerpt_more button'>Read More</a>
+        </div>
+      </div>
+    </div>
+  </li>
+  
+      
+<li class = 'post_item'>
+  <div class = 'excerpt'>
+    <div class = 'excerpt_header'>
+      <h3 class = 'post_link'>
+        <a href='https://jangari-ntk.github.io/post/2021-09-18/'>PowerCLI の vSphere Automation API SDK モジュールで vCenter Server のマシン SSL 証明書を更新する</a>
+      </h3>
+      <div class = 'post_meta'>
+  <svg class="icon">
+    <use xlink:href="#calendar"></use>
+  </svg>
+  <span class="post_date">
+    Sep 18, 2021</span>
+  <a href = 'https://jangari-ntk.github.io/tags/tips' class = 'post_tag button button_translucent'>Tips
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/vcenter-server' class = 'post_tag button button_translucent'>vCenter Server
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere-7.0' class = 'post_tag button button_translucent'>vSphere 7.0
+  </a>
+</div>
+
+    </div>
+    <div class = 'excerpt_footer partition'>
+      <div class = 'excerpt_thumbnail'>
+      <img src = '/images/2021-09-18/thumbnail.PNG'>
+      </div>
+      
+        <div>
+          <p class = 'pale'>概要 以前の記事で REST API を使って vCenter Server のマシン SSL 証明書を置き換えていましたが、先日の PowerCLI 12.4 のリリースで PowerCLI のコマンドレットが追加されました。
+PowerCLI 12.4 – What’s New
+ The new vSphere Management Module A new module is introduced for vSphere Management. It is a PowerShell-based module backed by the newly introduced vSphere Automation API SDK …</p>
+          <a href='https://jangari-ntk.github.io/post/2021-09-18/' class='excerpt_more button'>Read More</a>
+        </div>
+      </div>
+    </div>
+  </li>
+  
     <li>
 <ul class="pagination">
   <li class="page-item">
@@ -454,12 +462,6 @@ Steps to reset a lost or forgotten root password of an ESX/ESXi host (1317898)
         <a href="https://jangari-ntk.github.io/post/2022-01-30/" class="nav-link">【備忘録】Intel NUC 10 の SATA ケーブルを交換した話</a>
       </li>
       <li>
-        <a href="https://jangari-ntk.github.io/post/2022-01-11/" class="nav-link">REST API で VCSA のバックアップ情報の一覧を取得</a>
-      </li>
-      <li>
-        <a href="https://jangari-ntk.github.io/post/2022-01-18/" class="nav-link">REST API で VCSA のバックアップ情報の一覧を取得</a>
-      </li>
-      <li>
         <a href="https://jangari-ntk.github.io/post/2022-01-10/" class="nav-link">REST API で VCSA をバックアップからリストアする</a>
       </li>
       <li>
@@ -473,6 +475,12 @@ Steps to reset a lost or forgotten root password of an ESX/ESXi host (1317898)
       </li>
       <li>
         <a href="https://jangari-ntk.github.io/post/2021-12-14/" class="nav-link">ホストプロファイルを使って ESXi の忘れた root パスワードをリセットする</a>
+      </li>
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2021-11-13/" class="nav-link">【小ネタ】vCenter Server 7.0 Update 3 でイベントのエクスポート機能が追加</a>
+      </li>
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2021-09-18/" class="nav-link">PowerCLI の vSphere Automation API SDK モジュールで vCenter Server のマシン SSL 証明書を更新する</a>
       </li>
     </ul>
     <h2>Search</h2>
@@ -490,7 +498,7 @@ Steps to reset a lost or forgotten root password of an ESX/ESXi host (1317898)
       <nav class="tags_nav">
         <a href='https://jangari-ntk.github.io/categories/vsphere/' class=" post_tag button button_translucent">
           VSPHERE
-          <span class='button_tally'>37</span>
+          <span class='button_tally'>35</span>
         </a>
         
         
@@ -502,16 +510,16 @@ Steps to reset a lost or forgotten root password of an ESX/ESXi host (1317898)
       <nav class="tags_nav">
         <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent">
           VSPHERE
-          <span class='button_tally'>31</span>
-        </a>
-        
-        <a href='https://jangari-ntk.github.io/tags/vcenter-server/' class=" post_tag button button_translucent">
-          VCENTER-SERVER
-          <span class='button_tally'>19</span>
+          <span class='button_tally'>29</span>
         </a>
         
         <a href='https://jangari-ntk.github.io/tags/esxi/' class=" post_tag button button_translucent">
           ESXI
+          <span class='button_tally'>17</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/vcenter-server/' class=" post_tag button button_translucent">
+          VCENTER-SERVER
           <span class='button_tally'>17</span>
         </a>
         
@@ -545,11 +553,6 @@ Steps to reset a lost or forgotten root password of an ESX/ESXi host (1317898)
           <span class='button_tally'>4</span>
         </a>
         
-        <a href='https://jangari-ntk.github.io/tags/backup-and-restore/' class=" post_tag button button_translucent">
-          BACKUP-AND-RESTORE
-          <span class='button_tally'>3</span>
-        </a>
-        
         <a href='https://jangari-ntk.github.io/tags/cli/' class=" post_tag button button_translucent">
           CLI
           <span class='button_tally'>3</span>
@@ -570,6 +573,11 @@ Steps to reset a lost or forgotten root password of an ESX/ESXi host (1317898)
           <span class='button_tally'>2</span>
         </a>
         
+        <a href='https://jangari-ntk.github.io/tags/arm/' class=" post_tag button button_translucent">
+          ARM
+          <span class='button_tally'>1</span>
+        </a>
+        
         
         <br>
         <div class="post_tags_toggle button">All tags</div>
@@ -584,7 +592,7 @@ Steps to reset a lost or forgotten root password of an ESX/ESXi host (1317898)
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/backup-and-restore/' class=" post_tag button button_translucent" data-position=3>BACKUP-AND-RESTORE<span class='button_tally'>3</span>
+            <a href='https://jangari-ntk.github.io/tags/backup-and-restore/' class=" post_tag button button_translucent" data-position=1>BACKUP-AND-RESTORE<span class='button_tally'>1</span>
             </a>
             
             
@@ -672,7 +680,7 @@ Steps to reset a lost or forgotten root password of an ESX/ESXi host (1317898)
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/vcenter-server/' class=" post_tag button button_translucent" data-position=19>VCENTER-SERVER<span class='button_tally'>19</span>
+            <a href='https://jangari-ntk.github.io/tags/vcenter-server/' class=" post_tag button button_translucent" data-position=17>VCENTER-SERVER<span class='button_tally'>17</span>
             </a>
             
             
@@ -696,7 +704,7 @@ Steps to reset a lost or forgotten root password of an ESX/ESXi host (1317898)
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent" data-position=31>VSPHERE<span class='button_tally'>31</span>
+            <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent" data-position=29>VSPHERE<span class='button_tally'>29</span>
             </a>
             
             
