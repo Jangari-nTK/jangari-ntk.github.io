@@ -6,10 +6,26 @@
     <description>Recent content in Security on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Sun, 26 Dec 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 23 Feb 2022 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/tags/security/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>初期 MAC アドレス、有効な MAC アドレス、「MAC アドレス変更」ポリシー</title>
+      <link>https://jangari-ntk.github.io/post/2022-02-23/</link>
+      <pubDate>Wed, 23 Feb 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2022-02-23/</guid>
+      <description>概要 vSphere では仮想スイッチで利用可能なセキュリティポリシーとして以下の3種類があります。これらのセキュリティポリシーを使用することで、MAC アドレスのなりすましのような L2 レイヤーの攻撃からネットワークを保護できます。
+ MAC アドレス変更 偽装転送 無差別モード操作  ただし、特定のネットワーク構成ではセキュリティポリシーの無効化が必要なケースがあります。セキュリティ機能が適切に構成されないと意図せずシステムに脆弱性を作り込んでしまう可能性もあるため、セキュリティ機能の仕様や動作を理解した上で適切に構成する必要があります。
+今回の記事では「MAC アドレス変更」のセキュリティポリシーと、その前提知識としての初期 MAC アドレス・有効な MAC アドレスについて、簡易的な検証も交えつつ実際の動作を確認していきます。
+仮想ネットワークアダプタの2種類の MAC アドレス vSphere の文脈では、仮想ネットワークアダプタの MAC アドレスとして以下の2つを定義しています。
+ 初期 MAC アドレス (Initial MAC Address) 有効な MAC アドレス (Effective MAC Address)  「MAC アドレス変更」のセキュリティポリシーの理解にあたってはこれらの理解が必須になるため、以下それぞれの概要を記載します。
+初期 MAC アドレス (Initial MAC Address) 初期 MAC アドレスは、仮想マシンの設定や vmx ファイルで確認できる仮想ネットワークアダプタ自体の MAC アドレスです。
+ vSphere 標準スイッチのセキュリティ強化   初期 MAC アドレス
+初期 MAC アドレスは、アダプタの作成時に割り当てられます。初期 MAC アドレスは、ゲスト OS の外部から再構成できますが、ゲスト OS により変更することはできません。</description>
+    </item>
     
     <item>
       <title>vc_log4j_mitigator.py での CVE-2021-44228 &amp; CVE-2021-45046 への対処</title>

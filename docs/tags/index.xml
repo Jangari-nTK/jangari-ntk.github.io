@@ -6,7 +6,7 @@
     <description>Recent content in Tags on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Fri, 04 Feb 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 23 Feb 2022 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,9 +14,36 @@
     <item>
       <title>ESXi</title>
       <link>https://jangari-ntk.github.io/tags/esxi/</link>
-      <pubDate>Fri, 04 Feb 2022 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 23 Feb 2022 00:00:00 +0000</pubDate>
       
       <guid>https://jangari-ntk.github.io/tags/esxi/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Network</title>
+      <link>https://jangari-ntk.github.io/tags/network/</link>
+      <pubDate>Wed, 23 Feb 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/tags/network/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Security</title>
+      <link>https://jangari-ntk.github.io/tags/security/</link>
+      <pubDate>Wed, 23 Feb 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/tags/security/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>vSphere</title>
+      <link>https://jangari-ntk.github.io/tags/vsphere/</link>
+      <pubDate>Wed, 23 Feb 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/tags/vsphere/</guid>
       <description></description>
     </item>
     
@@ -35,15 +62,6 @@
       <pubDate>Fri, 04 Feb 2022 00:00:00 +0000</pubDate>
       
       <guid>https://jangari-ntk.github.io/tags/troubleshooting/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>vSphere</title>
-      <link>https://jangari-ntk.github.io/tags/vsphere/</link>
-      <pubDate>Fri, 04 Feb 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://jangari-ntk.github.io/tags/vsphere/</guid>
       <description></description>
     </item>
     
@@ -89,15 +107,6 @@
       <pubDate>Fri, 07 Jan 2022 00:00:00 +0000</pubDate>
       
       <guid>https://jangari-ntk.github.io/tags/installation/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Security</title>
-      <link>https://jangari-ntk.github.io/tags/security/</link>
-      <pubDate>Sun, 26 Dec 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://jangari-ntk.github.io/tags/security/</guid>
       <description></description>
     </item>
     
@@ -152,15 +161,6 @@
       <pubDate>Wed, 10 Feb 2021 00:00:00 +0000</pubDate>
       
       <guid>https://jangari-ntk.github.io/tags/management/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Network</title>
-      <link>https://jangari-ntk.github.io/tags/network/</link>
-      <pubDate>Wed, 10 Feb 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://jangari-ntk.github.io/tags/network/</guid>
       <description></description>
     </item>
     
