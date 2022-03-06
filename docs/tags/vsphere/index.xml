@@ -6,10 +6,25 @@
     <description>Recent content in vSphere on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Wed, 23 Feb 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 06 Mar 2022 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/tags/vsphere/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>「偽装転送」ポリシーでフレームがドロップされる仕組み</title>
+      <link>https://jangari-ntk.github.io/post/2022-03-06/</link>
+      <pubDate>Sun, 06 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2022-03-06/</guid>
+      <description>はじめに 今回の記事では仮想スイッチの「偽装転送」ポリシーについて動作の概要や、ポリシー違反が発生する具体的なケースを見ていきます。
+「偽装転送」ポリシーにより仮想マシンから送信されるフレームの送信元 MAC アドレスのなりすましを防ぐことが可能になります。ただし、特定のネットワーク構成では本ポリシーを「承諾」とする必要があります。
+「偽装転送」ポリシー 「偽装転送」ポリシーは仮想マシンから送出されるフレームのうち、送信元 MAC アドレスが書き換えられているフレームをドロップする機能です。具体的には以下の2つの MAC アドレスが一致しない場合は仮想マシンから送信されるフレームをドロップします。
+ 送出されたフレームの送信元 MAC アドレス 仮想ネットワークアダプタの有効な MAC アドレス  初期 MAC アドレスと有効な MAC アドレスの違いは前回の記事を参照してください。
+送信元 MAC アドレスの偽装 最も単純な例としては、ゲストOSから送信元 MAC アドレスを書き換えたフレームを実際に送信してみることです。以下、パケット操作ツールである Scapy のインタラクティブシェルを使って送信元 MAC アドレスを偽装したフレームを送信してみます。
+1# pip install scapy 2# scapy 3 ... 4&amp;gt;&amp;gt;&amp;gt; sendp(Ether(src=&amp;#34;00:11:22:33:44:55&amp;#34;)/IP(dst=&amp;#34;192.168.0.1&amp;#34;)) 5. 6Sent 1 packets. 7&amp;gt;&amp;gt;&amp;gt; ESXi 側で pktcap-uw を仕掛けておきフレームをキャプチャすると、以下のように「偽装転送」ポリシーによってドロップされた状況が確認できます。
+1# pktcap-uw --capture Drop 2The session capture point is Drop. 3 ... 416:39:48.479640[1] Captured at Drop point, Drop Reason &amp;#39;MAC Forgery Drop&amp;#39;.</description>
+    </item>
     
     <item>
       <title>初期 MAC アドレス、有効な MAC アドレス、「MAC アドレス変更」ポリシー</title>

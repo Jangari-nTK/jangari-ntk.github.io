@@ -92,6 +92,46 @@
   <div class = 'excerpt'>
     <div class = 'excerpt_header'>
       <h3 class = 'post_link'>
+        <a href='https://jangari-ntk.github.io/post/2022-03-06/'>「偽装転送」ポリシーでフレームがドロップされる仕組み</a>
+      </h3>
+      <div class = 'post_meta'>
+  <svg class="icon">
+    <use xlink:href="#calendar"></use>
+  </svg>
+  <span class="post_date">
+    Mar 6, 2022</span>
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/network' class = 'post_tag button button_translucent'>Network
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/security' class = 'post_tag button button_translucent'>Security
+  </a>
+</div>
+
+    </div>
+    <div class = 'excerpt_footer partition'>
+      <div class = 'excerpt_thumbnail'>
+      <img src = '/images/2022-03-06/forged_transmit_policy_scapy.png'>
+      </div>
+      
+        <div>
+          <p class = 'pale'>はじめに 今回の記事では仮想スイッチの「偽装転送」ポリシーについて動作の概要や、ポリシー違反が発生する具体的なケースを見ていきます。
+「偽装転送」ポリシーにより仮想マシンから送信されるフレームの送信元 MAC アドレスのなりすましを防ぐことが可能になります。ただし、特定のネットワーク構成では本ポリシーを「承諾」とする必要があります。
+「偽装転送」ポリシー 「偽装転送」ポリシーは仮想マシンから送出されるフレームのうち、送信元 MAC アドレスが書き換えられているフレームをドロップする機能です。具体的には以下の2つの MAC アドレスが一致しない場合は仮想マシンから送信されるフレームをドロップします。
+ 送出されたフレー …</p>
+          <a href='https://jangari-ntk.github.io/post/2022-03-06/' class='excerpt_more button'>Read More</a>
+        </div>
+      </div>
+    </div>
+  </li>
+  
+      
+<li class = 'post_item'>
+  <div class = 'excerpt'>
+    <div class = 'excerpt_header'>
+      <h3 class = 'post_link'>
         <a href='https://jangari-ntk.github.io/post/2022-02-23/'>初期 MAC アドレス、有効な MAC アドレス、「MAC アドレス変更」ポリシー</a>
       </h3>
       <div class = 'post_meta'>
@@ -199,6 +239,9 @@ Best practices for assigning static MAC address to a Virtual machine vNIC (82139
     <ul class="flex-column">
       
       <li>
+        <a href="https://jangari-ntk.github.io/post/2022-03-06/" class="nav-link">「偽装転送」ポリシーでフレームがドロップされる仕組み</a>
+      </li>
+      <li>
         <a href="https://jangari-ntk.github.io/post/2022-02-23/" class="nav-link">初期 MAC アドレス、有効な MAC アドレス、「MAC アドレス変更」ポリシー</a>
       </li>
       <li>
@@ -219,9 +262,6 @@ Best practices for assigning static MAC address to a Virtual machine vNIC (82139
       <li>
         <a href="https://jangari-ntk.github.io/post/2021-12-16/" class="nav-link">PowerCLI を使って ESXi の忘れた root パスワードをリセットする</a>
       </li>
-      <li>
-        <a href="https://jangari-ntk.github.io/post/2021-12-14/" class="nav-link">ホストプロファイルを使って ESXi の忘れた root パスワードをリセットする</a>
-      </li>
     </ul>
     <h2>Search</h2>
     <div>
@@ -238,7 +278,7 @@ Best practices for assigning static MAC address to a Virtual machine vNIC (82139
       <nav class="tags_nav">
         <a href='https://jangari-ntk.github.io/categories/vsphere/' class=" post_tag button button_translucent">
           VSPHERE
-          <span class='button_tally'>37</span>
+          <span class='button_tally'>38</span>
         </a>
         
         
@@ -250,12 +290,12 @@ Best practices for assigning static MAC address to a Virtual machine vNIC (82139
       <nav class="tags_nav">
         <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent">
           VSPHERE
-          <span class='button_tally'>31</span>
+          <span class='button_tally'>32</span>
         </a>
         
         <a href='https://jangari-ntk.github.io/tags/esxi/' class=" post_tag button button_translucent">
           ESXI
-          <span class='button_tally'>19</span>
+          <span class='button_tally'>20</span>
         </a>
         
         <a href='https://jangari-ntk.github.io/tags/vcenter-server/' class=" post_tag button button_translucent">
@@ -273,13 +313,13 @@ Best practices for assigning static MAC address to a Virtual machine vNIC (82139
           <span class='button_tally'>10</span>
         </a>
         
-        <a href='https://jangari-ntk.github.io/tags/architecture/' class=" post_tag button button_translucent">
-          ARCHITECTURE
-          <span class='button_tally'>6</span>
-        </a>
-        
         <a href='https://jangari-ntk.github.io/tags/security/' class=" post_tag button button_translucent">
           SECURITY
+          <span class='button_tally'>7</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/architecture/' class=" post_tag button button_translucent">
+          ARCHITECTURE
           <span class='button_tally'>6</span>
         </a>
         
@@ -303,13 +343,13 @@ Best practices for assigning static MAC address to a Virtual machine vNIC (82139
           <span class='button_tally'>3</span>
         </a>
         
-        <a href='https://jangari-ntk.github.io/tags/esxi-on-arm/' class=" post_tag button button_translucent">
-          ESXI-ON-ARM
-          <span class='button_tally'>2</span>
-        </a>
-        
         <a href='https://jangari-ntk.github.io/tags/network/' class=" post_tag button button_translucent">
           NETWORK
+          <span class='button_tally'>3</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/esxi-on-arm/' class=" post_tag button button_translucent">
+          ESXI-ON-ARM
           <span class='button_tally'>2</span>
         </a>
         
@@ -348,7 +388,7 @@ Best practices for assigning static MAC address to a Virtual machine vNIC (82139
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/esxi/' class=" post_tag button button_translucent" data-position=19>ESXI<span class='button_tally'>19</span>
+            <a href='https://jangari-ntk.github.io/tags/esxi/' class=" post_tag button button_translucent" data-position=20>ESXI<span class='button_tally'>20</span>
             </a>
             
             
@@ -396,7 +436,7 @@ Best practices for assigning static MAC address to a Virtual machine vNIC (82139
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/network/' class=" post_tag button button_translucent" data-position=2>NETWORK<span class='button_tally'>2</span>
+            <a href='https://jangari-ntk.github.io/tags/network/' class=" post_tag button button_translucent" data-position=3>NETWORK<span class='button_tally'>3</span>
             </a>
             
             
@@ -412,7 +452,7 @@ Best practices for assigning static MAC address to a Virtual machine vNIC (82139
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/security/' class=" post_tag button button_translucent" data-position=6>SECURITY<span class='button_tally'>6</span>
+            <a href='https://jangari-ntk.github.io/tags/security/' class=" post_tag button button_translucent" data-position=7>SECURITY<span class='button_tally'>7</span>
             </a>
             
             
@@ -448,7 +488,7 @@ Best practices for assigning static MAC address to a Virtual machine vNIC (82139
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent" data-position=31>VSPHERE<span class='button_tally'>31</span>
+            <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent" data-position=32>VSPHERE<span class='button_tally'>32</span>
             </a>
             
             
