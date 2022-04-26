@@ -95,6 +95,46 @@
   <div class = 'excerpt'>
     <div class = 'excerpt_header'>
       <h3 class = 'post_link'>
+        <a href='https://jangari-ntk.github.io/post/2022-04-26/'>【メモ】VMFS 6 上のシック形式の仮想ディスクには vmkfstools -K (--punchzero) が効かない</a>
+      </h3>
+      <div class = 'post_meta'>
+  <svg class="icon">
+    <use xlink:href="#calendar"></use>
+  </svg>
+  <span class="post_date">
+    Apr 26, 2022</span>
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/storage' class = 'post_tag button button_translucent'>Storage
+  </a>
+</div>
+
+    </div>
+    <div class = 'excerpt_footer partition'>
+      <div class = 'excerpt_thumbnail'>
+      <img src = '/images/2022-04-26/thumbnail.PNG'>
+      </div>
+      
+        <div>
+          <p class = 'pale'>概要 VMFS5 以前の VMFS データストアでは、シックプロビジョニングの仮想ディスクに vmkfstools -K コマンドを実行することで、ゼロクリアされたブロックの削除とシンプロビジョニングへの変換がおこなえました。
+ゼロクリアされたブロックの削除
+ vmkfstools コマンドを使用して、ゼロクリアされたブロックを削除します。
+-K|--punchzero
+このオプションは、ゼロクリアされたすべてのブロックの割り当てを解除し、割り当て済みで有効なデータを含むブロックだけを残します。処理後の仮想ディスクはシン フォーマットになります。
+ VMFS6 ではシックプロビジョニングの仮想ディスクに対して vmkfstools …</p>
+          <a href='https://jangari-ntk.github.io/post/2022-04-26/' class='excerpt_more button'>Read More</a>
+        </div>
+      </div>
+    </div>
+  </li>
+  
+      
+<li class = 'post_item'>
+  <div class = 'excerpt'>
+    <div class = 'excerpt_header'>
+      <h3 class = 'post_link'>
         <a href='https://jangari-ntk.github.io/post/2022-03-06/'>「偽装転送」ポリシーでフレームがドロップされる仕組み</a>
       </h3>
       <div class = 'post_meta'>
@@ -360,46 +400,6 @@ Open Virtualization Format Tool (ovftool)
     </div>
   </li>
   
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2021-12-16/'>PowerCLI を使って ESXi の忘れた root パスワードをリセットする</a>
-      </h3>
-      <div class = 'post_meta'>
-  <svg class="icon">
-    <use xlink:href="#calendar"></use>
-  </svg>
-  <span class="post_date">
-    Dec 16, 2021</span>
-  <a href = 'https://jangari-ntk.github.io/tags/tips' class = 'post_tag button button_translucent'>Tips
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vcenter-server' class = 'post_tag button button_translucent'>vCenter Server
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
-  </a>
-</div>
-
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2021-12-16/thumbnail.PNG'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>概要 前回の記事ではホストプロファイルで ESXi の root ユーザーのパスワードをリセットしました。
-今回の記事は PowerCLI を使用し vCenter Server 経由で ESXi の root ユーザーのパスワードをリセットしてみます。ホストプロファイルは vSphere Enterprise Plus が必要となる機能ですが、PowerCLI は vSphere Essentials 以上の全てのエディションで使用可能です。
-なお、前回の記事と同様に ESXi が vCenter Server に管理・接続されていることが前提となります。
-ESXi のローカルユーザーの管理 ESXi のローカルユーザーを管理する …</p>
-          <a href='https://jangari-ntk.github.io/post/2021-12-16/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
-  
     <li>
 <ul class="pagination">
   <li class="page-item">
@@ -465,6 +465,9 @@ ESXi のローカルユーザーの管理 ESXi のローカルユーザーを管
     <ul class="flex-column">
       
       <li>
+        <a href="https://jangari-ntk.github.io/post/2022-04-26/" class="nav-link">【メモ】VMFS 6 上のシック形式の仮想ディスクには vmkfstools -K (--punchzero) が効かない</a>
+      </li>
+      <li>
         <a href="https://jangari-ntk.github.io/post/2022-03-06/" class="nav-link">「偽装転送」ポリシーでフレームがドロップされる仕組み</a>
       </li>
       <li>
@@ -485,9 +488,6 @@ ESXi のローカルユーザーの管理 ESXi のローカルユーザーを管
       <li>
         <a href="https://jangari-ntk.github.io/post/2021-12-26/" class="nav-link">vc_log4j_mitigator.py での CVE-2021-44228 &amp; CVE-2021-45046 への対処</a>
       </li>
-      <li>
-        <a href="https://jangari-ntk.github.io/post/2021-12-16/" class="nav-link">PowerCLI を使って ESXi の忘れた root パスワードをリセットする</a>
-      </li>
     </ul>
     <h2>Search</h2>
     <div>
@@ -504,7 +504,7 @@ ESXi のローカルユーザーの管理 ESXi のローカルユーザーを管
       <nav class="tags_nav">
         <a href='https://jangari-ntk.github.io/categories/vsphere/' class=" post_tag button button_translucent">
           VSPHERE
-          <span class='button_tally'>38</span>
+          <span class='button_tally'>39</span>
         </a>
         
         
@@ -516,12 +516,12 @@ ESXi のローカルユーザーの管理 ESXi のローカルユーザーを管
       <nav class="tags_nav">
         <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent">
           VSPHERE
-          <span class='button_tally'>32</span>
+          <span class='button_tally'>33</span>
         </a>
         
         <a href='https://jangari-ntk.github.io/tags/esxi/' class=" post_tag button button_translucent">
           ESXI
-          <span class='button_tally'>20</span>
+          <span class='button_tally'>21</span>
         </a>
         
         <a href='https://jangari-ntk.github.io/tags/vcenter-server/' class=" post_tag button button_translucent">
@@ -614,7 +614,7 @@ ESXi のローカルユーザーの管理 ESXi のローカルユーザーを管
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/esxi/' class=" post_tag button button_translucent" data-position=20>ESXI<span class='button_tally'>20</span>
+            <a href='https://jangari-ntk.github.io/tags/esxi/' class=" post_tag button button_translucent" data-position=21>ESXI<span class='button_tally'>21</span>
             </a>
             
             
@@ -682,6 +682,10 @@ ESXi のローカルユーザーの管理 ESXi のローカルユーザーを管
             </a>
             
             
+            <a href='https://jangari-ntk.github.io/tags/storage/' class=" post_tag button button_translucent" data-position=1>STORAGE<span class='button_tally'>1</span>
+            </a>
+            
+            
             <a href='https://jangari-ntk.github.io/tags/tips/' class=" post_tag button button_translucent" data-position=16>TIPS<span class='button_tally'>16</span>
             </a>
             
@@ -714,7 +718,7 @@ ESXi のローカルユーザーの管理 ESXi のローカルユーザーを管
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent" data-position=32>VSPHERE<span class='button_tally'>32</span>
+            <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent" data-position=33>VSPHERE<span class='button_tally'>33</span>
             </a>
             
             
