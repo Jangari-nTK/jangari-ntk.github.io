@@ -92,6 +92,44 @@
   <div class = 'excerpt'>
     <div class = 'excerpt_header'>
       <h3 class = 'post_link'>
+        <a href='https://jangari-ntk.github.io/post/2020-08-11/'>vCenter Server 7.0 で Identity Federation を構成【Part 1】</a>
+      </h3>
+      <div class = 'post_meta'>
+  <svg class="icon">
+    <use xlink:href="#calendar"></use>
+  </svg>
+  <span class="post_date">
+    Aug 11, 2020</span>
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/vcenter-server' class = 'post_tag button button_translucent'>vCenter Server
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/security' class = 'post_tag button button_translucent'>Security
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/featured' class = 'post_tag button button_translucent'>Featured
+  </a>
+</div>
+
+    </div>
+    <div class = 'excerpt_footer partition'>
+      <div class = 'excerpt_thumbnail'>
+      <img src = '/images/2020-08-11/ID_Federation_diagram.PNG'>
+      </div>
+      
+        <div>
+          <p class = 'pale'>はじめに 本記事シリーズでは vCenter Server 7.0 の新機能である Identity Federation を構成する方法を数回に分けてご紹介します。今回は Identity Federation の紹介と、最初の vCenter Server 側での手順について見ていきます。残りの AD FS の手順、その後の vCenter Server の手順は次回以降で見ていきます。
+ 注意: 本機能の VMware Docs での名称は vCenter Server ID プロバイダ フェデレーション (vCenter Server Identity Provider Federation)、公式 Blog …</p>
+          <a href='https://jangari-ntk.github.io/post/2020-08-11/' class='excerpt_more button'>Read More</a>
+        </div>
+      </div>
+    </div>
+  </li>
+  
+      
+<li class = 'post_item'>
+  <div class = 'excerpt'>
+    <div class = 'excerpt_header'>
+      <h3 class = 'post_link'>
         <a href='https://jangari-ntk.github.io/post/2020-08-01/'>vCenter Server 7.0 のイベントをテキストで取得</a>
       </h3>
       <div class = 'post_meta'>
@@ -185,6 +223,9 @@ Exporting virtual machine events from the Tasks &amp; Events tab (2008204)
     <ul class="flex-column">
       
       <li>
+        <a href="https://jangari-ntk.github.io/post/2022-05-04/" class="nav-link">vSphere Diagnostic Tool を使ってみる</a>
+      </li>
+      <li>
         <a href="https://jangari-ntk.github.io/post/2022-04-26/" class="nav-link">【メモ】VMFS 6 上のシック形式の仮想ディスクには vmkfstools -K (--punchzero) が効かない</a>
       </li>
       <li>
@@ -205,9 +246,6 @@ Exporting virtual machine events from the Tasks &amp; Events tab (2008204)
       <li>
         <a href="https://jangari-ntk.github.io/post/2022-01-07/" class="nav-link">OVFTool で vCenter Server Appliance をインストールする</a>
       </li>
-      <li>
-        <a href="https://jangari-ntk.github.io/post/2021-12-26/" class="nav-link">vc_log4j_mitigator.py での CVE-2021-44228 &amp; CVE-2021-45046 への対処</a>
-      </li>
     </ul>
     <h2>Search</h2>
     <div>
@@ -224,7 +262,7 @@ Exporting virtual machine events from the Tasks &amp; Events tab (2008204)
       <nav class="tags_nav">
         <a href='https://jangari-ntk.github.io/categories/vsphere/' class=" post_tag button button_translucent">
           VSPHERE
-          <span class='button_tally'>39</span>
+          <span class='button_tally'>40</span>
         </a>
         
         
@@ -236,7 +274,7 @@ Exporting virtual machine events from the Tasks &amp; Events tab (2008204)
       <nav class="tags_nav">
         <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent">
           VSPHERE
-          <span class='button_tally'>33</span>
+          <span class='button_tally'>34</span>
         </a>
         
         <a href='https://jangari-ntk.github.io/tags/esxi/' class=" post_tag button button_translucent">
@@ -246,7 +284,7 @@ Exporting virtual machine events from the Tasks &amp; Events tab (2008204)
         
         <a href='https://jangari-ntk.github.io/tags/vcenter-server/' class=" post_tag button button_translucent">
           VCENTER-SERVER
-          <span class='button_tally'>17</span>
+          <span class='button_tally'>18</span>
         </a>
         
         <a href='https://jangari-ntk.github.io/tags/tips/' class=" post_tag button button_translucent">
@@ -264,13 +302,13 @@ Exporting virtual machine events from the Tasks &amp; Events tab (2008204)
           <span class='button_tally'>7</span>
         </a>
         
-        <a href='https://jangari-ntk.github.io/tags/architecture/' class=" post_tag button button_translucent">
-          ARCHITECTURE
-          <span class='button_tally'>6</span>
-        </a>
-        
         <a href='https://jangari-ntk.github.io/tags/troubleshooting/' class=" post_tag button button_translucent">
           TROUBLESHOOTING
+          <span class='button_tally'>7</span>
+        </a>
+        
+        <a href='https://jangari-ntk.github.io/tags/architecture/' class=" post_tag button button_translucent">
+          ARCHITECTURE
           <span class='button_tally'>6</span>
         </a>
         
@@ -410,11 +448,11 @@ Exporting virtual machine events from the Tasks &amp; Events tab (2008204)
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/troubleshooting/' class=" post_tag button button_translucent" data-position=6>TROUBLESHOOTING<span class='button_tally'>6</span>
+            <a href='https://jangari-ntk.github.io/tags/troubleshooting/' class=" post_tag button button_translucent" data-position=7>TROUBLESHOOTING<span class='button_tally'>7</span>
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/vcenter-server/' class=" post_tag button button_translucent" data-position=17>VCENTER-SERVER<span class='button_tally'>17</span>
+            <a href='https://jangari-ntk.github.io/tags/vcenter-server/' class=" post_tag button button_translucent" data-position=18>VCENTER-SERVER<span class='button_tally'>18</span>
             </a>
             
             
@@ -438,7 +476,7 @@ Exporting virtual machine events from the Tasks &amp; Events tab (2008204)
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent" data-position=33>VSPHERE<span class='button_tally'>33</span>
+            <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent" data-position=34>VSPHERE<span class='button_tally'>34</span>
             </a>
             
             

@@ -6,10 +6,22 @@
     <description>Recent content on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Tue, 26 Apr 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 04 May 2022 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>vSphere Diagnostic Tool を使ってみる</title>
+      <link>https://jangari-ntk.github.io/post/2022-05-04/</link>
+      <pubDate>Wed, 04 May 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2022-05-04/</guid>
+      <description>はじめに 今回の記事では vCenter Server の構成やサービスの問題などのチェックが行える VMware Flings のツール「vSphere Diagnostic Tool」を紹介したいと思います。
+ vSphere Diagnostic Tool  Tech Preview License のため商用サポートなどはないものの、vCenter Server の様々な項目のサマリーを収集できるため障害調査の初動対応に有用だと思います。現時点では以下の項目がチェックできるようです。
+ The tool itself is currently a set of self contained python and bash scripts that can perform the following tests for vCenter Server Appliance 6.5 or newer:
+ vCenter Basic Info Lookup Service Check AD Check vCenter Certificate Check Core File Check Disk Check vCenter DNS Check vCenter NTP Check vCenter Port Check Root Account Check vCenter Services Check VCHA Check   今回の記事では実際に vCenter Server に障害を発生させてみて、vSphere Diagnostic Tool でどのような情報が取れるのか見てみたいと思います。</description>
+    </item>
     
     <item>
       <title>【メモ】VMFS 6 上のシック形式の仮想ディスクには vmkfstools -K (--punchzero) が効かない</title>

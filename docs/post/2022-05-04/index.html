@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" data-figures="">
-  <head>  <title>VMware Cloud Foundation | vSoliloquy</title>
+<html lang="en" data-figures="" class="page">
+  <head>  <title>vSphere Diagnostic Tool を使ってみる | vSoliloquy</title>
   <meta charset='utf-8'>
   <meta name="generator" content="Hugo 0.74.3" />
   <meta name = 'viewport' content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
@@ -12,16 +12,17 @@
   gtag('js', new Date());
   gtag('config', 'UA-175306204-1');
 </script>
+  
 <meta property = "og:locale" content = "en_US" />
 <meta property="og:type" content="article">
-<meta name="description" content="">
+<meta name="description" content="VMware Flings で vSphere Diagnostic Tool というツールが公開されているのですが、vCenter Server のトラブルシューティングに有用そうなので使ってみました。">
 <meta name = "twitter:card" content = "summary" />
 <meta name = "twitter:creator" content = "@Jangari_nTK">
-<meta name = "twitter:title" content = "VMware Cloud Foundation" />
-<meta property = "og:url" content = "https://jangari-ntk.github.io/tags/vmware-cloud-foundation/" />
-<meta property = "og:title" content = "VMware Cloud Foundation" />
-<meta property = "og:description" content = "" />
-<meta property = "og:image" content = "https://jangari-ntk.github.io/images/thumbnail.png" />
+<meta name = "twitter:title" content = "vSphere Diagnostic Tool を使ってみる" />
+<meta property = "og:url" content = "https://jangari-ntk.github.io/post/2022-05-04/" />
+<meta property = "og:title" content = "vSphere Diagnostic Tool を使ってみる" />
+<meta property = "og:description" content = "VMware Flings で vSphere Diagnostic Tool というツールが公開されているのですが、vCenter Server のトラブルシューティングに有用そうなので使ってみました。" />
+<meta property = "og:image" content = "https://jangari-ntk.github.io/images/2022-05-04/thumbnail.PNG" />
 <link rel='apple-touch-icon' sizes='180x180' href='https://jangari-ntk.github.io/icons/apple-touch-icon.png'>
 <link rel='icon' type='image/png' sizes='32x32' href='https://jangari-ntk.github.io/icons/favicon-32x32.png'>
 <link rel='icon' type='image/png' sizes='16x16' href='https://jangari-ntk.github.io/icons/favicon-16x16.png'>
@@ -30,7 +31,7 @@
 <meta name="msapplication-TileColor" content="#002538">
 <meta name="theme-color" content="#002538">
 
-  <link rel='canonical' href='https://jangari-ntk.github.io/tags/vmware-cloud-foundation/'>
+  <link rel='canonical' href='https://jangari-ntk.github.io/post/2022-05-04/'>
     
 
     
@@ -84,54 +85,255 @@
 </header>
 
     <main>
-
-<div class='grid-inverse wrap content'>
-  <ul class='posts' id = 'posts'>
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2020-10-02/'>VMware 社の新プロジェクト「Project Monterey」？</a>
-      </h3>
-      <div class = 'post_meta'>
+  
+<div class = 'grid-inverse wrap content'>
+  <article class='post_content'>
+    <h1 class='post_title'>vSphere Diagnostic Tool を使ってみる</h1><div class = 'post_meta'>
   <svg class="icon">
     <use xlink:href="#calendar"></use>
   </svg>
   <span class="post_date">
-    Oct 2, 2020</span>
-  <a href = 'https://jangari-ntk.github.io/tags/vmware-cloud-foundation' class = 'post_tag button button_translucent'>VMware Cloud Foundation
+    May 4, 2022</span>
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
+  <a href = 'https://jangari-ntk.github.io/tags/vcenter-server' class = 'post_tag button button_translucent'>vCenter Server
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/x86' class = 'post_tag button button_translucent'>x86
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/arm' class = 'post_tag button button_translucent'>ARM
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/architecture' class = 'post_tag button button_translucent'>Architecture
+  <a href = 'https://jangari-ntk.github.io/tags/troubleshooting' class = 'post_tag button button_translucent'>Troubleshooting
   </a>
 </div>
 
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2020-10-02/Project-Monterey-new-VCF-architecture.png'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>はじめに VMworld 2020 のタイミングに合わせて、9/29 に VMware 社の各種ブログにて新しい製品やサービス、プロジェクトが発表されていました。いくつか見ていたのですが、それらの中でも以下の新しいプロジェクト「Project Monterey」が画期的な内容で個人的に興味をそそられました。知らない＆分からない＆そもそも初めて見る内容も多く、調べながら何とかブログ記事から読み取れた範囲の内容にはなりますが頑張って紹介してみたいと思います。
-Not only is #ProjectMontery really cool but its also 1st validation of #ESXionARM as most …</p>
-          <a href='https://jangari-ntk.github.io/post/2020-10-02/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
+    <div class='post_share'>
+  Share on:
+  <a href="https://twitter.com/intent/tweet?text=vSphere%20Diagnostic%20Tool%20%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%81%bf%e3%82%8b&url=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2022-05-04%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
+    <svg class="icon">
+      <use xlink:href="#twitter"></use>
+    </svg>
+  </a>
   
-    <li>
+  <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2022-05-04%2f&t=vSphere%20Diagnostic%20Tool%20%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%81%bf%e3%82%8b" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
+    <svg class="icon">
+      <use xlink:href="#facebook"></use>
+    </svg>
+  </a>
+  <script>
+    function shareViaLinkedin() {
+      window.open('http://www.linkedin.com/shareArticle?mini=true&url='+encodeURIComponent("https://jangari-ntk.github.io/post/2022-05-04/"), '', 'left=0,top=0,width=650,height=420,personalbar=0,toolbar=0,scrollbars=0,resizable=0');
+    }
+  </script>
+  <a href="#linkedinshare" id = "linkedinshare" class="linkedin" title="Share on LinkedIn" rel="nofollow" onclick="shareViaLinkedin()">
+    <svg class="icon">
+      <use xlink:href="#linkedin"></use>
+    </svg>
+  </a>
+  <a href="https://jangari-ntk.github.io/post/2022-05-04/" title="Copy Link" class="link link_yank">
+    <svg class="icon">
+      <use xlink:href="#yank"></use>
+    </svg>
+  </a>
+</div>
 
-
-    </li>
+    
+    
+    <h2>Table of contents</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#はじめに">はじめに</a></li>
+    <li><a href="#本記事で発生させる障害">本記事で発生させる障害</a></li>
+    <li><a href="#事前準備">事前準備</a></li>
+    <li><a href="#vsphere-diagnostic-tool-を使う">vSphere Diagnostic Tool を使う</a></li>
+    <li><a href="#レポートの各種項目を分析してみる">レポートの各種項目を分析してみる</a></li>
+    <li><a href="#おわりに">おわりに</a></li>
   </ul>
+</nav>
+    <h2 id="はじめに">はじめに</h2>
+<p>今回の記事では vCenter Server の構成やサービスの問題などのチェックが行える <a href="https://flings.vmware.com/">VMware Flings</a> のツール「vSphere Diagnostic Tool」を紹介したいと思います。</p>
+<ul>
+<li><a href="https://flings.vmware.com/vsphere-diagnostic-tool">vSphere Diagnostic Tool</a></li>
+</ul>
+<p><a href="https://flings.vmware.com/vsphere-diagnostic-tool/license">Tech Preview License</a> のため商用サポートなどはないものの、vCenter Server の様々な項目のサマリーを収集できるため障害調査の初動対応に有用だと思います。現時点では以下の項目がチェックできるようです。</p>
+<blockquote>
+<p>The tool itself is currently a set of self contained python and bash scripts that can perform the following tests for vCenter Server Appliance 6.5 or newer:</p>
+<ul>
+<li>vCenter Basic Info</li>
+<li>Lookup Service Check</li>
+<li>AD Check</li>
+<li>vCenter Certificate Check</li>
+<li>Core File Check</li>
+<li>Disk Check</li>
+<li>vCenter DNS Check</li>
+<li>vCenter NTP Check</li>
+<li>vCenter Port Check</li>
+<li>Root Account Check</li>
+<li>vCenter Services Check</li>
+<li>VCHA Check</li>
+</ul>
+</blockquote>
+<p>今回の記事では実際に vCenter Server に障害を発生させてみて、vSphere Diagnostic Tool でどのような情報が取れるのか見てみたいと思います。</p>
+<h2 id="本記事で発生させる障害">本記事で発生させる障害</h2>
+<p>vCenter Server ではデータベース領域の使用済み容量が 95% を上回った場合、データベースの破損を防ぐために「データベース健全性アラーム」が vpxd サービスを停止する仕様があります。</p>
+<ul>
+<li><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.monitoring.doc/GUID-82933270-1D72-4CF3-A1AF-E5A1343F62DE.html">事前構成済みの vSphere アラーム</a></li>
+<li><a href="https://kb.vmware.com/s/article/2119809">/storage/seat disk 100% full on vCenter Server Appliance 6.x/7.x (2119809)</a></li>
+</ul>
+<p>本記事ではデータベース領域の容量不足により vpxd サービスが停止した状況を擬似的に再現させてみます。</p>
+<h2 id="事前準備">事前準備</h2>
+<p>本来であれば大量のタスクやイベントの登録でデータベースが肥大化した状況が望ましいです。しかし、意図的な再現をすぐ行うことが難しいため、簡易的な方法として dd コマンドでダミーのファイルを作り /storage/seat を埋めます。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span># dd if=/dev/zero of=/storage/seat/dummy.bin
+<span class="ln">2</span># df -h
+<span class="ln">3</span>Filesystem                                Size  Used Avail Use% Mounted on
+<span class="ln">4</span>  ...
+<span class="ln">5</span>/dev/mapper/seat_vg-seat                  9.8G  9.2G  112M  99% /storage/seat
+</code></pre></div><p>少し待つとデータベース領域の容量不足で vpxd が停止します。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>2022-05-03T13:28:18.273Z info vpxd[14735] [Originator@6876 sub=vpxdVdb] WarningThreshold: 80% ErrorThreshold: 95%.
+<span class="ln">2</span>2022-05-03T13:28:18.273Z error vpxd[14735] [Originator@6876 sub=vpxdVdb] Space used on storage partition of Database exceeds threshold (used: 98%; threshold: 95%). Service-control request will stop vpxd
+<span class="ln">3</span>  ...
+<span class="ln">4</span>2022-05-03T13:28:19.958Z info vpxd[14582] [Originator@6876 sub=vpxdvpxdSignal] Signal 15 received, exiting
+<span class="ln">5</span>2022-05-03T13:28:19.958Z info vpxd[14582] [Originator@6876 sub=Default] Initiating VMware VirtualCenter shutdown
+<span class="ln">6</span>2022-05-03T13:28:19.959Z info vpxd[14499] [Originator@6876 sub=Default] Shutting down VMware VirtualCenter
+<span class="ln">7</span>  ...
+</code></pre></div><h2 id="vsphere-diagnostic-tool-を使う">vSphere Diagnostic Tool を使う</h2>
+<p>セットアップは簡単で、Flings のページからダウンロードした vdt-v1.1.4.zip を SCP クライアントで VCSA の /root に転送し、unzip で展開します。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span># cd /root
+<span class="ln">2</span># unzip vdt-v1.1.4.zip
+</code></pre></div><p>展開されたディレクトリ内の vdt.py を実行して <a href="mailto:administrator@vsphere.local">administrator@vsphere.local</a> のパスワードを入力すると、様々な情報がレポートとして表示されます。健全性チェックの成否はそれぞれ PASS と FAIL で表示されます。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span># cd vdt-v1.1.4
+<span class="ln"> 2</span># python vdt.py
+<span class="ln"> 3</span>_________________________
+<span class="ln"> 4</span>   RUNNING PULSE CHECK
+<span class="ln"> 5</span>
+<span class="ln"> 6</span>Today: Tuesday, May 03 14:13:14
+<span class="ln"> 7</span>Version: 1.1.4
+<span class="ln"> 8</span>Log Level: INFO
+<span class="ln"> 9</span>
+<span class="ln">10</span>Provide password for administrator@vsphere.local:
+<span class="ln">11</span>________________________
+<span class="ln">12</span>   VCENTER BASIC INFO
+<span class="ln">13</span>
+<span class="ln">14</span>
+<span class="ln">15</span>BASIC:
+<span class="ln">16</span>        Current Time: 2022-05-03 14:13:32.678152
+<span class="ln">17</span>        vCenter Uptime: up 9 days
+<span class="ln">18</span>        vCenter Load Average: 0.06, 0.06, 0.08
+<span class="ln">19</span>        Number of CPUs: 2
+<span class="ln">20</span>        Total Memory: 11.72
+<span class="ln">21</span>
+<span class="ln">22</span>  ...
+<span class="ln">23</span>
+<span class="ln">24</span>2022-05-03T14:13:32 INFO Vdt: Running _vc_dns.sh
+<span class="ln">25</span>2022-05-03T14:13:32 INFO Vdt:
+<span class="ln">26</span>__________________
+<span class="ln">27</span>   VC DNS CHECK
+<span class="ln">28</span>
+<span class="ln">29</span>2022-05-03T14:13:32 INFO Vdt:
+<span class="ln">30</span>
+<span class="ln">31</span>  NOTE:  If the script hangs here, it means none of the DNS servers are responding.
+<span class="ln">32</span>         If this is the case, You should CTRL+C and investigate.
+<span class="ln">33</span>
+<span class="ln">34</span>Nameservers
+<span class="ln">35</span>192.168.0.189
+<span class="ln">36</span>
+<span class="ln">37</span>Entries in /etc/hosts
+<span class="ln">38</span>127.0.0.1  vcsa.jangari.lab vcsa localhost
+<span class="ln">39</span>::1  vcsa.jangari.lab vcsa localhost ipv6-localhost ipv6-loopback
+<span class="ln">40</span>
+<span class="ln">41</span>Non-standard entries in /etc/hosts
+<span class="ln">42</span> [PASS] None
+<span class="ln">43</span>
+<span class="ln">44</span>
+<span class="ln">45</span>Basic Port Testing
+<span class="ln">46</span> [PASS] Port TCP 53 open to nameserver 192.168.0.189
+<span class="ln">47</span>
+<span class="ln">48</span>Nameserver Queries
+<span class="ln">49</span>192.168.0.189
+<span class="ln">50</span> [PASS] DNS with UDP - resolved vcsa.jangari.lab to 192.168.0.101
+<span class="ln">51</span> [PASS] Reverse DNS - resolved 192.168.0.101 to vcsa.jangari.lab
+<span class="ln">52</span> [PASS] DNS with TCP - resolved vcsa.jangari.lab to 192.168.0.101
+<span class="ln">53</span>
+<span class="ln">54</span> Commands used:
+<span class="ln">55</span>  dig +short &lt;fqdn&gt; &lt;nameserver&gt;
+<span class="ln">56</span>  dig +noall +answer -x &lt;ip&gt; &lt;namserver&gt;
+<span class="ln">57</span>  dig +short +tcp &lt;fqdn&gt; &lt;nameserver&gt;
+<span class="ln">58</span>
+<span class="ln">59</span>RESULT: [PASS]
+<span class="ln">60</span>
+<span class="ln">61</span>  ...
+<span class="ln">62</span>
+<span class="ln">63</span>Report written to /var/log/vmware/vdt/vdt-report-2022-05-03-141314
+<span class="ln">64</span>Please send feedback / feature requests to project_pulse@vmware.com
+</code></pre></div><p>レポートは /var/log/vmware/vdt/vdt-report-&lt;日時&gt; にも保存されるので、less などで開いて確認が可能です。</p>
+<h2 id="レポートの各種項目を分析してみる">レポートの各種項目を分析してみる</h2>
+<p>レポート上で FAIL している項目を見てみると、DISK CHECK &gt; DISK CAPACITY で /storage/seat が 99% に達している状況、および上位5つの大きいファイルが確認できます。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span>2022-05-03T14:13:36 INFO Vdt: Running vc_disk_space.py
+<span class="ln"> 2</span>2022-05-03T14:13:36 INFO Vdt:
+<span class="ln"> 3</span>________________
+<span class="ln"> 4</span>   DISK CHECK
+<span class="ln"> 5</span>
+<span class="ln"> 6</span>2022-05-03T14:13:36 INFO Vdt:
+<span class="ln"> 7</span>[FAIL]  DISK CAPACITY
+<span class="ln"> 8</span>        WARNING - disk space on /storage/seat is %99 which is over the threshold of %80 used.  See details:
+<span class="ln"> 9</span>        Directories over 2GB:
+<span class="ln">10</span>
+<span class="ln">11</span>        [] /storage/seat 9.11GB
+<span class="ln">12</span>                Largest Files:
+<span class="ln">13</span>                - /storage/seat/dummy.bin 8.41GB
+<span class="ln">14</span>                - /storage/seat/dummy.bin2 245.38MB
+<span class="ln">15</span>                - /storage/seat/dummy.bin3 192.04MB
+<span class="ln">16</span>                - /storage/seat/vpostgres/tasktblsp/PG_13_202007201/16408/19992 55.17MB
+<span class="ln">17</span>                - /storage/seat/vpostgres/tasktblsp/PG_13_202007201/16408/20022 7.05MB
+<span class="ln">18</span>
+<span class="ln">19</span>
+<span class="ln">20</span>[PASS]  INODE USAGE
+<span class="ln">21</span>
+<span class="ln">22</span>RESULT: [FAIL]
+<span class="ln">23</span>Please see KB: https://kb.vmware.com/s/article/1003564
+</code></pre></div><p>また、VC SERVICES CHECK では vmware-vpxd が停止している状況が確認できます。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span>2022-05-03T14:13:38 INFO Vdt: Running vc_services.py
+<span class="ln"> 2</span>2022-05-03T14:13:38 INFO Vdt:
+<span class="ln"> 3</span>_______________________
+<span class="ln"> 4</span>   VC SERVICES CHECK
+<span class="ln"> 5</span>
+<span class="ln"> 6</span>2022-05-03T14:13:38 INFO _svc_log: Get services status, svcnames=None
+<span class="ln"> 7</span>2022-05-03T14:13:40 INFO Vdt:
+<span class="ln"> 8</span>Printing only services that are stopped and should be started.
+<span class="ln"> 9</span>KB: https://kb.vmware.com/s/article/2109887
+<span class="ln">10</span>
+<span class="ln">11</span>        [FAIL]  vmware-vpxd IS STOPPED
+<span class="ln">12</span>
+<span class="ln">13</span>RESULT: [FAIL]
+</code></pre></div><p>これらの情報と上述した「データベース健全性アラーム」の仕様から「データベース領域(/storage/seat)の使用率が 95% を超えたため vpxd が停止された」といった状況が推測できます。</p>
+<p>また、より詳細な調査にあたって、直近の vpxd.log からサービスが停止時の状況を確認する、vPostgres データベース内で肥大化したテーブルの有無を確認するといったアクションに繋げられます。</p>
+<p>なお、今回は問題にはなっていませんが、レポートの vCenter PostgresDB Check からサイズが大きい上位10テーブルを確認することができます。大量のタスクやイベントの登録でデータベースが肥大化している場合はこの辺りの情報から確認できるはずです。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span>2022-05-03T14:13:35 INFO Vdt: Running vc_db_check.py
+<span class="ln"> 2</span>2022-05-03T14:13:35 INFO Vdt:
+<span class="ln"> 3</span>______________________________
+<span class="ln"> 4</span>   vCenter PostgresDB Check
+<span class="ln"> 5</span>
+<span class="ln"> 6</span>2022-05-03T14:13:35 INFO _svc_log: Get services status, svcnames=[&#39;vmware-vpostgres&#39;]
+<span class="ln"> 7</span>2022-05-03T14:13:36 INFO Vdt:
+<span class="ln"> 8</span>Top 10 Largest Tables:
+<span class="ln"> 9</span>
+<span class="ln">10</span>            tablename           |  size
+<span class="ln">11</span>  ------------------------------+---------
+<span class="ln">12</span>   vpx_task                     | 55 MB
+<span class="ln">13</span>   vpx_proc_log                 | 42 MB
+<span class="ln">14</span>   pk_vpx_proc_log              | 9448 kB
+<span class="ln">15</span>   vpxi_root_task_id            | 7216 kB
+<span class="ln">16</span>   vpxi_task_computeresource_id | 7152 kB
+<span class="ln">17</span>   vpxi_task_vm_id              | 7128 kB
+<span class="ln">18</span>   vpxi_task_host_id            | 7072 kB
+<span class="ln">19</span>   vpxi_parent_task_id          | 7064 kB
+<span class="ln">20</span>   vpxi_task_datacenter_id      | 7064 kB
+<span class="ln">21</span>   vpxi_task_start_time         | 7024 kB
+<span class="ln">22</span>
+<span class="ln">23</span>Total Postgres Size:
+<span class="ln">24</span>        229M    /storage/db/vpostgres/
+<span class="ln">25</span>        279M    /storage/seat/vpostgres/
+<span class="ln">26</span>        449M    Interpreted by vPostgres
+</code></pre></div><h2 id="おわりに">おわりに</h2>
+<p>今回は vSphere Diagnostic Tool を使って vCenter Server の問題をレポートとして出力、分析してみました。</p>
+<p>vCenter Server は実行されるサービスが多く内部構造も複雑なので、慣れていないと障害発生時にどのような観点から調べるべきか判断しづらいところがあります。本ツールを使うと vCenter Server の状態を俯瞰的に見ることが出来るので、初動対応での状況把握に有用だと思います。</p>
+
+  </article>
 <aside class="sidebar">
   <section class="sidebar_inner">
     <h2>Jangari</h2>
@@ -162,9 +364,6 @@ Not only is #ProjectMontery really cool but its also 1st validation of #ESXionAR
     <h2 class="mt-4">Recent Posts</h2>
     <ul class="flex-column">
       
-      <li>
-        <a href="https://jangari-ntk.github.io/post/2022-05-04/" class="nav-link">vSphere Diagnostic Tool を使ってみる</a>
-      </li>
       <li>
         <a href="https://jangari-ntk.github.io/post/2022-04-26/" class="nav-link">【メモ】VMFS 6 上のシック形式の仮想ディスクには vmkfstools -K (--punchzero) が効かない</a>
       </li>
@@ -446,8 +645,6 @@ Not only is #ProjectMontery really cool but its also 1st validation of #ESXionAR
 </aside>
 
 </div>
-
-
     </main><svg width="0" height="0" class="hidden">
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="facebook">
     <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h151V331h-60v-90h60v-61c0-49.629 40.371-90 90-90h91v90h-91v61h91l-15 90h-76v181h121c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zm0 0"></path>
