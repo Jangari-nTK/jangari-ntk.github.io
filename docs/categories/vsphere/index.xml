@@ -6,10 +6,23 @@
     <description>Recent content in vSphere on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Wed, 04 May 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 02 Aug 2022 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/categories/vsphere/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>ESXi の構成情報の暗号化、TPM による追加の保護、TPM 障害からの復旧</title>
+      <link>https://jangari-ntk.github.io/post/2022-08-02/</link>
+      <pubDate>Tue, 02 Aug 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2022-08-02/</guid>
+      <description>ESXi 7.0 Update 2 以降での構成情報の暗号化 ESXi 7.0 Update 2 以降では、ブートディスクの盗難などから ESXi を保護するために構成情報が暗号化されるようになっています。
+ ESXi 構成をセキュアにする   ESXi は、構成ファイルにシークレットを格納します。これらの構成は、アーカイブ ファイルとして ESXi ホストのブートバンクに保持されます。vSphere 7.0 Update 2 以降、このアーカイブ ファイルは暗号化されています。その結果、たとえ ESXi ホストのストレージに物理的にアクセスできたとしても、攻撃者はこのファイルを直接読み取ったり、変更したりすることはできません。
+ 以前のリリースでは構成情報のアーカイブ(state.tgz)を tar コマンドで順に展開していけば構成情報が確認できてしまいました。それに対して、現在のリリースでは state.tgz に含まれる local.tgz が暗号化されており、tar コマンドでの単純な展開は出来なくなっています。
+1# tar xzf /bootbank/state.tgz 2# ls 3encryption.info local.tgz.ve 4# tar xzf local.tgz.ve 5tar: invalid magic 6tar: short read state.tgz に一緒に含まれる encryption.info には暗号化に使用する鍵を導出するための入力が保存されています。ESXi の再起動時には encryption.info の情報を鍵導出関数(KDF)への入力として鍵を導出し、導出された鍵を使用して復号化を行います。
+上述のように tar コマンドでの単純な展開はできないものの、この暗号化を突破できない状態はあくまでも「使われている鍵導出関数の詳細がわからない」ことに依存しています1。万が一、ESXi のコードが解析されるなどで鍵導出関数の詳細が分かってしまえば「ブートディスクを盗んで state.tgz に含まれる encryption.info から鍵を導出して復号化」といった状況も想定できます。</description>
+    </item>
     
     <item>
       <title>vSphere Diagnostic Tool を使ってみる</title>

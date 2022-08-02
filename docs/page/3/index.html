@@ -95,6 +95,46 @@
   <div class = 'excerpt'>
     <div class = 'excerpt_header'>
       <h3 class = 'post_link'>
+        <a href='https://jangari-ntk.github.io/post/2021-06-20/'>PTP を使用して ESXi を時刻同期する</a>
+      </h3>
+      <div class = 'post_meta'>
+  <svg class="icon">
+    <use xlink:href="#calendar"></use>
+  </svg>
+  <span class="post_date">
+    Jun 20, 2021</span>
+  <a href = 'https://jangari-ntk.github.io/tags/tips' class = 'post_tag button button_translucent'>Tips
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere-7.0' class = 'post_tag button button_translucent'>vSphere 7.0
+  </a>
+</div>
+
+    </div>
+    <div class = 'excerpt_footer partition'>
+      <div class = 'excerpt_thumbnail'>
+      <img src = '/images/2021-06-20/thumbnail.PNG'>
+      </div>
+      
+        <div>
+          <p class = 'pale'>はじめに 前回の記事では vSphere 7 で実装された PTP 関連の機能のうち、仮想マシンのプレシジョンクロックデバイスを取り上げました。今回の記事ではもう一つの機能である ESXi の PTP による時刻同期を試してみたいと思います。
+なお、PTP のプロトコルの概要は省きますが、前回の記事で挙げた参考 URL のほか、Cisco の有志の方が書かれている以下の記事も参考になると思います。
+【初心者向け】時刻同期101 - PTP の基本動作
+グランドマスタークロックのセットアップ 前置き：今回の記事の構成 本来はグランドマスタークロックとして PTP 対応の原子時計などを用意し、境界クロック(BC)やトランスペアレントクロ …</p>
+          <a href='https://jangari-ntk.github.io/post/2021-06-20/' class='excerpt_more button'>Read More</a>
+        </div>
+      </div>
+    </div>
+  </li>
+  
+      
+<li class = 'post_item'>
+  <div class = 'excerpt'>
+    <div class = 'excerpt_header'>
+      <h3 class = 'post_link'>
         <a href='https://jangari-ntk.github.io/post/2021-06-10/'>プレシジョンクロックデバイスで ESXi とゲストOSを時刻同期</a>
       </h3>
       <div class = 'post_meta'>
@@ -355,47 +395,6 @@ Best practices for assigning static MAC address to a Virtual machine vNIC (82139
     </div>
   </li>
   
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2020-10-17/'>open-vm-tools を CentOS 8 aarch64 でビルド＆インストール</a>
-      </h3>
-      <div class = 'post_meta'>
-  <svg class="icon">
-    <use xlink:href="#calendar"></use>
-  </svg>
-  <span class="post_date">
-    Oct 17, 2020</span>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/linux' class = 'post_tag button button_translucent'>Linux
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/centos' class = 'post_tag button button_translucent'>CentOS
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi-on-arm' class = 'post_tag button button_translucent'>ESXi on Arm
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vmware-tools' class = 'post_tag button button_translucent'>VMware Tools
-  </a>
-</div>
-
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2020-10-09/thumbnail.PNG'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>はじめに ESXi on Arm でゲストOSを実行する場合、ARM64 アーキテクチャ向けにビルドされた OS をインストールすることになります。現時点で殆どの Linux ディストリビューションでは ARM64 向けの open-vm-tools は公式リポジトリで配布されていないようです。このため、VMware 公式の GitHub リポジトリからソースを取ってきてビルド＆インストールしたいと思います。
-私の GitHub リポジトリに自動化した CentOS 8 向けのスクリプトを置いてあります。もし良ければこちらもどうぞ。
-Jangari-nTK/ovt-installation-centos8-aarch64 …</p>
-          <a href='https://jangari-ntk.github.io/post/2020-10-17/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
-  
     <li>
 <ul class="pagination">
   <li class="page-item">
@@ -416,14 +415,17 @@ Jangari-nTK/ovt-installation-centos8-aarch64 …</p>
   <li class="page-item">
     <a class="page-link" href="/page/4/">4</a>
   </li>
+  <li class="page-item disabled">
+    <span aria-hidden="true">&nbsp;&hellip;&nbsp;</span>
+  </li>
   <li class="page-item">
-    <a class="page-link" href="/page/5/">5</a>
+    <a class="page-link" href="/page/6/">6</a>
   </li>
   <li class="page-item">
     <a href="/page/4/" class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
   </li>
   <li class="page-item">
-    <a href="/page/5/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+    <a href="/page/6/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
   </li>
 </ul>
 
@@ -461,6 +463,9 @@ Jangari-nTK/ovt-installation-centos8-aarch64 …</p>
     <ul class="flex-column">
       
       <li>
+        <a href="https://jangari-ntk.github.io/post/2022-08-02/" class="nav-link">ESXi の構成情報の暗号化、TPM による追加の保護、TPM 障害からの復旧</a>
+      </li>
+      <li>
         <a href="https://jangari-ntk.github.io/post/2022-05-04/" class="nav-link">vSphere Diagnostic Tool を使ってみる</a>
       </li>
       <li>
@@ -481,9 +486,6 @@ Jangari-nTK/ovt-installation-centos8-aarch64 …</p>
       <li>
         <a href="https://jangari-ntk.github.io/post/2022-01-10/" class="nav-link">REST API で VCSA をバックアップからリストアする</a>
       </li>
-      <li>
-        <a href="https://jangari-ntk.github.io/post/2022-01-07/" class="nav-link">OVFTool で vCenter Server Appliance をインストールする</a>
-      </li>
     </ul>
     <h2>Search</h2>
     <div>
@@ -500,7 +502,7 @@ Jangari-nTK/ovt-installation-centos8-aarch64 …</p>
       <nav class="tags_nav">
         <a href='https://jangari-ntk.github.io/categories/vsphere/' class=" post_tag button button_translucent">
           VSPHERE
-          <span class='button_tally'>40</span>
+          <span class='button_tally'>41</span>
         </a>
         
         
@@ -512,12 +514,12 @@ Jangari-nTK/ovt-installation-centos8-aarch64 …</p>
       <nav class="tags_nav">
         <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent">
           VSPHERE
-          <span class='button_tally'>34</span>
+          <span class='button_tally'>35</span>
         </a>
         
         <a href='https://jangari-ntk.github.io/tags/esxi/' class=" post_tag button button_translucent">
           ESXI
-          <span class='button_tally'>21</span>
+          <span class='button_tally'>22</span>
         </a>
         
         <a href='https://jangari-ntk.github.io/tags/vcenter-server/' class=" post_tag button button_translucent">
@@ -537,12 +539,12 @@ Jangari-nTK/ovt-installation-centos8-aarch64 …</p>
         
         <a href='https://jangari-ntk.github.io/tags/security/' class=" post_tag button button_translucent">
           SECURITY
-          <span class='button_tally'>7</span>
+          <span class='button_tally'>8</span>
         </a>
         
         <a href='https://jangari-ntk.github.io/tags/troubleshooting/' class=" post_tag button button_translucent">
           TROUBLESHOOTING
-          <span class='button_tally'>7</span>
+          <span class='button_tally'>8</span>
         </a>
         
         <a href='https://jangari-ntk.github.io/tags/architecture/' class=" post_tag button button_translucent">
@@ -610,7 +612,7 @@ Jangari-nTK/ovt-installation-centos8-aarch64 …</p>
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/esxi/' class=" post_tag button button_translucent" data-position=21>ESXI<span class='button_tally'>21</span>
+            <a href='https://jangari-ntk.github.io/tags/esxi/' class=" post_tag button button_translucent" data-position=22>ESXI<span class='button_tally'>22</span>
             </a>
             
             
@@ -674,7 +676,7 @@ Jangari-nTK/ovt-installation-centos8-aarch64 …</p>
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/security/' class=" post_tag button button_translucent" data-position=7>SECURITY<span class='button_tally'>7</span>
+            <a href='https://jangari-ntk.github.io/tags/security/' class=" post_tag button button_translucent" data-position=8>SECURITY<span class='button_tally'>8</span>
             </a>
             
             
@@ -686,7 +688,7 @@ Jangari-nTK/ovt-installation-centos8-aarch64 …</p>
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/troubleshooting/' class=" post_tag button button_translucent" data-position=7>TROUBLESHOOTING<span class='button_tally'>7</span>
+            <a href='https://jangari-ntk.github.io/tags/troubleshooting/' class=" post_tag button button_translucent" data-position=8>TROUBLESHOOTING<span class='button_tally'>8</span>
             </a>
             
             
@@ -714,7 +716,7 @@ Jangari-nTK/ovt-installation-centos8-aarch64 …</p>
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent" data-position=34>VSPHERE<span class='button_tally'>34</span>
+            <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent" data-position=35>VSPHERE<span class='button_tally'>35</span>
             </a>
             
             
