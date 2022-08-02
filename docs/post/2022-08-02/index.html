@@ -190,12 +190,12 @@
 <h3 id="検証用の-nested-esxi-の準備">検証用の Nested ESXi の準備</h3>
 <p>まず vTPM が構成された Nested ESXi を準備しますが、vTPM は Windows と Linux でしかサポートされません。このため、Native Key Provider や外部 KMS が構成されていても、vSphere Client の仮想マシンの設定で仮想 TPM デバイスの追加の UI 自体が表示されません<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>。</p>
 <p>PowerCLI の New-VTpm コマンドレットならゲストOSのサポートに関係なく仮想 TPM デバイスを追加できるため、まず仮想マシンを作成した後に New-VTpm で仮想 TPM デバイスを追加します。</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>Connect-VIServer vcsa.jangari.lab
-<span class="ln">2</span>Get-VM &#34;vTPM-NestedESXi&#34; | New-VTpm
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>PS &gt; Connect-VIServer vcsa.jangari.lab
+<span class="ln">2</span>PS &gt; Get-VM &#34;vTPM-NestedESXi&#34; | New-VTpm
 </code></pre></div><p>仮想 TPM デバイスが構成された仮想マシンを作成したら、通常の手順で ESXi をインストールします。</p>
 <h3 id="リカバリキーの取得">リカバリキーの取得</h3>
 <p>Nested ESXi に ESXi Shell または SSH でアクセスし、esxcli system settings encryption recovery list コマンドでリカバリキーの一覧を取得します。</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>[root@localhost:~] esxcli system settings encryption recovery list
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span># esxcli system settings encryption recovery list
 <span class="ln">2</span>Recovery ID                             Key
 <span class="ln">3</span>--------------------------------------  ---
 <span class="ln">4</span>{A860B8FF-F25C-4332-BD87-713890210EC6}  404745-562992-542643-017570-449948-013337-426256-580884-202287-630254-411949-357346-279412-492912-626244-478163
@@ -210,8 +210,8 @@
 </ul>
 <h3 id="tpm-の障害のシミュレーション">TPM の障害のシミュレーション</h3>
 <p>Nested ESXi をパワーオフしてから仮想 TPM デバイスを削除・新規追加することで、TPM が交換された状況をシミュレーションします。</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>Get-VM &#34;vTPM-NestedESXi&#34; | Get-VTpm | Remove-VTpm
-<span class="ln">2</span>Get-VM &#34;vTPM-NestedESXi&#34; | New-VTpm
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>PS &gt; Get-VM &#34;vTPM-NestedESXi&#34; | Get-VTpm | Remove-VTpm
+<span class="ln">2</span>PS &gt; Get-VM &#34;vTPM-NestedESXi&#34; | New-VTpm
 </code></pre></div><p>この状態で Nested ESXi を起動しようとすると、元の TPM が使用できないため上述したセキュリティ違反の PSOD が発生します。</p>
 <h3 id="リカバリキーを使用した復旧">リカバリキーを使用した復旧</h3>
 <p>事前に取得しておいたリカバリキーを使用することで TPM の交換後やクリア後に ESXi のリカバリを行うことが出来ます。</p>
