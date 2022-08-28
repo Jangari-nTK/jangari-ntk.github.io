@@ -6,10 +6,20 @@
     <description>Recent content in vSphere on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Tue, 02 Aug 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 28 Aug 2022 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/tags/vsphere/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>【メモ】個人的に気になる VMware Explore 2022 US セッション</title>
+      <link>https://jangari-ntk.github.io/post/2022-08-28/</link>
+      <pubDate>Sun, 28 Aug 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2022-08-28/</guid>
+      <description>概要 US 時間で 8/29 から VMware Explore 2022 US が開催されます。自分用のメモですが vSphere 関連の気になるセッションへのリンクをまとめておきます。
+vSphere  10 New and Exciting Things About vSphere That You Absolutely Need to Know [CEIB1574US] VMware vSphere – The New Features [CEIM2230US] What’s New in vMotion and Workload Mobility [CEIB1501USD] vSphere+ and vSAN+: The Next Evolution of VMware Enterprise Workload Platform [CMK2208US]  Performance &amp;amp; Resource Management  Extreme Performance Series: vSphere Advanced Performance Tutorial [CEIT1097US]  Storage  Get to Know the Next-Generation of vSAN Architecture [CEIB2172US] Core Storage Best Practice Deep Dive [CEIB1382USD]  Security  How the vSphere Engineer Became a Critical Part of Modern Security Design [SECB2350US] Deploying Full-Stack Security for Enterprise Workloads with VMware Cloud Foundation [CEIB3019US]  Troubleshooting  Advanced Troubleshooting of ESXi Server 7.</description>
+    </item>
     
     <item>
       <title>ESXi の構成情報の暗号化、TPM による追加の保護、TPM 障害からの復旧</title>

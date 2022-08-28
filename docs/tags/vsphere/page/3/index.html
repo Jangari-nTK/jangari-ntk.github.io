@@ -92,6 +92,45 @@
   <div class = 'excerpt'>
     <div class = 'excerpt_header'>
       <h3 class = 'post_link'>
+        <a href='https://jangari-ntk.github.io/post/2021-08-07/'>【メモ】ESXi 7.0 の Kickstart の %post で boot.cfg を触る</a>
+      </h3>
+      <div class = 'post_meta'>
+  <svg class="icon">
+    <use xlink:href="#calendar"></use>
+  </svg>
+  <span class="post_date">
+    Aug 7, 2021</span>
+  <a href = 'https://jangari-ntk.github.io/tags/tips' class = 'post_tag button button_translucent'>Tips
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere-7.0' class = 'post_tag button button_translucent'>vSphere 7.0
+  </a>
+</div>
+
+    </div>
+    <div class = 'excerpt_footer partition'>
+      <div class = 'excerpt_thumbnail'>
+      <img src = '/images/2021-08-07/thumbnail.PNG'>
+      </div>
+      
+        <div>
+          <p class = 'pale'>はじめに 以前の Nested ESXi の記事や KB2149444 等でも言及されていますが、ESXi のブートオプションは /bootbank/boot.cfg の kernelopt 行に記載されます。
+ESXi は キックスタートファイルを使用した自動インストールが可能なので、%post や %firstboot のセクションで編集できないかと思い、各セクションで以下のような sed コマンドを実行して試してみました。
+1sed -i &#34;s/kernelopt=.*/kernelopt=autoPartition=FALSE allowLegacyCPU=true/&#34; /bootbank/boot.cfg  …</p>
+          <a href='https://jangari-ntk.github.io/post/2021-08-07/' class='excerpt_more button'>Read More</a>
+        </div>
+      </div>
+    </div>
+  </li>
+  
+      
+<li class = 'post_item'>
+  <div class = 'excerpt'>
+    <div class = 'excerpt_header'>
+      <h3 class = 'post_link'>
         <a href='https://jangari-ntk.github.io/post/2021-06-20/'>PTP を使用して ESXi を時刻同期する</a>
       </h3>
       <div class = 'post_meta'>
@@ -357,48 +396,6 @@ Why HCI Mesh 従来の vSAN はホストの追加で Computing と Storage の�
     </div>
   </li>
   
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2020-09-17/'>【Part.3-2】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</a>
-      </h3>
-      <div class = 'post_meta'>
-  <svg class="icon">
-    <use xlink:href="#calendar"></use>
-  </svg>
-  <span class="post_date">
-    Sep 17, 2020</span>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/troubleshooting' class = 'post_tag button button_translucent'>Troubleshooting
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/cli' class = 'post_tag button button_translucent'>CLI
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/architecture' class = 'post_tag button button_translucent'>Architecture
-  </a>
-</div>
-
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2020-09-13/thumbnail.PNG'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>はじめに VMworld 2017 SER2965BU のセッションでの 27:00 ～ 48:20 頃までの内容、七つ道具2セット目である７つのコマンドについて見ていきます。
- esxcli vsish vim-cmd vmkfstools memstats pktcap-uw esxtop  今回は残りのコマンドである memstats, pktcap-uw, esxtop を見ていきます(esxtop は概観だけ)。
-memstats - 詳細なメモリ統計情報 通常、リアルタイムなメモリの性能情報を見る場合は esxtop を使うと思います。ファイルとして保存する場合はバッチモードを使うかもしれません。
-memstats コマ …</p>
-          <a href='https://jangari-ntk.github.io/post/2020-09-17/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
-  
     <li>
 <ul class="pagination">
   <li class="page-item">
@@ -464,6 +461,9 @@ memstats コマ …</p>
     <ul class="flex-column">
       
       <li>
+        <a href="https://jangari-ntk.github.io/post/2022-08-28/" class="nav-link">【メモ】個人的に気になる VMware Explore 2022 US セッション</a>
+      </li>
+      <li>
         <a href="https://jangari-ntk.github.io/post/2022-08-02/" class="nav-link">ESXi の構成情報の暗号化、TPM による追加の保護、TPM 障害からの復旧</a>
       </li>
       <li>
@@ -484,9 +484,6 @@ memstats コマ …</p>
       <li>
         <a href="https://jangari-ntk.github.io/post/2022-01-30/" class="nav-link">【備忘録】Intel NUC 10 の SATA ケーブルを交換した話</a>
       </li>
-      <li>
-        <a href="https://jangari-ntk.github.io/post/2022-01-10/" class="nav-link">REST API で VCSA をバックアップからリストアする</a>
-      </li>
     </ul>
     <h2>Search</h2>
     <div>
@@ -503,7 +500,7 @@ memstats コマ …</p>
       <nav class="tags_nav">
         <a href='https://jangari-ntk.github.io/categories/vsphere/' class=" post_tag button button_translucent">
           VSPHERE
-          <span class='button_tally'>41</span>
+          <span class='button_tally'>42</span>
         </a>
         
         
@@ -515,7 +512,7 @@ memstats コマ …</p>
       <nav class="tags_nav">
         <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent">
           VSPHERE
-          <span class='button_tally'>35</span>
+          <span class='button_tally'>36</span>
         </a>
         
         <a href='https://jangari-ntk.github.io/tags/esxi/' class=" post_tag button button_translucent">
@@ -621,6 +618,10 @@ memstats コマ …</p>
             </a>
             
             
+            <a href='https://jangari-ntk.github.io/tags/event/' class=" post_tag button button_translucent" data-position=1>EVENT<span class='button_tally'>1</span>
+            </a>
+            
+            
             <a href='https://jangari-ntk.github.io/tags/featured/' class=" post_tag button button_translucent" data-position=4>FEATURED<span class='button_tally'>4</span>
             </a>
             
@@ -717,7 +718,7 @@ memstats コマ …</p>
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent" data-position=35>VSPHERE<span class='button_tally'>35</span>
+            <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent" data-position=36>VSPHERE<span class='button_tally'>36</span>
             </a>
             
             
