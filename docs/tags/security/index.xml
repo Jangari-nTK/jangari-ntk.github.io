@@ -6,10 +6,25 @@
     <description>Recent content in Security on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Tue, 02 Aug 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 21 Sep 2022 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/tags/security/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>execInstalledOnly による ESXi での信頼できないバイナリの実行防止</title>
+      <link>https://jangari-ntk.github.io/post/2022-09-21/</link>
+      <pubDate>Wed, 21 Sep 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2022-09-21/</guid>
+      <description>はじめに 先日 vSphere 8 が発表されましたが、その What&amp;rsquo;s New の中で ESXi 8.0 では execInstalledOnly 起動オプションがデフォルトで有効になるとの記載を確認しています。
+What&amp;rsquo;s New in vSphere 8?
+ Prevent execution of untrusted binaries: ESXi 8.0 will turn on the execInstalledOnly option by default. This prevents the execution of binaries that are not installed via a VIB.
+ 以前の TPM による ESXi の保護に関する記事の中で execInstalledOnly 起動オプションの有効化を強制する構成について触れていましたが、実際に execInstalledOnly を有効にすると何が変わるのか見ていきたいと思います。
+execInstalledOnly とは？ 本オプション単体を説明した情報は少ないですが、以下のドキュメントに記載があります。
+ホストと VIB の許容レベルの管理
+ 注： ESXi は、許容レベルによって管理される VIB の整合性チェックを実行します。VMkernel.Boot.execInstalledOnly 設定を使用して、ホストにインストールされている有効な VIB から発信されたバイナリのみを実行するように ESXi に指示できます。この設定をセキュア ブートと組み合わせると、ESXi ホストで実行されるすべてのプロセスが署名され、許可され、想定されるようになります。デフォルトでは、vSphere 7 のパートナーとの互換性のために、VMkernel.</description>
+    </item>
     
     <item>
       <title>ESXi の構成情報の暗号化、TPM による追加の保護、TPM 障害からの復旧</title>

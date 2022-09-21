@@ -6,33 +6,15 @@
     <description>Recent content in Tags on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Sun, 28 Aug 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 21 Sep 2022 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Event</title>
-      <link>https://jangari-ntk.github.io/tags/event/</link>
-      <pubDate>Sun, 28 Aug 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://jangari-ntk.github.io/tags/event/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>vSphere</title>
-      <link>https://jangari-ntk.github.io/tags/vsphere/</link>
-      <pubDate>Sun, 28 Aug 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://jangari-ntk.github.io/tags/vsphere/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>ESXi</title>
       <link>https://jangari-ntk.github.io/tags/esxi/</link>
-      <pubDate>Tue, 02 Aug 2022 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 21 Sep 2022 00:00:00 +0000</pubDate>
       
       <guid>https://jangari-ntk.github.io/tags/esxi/</guid>
       <description></description>
@@ -41,9 +23,27 @@
     <item>
       <title>Security</title>
       <link>https://jangari-ntk.github.io/tags/security/</link>
-      <pubDate>Tue, 02 Aug 2022 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 21 Sep 2022 00:00:00 +0000</pubDate>
       
       <guid>https://jangari-ntk.github.io/tags/security/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>vSphere</title>
+      <link>https://jangari-ntk.github.io/tags/vsphere/</link>
+      <pubDate>Wed, 21 Sep 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/tags/vsphere/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Event</title>
+      <link>https://jangari-ntk.github.io/tags/event/</link>
+      <pubDate>Sun, 28 Aug 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/tags/event/</guid>
       <description></description>
     </item>
     

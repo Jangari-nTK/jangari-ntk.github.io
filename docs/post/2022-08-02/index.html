@@ -231,7 +231,7 @@
 <li><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-9047A43D-BB1F-4878-A971-EEFCAC183C86.html">セキュアな ESXi 構成の execInstalledOnly の適用の有効化/無効化</a></li>
 </ul>
 <p>UEFI セキュアブートは、UEFI ファームウェアを信頼の起点として ESXi のブートローダー、カーネル(vmkernel)、モジュール(VIB) の署名が正当であるかどうかを検証します。UEFI セキュアブートを利用することで、改ざんされていない正当なソフトウェアのみでブートされたことを保証できます。</p>
-<p>execInstalledOnly 起動オプションは、インストール済みの VIB の一部としてパッケージング／署名されたバイナリのみを ESXi に実行させます。例えば悪意のあるコードを含むバイナリを ESXi に転送したり、ブート後に ESXi 内のバイナリを改ざんしても、VIB に含まれていた元のバイナリと一致しないため実行が拒否されます。本起動オプションは前提条件としてセキュアブートが必要です。</p>
+<p>execInstalledOnly 起動オプションは、インストール済みの VIB の一部としてパッケージング／署名されたバイナリのみを ESXi に実行させます。例えば悪意のあるコードを含むバイナリを ESXi に転送したり、ブート後に ESXi 内のバイナリを改ざんしても、VIB に含まれていた元のバイナリと一致しないため実行が拒否されます。本起動オプションを強制する場合は前提条件としてセキュアブートが必要です。</p>
 <p>TPM 未搭載のハードウェアの場合、UEFI やブートローダーでこれらの機能を有効にしても、後から無効にして ESXi が起動できてしまいます。</p>
 <p>TPM で構成情報を暗号化している ESXi ではこれらの機能を強制させることができ、機能が無効である状態を検出するとセキュリティ違反の PSOD を発生させることでブートを停止します。</p>
 <ul>
@@ -297,6 +297,9 @@ from vSphere 7.0U2, the override will not work if the host has TPM enabled.</p>
     <ul class="flex-column">
       
       <li>
+        <a href="https://jangari-ntk.github.io/post/2022-09-21/" class="nav-link">execInstalledOnly による ESXi での信頼できないバイナリの実行防止</a>
+      </li>
+      <li>
         <a href="https://jangari-ntk.github.io/post/2022-08-28/" class="nav-link">【メモ】個人的に気になる VMware Explore 2022 US セッション</a>
       </li>
       <li>
@@ -314,9 +317,6 @@ from vSphere 7.0U2, the override will not work if the host has TPM enabled.</p>
       <li>
         <a href="https://jangari-ntk.github.io/post/2022-02-04/" class="nav-link">esxcli を使用したログフィルタリングの構成</a>
       </li>
-      <li>
-        <a href="https://jangari-ntk.github.io/post/2022-01-30/" class="nav-link">【備忘録】Intel NUC 10 の SATA ケーブルを交換した話</a>
-      </li>
     </ul>
     <h2>Search</h2>
     <div>
@@ -333,7 +333,7 @@ from vSphere 7.0U2, the override will not work if the host has TPM enabled.</p>
       <nav class="tags_nav">
         <a href='https://jangari-ntk.github.io/categories/vsphere/' class=" post_tag button button_translucent">
           VSPHERE
-          <span class='button_tally'>42</span>
+          <span class='button_tally'>43</span>
         </a>
         
         
@@ -345,12 +345,12 @@ from vSphere 7.0U2, the override will not work if the host has TPM enabled.</p>
       <nav class="tags_nav">
         <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent">
           VSPHERE
-          <span class='button_tally'>36</span>
+          <span class='button_tally'>37</span>
         </a>
         
         <a href='https://jangari-ntk.github.io/tags/esxi/' class=" post_tag button button_translucent">
           ESXI
-          <span class='button_tally'>22</span>
+          <span class='button_tally'>23</span>
         </a>
         
         <a href='https://jangari-ntk.github.io/tags/vcenter-server/' class=" post_tag button button_translucent">
@@ -370,7 +370,7 @@ from vSphere 7.0U2, the override will not work if the host has TPM enabled.</p>
         
         <a href='https://jangari-ntk.github.io/tags/security/' class=" post_tag button button_translucent">
           SECURITY
-          <span class='button_tally'>8</span>
+          <span class='button_tally'>9</span>
         </a>
         
         <a href='https://jangari-ntk.github.io/tags/troubleshooting/' class=" post_tag button button_translucent">
@@ -443,7 +443,7 @@ from vSphere 7.0U2, the override will not work if the host has TPM enabled.</p>
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/esxi/' class=" post_tag button button_translucent" data-position=22>ESXI<span class='button_tally'>22</span>
+            <a href='https://jangari-ntk.github.io/tags/esxi/' class=" post_tag button button_translucent" data-position=23>ESXI<span class='button_tally'>23</span>
             </a>
             
             
@@ -511,7 +511,7 @@ from vSphere 7.0U2, the override will not work if the host has TPM enabled.</p>
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/security/' class=" post_tag button button_translucent" data-position=8>SECURITY<span class='button_tally'>8</span>
+            <a href='https://jangari-ntk.github.io/tags/security/' class=" post_tag button button_translucent" data-position=9>SECURITY<span class='button_tally'>9</span>
             </a>
             
             
@@ -551,7 +551,7 @@ from vSphere 7.0U2, the override will not work if the host has TPM enabled.</p>
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent" data-position=36>VSPHERE<span class='button_tally'>36</span>
+            <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent" data-position=37>VSPHERE<span class='button_tally'>37</span>
             </a>
             
             
