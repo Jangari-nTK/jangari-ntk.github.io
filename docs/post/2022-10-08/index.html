@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-figures="" class="page">
-  <head>  <title>PowerCLI を使って ESXi の忘れた root パスワードをリセットする | vSoliloquy</title>
+  <head>  <title>不正な VIB のインストールからのセキュアブートによる ESXi の保護 | vSoliloquy</title>
   <meta charset='utf-8'>
   <meta name="generator" content="Hugo 0.74.3" />
   <meta name = 'viewport' content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
@@ -15,14 +15,14 @@
   
 <meta property = "og:locale" content = "en_US" />
 <meta property="og:type" content="article">
-<meta name="description" content="今回の記事は PowerCLI を使用し vCenter Server 経由で ESXi の root ユーザーのパスワードをリセットしてみます。">
+<meta name="description" content="先日、VMware社およびMandiant社より、vSphere を標的とする新しい種類のマルウェア(VirtualPITA、VirtualPIE、VirtualGATE)に関する記事が公開されました。この記事のマルウェアの興味深いところとして、ESXi のソフトウェアパッケージである VIB にマルウェアがパッケージ …">
 <meta name = "twitter:card" content = "summary" />
 <meta name = "twitter:creator" content = "@Jangari_nTK">
-<meta name = "twitter:title" content = "PowerCLI を使って ESXi の忘れた root パスワードをリセットする" />
-<meta property = "og:url" content = "https://jangari-ntk.github.io/post/2021-12-16/" />
-<meta property = "og:title" content = "PowerCLI を使って ESXi の忘れた root パスワードをリセットする" />
-<meta property = "og:description" content = "今回の記事は PowerCLI を使用し vCenter Server 経由で ESXi の root ユーザーのパスワードをリセットしてみます。" />
-<meta property = "og:image" content = "https://jangari-ntk.github.io/images/2021-12-16/thumbnail.PNG" />
+<meta name = "twitter:title" content = "不正な VIB のインストールからのセキュアブートによる ESXi の保護" />
+<meta property = "og:url" content = "https://jangari-ntk.github.io/post/2022-10-08/" />
+<meta property = "og:title" content = "不正な VIB のインストールからのセキュアブートによる ESXi の保護" />
+<meta property = "og:description" content = "先日、VMware社およびMandiant社より、vSphere を標的とする新しい種類のマルウェア(VirtualPITA、VirtualPIE、VirtualGATE)に関する記事が公開されました。この記事のマルウェアの興味深いところとして、ESXi のソフトウェアパッケージである VIB にマルウェアがパッケージ …" />
+<meta property = "og:image" content = "https://jangari-ntk.github.io/images/2022-10-08/SecureBoot_Summary.png" />
 <link rel='apple-touch-icon' sizes='180x180' href='https://jangari-ntk.github.io/icons/apple-touch-icon.png'>
 <link rel='icon' type='image/png' sizes='32x32' href='https://jangari-ntk.github.io/icons/favicon-32x32.png'>
 <link rel='icon' type='image/png' sizes='16x16' href='https://jangari-ntk.github.io/icons/favicon-16x16.png'>
@@ -31,7 +31,7 @@
 <meta name="msapplication-TileColor" content="#002538">
 <meta name="theme-color" content="#002538">
 
-  <link rel='canonical' href='https://jangari-ntk.github.io/post/2021-12-16/'>
+  <link rel='canonical' href='https://jangari-ntk.github.io/post/2022-10-08/'>
     
 
     
@@ -88,38 +88,36 @@
   
 <div class = 'grid-inverse wrap content'>
   <article class='post_content'>
-    <h1 class='post_title'>PowerCLI を使って ESXi の忘れた root パスワードをリセットする</h1><div class = 'post_meta'>
+    <h1 class='post_title'>不正な VIB のインストールからのセキュアブートによる ESXi の保護</h1><div class = 'post_meta'>
   <svg class="icon">
     <use xlink:href="#calendar"></use>
   </svg>
   <span class="post_date">
-    Dec 16, 2021</span>
-  <a href = 'https://jangari-ntk.github.io/tags/tips' class = 'post_tag button button_translucent'>Tips
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vcenter-server' class = 'post_tag button button_translucent'>vCenter Server
+    Oct 8, 2022</span>
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
   </a>
   <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
+  <a href = 'https://jangari-ntk.github.io/tags/security' class = 'post_tag button button_translucent'>Security
   </a>
 </div>
 
     <div class='post_share'>
   Share on:
-  <a href="https://twitter.com/intent/tweet?text=PowerCLI%20%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%20ESXi%20%e3%81%ae%e5%bf%98%e3%82%8c%e3%81%9f%20root%20%e3%83%91%e3%82%b9%e3%83%af%e3%83%bc%e3%83%89%e3%82%92%e3%83%aa%e3%82%bb%e3%83%83%e3%83%88%e3%81%99%e3%82%8b&url=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2021-12-16%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
+  <a href="https://twitter.com/intent/tweet?text=%e4%b8%8d%e6%ad%a3%e3%81%aa%20VIB%20%e3%81%ae%e3%82%a4%e3%83%b3%e3%82%b9%e3%83%88%e3%83%bc%e3%83%ab%e3%81%8b%e3%82%89%e3%81%ae%e3%82%bb%e3%82%ad%e3%83%a5%e3%82%a2%e3%83%96%e3%83%bc%e3%83%88%e3%81%ab%e3%82%88%e3%82%8b%20ESXi%20%e3%81%ae%e4%bf%9d%e8%ad%b7&url=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2022-10-08%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
     <svg class="icon">
       <use xlink:href="#twitter"></use>
     </svg>
   </a>
   
-  <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2021-12-16%2f&t=PowerCLI%20%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%20ESXi%20%e3%81%ae%e5%bf%98%e3%82%8c%e3%81%9f%20root%20%e3%83%91%e3%82%b9%e3%83%af%e3%83%bc%e3%83%89%e3%82%92%e3%83%aa%e3%82%bb%e3%83%83%e3%83%88%e3%81%99%e3%82%8b" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
+  <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2022-10-08%2f&t=%e4%b8%8d%e6%ad%a3%e3%81%aa%20VIB%20%e3%81%ae%e3%82%a4%e3%83%b3%e3%82%b9%e3%83%88%e3%83%bc%e3%83%ab%e3%81%8b%e3%82%89%e3%81%ae%e3%82%bb%e3%82%ad%e3%83%a5%e3%82%a2%e3%83%96%e3%83%bc%e3%83%88%e3%81%ab%e3%82%88%e3%82%8b%20ESXi%20%e3%81%ae%e4%bf%9d%e8%ad%b7" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
     <svg class="icon">
       <use xlink:href="#facebook"></use>
     </svg>
   </a>
   <script>
     function shareViaLinkedin() {
-      window.open('http://www.linkedin.com/shareArticle?mini=true&url='+encodeURIComponent("https://jangari-ntk.github.io/post/2021-12-16/"), '', 'left=0,top=0,width=650,height=420,personalbar=0,toolbar=0,scrollbars=0,resizable=0');
+      window.open('http://www.linkedin.com/shareArticle?mini=true&url='+encodeURIComponent("https://jangari-ntk.github.io/post/2022-10-08/"), '', 'left=0,top=0,width=650,height=420,personalbar=0,toolbar=0,scrollbars=0,resizable=0');
     }
   </script>
   <a href="#linkedinshare" id = "linkedinshare" class="linkedin" title="Share on LinkedIn" rel="nofollow" onclick="shareViaLinkedin()">
@@ -127,7 +125,7 @@
       <use xlink:href="#linkedin"></use>
     </svg>
   </a>
-  <a href="https://jangari-ntk.github.io/post/2021-12-16/" title="Copy Link" class="link link_yank">
+  <a href="https://jangari-ntk.github.io/post/2022-10-08/" title="Copy Link" class="link link_yank">
     <svg class="icon">
       <use xlink:href="#yank"></use>
     </svg>
@@ -139,102 +137,158 @@
     <h2>Table of contents</h2>
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#概要">概要</a></li>
-    <li><a href="#esxi-のローカルユーザーの管理">ESXi のローカルユーザーの管理</a></li>
-    <li><a href="#powercli-から-esxcli-を呼び出すまで">PowerCLI から esxcli を呼び出すまで</a></li>
-    <li><a href="#esxi-の-root-ユーザーのパスワードをリセット">ESXi の root ユーザーのパスワードをリセット</a></li>
-    <li><a href="#vcenter-server-によるホスト操作と-vpxuser">vCenter Server によるホスト操作と vpxuser</a></li>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#セキュアブートとは">セキュアブートとは？</a></li>
+    <li><a href="#esxi-が不正な-vib-のインストールから保護される様子を見る">ESXi が不正な VIB のインストールから保護される様子を見る</a>
+      <ul>
+        <li><a href="#セキュアブートが無効な-esxi-への不正な-vib-のインストール">セキュアブートが無効な ESXi への不正な VIB のインストール</a></li>
+        <li><a href="#不正な-vib-をインストール済みの状態からセキュアブートを有効化">不正な VIB をインストール済みの状態からセキュアブートを有効化</a></li>
+        <li><a href="#セキュアブートが有効な-esxi-への不正な-vib-のインストール">セキュアブートが有効な ESXi への不正な VIB のインストール</a></li>
+      </ul>
+    </li>
+    <li><a href="#execinstalledonly-起動オプションとの併用">execInstalledOnly 起動オプションとの併用</a></li>
+    <li><a href="#セキュアブート利用時の注意点">セキュアブート利用時の注意点</a>
+      <ul>
+        <li><a href="#既存環境のセキュアブートとの互換性のチェック">既存環境のセキュアブートとの互換性のチェック</a></li>
+        <li><a href="#起動時に-localsh-スクリプトの実行不可">起動時に local.sh スクリプトの実行不可</a></li>
+        <li><a href="#kickstart-の-firstboot-セクションの実行不可">kickstart の %firstboot セクションの実行不可</a></li>
+        <li><a href="#auto-deploy-環境での-vmware-ca-証明書の-uefi-への登録">Auto Deploy 環境での VMware CA 証明書の UEFI への登録</a></li>
+      </ul>
+    </li>
     <li><a href="#おわりに">おわりに</a></li>
   </ul>
 </nav>
-    <h2 id="概要">概要</h2>
-<p><a href="/post/2021-12-14/">前回の記事</a>ではホストプロファイルで ESXi の root ユーザーのパスワードをリセットしました。</p>
-<p>今回の記事は PowerCLI を使用し vCenter Server 経由で ESXi の root ユーザーのパスワードをリセットしてみます。ホストプロファイルは vSphere Enterprise Plus が必要となる機能ですが、PowerCLI は vSphere Essentials 以上の全てのエディションで使用可能です。</p>
-<p>なお、前回の記事と同様に ESXi が vCenter Server に管理・接続されていることが前提となります。</p>
-<h2 id="esxi-のローカルユーザーの管理">ESXi のローカルユーザーの管理</h2>
-<p>ESXi のローカルユーザーを管理する手段としては主に以下の2つがあります。vCenter Server のユーザーが ESXi のローカルユーザーを直接管理することはできません。</p>
+    <h2 id="背景">背景</h2>
+<p>先日、VMware社およびMandiant社より、vSphere を標的とする新しい種類のマルウェア(VirtualPITA、VirtualPIE、VirtualGATE)に関する記事が公開されました。この記事のマルウェアの興味深いところとして、ESXi のソフトウェアパッケージである VIB にマルウェアがパッケージングされている点が挙げられます。</p>
 <ul>
-<li>Host Client を使用する</li>
-<li>esxcli system account コマンドを使用する</li>
+<li><a href="https://core.vmware.com/vsphere-esxi-mandiant-malware-persistence">Protecting vSphere From Specialized Malware</a></li>
+<li><a href="https://www.mandiant.com/resources/blog/esxi-hypervisors-malware-persistence">Bad VIB(E)s Part One: Investigating Novel Malware Persistence Within ESXi Hypervisors</a></li>
 </ul>
-<p>今回は PowerCLI を使用して後者の esxcli を呼び出すことで ESXi のローカルユーザーを操作します。</p>
-<p>なお、esxcli system account コマンドは vSphere 6.0 のリリースから追加されています。</p>
-<p><a href="https://vdc-download.vmware.com/vmwb-repository/dcr-public/5068a138-314e-45c3-87cf-e4c8c3d72df7/a31b6594-284f-4c9f-81d5-c37e737cc3fa/vsp6_60_vcli_relnotes.html">vSphere Command-Line Interface 6.0 Release Notes</a></p>
+<p>具体的には以下のような特徴があります。</p>
+<ul>
+<li>署名が無い不正な VIB にマルウェアをパッケージング</li>
+<li>VIB の許容レベルは PartnerSupported に偽装</li>
+<li>不正な VIB の強制インストールによる永続化</li>
+<li>ESXi の起動時にマルウェアを rc.local 内のスクリプトから実行</li>
+<li>VIB やマルウェアのファイル名は ESXi にありそうな名称に偽装</li>
+</ul>
+<p>このような VIB のインストールによるマルウェアの永続化が vSphere としては過去に類を見ない状況だったため、新しい攻撃手法に対する注意を促す記事となっているようです。</p>
+<p>マルウェアを利用した攻撃を防ぐにあたって、VMware社からは複数のセキュリティのベストプラクティスが提示されています。その中で、ESXi が侵入された後、不正な VIB のインストールを阻止する手段として UEFI セキュアブートの有効化が案内されています。</p>
+<p><a href="https://kb.vmware.com/s/article/89619">Mitigation and Threat Hunting Guidance for Unsigned vSphere Installation Bundles (VIBs) in ESXi (89619)</a></p>
 <blockquote>
-<p>ESXCLI new and changed commands — New commands have been added and one command has changed.</p>
-<p>The following commands have been added to the ESXCLI command set.
-&hellip;
-esxcli system account add
-esxcli system account list
-esxcli system account remove
-esxcli system account set</p>
+<p>Mitigation<br>
+In addition to implementing various operational security best practices mentioned in <a href="https://via.vmw.com/WuZ4jJ">Protecting vSphere From Specialized Malware</a> to prevent a potential compromise in the first place, VMware recommends enablement of the <a href="https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-5D5EE0D1-2596-43D7-95C8-0B29733191D9.html">Secureboot feature</a> in ESXi to mitigate the risk of malicious actors persisting on a compromised ESXi host via malicious VIB installation. Secure boot was designed to disallow installation of unsigned VIBs on an ESXi host. In addition, secure boot disallows the --force flag which would normally allow an administrator to bypass acceptance level settings on the ESXi host.</p>
 </blockquote>
-<h2 id="powercli-から-esxcli-を呼び出すまで">PowerCLI から esxcli を呼び出すまで</h2>
-<p>以下の手順を踏むことで PowerCLI で esxcli のオブジェクトを取得できます。</p>
+<p>今回の記事では、セキュアブートの有効化により不正な VIB から ESXi がどのように保護されるかを見ていきます。</p>
+<h2 id="セキュアブートとは">セキュアブートとは？</h2>
+<p>セキュアブートは信頼されているソフトウェア(ブートローダーや OS 等)のみを使用してシステムを起動するためのセキュリティの仕組みです。UEFI の仕様として定義されています。</p>
+<ul>
+<li><a href="https://uefi.org/specifications">Specifications | Unified Extensible Firmware Interface Forum</a><br>
+→ UEFI Specification Version 2.10<br>
+→ 32 Secure Boot and Driver Signing</li>
+<li><a href="https://learn.microsoft.com/ja-jp/windows-hardware/design/device-experiences/oem-secure-boot">セキュア ブート | Microsoft Learn</a></li>
+<li><a href="https://gihyo.jp/admin/serial/01/ubuntu-recipe/0444">第444回　Ubuntuにおけるセキュアブートの仕組み | gihyo.jp</a></li>
+</ul>
+<p><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-5D5EE0D1-2596-43D7-95C8-0B29733191D9.html">ESXi のセキュアブート</a>では、UEFI ファームウェアの起動後に以下の順で各ソフトウェアの署名の検証を行っていきます。</p>
 <ol>
-<li>Connect-VIServer で vCenter Server に接続</li>
-<li>Get-VMHost で ESXi のオブジェクトを取得</li>
-<li>Get-EsxCli で esxcli のオブジェクトを取得</li>
+<li>UEFI ファームウェアが ESXi のブートローダーの署名を検証</li>
+<li>ブートローダーが VMkernel とセキュアブート VIB 検証機能の署名を検証</li>
+<li>セキュアブート VIB 検証機能が全ての VIB の署名を検証</li>
 </ol>
-<p>対象のホストの esxcli オブジェクトが取得できたら、通常の esxcli コマンドを &ldquo;.&rdquo; で繋げてプロパティやメソッドとして呼び出せます。</p>
-<p><a href="https://developer.vmware.com/docs/powercli/latest/vmware.vimautomation.core/commands/get-esxcli/">Get-EsxCli Command | VMware PowerCLI Reference</a></p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>Example 6
-<span class="ln">2</span>
-<span class="ln">3</span>PS C:\&gt;  $vmHost = Get-VMHost &#34;vmHostIp&#34;
-<span class="ln">4</span>&gt;&gt;  $esxcli_v1 = Get-EsxCli -VMHost $vmHost
-<span class="ln">5</span>&gt;&gt;  $esxcli_v1.storage.nmp.device.list()
-</code></pre></div><h2 id="esxi-の-root-ユーザーのパスワードをリセット">ESXi の root ユーザーのパスワードをリセット</h2>
-<p>esxcli system account set コマンドで ESXi の既存のローカルユーザーの設定変更が可能です。このため、以下のような PowerCLI のスクリプトを実行すれば vCenter Server を経由して ESXi の root ユーザーのパスワードを変更できます。</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span>$VC_HOSTNAME = &#34;vcsa.api.lab&#34;
-<span class="ln"> 2</span>$USERNAME = &#34;administrator@vsphere.local&#34;
-<span class="ln"> 3</span>$PASSWORD = &#34;VMware1!&#34;
-<span class="ln"> 4</span>
-<span class="ln"> 5</span>$TGT_HOST = &#34;esxi01.api.lab&#34;
-<span class="ln"> 6</span>$TGT_USER = &#34;root&#34;
-<span class="ln"> 7</span>$NEW_PASSWORD = &#34;Vmware@123&#34;
-<span class="ln"> 8</span>
-<span class="ln"> 9</span>$securePassword = ConvertTo-SecureString $PASSWORD -AsPlainText -Force
-<span class="ln">10</span>$cred = New-Object System.Management.Automation.PSCredential($USERNAME, $securepassword)
-<span class="ln">11</span>
-<span class="ln">12</span>Connect-VIServer -Server $VC_HOSTNAME -Credential $CRED
-<span class="ln">13</span>
-<span class="ln">14</span>$vmHost = Get-VMHost $TGT_HOST
-<span class="ln">15</span>$esxcli = Get-EsxCli -VMHost $vmHost -V2
-<span class="ln">16</span>
-<span class="ln">17</span>$arguments = $esxcli.system.account.set.CreateArgs()
-<span class="ln">18</span>$arguments.id = $TGT_USER
-<span class="ln">19</span>$arguments.password = $NEW_PASSWORD
-<span class="ln">20</span>$arguments.passwordconfirmation = $NEW_PASSWORD
-<span class="ln">21</span>
-<span class="ln">22</span>$esxcli.system.account.set.Invoke($arguments)
-</code></pre></div><p>上のスクリプトでは17行目以降が esxcli system account set コマンドを実行している部分です。esxcli に引数を指定する場合には CreateArgs メソッドを呼び出すことでコマンドに対応する引数の Hashtable オブジェクトが返されます。この Hashtable に値をセットしてから Invoke メソッドに渡すことで、esxcli コマンドを引数つきで実行しています。</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>&gt; $esxcli.system.account.set.CreateArgs()
-<span class="ln">2</span>
-<span class="ln">3</span>Name                           Value
-<span class="ln">4</span>----                           -----
-<span class="ln">5</span>description                    Unset, ([string], optional)
-<span class="ln">6</span>passwordconfirmation           Unset, ([string], optional)
-<span class="ln">7</span>password                       Unset, ([string], optional)
-<span class="ln">8</span>id                             Unset, ([string])
-</code></pre></div><h2 id="vcenter-server-によるホスト操作と-vpxuser">vCenter Server によるホスト操作と vpxuser</h2>
-<p>先に記載したように、vCenter Server のユーザーが ESXi のローカルユーザーを直接管理することはできません。vCenter Server が ESXi を操作する場合は
-vpxuser という特別な ESXi のローカルユーザーを使用します。</p>
-<p><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-2215AADC-D4CD-49DD-AF92-65BED243D851.html">ESXi ホストの権限の割り当て</a></p>
+<p>全ての検証が成功した場合、ESXi は正常に起動します。検証が失敗した場合にはそれぞれの段階で UEFI、ブートローダー、VMkernel がエラーを出力してブートシーケンスを停止します。</p>
+<p>以下の図はドキュメントからの引用ですが、UEFI ファームウェアを信頼の基点としたトラストチェーンが構成されることになります。</p>
+<p><img src="/images/2022-10-08/SecureBoot_Summary.png" alt=""></p>
+<p>また、セキュアブートが有効な ESXi には以下の特徴もあります。</p>
+<ul>
+<li>不正な VIB の強制インストールを拒否する</li>
+<li>ESXi の起動時の local.sh スクリプトを実行しない</li>
+<li>kickstart の %firstboot セクションを実行しない</li>
+</ul>
+<h2 id="esxi-が不正な-vib-のインストールから保護される様子を見る">ESXi が不正な VIB のインストールから保護される様子を見る</h2>
+<p>実際にセキュアブートにより ESXi が不正な VIB のインストールから保護される様子を以下の順に見ていきます。</p>
+<ul>
+<li>セキュアブートが無効な ESXi への不正な VIB のインストール</li>
+<li>不正な VIB をインストール済みの状態からセキュアブートを有効化</li>
+<li>セキュアブートが有効な ESXi への不正な VIB のインストール</li>
+</ul>
+<h3 id="セキュアブートが無効な-esxi-への不正な-vib-のインストール">セキュアブートが無効な ESXi への不正な VIB のインストール</h3>
+<p>まずはマルウェアを模したダミーの VIB を作成し、ESXi にインストールするとどのような状態になるかを見ます。ダミーの VIB (hello_world.vib) は以下の構成としています<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>。</p>
+<ul>
+<li>descriptor.xml<br>
+許容レベルを PartnerSupported に変更</li>
+<li>sig.pkcs7<br>
+中身が空の署名ファイル</li>
+<li>hello_world (/usr/lib/vmware/hello/hello_world)<br>
+ダミーのペイロード(<a href="/post/2022-09-21/">前回記事</a>のELFバイナリ)</li>
+</ul>
+<p>hello_world.vib は許容レベルを PartnerSupported に変更してはいますが、VMwareやパートナーによる署名が無いため CommunitySupported 相当の要件しか満たされていない状態です。</p>
+<p>以下はセキュアブートが無効な ESXi に対して hello_world.vib のインストールを試みた例です。</p>
+<p><img src="/images/2022-10-08/malicious_vib_1.PNG" alt=""></p>
+<p>オプション無しの場合は署名が空である旨のエラーでインストールに失敗していますが、--force オプションを付与した場合にはインストールができていることが分かります。</p>
+<p>esxcli software vib signature verify コマンドで見てみると、PartnerSupported の許容レベルであるものの、署名が無効な VIB として検出されていることが分かります。</p>
+<p><img src="/images/2022-10-08/malicious_vib_2.PNG" alt=""></p>
+<p>もし VirtualPITA や VirtualPIE のようなマルウェアやその起動スクリプトがペイロードに含まれていれば、VIB のインストールによるマルウェアの永続化が達成されてしまうことになります。</p>
+<h3 id="不正な-vib-をインストール済みの状態からセキュアブートを有効化">不正な VIB をインストール済みの状態からセキュアブートを有効化</h3>
+<p>続いて、不正な VIB がインストールされた状態でセキュアブートを有効にすると、ESXi のブート中に署名が無効な VIB を検出して PSOD となります。意図的な PSOD の発生により不正な VIB (hello_world.vib) を含んだ状態での ESXi の起動が防止されていることが確認できます。</p>
+<p><img src="/images/2022-10-08/malicious_vib_3.PNG" alt=""></p>
+<h3 id="セキュアブートが有効な-esxi-への不正な-vib-のインストール">セキュアブートが有効な ESXi への不正な VIB のインストール</h3>
+<p>セキュアブートが有効な ESXi では、--force オプションを付与して不正な VIB の強制インストールを試みても、以下のように署名が無効な VIB として拒否されます。</p>
+<p><img src="/images/2022-10-08/malicious_vib_4.PNG" alt=""></p>
+<h2 id="execinstalledonly-起動オプションとの併用">execInstalledOnly 起動オプションとの併用</h2>
+<p><a href="/post/2022-09-21/">前回記事</a>で execInstalledOnly 起動オプションによる VIB から提供されないバイナリの実行防止に言及しました。</p>
+<p>不正な VIB のインストールによってマルウェアが永続化された場合、マルウェアのバイナリはインストール済みの VIB から提供されることになります。このようなケースでは execInstalledOnly を有効にしてもバイナリ実行防止を回避されてしまいます。</p>
+<p>execInstalledOnly 起動オプションをセキュアブートと併用することにより、不正な VIB のインストール、個別に配置された不正なバイナリの実行の両方が防止されるため、信頼された VIB から提供されるバイナリのみを実行させることが可能となります。</p>
+<p>なお、これらの機能はあくまでも ESXi への侵入後の攻撃の影響を緩和するための手段です。脆弱性や不適切なユーザー管理を悪用した ESXi への侵入を防ぐことはできません。</p>
+<h2 id="セキュアブート利用時の注意点">セキュアブート利用時の注意点</h2>
+<p>セキュアブートを利用する場合、いくつかの注意点があります。</p>
+<h3 id="既存環境のセキュアブートとの互換性のチェック">既存環境のセキュアブートとの互換性のチェック</h3>
+<p>既存の環境でセキュアブートを無効から有効に切り替える場合、以下のドキュメントの手順で事前にセキュアブートとの互換性を確認しておきます。</p>
+<p><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-DD075A38-8900-459F-BD9D-69DC87CCE11B.html">アップグレード後の ESXiホストでのセキュア ブート検証スクリプトの実行</a></p>
+<p>過去に何らかの問題で署名を無視して VIB をインストールする必要があった場合、VIB の署名が検証されていないためセキュアブートの有効化後にブートに失敗する可能性もあります。一般的な環境であれば問題ありませんが、念のため事前に既存環境のセキュアブートとの互換性を確認しておくことをおすすめします。</p>
+<h3 id="起動時に-localsh-スクリプトの実行不可">起動時に local.sh スクリプトの実行不可</h3>
+<p>ESXi の起動時に実行されるスクリプトに /etc/rc.local.d/local.sh がありますが、セキュアブートが有効な場合は本スクリプトは実行されません。local.sh をカスタマイズしている環境は注意が必要です。</p>
+<p><a href="https://kb.vmware.com/s/article/2043564">Modifying the rc.local or local.sh file in ESX/ESXi to execute commands while booting (2043564)</a></p>
 <blockquote>
-<p>vpxuser ユーザー</p>
-<p>vCenter Server では、vpxuser の権限を使用して、ホストに対するアクティビティを管理します。</p>
-<p>vCenter Server の管理者は、root ユーザーとほぼ同様のタスクをホストで実行できます。また、タスクのスケジュール設定やテンプレートの使用も可能です。ただし、vCenter Server の管理者は、ホストのユーザーおよびグループを直接作成、削除、または編集することはできません。管理者権限を持つユーザーのみが、ホストで直接これらのタスクを実行することができます。</p>
+<p>The script will not be run when UEFI secure boot is enabled.</p>
 </blockquote>
-<p>今回の PowerCLI を使用するケースも vCenter Server を経由して ESXi を操作しているため、ESXi 上では vpxuser ユーザーによりタスクが実行されています。実際に hostd のログを見てみると vpxuser によってタスクが実行されていることが分かります。</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>2021-12-16T11:39:47.742Z info hostd[70723] [Originator@6876 sub=Vimsvc.TaskManager opID=27aab9-dd-9541-9542 user=vpxuser:VSPHERE.LOCAL\Administrator] Task Created : haTask--vim.EsxCLI.system.account.set-959618778
-<span class="ln">2</span>
-<span class="ln">3</span>2021-12-16T11:39:47.910Z info hostd[67477] [Originator@6876 sub=Vimsvc.TaskManager opID=3f42954a user=vpxuser] Task Created : haTask-ha-folder-root-vim.host.LocalAccountManager.updateUser-959618780
-<span class="ln">4</span>2021-12-16T11:39:47.972Z info hostd[70722] [Originator@6876 sub=Vimsvc.ha-eventmgr opID=3f42954a user=vpxuser] Event 429 : Password was changed for account root on host localhost.localdomain
-<span class="ln">5</span>2021-12-16T11:39:47.972Z info hostd[70722] [Originator@6876 sub=Vimsvc.TaskManager opID=3f42954a user=vpxuser] Task Completed : haTask-ha-folder-root-vim.host.LocalAccountManager.updateUser-959618780 Status success
-<span class="ln">6</span>
-<span class="ln">7</span>2021-12-16T11:39:48.003Z info hostd[67470] [Originator@6876 sub=Vimsvc.TaskManager opID=27aab9-dd-9541-9542 user=vpxuser:VSPHERE.LOCAL\Administrator] Task Completed : haTask--vim.EsxCLI.system.account.set-959618778 Status success
-</code></pre></div><h2 id="おわりに">おわりに</h2>
-<p>今回は PowerCLI を使用して ESXi の root ユーザーのパスワードをリセットしてみました。前回の記事と同様に vCenter Server に管理・接続されている必要はありますが、PowerCLI は全てのエディションで使用できて柔軟性もありますので、vSphere ユーザーの方は PowerCLI も使えるようにしておくと便利だと思います。</p>
+<h3 id="kickstart-の-firstboot-セクションの実行不可">kickstart の %firstboot セクションの実行不可</h3>
+<p>kickstart を使用して自動インストールを行う場合、初回起動時のみ実行する処理は %firstboot セクションに記載します。セキュアブートが有効な環境の場合には %firstboot セクションの内容は実行されません。</p>
+<p><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.esxi.upgrade.doc/GUID-61A14EBB-5CF3-43EE-87EF-DB8EC6D83698.html#firstboot-16">インストール スクリプトおよびアップグレード スクリプトのコマンド</a></p>
+<blockquote>
+<p>重要：<br>
+ESXi ホスト上でセキュア ブートが有効になっていると、 %firstboot スクリプトは実行されません。</p>
+</blockquote>
+<h3 id="auto-deploy-環境での-vmware-ca-証明書の-uefi-への登録">Auto Deploy 環境での VMware CA 証明書の UEFI への登録</h3>
+<p>Auto Deploy を使用する環境では KB2148532 およびハードウェアベンダーの資料に従って、UEFI の署名データベース(db 変数)に VMware の CA 証明書を登録する必要があります。</p>
+<ul>
+<li><a href="https://kb.vmware.com/s/article/2148532?lang=en_us">UEFI Secure Boot with vSphere Auto Deploy (2148532)</a></li>
+</ul>
+<p>Auto Deploy でセキュアブートを利用する場合、DHCP の Option 67 (Boot File Name) にセキュアブート用の iPXE ファームウェア「snponly64.efi.vmw-hardwired.officialkey」を指定します。このファイルは VMware の CA 証明書で署名されていますが、通常、VMware の CA 証明書は既定で署名データベースに含まれません。このため、Auto Deploy を使用する場合は個別に登録が必要となります。</p>
+<p>署名データベースへの CA 証明書の登録はハードウェア側の作業になるため、具体的な操作はハードウェアベンダー側の情報を確認する必要があります。例えば、KB2148532 で例に挙げられている Dell のハードウェアの場合はセットアップユーティリティや RACADM といったツールを操作することになると思います。</p>
+<ul>
+<li><a href="http://en.community.dell.com/techcenter/extras/m/white_papers/20440707">Defining a Secure Boot Policy on Dell Servers</a><br>
+→ 3.4 Creating a custom policy in System Setup</li>
+<li><a href="https://dl.dell.com/topics/pdf/idrac_v4-22_cliguide_en-us.pdf">Integrated Dell Remote Access Controller 9 - RACADM CLI Guide</a><br>
+→ P.34 bioscert</li>
+</ul>
+<p>なお、手動でインストーラ ISO からインストールされる ESXi のブートローダーは Microsoft の CA 証明書で署名されています。一般に Microsoft の CA 証明書は UEFI の署名データベースに標準で組み込まれているため、Auto Deploy を使用していない環境では UEFI の署名データベースへの CA 証明書登録作業は不要になります。</p>
+<h2 id="おわりに">おわりに</h2>
+<p>今回はセキュアブートによる不正な VIB のインストールからの保護について見ていきました。セキュアブートによって信頼された VIB 飲みを使用して ESXi が起動されることが保証されます。</p>
+<p>セキュアブートや execInstalledOnly によって ESXi を不正な VIB やバイナリから保護できますが、これらはあくまでも ESXi への侵入後の攻撃の影響を緩和するための手段です。これらを有効にしても脆弱性や不適切なユーザー管理を悪用した ESXi への侵入を防ぐことはできません。</p>
+<p>ESXi を脅威から守るには、定期的なパッチ適用で既存の脆弱性を塞ぐ、ESXi へのアクセスを適切に管理するなど、運用上で一般に必要となる対応を徹底することが肝心です。Security Configuration Guide などのリソースも活用し、環境に適切な対応を取っていきましょう。</p>
+<ul>
+<li><a href="https://core.vmware.com/vsphere-esxi-mandiant-malware-persistence">Protecting vSphere From Specialized Malware</a></li>
+<li><a href="https://core.vmware.com/security-configuration-guide">VMware vSphere Security Configuration Guide | VMware</a></li>
+<li><a href="https://blogs.vmware.com/vmware-japan/2021/10/tam-blog-ransomware-resiliency.html">[TAM Blog] ランサムウェアの脅威から仮想化基盤を守るには</a></li>
+</ul>
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p>VIB の構成やカスタム VIB の作成方法は<a href="https://www.yellow-bricks.com/2011/11/29/how-to-create-your-own-vib-files/">中の人の記事</a>が参考になります。<a href="https://williamlam.com/2012/09/creating-custom-vibs-for-esxi-50-51.html">vibauthor という Flings を使う方法もありました</a>が、現在は vibauthor の Flings ページは無くなっているようです。 <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
 
   </article>
 <aside class="sidebar">
@@ -267,9 +321,6 @@ vpxuser という特別な ESXi のローカルユーザーを使用します。
     <h2 class="mt-4">Recent Posts</h2>
     <ul class="flex-column">
       
-      <li>
-        <a href="https://jangari-ntk.github.io/post/2022-10-08/" class="nav-link">不正な VIB のインストールからのセキュアブートによる ESXi の保護</a>
-      </li>
       <li>
         <a href="https://jangari-ntk.github.io/post/2022-09-21/" class="nav-link">execInstalledOnly による ESXi での信頼できないバイナリの実行防止</a>
       </li>

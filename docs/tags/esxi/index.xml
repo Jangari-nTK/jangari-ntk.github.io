@@ -6,10 +6,23 @@
     <description>Recent content in ESXi on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Wed, 21 Sep 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 08 Oct 2022 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/tags/esxi/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>不正な VIB のインストールからのセキュアブートによる ESXi の保護</title>
+      <link>https://jangari-ntk.github.io/post/2022-10-08/</link>
+      <pubDate>Sat, 08 Oct 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2022-10-08/</guid>
+      <description>背景 先日、VMware社およびMandiant社より、vSphere を標的とする新しい種類のマルウェア(VirtualPITA、VirtualPIE、VirtualGATE)に関する記事が公開されました。この記事のマルウェアの興味深いところとして、ESXi のソフトウェアパッケージである VIB にマルウェアがパッケージングされている点が挙げられます。
+ Protecting vSphere From Specialized Malware Bad VIB(E)s Part One: Investigating Novel Malware Persistence Within ESXi Hypervisors  具体的には以下のような特徴があります。
+ 署名が無い不正な VIB にマルウェアをパッケージング VIB の許容レベルは PartnerSupported に偽装 不正な VIB の強制インストールによる永続化 ESXi の起動時にマルウェアを rc.local 内のスクリプトから実行 VIB やマルウェアのファイル名は ESXi にありそうな名称に偽装  このような VIB のインストールによるマルウェアの永続化が vSphere としては過去に類を見ない状況だったため、新しい攻撃手法に対する注意を促す記事となっているようです。
+マルウェアを利用した攻撃を防ぐにあたって、VMware社からは複数のセキュリティのベストプラクティスが提示されています。その中で、ESXi が侵入された後、不正な VIB のインストールを阻止する手段として UEFI セキュアブートの有効化が案内されています。
+Mitigation and Threat Hunting Guidance for Unsigned vSphere Installation Bundles (VIBs) in ESXi (89619)</description>
+    </item>
     
     <item>
       <title>execInstalledOnly による ESXi での信頼できないバイナリの実行防止</title>
