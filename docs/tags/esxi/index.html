@@ -92,6 +92,83 @@
   <div class = 'excerpt'>
     <div class = 'excerpt_header'>
       <h3 class = 'post_link'>
+        <a href='https://jangari-ntk.github.io/post/2022-12-08_2/'>【後編】Sandbox による ESXi の保護: Daemon Sandboxing in ESXi 8.0</a>
+      </h3>
+      <div class = 'post_meta'>
+  <svg class="icon">
+    <use xlink:href="#calendar"></use>
+  </svg>
+  <span class="post_date">
+    Dec 8, 2022</span>
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/security' class = 'post_tag button button_translucent'>Security
+  </a>
+</div>
+
+    </div>
+    <div class = 'excerpt_footer partition'>
+      <div class = 'excerpt_thumbnail'>
+      <img src = '/images/2022-12-08/sandbox_overview.png'>
+      </div>
+      
+        <div>
+          <p class = 'pale'>本記事は vExperts Advent Calendar 2022 の８日目の担当です。
+はじめに 前編では VM Sandboxing を見ていきました。後編では ESXi 8.0 の Daemon Sandboxing を見ていきます。
+Daemon Sandboxing vSphere 8 では仮想マシンだけでなく ESXi 上の各種プロセスも Sandbox ドメイン内で実行させるようになっており、最小限の権限のみをプロセスに付与することでセキュリティを高めています。
+What&rsquo;s New in vSphere 8? | VMware
+ Sandboxed Daemons: ESXi 8.0 daemons …</p>
+          <a href='https://jangari-ntk.github.io/post/2022-12-08_2/' class='excerpt_more button'>Read More</a>
+        </div>
+      </div>
+    </div>
+  </li>
+  
+      
+<li class = 'post_item'>
+  <div class = 'excerpt'>
+    <div class = 'excerpt_header'>
+      <h3 class = 'post_link'>
+        <a href='https://jangari-ntk.github.io/post/2022-12-08_1/'>【前編】Sandbox による ESXi の保護: VM Sandboxing in ESXi 6.5</a>
+      </h3>
+      <div class = 'post_meta'>
+  <svg class="icon">
+    <use xlink:href="#calendar"></use>
+  </svg>
+  <span class="post_date">
+    Dec 8, 2022</span>
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/security' class = 'post_tag button button_translucent'>Security
+  </a>
+</div>
+
+    </div>
+    <div class = 'excerpt_footer partition'>
+      <div class = 'excerpt_thumbnail'>
+      <img src = '/images/2022-12-08/sandbox_overview.png'>
+      </div>
+      
+        <div>
+          <p class = 'pale'>本記事は vExperts Advent Calendar 2022 の８日目の担当です。
+はじめに ESXi には SELinux や AppArmor に似た強制アクセス制御の機能が実装されており、最新の ESXi 8.0 では各種プロセスからアクセスできるリソースや実行可能な処理を最小限に絞っています。
+これにより、悪意のあるユーザーが脆弱性を攻撃してプロセスを乗っ取っても、乗っ取られたプロセスを利用した攻撃の影響範囲が最小限に絞られることになります。この強制アクセス制御の機能は vSphere 6.5 や 8.0 の What&rsquo;s new では Sandbox と呼称されています。
+以下は vSphere 6.5 …</p>
+          <a href='https://jangari-ntk.github.io/post/2022-12-08_1/' class='excerpt_more button'>Read More</a>
+        </div>
+      </div>
+    </div>
+  </li>
+  
+      
+<li class = 'post_item'>
+  <div class = 'excerpt'>
+    <div class = 'excerpt_header'>
+      <h3 class = 'post_link'>
         <a href='https://jangari-ntk.github.io/post/2022-10-08/'>不正な VIB のインストールからのセキュアブートによる ESXi の保護</a>
       </h3>
       <div class = 'post_meta'>
@@ -318,85 +395,6 @@ What&rsquo;s New in vSphere 8?
     </div>
   </li>
   
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2022-02-04/'>esxcli を使用したログフィルタリングの構成</a>
-      </h3>
-      <div class = 'post_meta'>
-  <svg class="icon">
-    <use xlink:href="#calendar"></use>
-  </svg>
-  <span class="post_date">
-    Feb 4, 2022</span>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/monitoring' class = 'post_tag button button_translucent'>Monitoring
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/troubleshooting' class = 'post_tag button button_translucent'>Troubleshooting
-  </a>
-</div>
-
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2022-02-04/thumbnail.PNG'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>概要 ESXi 7.0 Update 2 以降では /etc 配下の多くのファイルが読み取り専用となっていますが、その中にはログのフィルタを記載する logfilters ファイルも含まれています。
-ESXi configuration files for sfcb snmp and wbem can no longer be edited (82638)
- The ESXi configuration files /etc/sfcb/sfcb.cfg, /etc/vmware/snmp.xml, /etc/vmsyslog.conf, /etc/vmware/logfilters and …</p>
-          <a href='https://jangari-ntk.github.io/post/2022-02-04/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
-  
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2022-01-30/'>【備忘録】Intel NUC 10 の SATA ケーブルを交換した話</a>
-      </h3>
-      <div class = 'post_meta'>
-  <svg class="icon">
-    <use xlink:href="#calendar"></use>
-  </svg>
-  <span class="post_date">
-    Jan 30, 2022</span>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/hardware' class = 'post_tag button button_translucent'>Hardware
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/driver' class = 'post_tag button button_translucent'>Driver
-  </a>
-</div>
-
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2022-01-30/nuc-sata-cable-001.JPG'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>概要 Intel NUC 10 (NUC10i7FNH) で ESXi 7.0 を動かしているのですが、SATA ケーブルが故障したため互換品に交換しました。
-使用した NUC 10 互換の SATA ケーブルは以下です。色々と調べましたが NUC 10/11 向けはこれしか無いようでした1。
- Intel NUC Internal FPC/FCC 22 Pin SATA/Power Cable for 2.5 Inch Drives (Micro Sata Cables)  なお、NUC の購入証明があれば Intel のサポートに依頼するといったことは出来るらしいです。
- Intelのベアボーンキット「BXNUC10I7FNH」 …</p>
-          <a href='https://jangari-ntk.github.io/post/2022-01-30/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
-  
     <li>
 <ul class="pagination">
   <li class="page-item">
@@ -415,10 +413,13 @@ ESXi configuration files for sfcb snmp and wbem can no longer be edited (82638)
     <a class="page-link" href="/tags/esxi/page/3/">3</a>
   </li>
   <li class="page-item">
+    <a class="page-link" href="/tags/esxi/page/4/">4</a>
+  </li>
+  <li class="page-item">
     <a href="/tags/esxi/page/2/" class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
   </li>
   <li class="page-item">
-    <a href="/tags/esxi/page/3/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+    <a href="/tags/esxi/page/4/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
   </li>
 </ul>
 
@@ -456,6 +457,12 @@ ESXi configuration files for sfcb snmp and wbem can no longer be edited (82638)
     <ul class="flex-column">
       
       <li>
+        <a href="https://jangari-ntk.github.io/post/2022-12-08_2/" class="nav-link">【後編】Sandbox による ESXi の保護: Daemon Sandboxing in ESXi 8.0</a>
+      </li>
+      <li>
+        <a href="https://jangari-ntk.github.io/post/2022-12-08_1/" class="nav-link">【前編】Sandbox による ESXi の保護: VM Sandboxing in ESXi 6.5</a>
+      </li>
+      <li>
         <a href="https://jangari-ntk.github.io/post/2022-10-08/" class="nav-link">不正な VIB のインストールからのセキュアブートによる ESXi の保護</a>
       </li>
       <li>
@@ -473,12 +480,6 @@ ESXi configuration files for sfcb snmp and wbem can no longer be edited (82638)
       <li>
         <a href="https://jangari-ntk.github.io/post/2022-04-26/" class="nav-link">【メモ】VMFS 6 上のシック形式の仮想ディスクには vmkfstools -K (--punchzero) が効かない</a>
       </li>
-      <li>
-        <a href="https://jangari-ntk.github.io/post/2022-03-06/" class="nav-link">「偽装転送」ポリシーでフレームがドロップされる仕組み</a>
-      </li>
-      <li>
-        <a href="https://jangari-ntk.github.io/post/2022-02-23/" class="nav-link">初期 MAC アドレス、有効な MAC アドレス、「MAC アドレス変更」ポリシー</a>
-      </li>
     </ul>
     <h2>Search</h2>
     <div>
@@ -495,7 +496,7 @@ ESXi configuration files for sfcb snmp and wbem can no longer be edited (82638)
       <nav class="tags_nav">
         <a href='https://jangari-ntk.github.io/categories/vsphere/' class=" post_tag button button_translucent">
           VSPHERE
-          <span class='button_tally'>44</span>
+          <span class='button_tally'>46</span>
         </a>
         
         
@@ -507,12 +508,12 @@ ESXi configuration files for sfcb snmp and wbem can no longer be edited (82638)
       <nav class="tags_nav">
         <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent">
           VSPHERE
-          <span class='button_tally'>38</span>
+          <span class='button_tally'>40</span>
         </a>
         
         <a href='https://jangari-ntk.github.io/tags/esxi/' class=" post_tag button button_translucent">
           ESXI
-          <span class='button_tally'>24</span>
+          <span class='button_tally'>26</span>
         </a>
         
         <a href='https://jangari-ntk.github.io/tags/vcenter-server/' class=" post_tag button button_translucent">
@@ -527,7 +528,7 @@ ESXi configuration files for sfcb snmp and wbem can no longer be edited (82638)
         
         <a href='https://jangari-ntk.github.io/tags/security/' class=" post_tag button button_translucent">
           SECURITY
-          <span class='button_tally'>10</span>
+          <span class='button_tally'>12</span>
         </a>
         
         <a href='https://jangari-ntk.github.io/tags/vsphere-7.0/' class=" post_tag button button_translucent">
@@ -605,7 +606,7 @@ ESXi configuration files for sfcb snmp and wbem can no longer be edited (82638)
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/esxi/' class=" post_tag button button_translucent" data-position=24>ESXI<span class='button_tally'>24</span>
+            <a href='https://jangari-ntk.github.io/tags/esxi/' class=" post_tag button button_translucent" data-position=26>ESXI<span class='button_tally'>26</span>
             </a>
             
             
@@ -673,7 +674,7 @@ ESXi configuration files for sfcb snmp and wbem can no longer be edited (82638)
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/security/' class=" post_tag button button_translucent" data-position=10>SECURITY<span class='button_tally'>10</span>
+            <a href='https://jangari-ntk.github.io/tags/security/' class=" post_tag button button_translucent" data-position=12>SECURITY<span class='button_tally'>12</span>
             </a>
             
             
@@ -713,7 +714,7 @@ ESXi configuration files for sfcb snmp and wbem can no longer be edited (82638)
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent" data-position=38>VSPHERE<span class='button_tally'>38</span>
+            <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent" data-position=40>VSPHERE<span class='button_tally'>40</span>
             </a>
             
             

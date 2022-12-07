@@ -6,10 +6,39 @@
     <description>Recent content on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Sat, 08 Oct 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 08 Dec 2022 00:10:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>【後編】Sandbox による ESXi の保護: Daemon Sandboxing in ESXi 8.0</title>
+      <link>https://jangari-ntk.github.io/post/2022-12-08_2/</link>
+      <pubDate>Thu, 08 Dec 2022 00:10:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2022-12-08_2/</guid>
+      <description>本記事は vExperts Advent Calendar 2022 の８日目の担当です。
+はじめに 前編では VM Sandboxing を見ていきました。後編では ESXi 8.0 の Daemon Sandboxing を見ていきます。
+Daemon Sandboxing vSphere 8 では仮想マシンだけでなく ESXi 上の各種プロセスも Sandbox ドメイン内で実行させるようになっており、最小限の権限のみをプロセスに付与することでセキュリティを高めています。
+What&amp;rsquo;s New in vSphere 8? | VMware
+ Sandboxed Daemons: ESXi 8.0 daemons and processes run in their own sandboxed domain where only the minimum required permissions are available to the process.
+ 以前のバージョンでは hostd や vpxd などのプロセスは特権レベルのドメイン(superDom)が割り当てられていましたが、vSphere 8 ではこれらのプロセスにも独立したドメインが割り当てられています。
+個々のプロセスのドメインを見てみる 前編と同様、まずは ps コマンドで ESXi 8.</description>
+    </item>
+    
+    <item>
+      <title>【前編】Sandbox による ESXi の保護: VM Sandboxing in ESXi 6.5</title>
+      <link>https://jangari-ntk.github.io/post/2022-12-08_1/</link>
+      <pubDate>Thu, 08 Dec 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2022-12-08_1/</guid>
+      <description>本記事は vExperts Advent Calendar 2022 の８日目の担当です。
+はじめに ESXi には SELinux や AppArmor に似た強制アクセス制御の機能が実装されており、最新の ESXi 8.0 では各種プロセスからアクセスできるリソースや実行可能な処理を最小限に絞っています。
+これにより、悪意のあるユーザーが脆弱性を攻撃してプロセスを乗っ取っても、乗っ取られたプロセスを利用した攻撃の影響範囲が最小限に絞られることになります。この強制アクセス制御の機能は vSphere 6.5 や 8.0 の What&amp;rsquo;s new では Sandbox と呼称されています。
+以下は vSphere 6.5 で実装された VM Sandboxing のイメージ図です。ゲストOS内で何らかの仮想マシンの脆弱性を突き、VMX プロセスの権限でコードが実行可能になった場合でも、Sandbox の範囲外にアクセスする処理は許可されません。これにより乗っ取られた仮想マシンプロセスからホストや他の仮想マシンが保護されます。
+今まではこの Sandbox は What’s new に概要が２～３行あるのみで具体的な公開情報がなかなか見当たりませんでした。しかし、ESXi 8.0 のリリースとともに Sandbox に関する KB がいくつか公開され、そこから Sandbox が間接的に関わっていた過去の KB もいくつか見つけられました。
+今回はそれらの KB から確認した情報や簡単なコマンドで確認できる内容をベースに ESXi の Sandbox がどういった仕様なのか見ていきます。本記事では前編として Sandbox を実装する ESXi の仕組みと ESXi 6.5 の VM Sandboxing の概要を、後編の記事では ESXi 8.</description>
+    </item>
     
     <item>
       <title>不正な VIB のインストールからのセキュアブートによる ESXi の保護</title>
