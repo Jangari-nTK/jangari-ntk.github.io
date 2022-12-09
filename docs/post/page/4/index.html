@@ -93,6 +93,43 @@
   <div class = 'excerpt'>
     <div class = 'excerpt_header'>
       <h3 class = 'post_link'>
+        <a href='https://jangari-ntk.github.io/post/2021-04-08/'>Fedora 33 で VMware Tools による解像度変更が効かない問題と対処</a>
+      </h3>
+      <div class = 'post_meta'>
+  <svg class="icon">
+    <use xlink:href="#calendar"></use>
+  </svg>
+  <span class="post_date">
+    Apr 8, 2021</span>
+  <a href = 'https://jangari-ntk.github.io/tags/tips' class = 'post_tag button button_translucent'>Tips
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/vmware-workstation' class = 'post_tag button button_translucent'>VMware Workstation
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/fedora' class = 'post_tag button button_translucent'>Fedora
+  </a>
+</div>
+
+    </div>
+    <div class = 'excerpt_footer partition'>
+      <div class = 'excerpt_thumbnail'>
+      <img src = '/images/2021-04-08/thumbnail.PNG'>
+      </div>
+      
+        <div>
+          <p class = 'pale'>概要 VMware Workstation 16 Pro 上に Fedora 33 をインストールしたのですが、VMware Workstation のウィンドウサイズにゲストの解像度が追従しない状況が発生しました。
+本来は VMware Tools (open-vm-tools) によってゲストの解像度が追従するはずなので、open-vm-tools の動きが怪しいと思いワークアラウンドを調べてみました。
+原因 Bugzilla や GitHub の Issue を見る限りでは、VMware Tools が Xorg 用のドライバ検知に失敗して resolutionKMS / resolutionSet プラグインが自動で有効にな …</p>
+          <a href='https://jangari-ntk.github.io/post/2021-04-08/' class='excerpt_more button'>Read More</a>
+        </div>
+      </div>
+    </div>
+  </li>
+  
+      
+<li class = 'post_item'>
+  <div class = 'excerpt'>
+    <div class = 'excerpt_header'>
+      <h3 class = 'post_link'>
         <a href='https://jangari-ntk.github.io/post/2021-03-29/'>REST API で vCenter Server のマシンSSL証明書を置き換える</a>
       </h3>
       <div class = 'post_meta'>
@@ -360,46 +397,6 @@ ESXi-Arm インストール完了！
     </div>
   </li>
   
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2020-10-02/'>VMware 社の新プロジェクト「Project Monterey」？</a>
-      </h3>
-      <div class = 'post_meta'>
-  <svg class="icon">
-    <use xlink:href="#calendar"></use>
-  </svg>
-  <span class="post_date">
-    Oct 2, 2020</span>
-  <a href = 'https://jangari-ntk.github.io/tags/vmware-cloud-foundation' class = 'post_tag button button_translucent'>VMware Cloud Foundation
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/x86' class = 'post_tag button button_translucent'>x86
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/arm' class = 'post_tag button button_translucent'>ARM
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/architecture' class = 'post_tag button button_translucent'>Architecture
-  </a>
-</div>
-
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2020-10-02/Project-Monterey-new-VCF-architecture.png'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>はじめに VMworld 2020 のタイミングに合わせて、9/29 に VMware 社の各種ブログにて新しい製品やサービス、プロジェクトが発表されていました。いくつか見ていたのですが、それらの中でも以下の新しいプロジェクト「Project Monterey」が画期的な内容で個人的に興味をそそられました。知らない＆分からない＆そもそも初めて見る内容も多く、調べながら何とかブログ記事から読み取れた範囲の内容にはなりますが頑張って紹介してみたいと思います。
-Not only is #ProjectMontery really cool but its also 1st validation of #ESXionARM as most …</p>
-          <a href='https://jangari-ntk.github.io/post/2020-10-02/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
-  
     <li>
 <ul class="pagination">
   <li class="page-item">
@@ -468,6 +465,9 @@ Not only is #ProjectMontery really cool but its also 1st validation of #ESXionAR
     <ul class="flex-column">
       
       <li>
+        <a href="https://jangari-ntk.github.io/post/2022-12-09/" class="nav-link">PowerCLI で vCenter Server のトリガー済みアラームを取得</a>
+      </li>
+      <li>
         <a href="https://jangari-ntk.github.io/post/2022-12-08_2/" class="nav-link">【後編】Sandbox による ESXi の保護: Daemon Sandboxing in ESXi 8.0</a>
       </li>
       <li>
@@ -488,9 +488,6 @@ Not only is #ProjectMontery really cool but its also 1st validation of #ESXionAR
       <li>
         <a href="https://jangari-ntk.github.io/post/2022-05-04/" class="nav-link">vSphere Diagnostic Tool を使ってみる</a>
       </li>
-      <li>
-        <a href="https://jangari-ntk.github.io/post/2022-04-26/" class="nav-link">【メモ】VMFS 6 上のシック形式の仮想ディスクには vmkfstools -K (--punchzero) が効かない</a>
-      </li>
     </ul>
     <h2>Search</h2>
     <div>
@@ -507,7 +504,7 @@ Not only is #ProjectMontery really cool but its also 1st validation of #ESXionAR
       <nav class="tags_nav">
         <a href='https://jangari-ntk.github.io/categories/vsphere/' class=" post_tag button button_translucent">
           VSPHERE
-          <span class='button_tally'>46</span>
+          <span class='button_tally'>47</span>
         </a>
         
         
@@ -519,7 +516,7 @@ Not only is #ProjectMontery really cool but its also 1st validation of #ESXionAR
       <nav class="tags_nav">
         <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent">
           VSPHERE
-          <span class='button_tally'>40</span>
+          <span class='button_tally'>41</span>
         </a>
         
         <a href='https://jangari-ntk.github.io/tags/esxi/' class=" post_tag button button_translucent">
@@ -529,12 +526,12 @@ Not only is #ProjectMontery really cool but its also 1st validation of #ESXionAR
         
         <a href='https://jangari-ntk.github.io/tags/vcenter-server/' class=" post_tag button button_translucent">
           VCENTER-SERVER
-          <span class='button_tally'>18</span>
+          <span class='button_tally'>19</span>
         </a>
         
         <a href='https://jangari-ntk.github.io/tags/tips/' class=" post_tag button button_translucent">
           TIPS
-          <span class='button_tally'>16</span>
+          <span class='button_tally'>17</span>
         </a>
         
         <a href='https://jangari-ntk.github.io/tags/security/' class=" post_tag button button_translucent">
@@ -582,8 +579,8 @@ Not only is #ProjectMontery really cool but its also 1st validation of #ESXionAR
           <span class='button_tally'>2</span>
         </a>
         
-        <a href='https://jangari-ntk.github.io/tags/vsan/' class=" post_tag button button_translucent">
-          VSAN
+        <a href='https://jangari-ntk.github.io/tags/monitoring/' class=" post_tag button button_translucent">
+          MONITORING
           <span class='button_tally'>2</span>
         </a>
         
@@ -661,7 +658,7 @@ Not only is #ProjectMontery really cool but its also 1st validation of #ESXionAR
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/monitoring/' class=" post_tag button button_translucent" data-position=1>MONITORING<span class='button_tally'>1</span>
+            <a href='https://jangari-ntk.github.io/tags/monitoring/' class=" post_tag button button_translucent" data-position=2>MONITORING<span class='button_tally'>2</span>
             </a>
             
             
@@ -693,7 +690,7 @@ Not only is #ProjectMontery really cool but its also 1st validation of #ESXionAR
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/tips/' class=" post_tag button button_translucent" data-position=16>TIPS<span class='button_tally'>16</span>
+            <a href='https://jangari-ntk.github.io/tags/tips/' class=" post_tag button button_translucent" data-position=17>TIPS<span class='button_tally'>17</span>
             </a>
             
             
@@ -701,7 +698,7 @@ Not only is #ProjectMontery really cool but its also 1st validation of #ESXionAR
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/vcenter-server/' class=" post_tag button button_translucent" data-position=18>VCENTER-SERVER<span class='button_tally'>18</span>
+            <a href='https://jangari-ntk.github.io/tags/vcenter-server/' class=" post_tag button button_translucent" data-position=19>VCENTER-SERVER<span class='button_tally'>19</span>
             </a>
             
             
@@ -725,7 +722,7 @@ Not only is #ProjectMontery really cool but its also 1st validation of #ESXionAR
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent" data-position=40>VSPHERE<span class='button_tally'>40</span>
+            <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent" data-position=41>VSPHERE<span class='button_tally'>41</span>
             </a>
             
             

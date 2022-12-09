@@ -6,10 +6,27 @@
     <description>Recent content on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Thu, 08 Dec 2022 00:10:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 09 Dec 2022 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PowerCLI で vCenter Server のトリガー済みアラームを取得</title>
+      <link>https://jangari-ntk.github.io/post/2022-12-09/</link>
+      <pubDate>Fri, 09 Dec 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2022-12-09/</guid>
+      <description>はじめに vCenter Server の各インベントリオブジェクトのトリガー済みアラームは公式の PowerCLI サンプルスクリプトにもあるように $entity.ExtensionData.TriggeredAlarmState で取得できます。
+今回は以下のような vCenter Server オブジェクトに表示される全トリガー済みアラームを取得してみます。
+インベントリ階層とデータセンターフォルダ vCenter Server のインベントリ階層は以下のVMware社ドキュメントに記載があります。
+ 権限の階層的な継承
+→ vSphere のインベントリ階層  以下の図は上記ドキュメントからの引用です。
+アラームのターゲットタイプのうち階層の最上位のタイプは &amp;ldquo;vCenter Server&amp;rdquo; ですが、これは実際は図の上から３番目の「データセンターフォルダ」に対応しています。トリガー済みアラーム画面でオブジェクトタイプをよく見ると vCenter Server は「フォルダ」扱いになっていることが分かります。
+トリガー済みアラームの一覧を取得する データセンターフォルダは名前が「Datacenters」または ID が「Folder-group-d1」なので、Get-Folder でこれらを指定すれば取得できます。
+PowerCLI サンプルスクリプトからコードを拝借し、少しカスタマイズした PowerShell 関数が以下です。
+1function Get-AllTriggeredAlarm { 2 3 $alarmOutput = @() 4 5 # Get the folder named &amp;#34;Datacenters&amp;#34;, which is the root of the inventory tree. 6 $entity = Get-Folder -Name &amp;#34;Datacenters&amp;#34; 7 8 if ($entity.</description>
+    </item>
     
     <item>
       <title>【後編】Sandbox による ESXi の保護: Daemon Sandboxing in ESXi 8.0</title>

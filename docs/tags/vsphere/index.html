@@ -92,6 +92,48 @@
   <div class = 'excerpt'>
     <div class = 'excerpt_header'>
       <h3 class = 'post_link'>
+        <a href='https://jangari-ntk.github.io/post/2022-12-09/'>PowerCLI で vCenter Server のトリガー済みアラームを取得</a>
+      </h3>
+      <div class = 'post_meta'>
+  <svg class="icon">
+    <use xlink:href="#calendar"></use>
+  </svg>
+  <span class="post_date">
+    Dec 9, 2022</span>
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/vcenter-server' class = 'post_tag button button_translucent'>vCenter Server
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/monitoring' class = 'post_tag button button_translucent'>Monitoring
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/tips' class = 'post_tag button button_translucent'>Tips
+  </a>
+</div>
+
+    </div>
+    <div class = 'excerpt_footer partition'>
+      <div class = 'excerpt_thumbnail'>
+      <img src = '/images/2022-12-09/vc_triggered_alarm_gui.PNG'>
+      </div>
+      
+        <div>
+          <p class = 'pale'>はじめに vCenter Server の各インベントリオブジェクトのトリガー済みアラームは公式の PowerCLI サンプルスクリプトにもあるように $entity.ExtensionData.TriggeredAlarmState で取得できます。
+今回は以下のような vCenter Server オブジェクトに表示される全トリガー済みアラームを取得してみます。
+インベントリ階層とデータセンターフォルダ vCenter Server のインベントリ階層は以下のVMware社ドキュメントに記載があります。
+ 権限の階層的な継承
+→ vSphere のインベントリ階層  以下の図は上記ドキュメントからの引用です。
+アラームのターゲッ …</p>
+          <a href='https://jangari-ntk.github.io/post/2022-12-09/' class='excerpt_more button'>Read More</a>
+        </div>
+      </div>
+    </div>
+  </li>
+  
+      
+<li class = 'post_item'>
+  <div class = 'excerpt'>
+    <div class = 'excerpt_header'>
+      <h3 class = 'post_link'>
         <a href='https://jangari-ntk.github.io/post/2022-12-08_2/'>【後編】Sandbox による ESXi の保護: Daemon Sandboxing in ESXi 8.0</a>
       </h3>
       <div class = 'post_meta'>
@@ -347,46 +389,6 @@ vSphere  10 New and Exciting Things About vSphere That You Absolutely Need to Kn
     </div>
   </li>
   
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2022-04-26/'>【メモ】VMFS 6 上のシック形式の仮想ディスクには vmkfstools -K (--punchzero) が効かない</a>
-      </h3>
-      <div class = 'post_meta'>
-  <svg class="icon">
-    <use xlink:href="#calendar"></use>
-  </svg>
-  <span class="post_date">
-    Apr 26, 2022</span>
-  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/storage' class = 'post_tag button button_translucent'>Storage
-  </a>
-</div>
-
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2022-04-26/thumbnail.PNG'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>概要 VMFS5 以前の VMFS データストアでは、シックプロビジョニングの仮想ディスクに vmkfstools -K コマンドを実行することで、ゼロクリアされたブロックの削除とシンプロビジョニングへの変換がおこなえました。
-ゼロクリアされたブロックの削除
- vmkfstools コマンドを使用して、ゼロクリアされたブロックを削除します。
--K|--punchzero
-このオプションは、ゼロクリアされたすべてのブロックの割り当てを解除し、割り当て済みで有効なデータを含むブロックだけを残します。処理後の仮想ディスクはシン フォーマットになります。
- VMFS6 ではシックプロビジョニングの仮想ディスクに対して vmkfstools …</p>
-          <a href='https://jangari-ntk.github.io/post/2022-04-26/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
-  
     <li>
 <ul class="pagination">
   <li class="page-item">
@@ -408,13 +410,13 @@ vSphere  10 New and Exciting Things About vSphere That You Absolutely Need to Kn
     <span aria-hidden="true">&nbsp;&hellip;&nbsp;</span>
   </li>
   <li class="page-item">
-    <a class="page-link" href="/tags/vsphere/page/5/">5</a>
+    <a class="page-link" href="/tags/vsphere/page/6/">6</a>
   </li>
   <li class="page-item">
     <a href="/tags/vsphere/page/2/" class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
   </li>
   <li class="page-item">
-    <a href="/tags/vsphere/page/5/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+    <a href="/tags/vsphere/page/6/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
   </li>
 </ul>
 
@@ -452,6 +454,9 @@ vSphere  10 New and Exciting Things About vSphere That You Absolutely Need to Kn
     <ul class="flex-column">
       
       <li>
+        <a href="https://jangari-ntk.github.io/post/2022-12-09/" class="nav-link">PowerCLI で vCenter Server のトリガー済みアラームを取得</a>
+      </li>
+      <li>
         <a href="https://jangari-ntk.github.io/post/2022-12-08_2/" class="nav-link">【後編】Sandbox による ESXi の保護: Daemon Sandboxing in ESXi 8.0</a>
       </li>
       <li>
@@ -472,9 +477,6 @@ vSphere  10 New and Exciting Things About vSphere That You Absolutely Need to Kn
       <li>
         <a href="https://jangari-ntk.github.io/post/2022-05-04/" class="nav-link">vSphere Diagnostic Tool を使ってみる</a>
       </li>
-      <li>
-        <a href="https://jangari-ntk.github.io/post/2022-04-26/" class="nav-link">【メモ】VMFS 6 上のシック形式の仮想ディスクには vmkfstools -K (--punchzero) が効かない</a>
-      </li>
     </ul>
     <h2>Search</h2>
     <div>
@@ -491,7 +493,7 @@ vSphere  10 New and Exciting Things About vSphere That You Absolutely Need to Kn
       <nav class="tags_nav">
         <a href='https://jangari-ntk.github.io/categories/vsphere/' class=" post_tag button button_translucent">
           VSPHERE
-          <span class='button_tally'>46</span>
+          <span class='button_tally'>47</span>
         </a>
         
         
@@ -503,7 +505,7 @@ vSphere  10 New and Exciting Things About vSphere That You Absolutely Need to Kn
       <nav class="tags_nav">
         <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent">
           VSPHERE
-          <span class='button_tally'>40</span>
+          <span class='button_tally'>41</span>
         </a>
         
         <a href='https://jangari-ntk.github.io/tags/esxi/' class=" post_tag button button_translucent">
@@ -513,12 +515,12 @@ vSphere  10 New and Exciting Things About vSphere That You Absolutely Need to Kn
         
         <a href='https://jangari-ntk.github.io/tags/vcenter-server/' class=" post_tag button button_translucent">
           VCENTER-SERVER
-          <span class='button_tally'>18</span>
+          <span class='button_tally'>19</span>
         </a>
         
         <a href='https://jangari-ntk.github.io/tags/tips/' class=" post_tag button button_translucent">
           TIPS
-          <span class='button_tally'>16</span>
+          <span class='button_tally'>17</span>
         </a>
         
         <a href='https://jangari-ntk.github.io/tags/security/' class=" post_tag button button_translucent">
@@ -566,8 +568,8 @@ vSphere  10 New and Exciting Things About vSphere That You Absolutely Need to Kn
           <span class='button_tally'>2</span>
         </a>
         
-        <a href='https://jangari-ntk.github.io/tags/vsan/' class=" post_tag button button_translucent">
-          VSAN
+        <a href='https://jangari-ntk.github.io/tags/monitoring/' class=" post_tag button button_translucent">
+          MONITORING
           <span class='button_tally'>2</span>
         </a>
         
@@ -645,7 +647,7 @@ vSphere  10 New and Exciting Things About vSphere That You Absolutely Need to Kn
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/monitoring/' class=" post_tag button button_translucent" data-position=1>MONITORING<span class='button_tally'>1</span>
+            <a href='https://jangari-ntk.github.io/tags/monitoring/' class=" post_tag button button_translucent" data-position=2>MONITORING<span class='button_tally'>2</span>
             </a>
             
             
@@ -677,7 +679,7 @@ vSphere  10 New and Exciting Things About vSphere That You Absolutely Need to Kn
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/tips/' class=" post_tag button button_translucent" data-position=16>TIPS<span class='button_tally'>16</span>
+            <a href='https://jangari-ntk.github.io/tags/tips/' class=" post_tag button button_translucent" data-position=17>TIPS<span class='button_tally'>17</span>
             </a>
             
             
@@ -685,7 +687,7 @@ vSphere  10 New and Exciting Things About vSphere That You Absolutely Need to Kn
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/vcenter-server/' class=" post_tag button button_translucent" data-position=18>VCENTER-SERVER<span class='button_tally'>18</span>
+            <a href='https://jangari-ntk.github.io/tags/vcenter-server/' class=" post_tag button button_translucent" data-position=19>VCENTER-SERVER<span class='button_tally'>19</span>
             </a>
             
             
@@ -709,7 +711,7 @@ vSphere  10 New and Exciting Things About vSphere That You Absolutely Need to Kn
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent" data-position=40>VSPHERE<span class='button_tally'>40</span>
+            <a href='https://jangari-ntk.github.io/tags/vsphere/' class=" post_tag button button_translucent" data-position=41>VSPHERE<span class='button_tally'>41</span>
             </a>
             
             
