@@ -162,8 +162,7 @@ It is no longer possible to make changes to NTP, PTP by editing these config fil
 ・# esxcli system ntp set</p>
 </blockquote>
 <p>今回の記事では PowerCLI から esxcli を呼び出すことで、複数の ESXi ホストに ntp.conf の設定を一括で投入してみます。</p>
-<p>なお、vSphere Client などの GUI での NTP 設定は従来通り可能ですので、ntp.conf の編集が不要な場合[^1]には esxcli を使用する必要はありません。</p>
-<p>[^1] GUI 上の設定で事足りる、ホスト一台ずつの設定でも手が足りる等々</p>
+<p>なお、vSphere Client などの GUI での NTP 設定は従来通り可能ですので、ntp.conf の編集が不要な場合<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>には esxcli を使用する必要はありません。</p>
 <h2 id="背景">背景</h2>
 <p>ESXi の NTP サーバに Active Directory ドメインコントローラ (Windows Time サービス) を使用している環境では、Windows Time サービス側の設定の修正ではなく、ESXi 側の ntp.conf に tos maxdist を追記して同期させるワークアラウンドを実施されている方もいらっしゃると思います。</p>
 <p><a href="https://kb.vmware.com/s/article/1035833?lang=ja">Microsoft ドメイン コントローラを使用して ESXi/ESX の時刻を同期する (1035833)</a><br>
@@ -228,6 +227,14 @@ tos maxdist 30<br>
 <h2 id="おわりに">おわりに</h2>
 <p>今回の記事では PowerCLI の EsxCli オブジェクトを使用して複数の ESXi に ntp.conf の設定を投入してみました。</p>
 <p>vSphere Client や ESXi Shell では一台ずつの設定が必要でも、PowerCLI とちょっとした工夫を加えれば一括で設定できるケースも多くあります。ホストの台数が多い場合には PowerCLI で容易に設定が行えないか検討してみるのも良いと思います。</p>
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p>GUI 上の設定で事足りる、ホスト一台ずつの設定でも手が足りる等々 <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
 
   </article>
 <aside class="sidebar">
