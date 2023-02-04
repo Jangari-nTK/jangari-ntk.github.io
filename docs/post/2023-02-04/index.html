@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-figures="" class="page">
-  <head>  <title>open-vm-tools を CentOS 8 aarch64 でビルド＆インストール | vSoliloquy</title>
+  <head>  <title>PowerCLI で vCenter Server 管理下の ESXi の NTP 設定を一括変更 | vSoliloquy</title>
   <meta charset='utf-8'>
   <meta name="generator" content="Hugo 0.74.3" />
   <meta name = 'viewport' content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
@@ -15,14 +15,14 @@
   
 <meta property = "og:locale" content = "en_US" />
 <meta property="og:type" content="article">
-<meta name="description" content="ESXi on Arm でゲストOSを実行する場合、ARM64 アーキテクチャ向けにビルドされた OS をインストールすることになります。現時点で殆どの Linux ディストリビューションでは open-vm-tools が公式リポジトリで配布されていません。このため、VMware 公式の GitHub リポジトリから …">
+<meta name="description" content="ESXi 7.0 Update 3 以降では /etc/ntp.conf の内容が configstore 内に移行されファイル自体が read-only となり、ntp.conf の直接編集がサポートされなくなりました。ntp.conf への追記が必要な場合、代わりに esxcli で設定ファイルを投入する必要があり …">
 <meta name = "twitter:card" content = "summary" />
 <meta name = "twitter:creator" content = "@Jangari_nTK">
-<meta name = "twitter:title" content = "open-vm-tools を CentOS 8 aarch64 でビルド＆インストール" />
-<meta property = "og:url" content = "https://jangari-ntk.github.io/post/2020-10-17/" />
-<meta property = "og:title" content = "open-vm-tools を CentOS 8 aarch64 でビルド＆インストール" />
-<meta property = "og:description" content = "ESXi on Arm でゲストOSを実行する場合、ARM64 アーキテクチャ向けにビルドされた OS をインストールすることになります。現時点で殆どの Linux ディストリビューションでは open-vm-tools が公式リポジトリで配布されていません。このため、VMware 公式の GitHub リポジトリから …" />
-<meta property = "og:image" content = "https://jangari-ntk.github.io/images/2020-10-09/thumbnail.PNG" />
+<meta name = "twitter:title" content = "PowerCLI で vCenter Server 管理下の ESXi の NTP 設定を一括変更" />
+<meta property = "og:url" content = "https://jangari-ntk.github.io/post/2023-02-04/" />
+<meta property = "og:title" content = "PowerCLI で vCenter Server 管理下の ESXi の NTP 設定を一括変更" />
+<meta property = "og:description" content = "ESXi 7.0 Update 3 以降では /etc/ntp.conf の内容が configstore 内に移行されファイル自体が read-only となり、ntp.conf の直接編集がサポートされなくなりました。ntp.conf への追記が必要な場合、代わりに esxcli で設定ファイルを投入する必要があり …" />
+<meta property = "og:image" content = "https://jangari-ntk.github.io/images/2023-02-04/thumbnail.PNG" />
 <link rel='apple-touch-icon' sizes='180x180' href='https://jangari-ntk.github.io/icons/apple-touch-icon.png'>
 <link rel='icon' type='image/png' sizes='32x32' href='https://jangari-ntk.github.io/icons/favicon-32x32.png'>
 <link rel='icon' type='image/png' sizes='16x16' href='https://jangari-ntk.github.io/icons/favicon-16x16.png'>
@@ -31,7 +31,7 @@
 <meta name="msapplication-TileColor" content="#002538">
 <meta name="theme-color" content="#002538">
 
-  <link rel='canonical' href='https://jangari-ntk.github.io/post/2020-10-17/'>
+  <link rel='canonical' href='https://jangari-ntk.github.io/post/2023-02-04/'>
     
 
     
@@ -88,40 +88,38 @@
   
 <div class = 'grid-inverse wrap content'>
   <article class='post_content'>
-    <h1 class='post_title'>open-vm-tools を CentOS 8 aarch64 でビルド＆インストール</h1><div class = 'post_meta'>
+    <h1 class='post_title'>PowerCLI で vCenter Server 管理下の ESXi の NTP 設定を一括変更</h1><div class = 'post_meta'>
   <svg class="icon">
     <use xlink:href="#calendar"></use>
   </svg>
   <span class="post_date">
-    Oct 17, 2020</span>
+    Feb 4, 2023</span>
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
+  </a>
   <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/linux' class = 'post_tag button button_translucent'>Linux
+  <a href = 'https://jangari-ntk.github.io/tags/network' class = 'post_tag button button_translucent'>Network
   </a>
-  <a href = 'https://jangari-ntk.github.io/tags/centos' class = 'post_tag button button_translucent'>CentOS
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/esxi-on-arm' class = 'post_tag button button_translucent'>ESXi on Arm
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/vmware-tools' class = 'post_tag button button_translucent'>VMware Tools
+  <a href = 'https://jangari-ntk.github.io/tags/tips' class = 'post_tag button button_translucent'>Tips
   </a>
 </div>
 
     <div class='post_share'>
   Share on:
-  <a href="https://twitter.com/intent/tweet?text=open-vm-tools%20%e3%82%92%20CentOS%208%20aarch64%20%e3%81%a7%e3%83%93%e3%83%ab%e3%83%89%ef%bc%86%e3%82%a4%e3%83%b3%e3%82%b9%e3%83%88%e3%83%bc%e3%83%ab&url=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2020-10-17%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
+  <a href="https://twitter.com/intent/tweet?text=PowerCLI%20%e3%81%a7%20vCenter%20Server%20%e7%ae%a1%e7%90%86%e4%b8%8b%e3%81%ae%20ESXi%20%e3%81%ae%20NTP%20%e8%a8%ad%e5%ae%9a%e3%82%92%e4%b8%80%e6%8b%ac%e5%a4%89%e6%9b%b4&url=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2023-02-04%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
     <svg class="icon">
       <use xlink:href="#twitter"></use>
     </svg>
   </a>
   
-  <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2020-10-17%2f&t=open-vm-tools%20%e3%82%92%20CentOS%208%20aarch64%20%e3%81%a7%e3%83%93%e3%83%ab%e3%83%89%ef%bc%86%e3%82%a4%e3%83%b3%e3%82%b9%e3%83%88%e3%83%bc%e3%83%ab" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
+  <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjangari-ntk.github.io%2fpost%2f2023-02-04%2f&t=PowerCLI%20%e3%81%a7%20vCenter%20Server%20%e7%ae%a1%e7%90%86%e4%b8%8b%e3%81%ae%20ESXi%20%e3%81%ae%20NTP%20%e8%a8%ad%e5%ae%9a%e3%82%92%e4%b8%80%e6%8b%ac%e5%a4%89%e6%9b%b4" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
     <svg class="icon">
       <use xlink:href="#facebook"></use>
     </svg>
   </a>
   <script>
     function shareViaLinkedin() {
-      window.open('http://www.linkedin.com/shareArticle?mini=true&url='+encodeURIComponent("https://jangari-ntk.github.io/post/2020-10-17/"), '', 'left=0,top=0,width=650,height=420,personalbar=0,toolbar=0,scrollbars=0,resizable=0');
+      window.open('http://www.linkedin.com/shareArticle?mini=true&url='+encodeURIComponent("https://jangari-ntk.github.io/post/2023-02-04/"), '', 'left=0,top=0,width=650,height=420,personalbar=0,toolbar=0,scrollbars=0,resizable=0');
     }
   </script>
   <a href="#linkedinshare" id = "linkedinshare" class="linkedin" title="Share on LinkedIn" rel="nofollow" onclick="shareViaLinkedin()">
@@ -129,7 +127,7 @@
       <use xlink:href="#linkedin"></use>
     </svg>
   </a>
-  <a href="https://jangari-ntk.github.io/post/2020-10-17/" title="Copy Link" class="link link_yank">
+  <a href="https://jangari-ntk.github.io/post/2023-02-04/" title="Copy Link" class="link link_yank">
     <svg class="icon">
       <use xlink:href="#yank"></use>
     </svg>
@@ -142,124 +140,94 @@
     <nav id="TableOfContents">
   <ul>
     <li><a href="#はじめに">はじめに</a></li>
-    <li><a href="#おおまかな流れ">おおまかな流れ</a></li>
-    <li><a href="#centos-8-aarch64-を仮想マシンにインストール">CentOS 8 (aarch64) を仮想マシンにインストール</a></li>
-    <li><a href="#ビルドに必要な開発ツールのパッケージをインストール">ビルドに必要な開発ツールのパッケージをインストール</a></li>
-    <li><a href="#vmwareopen-vm-tools-の-github-リポジトリをクローン">vmware/open-vm-tools の GitHub リポジトリをクローン</a></li>
-    <li><a href="#configure-スクリプトを生成実行して-makefile-を生成">configure スクリプトを生成・実行して Makefile を生成</a></li>
-    <li><a href="#make-でビルドして-make-install-でインストール">make でビルドして make install でインストール</a></li>
-    <li><a href="#systemd-の-unit-ファイルを作成して-systemctl-から有効化">systemd の Unit ファイルを作成して systemctl から有効化。</a></li>
-    <li><a href="#host-client-から-vmware-tools-の状態を確認">Host Client から VMware Tools の状態を確認</a></li>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#powercli-の-esxcli-による-ntpconf-の設定">PowerCLI の esxcli による ntp.conf の設定</a>
+      <ul>
+        <li><a href="#設定ファイルを作成し共有データストアに配置">設定ファイルを作成し共有データストアに配置</a></li>
+        <li><a href="#powercli-から-esxcli-を実行">PowerCLI から esxcli を実行</a></li>
+      </ul>
+    </li>
     <li><a href="#おわりに">おわりに</a></li>
   </ul>
 </nav>
     <h2 id="はじめに">はじめに</h2>
-<p>ESXi on Arm でゲストOSを実行する場合、ARM64 アーキテクチャ向けにビルドされた OS をインストールすることになります。現時点で殆どの Linux ディストリビューションでは ARM64 向けの open-vm-tools は公式リポジトリで配布されていないようです。このため、VMware 公式の GitHub リポジトリからソースを取ってきてビルド＆インストールしたいと思います。</p>
-<p>私の GitHub リポジトリに自動化した CentOS 8 向けのスクリプトを置いてあります。もし良ければこちらもどうぞ。</p>
-<p><a href="https://github.com/Jangari-nTK/ovt-installation-centos8-aarch64">Jangari-nTK/ovt-installation-centos8-aarch64</a></p>
-<p>Twitter で中の人が引用リツイートしてくれたのはちょっと嬉しかったです。</p>
-<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Awesome! Thanks for sharing script for installing VMware Tools for Arm on CentOS <a href="https://twitter.com/hashtag/ESXionARM?src=hash&amp;ref_src=twsrc%5Etfw">#ESXionARM</a> <a href="https://t.co/D42peyNHuR">https://t.co/D42peyNHuR</a></p>&mdash; William Lam (@lamw) <a href="https://twitter.com/lamw/status/1315391984362635264?ref_src=twsrc%5Etfw">October 11, 2020</a></blockquote>
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-<p>なお、ゲストが Raspberry Pi OS (旧 Raspbian) の場合は中の人が記事を書いてくれましたので、こちらを参照してもらえればと思います。</p>
-<p><a href="https://www.virtuallyghetto.com/2020/10/installing-vmware-tools-on-raspberry-pi-os-for-esxi-arm.html">Installing VMware Tools on Raspberry Pi OS for ESXi-Arm</a></p>
-<h2 id="おおまかな流れ">おおまかな流れ</h2>
-<p>open-vm-tools を一からビルドしてインストールする場合、大まかな流れとしては以下のようになります。</p>
-<ol>
-<li>CentOS 8 (aarch64) を仮想マシンにインストール。</li>
-<li>ビルドに必要な開発ツールのパッケージをインストール</li>
-<li><a href="https://github.com/vmware/open-vm-tools">vmware/open-vm-tools</a> の GitHub リポジトリをクローン。</li>
-<li>configure スクリプトを生成・実行して Makefile を生成。</li>
-<li>make でビルドして make install でインストール。</li>
-<li>systemd の Unit ファイルを作成して systemctl から有効化。</li>
-<li>Host Client から VMware Tools の状態を確認。</li>
+<p>ESXi 7.0 Update 3 以降では /etc/ntp.conf の内容が configstore 内に移行されファイル自体が read-only となり、ntp.conf の直接編集がサポートされなくなりました。ntp.conf への追記が必要な場合、代わりに esxcli system ntp set の -f オプションで設定ファイルを投入する必要があります。</p>
+<p><a href="https://kb.vmware.com/s/article/87176">vSphere ESXi 7.0 U3 and later versions configuration files for NTP and PTP can no longer be edited (87176)</a></p>
+<blockquote>
+<p>The ESXi configuration files /etc/ntp.conf and /etc/ptp.conf can no longer be edited directly.<br>
+It is no longer possible to make changes to NTP, PTP by editing these config files directly. From ESXi 7.0 Update 3, files under /etc are read-only and edits do not persist across reboot.</p>
+</blockquote>
+<blockquote>
+<p>To change configuration:<br>
+・# esxcli system ntp set</p>
+</blockquote>
+<p>今回の記事では PowerCLI から esxcli を呼び出すことで、複数の ESXi ホストに ntp.conf の設定を一括で投入してみます。</p>
+<p>なお、vSphere Client などの GUI での NTP 設定は従来通り可能ですので、ntp.conf の編集が不要な場合[^1]には esxcli を使用する必要はありません。</p>
+<p>[^1] GUI 上の設定で事足りる、ホスト一台ずつの設定でも手が足りる等々</p>
+<h2 id="背景">背景</h2>
+<p>ESXi の NTP サーバに Active Directory ドメインコントローラ (Windows Time サービス) を使用している環境では、Windows Time サービス側の設定の修正ではなく、ESXi 側の ntp.conf に tos maxdist を追記して同期させるワークアラウンドを実施されている方もいらっしゃると思います。</p>
+<p><a href="https://kb.vmware.com/s/article/1035833?lang=ja">Microsoft ドメイン コントローラを使用して ESXi/ESX の時刻を同期する (1035833)</a><br>
+→ ESXi 6.x/ 7.0.1/ 7.0.2</p>
+<blockquote>
+<ol start="2">
+<li>
+<p>Open the /etc/ntp.conf file in a text editor. For more information, see Editing configuration files in VMware ESXi and ESX (1017022).</p>
+</li>
+<li>
+<p>Add the tos maxdist command on its own line:<br>
+tos maxdist 30</p>
+</li>
 </ol>
-<p>順番に見ていきます。</p>
-<h2 id="centos-8-aarch64-を仮想マシンにインストール">CentOS 8 (aarch64) を仮想マシンにインストール</h2>
-<p>基本的なインストール手順は一般的な x86_64 の CentOS インストール手順と同様、ISO イメージからインストーラをブートして Anaconda インストーラに沿って進めていけば問題ありません。</p>
-<p>今回、ISO イメージは <a href="https://www.centos.org/download/">CentOS 公式サイトの Download</a> の ARM64 (aarch64) から CentOS-8.2.2004-aarch64-dvd1.iso を使用、ソフトウェアはデフォルトで選択されている Server with GUI としてインストールしています。</p>
-<p><img src="/images/2020-10-17/anaconda-installation-summary.PNG" alt=""></p>
-<p>なお、私の環境固有の問題なのか ESXi-Arm の不具合なのか何なのか全く切り分けていないのですが、CentOS 8 aarch64 のインストール後に OS をシャットダウンしたりスナップショットを取ると、既定のファイルシステムである xfs が確率で破損するという良く分からない事象に遭遇しました(Emergency mode から xfs_repair でも修復しきれなかった・・・)。</p>
-<p>私の環境ではファイルシステムを ext4 としてインストールしたところ安定しましたが、もし同じような事象に見舞われた場合は別のファイルシステムでインストールしてみるなども試してみてください。</p>
-<p><img src="/images/2020-10-17/anaconda-partitioning.PNG" alt=""></p>
-<h2 id="ビルドに必要な開発ツールのパッケージをインストール">ビルドに必要な開発ツールのパッケージをインストール</h2>
-<p>open-vm-tools をビルドするには開発ツールが含まれるパッケージがいくつか必要になります。</p>
-<p>CentOS 8 ではいくつかのパッケージが PowerTools リポジトリで提供されているため、yum の設定ファイルを編集して有効にします。</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span># sed -i -e &#34;s/enabled=0/enabled=1/g&#34; /etc/yum.repos.d/CentOS-PowerTools.repo
-</code></pre></div><p>その後、開発ツールのパッケージをインストールしていきます。</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span># dnf group install -y &#34;Development Tools&#34;
-<span class="ln">2</span># dnf install -y glib2-devel.aarch64 libmspack-devel.aarch64 pam-devel.aarch64 openssl-devel.aarch64 \
-<span class="ln">3</span>      xmlsec1-devel.aarch64 libxml2-devel.aarch64 libtirpc-devel.aarch64 rpcgen.aarch64 libtool-ltdl-devel
-<span class="ln">4</span># dnf install -y libX11-devel.aarch64 libXext-devel.aarch64 libXinerama-devel.aarch64 libXi libXi-devel \
-<span class="ln">5</span>      libXrender-devel libXrandr-devel libXtst-devel gdk-pixbuf2-xlib-devel.aarch64 gtk3-devel.aarch64 \
-<span class="ln">6</span>      gtkmm30-devel.aarch64
-</code></pre></div><p>なお、CentOS 8 は既定の GUI が X11 でなく Wayland なので X11 周りのパッケージが必要かと言うと正直微妙ですが、後で X11 に切り替えた後にビルドし直すのも面倒なのでこれらも含めています。後に出てくる configure スクリプトに &ndash;without-x を付与して実行すると X11 周りのパッケージは不要になります。</p>
-<h2 id="vmwareopen-vm-tools-の-github-リポジトリをクローン">vmware/open-vm-tools の GitHub リポジトリをクローン</h2>
-<p>open-vm-tools の GitHub リポジトリをクローンします。git をインストールして git clone するだけの簡単なお仕事です。</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span># dnf install git
-<span class="ln">2</span># git clone https://github.com/vmware/open-vm-tools.git
-</code></pre></div><h2 id="configure-スクリプトを生成実行して-makefile-を生成">configure スクリプトを生成・実行して Makefile を生成</h2>
-<p>autoreconf -i で configure スクリプトを生成、実行して Makefile を生成します。</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span># cd open-vm-tools/open-vm-tools
-<span class="ln">2</span># autoreconf -i
-<span class="ln">3</span># ./configure
-</code></pre></div><p>なお、autoreconf 実行時に -i を忘れるとファイルの不足でエラーになりますのでご注意ください。</p>
-<h2 id="make-でビルドして-make-install-でインストール">make でビルドして make install でインストール</h2>
-<p>make して make install します。30分～1時間ほど時間がかかりますのでご注意ください。共有ライブラリもいくつか作成されるので ldconfig で認識させます。</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span># make
-<span class="ln">2</span># make install
-<span class="ln">3</span># ldconfig
-</code></pre></div><p>make 時に -j オプションをつけて複数のジョブを並列実行させても良いと思います。</p>
-<h2 id="systemd-の-unit-ファイルを作成して-systemctl-から有効化">systemd の Unit ファイルを作成して systemctl から有効化。</h2>
-<p>サービスとして起動できるように以下2点の systemd の Unit ファイルを作成します。</p>
+</blockquote>
+<p>ESXi 7.0 Update 3 以降では ntp.conf が直接編集できなくなっているため、このようなケースでは esxcli コマンドで ntp.conf の設定を投入する必要がでてきます。</p>
+<p>[vSphere ESXi 7.0 U3 and later versions NTP configuration steps loading a text file containing NTP configuration commands (87488)]
+(<a href="https://kb.vmware.com/s/article/87488">https://kb.vmware.com/s/article/87488</a>)</p>
+<blockquote>
+<p>Example:<br>
+[root@localhost:~] vi /scratch/ntpconfig.txt<br>
+[root@localhost:~] cat /scratch/ntpconfig.txt<br>
+server ntpserver.yourdomain.com<br>
+tos maxdist 30<br>
+[root@localhost:~] esxcli system ntp set -f /scratch/ntpconfig.txt<br>
+[root@localhost:~] esxcli system ntp set -e 1</p>
+</blockquote>
+<p>esxcli の選択肢としては以下の3つがあげられますが、今回は色々と融通が利く PowerCLI を使います。</p>
 <ul>
-<li>/usr/lib/systemd/system/vmtoolsd.service</li>
-<li>/usr/lib/systemd/system/vgauthd.service</li>
+<li>ESXi の組み込みの esxcli</li>
+<li>Standalone ESXCLI</li>
+<li>PowerCLI の EsxCli オブジェクト</li>
 </ul>
-<p>それぞれ中身は以下のようにしています。</p>
-<div class="highlight"><pre class="chroma"><code class="language-service" data-lang="service"><span class="ln"> 1</span><span class="k">[Unit]</span>
-<span class="ln"> 2</span><span class="na">Description</span><span class="o">=</span><span class="s">open-vm-tools: vmtoolsd service for virtual machines hosted on VMware</span>
-<span class="ln"> 3</span><span class="na">Documentation</span><span class="o">=</span><span class="s">http://github.com/vmware/open-vm-tools</span>
-<span class="ln"> 4</span><span class="c">#ConditionVirtualization=vmware</span>
-<span class="ln"> 5</span><span class="na">Requires</span><span class="o">=</span><span class="s">vgauthd.service</span>
-<span class="ln"> 6</span><span class="na">After</span><span class="o">=</span><span class="s">vgauthd.service</span>
-<span class="ln"> 7</span><span class="na">DefaultDependencies</span><span class="o">=</span><span class="s">no</span>
-<span class="ln"> 8</span><span class="na">Before</span><span class="o">=</span><span class="s">cloud-init-local.service</span>
-<span class="ln"> 9</span>
-<span class="ln">10</span><span class="k">[Service]</span>
-<span class="ln">11</span><span class="na">ExecStart</span><span class="o">=</span><span class="s">/usr/bin/vmtoolsd</span>
-<span class="ln">12</span><span class="na">TimeoutStopSec</span><span class="o">=</span><span class="s">5</span>
-<span class="ln">13</span>
-<span class="ln">14</span><span class="k">[Install]</span>
-<span class="ln">15</span><span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
-<span class="ln">16</span><span class="na">Also</span><span class="o">=</span><span class="s">vgauthd.service</span>
-</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-service" data-lang="service"><span class="ln"> 1</span><span class="k">[Unit]</span>
-<span class="ln"> 2</span><span class="na">Description</span><span class="o">=</span><span class="s">open-vm-tools: vgauth service for virtual machines hosted on VMware</span>
-<span class="ln"> 3</span><span class="na">Documentation</span><span class="o">=</span><span class="s">http://github.com/vmware/open-vm-tools</span>
-<span class="ln"> 4</span><span class="c">#ConditionVirtualization=vmware</span>
-<span class="ln"> 5</span><span class="na">PartOf</span><span class="o">=</span><span class="s">vmtoolsd.service</span>
-<span class="ln"> 6</span>
-<span class="ln"> 7</span><span class="k">[Service]</span>
-<span class="ln"> 8</span><span class="na">ExecStart</span><span class="o">=</span><span class="s">/usr/bin/VGAuthService -s</span>
-<span class="ln"> 9</span><span class="na">TimeoutStopSec</span><span class="o">=</span><span class="s">5</span>
-<span class="ln">10</span>
-<span class="ln">11</span><span class="k">[Install]</span>
-<span class="ln">12</span><span class="na">RequiredBy</span><span class="o">=</span><span class="s">vmtoolsd.service</span>
-</code></pre></div><p>Unit ファイルを作成したら、設定ファイルをリロードして systemctl enable/start で Unit を有効化＆起動します。</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span># systemctl daemon-reload
-<span class="ln">2</span># systemctl enable vgauthd.service
-<span class="ln">3</span># systemctl enable vmtoolsd.service
-<span class="ln">4</span># systemctl start vgauthd.service
-<span class="ln">5</span># systemctl start vmtoolsd.service
-</code></pre></div><p>なお、ConditionVirtualization=vmware の行をコメントアウトしていますが、Unit ファイルを作成している時に「ESXi-Arm 上の Photon OS ゲストが VMware 仮想マシンとして認識されない」という情報が Twitter で流れてきました。もしかしたら将来的に ESXi-Arm 側で修正が入るかもしれないので(分かりませんが)、期待も込めて行の削除ではなくコメントアウトとしています。</p>
-<p><a href="https://blogs.vmware.com/arm/2020/10/09/installing-vmware-tools-on-photon-os-for-esxi-arm/">Installing VMware Tools on Photon OS for ESXi-Arm</a></p>
-<p>補足として vgauthd は以下の機能で使われます。滅多に使われない(と思っている)ので Unit ファイルを作らなくても良いは良いのですが、一般には open-vm-tools のインストールでこちらも Unit ファイルが作成されるので今回も作成しています。</p>
-<p><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.vm_admin.doc/GUID-A38D2EEE-86B3-4440-9617-74065DD7D074.html">ゲスト OS でのユーザー マッピングの構成</a></p>
-<h2 id="host-client-から-vmware-tools-の状態を確認">Host Client から VMware Tools の状態を確認</h2>
-<p>以上で open-vm-tools のビルド＆インストールは終了です。最後に Host Client などの GUI から VMware Tools の実行状態を確認しましょう。open-vm-tools が正常に実行されていれば、VMware Tools のバージョンや実行状態、ゲストOSのネットワーク情報が取得できているはずです。</p>
-<p><img src="/images/2020-10-17/open-vm-tools-for-aarch64.PNG" alt=""></p>
+<h2 id="powercli-の-esxcli-による-ntpconf-の設定">PowerCLI の esxcli による ntp.conf の設定</h2>
+<p>上述の KB87488 に記載があるように、ntp.conf の設定は以下の流れで行うことになります。</p>
+<ol>
+<li>ntp.conf に追記する設定を記載したファイルをデータストア等に配置。</li>
+<li>「esxcli system ntp set -f &lt;1.で用意したファイル(絶対パス)&gt;」で設定</li>
+<li>「esxcli system ntp set -e 1」で NTP を有効化 (任意)</li>
+</ol>
+<p>以下、これらを PowerCLI の esxcli オブジェクトを使用して実行します。</p>
+<h3 id="設定ファイルを作成し共有データストアに配置">設定ファイルを作成し共有データストアに配置</h3>
+<p>複数の ESXi に同じファイルを投入するため、共有しているデータストア上に設定ファイルを配置します。配置する手段は vSphere Client のデータストアブラウザや scp など任意の方法でかまいません。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>[root@esxi-01:~] cat /vmfs/volumes/Shared-NFS/ntp.conf.txt
+<span class="ln">2</span>server ntp.nict.jp
+<span class="ln">3</span>tos maxdist 30
+</code></pre></div><p>なお、不足している ntp.conf の設定は esxcli の実行時に自動的に補完されるため、上述のように必要な設定の記載のみで OK です。</p>
+<h3 id="powercli-から-esxcli-を実行">PowerCLI から esxcli を実行</h3>
+<p>以下のように PowerCLI で vCenter Server に接続して各種コマンドレットを実行していきます。</p>
+<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="ln">1</span><span class="nb">Connect-VIServer</span> <span class="n">-Server</span> <span class="n">vcsa</span><span class="p">.</span><span class="n">jangari</span><span class="p">.</span><span class="n">lab</span>
+<span class="ln">2</span>
+<span class="ln">3</span><span class="nv">$esxcli_arr</span> <span class="p">=</span> <span class="nb">Get-VMHost</span> <span class="p">|</span> <span class="nb">Get-EsxCli</span> <span class="n">-V2</span>
+<span class="ln">4</span><span class="nv">$arguments</span> <span class="p">=</span> <span class="nv">$esxcli_arr</span><span class="p">[</span><span class="n">0</span><span class="p">].</span><span class="n">system</span><span class="p">.</span><span class="n">ntp</span><span class="p">.</span><span class="n">set</span><span class="p">.</span><span class="n">CreateArgs</span><span class="p">()</span>
+<span class="ln">5</span><span class="nv">$arguments</span><span class="p">.</span><span class="n">file</span> <span class="p">=</span> <span class="s2">&#34;/vmfs/volumes/Shared-NFS/ntp.conf.txt&#34;</span>
+<span class="ln">6</span><span class="nv">$arguments</span><span class="p">.</span><span class="n">enabled</span> <span class="p">=</span> <span class="n">1</span>
+<span class="ln">7</span>
+<span class="ln">8</span><span class="k">foreach</span> <span class="p">(</span><span class="nv">$esxcli</span> <span class="k">in</span> <span class="nv">$esxcli_arr</span><span class="p">)</span> <span class="p">{</span> <span class="nv">$esxcli</span><span class="p">.</span><span class="n">system</span><span class="p">.</span><span class="n">ntp</span><span class="p">.</span><span class="n">set</span><span class="p">.</span><span class="n">Invoke</span><span class="p">(</span><span class="nv">$arguments</span><span class="p">)</span> <span class="p">}</span>
+</code></pre></div><p>ポイントとして、<a href="https://developer.vmware.com/docs/powercli/latest/vmware.vimautomation.core/commands/get-esxcli/">Get-EsxCli</a> は VMHost オブジェクトの配列を受け取ることが可能で、この場合には対応する EsxCli オブジェクトの配列を返すようになっています。</p>
+<p>Get-VMHost を Get-EsxCli にパイプで繋ぐことで vCenter Server 配下の全ホストの EsxCli オブジェクトの配列を取得し、最後の foreach でイテレータとして回すことで一括設定を行っています。</p>
+<p>Get-VMHost は Location パラメータにデータセンターやクラスタ、フォルダといったコンテナオブジェクトを指定することで、指定したオブジェクト配下のホストのみを取得することができます。</p>
+<p>ESXi の組み込みの esxcli や Standalone ESXCLI では明示的にホストの指定が必要であるため、ホストの台数が多い場合には PowerCLI を使用した方が操作対象の記述が少なくて済みます。</p>
 <h2 id="おわりに">おわりに</h2>
-<p>今回は CentOS 8 aarch64 を対象として open-vm-tools をビルドしてインストールしました。必要なパッケージさえ提供されていれば、他の Linux ディストリビューションに関しても同じような感じでインストールできるのではないかと思いますので、ESXi on Arm をインストールした方は是非こちらも試してみてもらえればと思います。</p>
+<p>今回の記事では PowerCLI の EsxCli オブジェクトを使用して複数の ESXi に ntp.conf の設定を投入してみました。</p>
+<p>vSphere Client や ESXi Shell では一台ずつの設定が必要でも、PowerCLI とちょっとした工夫を加えれば一括で設定できるケースも多くあります。ホストの台数が多い場合には PowerCLI で容易に設定が行えないか検討してみるのも良いと思います。</p>
 
   </article>
 <aside class="sidebar">
@@ -292,9 +260,6 @@
     <h2 class="mt-4">Recent Posts</h2>
     <ul class="flex-column">
       
-      <li>
-        <a href="https://jangari-ntk.github.io/post/2023-02-04/" class="nav-link">PowerCLI で vCenter Server 管理下の ESXi の NTP 設定を一括変更</a>
-      </li>
       <li>
         <a href="https://jangari-ntk.github.io/post/2022-12-09/" class="nav-link">PowerCLI で vCenter Server のトリガー済みアラームを取得</a>
       </li>
