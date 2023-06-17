@@ -6,10 +6,21 @@
     <description>Recent content on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Sat, 04 Feb 2023 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 18 Jun 2023 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>VMware Skyline Health Diagnostics を vSphere Client プラグインとして使用する</title>
+      <link>https://jangari-ntk.github.io/post/2023-06-18/</link>
+      <pubDate>Sun, 18 Jun 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2023-06-18/</guid>
+      <description>概要 4月～5月にかけて vSphere 8.0 Update 1 が Initial Availability (IA) / General Availability (GA) となりましたが、新機能の一つとして VMware Skyline Health Diagnostics (SHD) の vSphere Client プラグインが追加されました。これにより SHD が vSphere Client と統合され、インストールや操作が単一の UI で可能になります。
+ VMware vCenter Server 8.0 Update 1 リリース ノート
+→ 新機能    VMware Skyline™ Health Diagnostics™ と vCenter Server の統合：vSphere 8.0 Update 1 以降では、vSphere Client と統合された VMware Skyline Health Diagnostics セルフサービス診断プラットフォームを使用して、vSphere 環境の問題を検出して修正できます。詳細については、VMware Skyline Health Diagnostics for vSphere Documentationを参照してください。   そこから VMware Skyline Health Diagnostics 側でも 6/15 にリリースされたバージョン 4.</description>
+    </item>
     
     <item>
       <title>PowerCLI で vCenter Server 管理下の ESXi の NTP 設定を一括変更</title>
