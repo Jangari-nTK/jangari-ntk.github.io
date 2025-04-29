@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tanzu Kubernetes Grid on vSoliloquy</title>
+    <link>https://jangari-ntk.github.io/tags/tanzu-kubernetes-grid/</link>
+    <description>Recent content in Tanzu Kubernetes Grid on vSoliloquy</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
+    <lastBuildDate>Tue, 29 Apr 2025 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://jangari-ntk.github.io/tags/tanzu-kubernetes-grid/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>【備忘録】vsphere-csi-provider と TKG 2.x のサポート期間のドキュメント</title>
+      <link>https://jangari-ntk.github.io/post/2025-04-29/</link>
+      <pubDate>Tue, 29 Apr 2025 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2025-04-29/</guid>
+      <description>概要 vSphere Contaier Storage Plug-in (いわゆる vsphere-csi-provider) と Tanzu Kubernetes Grid 2.x のサポート期間の探し方が不明だったため、2025/04 時点の調べ方を備忘録として記載しておきます。
+vSphere Contaier Storage Plug-in のサポート期間 以下のBroadcom社のドキュメントに EOL Date の表があります。
+ Compatibility Matrices for vSphere Container Storage Plug-in
+→ Kubernetes Versions Compatible with vSphere Container Storage Plug-in  2025/04 時点では 3.0.x 以前の vsphere-csi-provider バージョンはサポート終了しているようです。
+Tanzu Kubernetes Grid 2.x のサポート期間 以下の Broadcom 社ドキュメントを確認すると、Product Lifecycle Matrix で「VMware Tanzu Kubernetes Grid Management」を確認しろとの記載があります。
+ Tanzu Kubernetes Grid Version Support Policies, Kubernetes Support, and Feature States</description>
+    </item>
+    
+  </channel>
+</rss>
