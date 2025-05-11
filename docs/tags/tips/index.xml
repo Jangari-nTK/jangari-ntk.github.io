@@ -6,10 +6,23 @@
     <description>Recent content in Tips on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Tue, 29 Apr 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 11 May 2025 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jangari-ntk.github.io/tags/tips/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>【備忘録】TKG 2.5.2 用の Linux カスタムイメージのビルドで引っかかった箇所のメモ書き</title>
+      <link>https://jangari-ntk.github.io/post/2025-05-11/</link>
+      <pubDate>Sun, 11 May 2025 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2025-05-11/</guid>
+      <description>概要 諸事情で検証用に Ubuntu Server 24.04 上で TKG 2.5.2 の Management Cluster 用の Photon OS カスタムイメージをビルドしていたのですが、ドキュメントの誤植やハマりどころがあまりにも多かったため (怒りの発散も兼ねて) メモしておきます。
+ Linux Custom Machine Images - Tanzu Kubernetes Grid 2.5  なお、本記事の執筆中に TKG 2.5.3 がリリースされドキュメントが更新されていったため（それでもまだ誤植ありますが）、現在のドキュメントの状態はマシになっている可能性もあること、メモし忘れた箇所もあるかもしれないこと、作業環境起因の可能性もあるため、あくまでも参考レベルとの認識でお願いします。
+Linux resource bundle コンテナイメージのリポジトリパス ドキュメントではバージョンが「linux-resource-bundle:v1.28.11+vmware.1-tkg.3」となっていますが「linux-resource-bundle:v1.28.11_vmware.2-tkg.2」が正しいようです（&amp;ldquo;+&amp;rdquo; でなく &amp;ldquo;_&amp;quot;）。
+docker run コマンドは以下のようになります(docker pull は省略)。kubernetes の各種バイナリなどは本コンテナからダウンロードされるため、カスタムイメージのビルド前に事前に起動しておくのを忘れずに。
+1docker run -d -p 3000:3000 projects.registry.vmware.com/tkg/linux-resource-bundle:v1.28.11_vmware.2-tkg.2 TKG Image Builder for Kubernetes の構成 はじめに Sample Exchange から Image Builder の TKG 用 Configuration Files をダウンロードして unzip します。以降は展開された「TKG-Image-Builder-for-Kubernetes-v1_28_11---vmware_2-tkg_v2_5_2」ディレクトリを作業ディレクトリとしています。</description>
+    </item>
     
     <item>
       <title>【備忘録】vsphere-csi-provider と TKG 2.x のサポート期間のドキュメント</title>

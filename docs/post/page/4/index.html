@@ -93,6 +93,47 @@
   <div class = 'excerpt'>
     <div class = 'excerpt_header'>
       <h3 class = 'post_link'>
+        <a href='https://jangari-ntk.github.io/post/2021-08-17/'>【Tips】共有ストレージなし＆VCSA デプロイ済みのクラスタで EVC を有効にする【自宅ラボ用】</a>
+      </h3>
+      <div class = 'post_meta'>
+  <svg class="icon">
+    <use xlink:href="#calendar"></use>
+  </svg>
+  <span class="post_date">
+    Aug 17, 2021</span>
+  <a href = 'https://jangari-ntk.github.io/tags/tips' class = 'post_tag button button_translucent'>Tips
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/esxi' class = 'post_tag button button_translucent'>ESXi
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/vcenter-server' class = 'post_tag button button_translucent'>vCenter Server
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere' class = 'post_tag button button_translucent'>vSphere
+  </a>
+  <a href = 'https://jangari-ntk.github.io/tags/vsphere-7.0' class = 'post_tag button button_translucent'>vSphere 7.0
+  </a>
+</div>
+
+    </div>
+    <div class = 'excerpt_footer partition'>
+      <div class = 'excerpt_thumbnail'>
+      <img src = '/images/2021-08-17/thumbnail.PNG'>
+      </div>
+      
+        <div>
+          <p class = 'pale'>背景 仮想マシンとしてデプロイされた vCenter Server が存在するクラスタ上で EVC を有効にする場合、KB2147821 のように EVC がそれぞれ無効／有効な2つのクラスタを用意し、そのクラスタ間で vCenter Server 仮想マシンをインベントリ上で再登録する必要があります。
+vCenter Server 6.5 および 6.7 で vCenter Server 自身の仮想マシンが実行されるクラスタの EVC を有効にする方法 (2147821)
+先日、Intel NUC 10 1台で構成していた自宅ラボに Intel NUC 11 の ESXi 7.0 を追加したため EVC を有効にしようとしたのです …</p>
+          <a href='https://jangari-ntk.github.io/post/2021-08-17/' class='excerpt_more button'>Read More</a>
+        </div>
+      </div>
+    </div>
+  </li>
+  
+      
+<li class = 'post_item'>
+  <div class = 'excerpt'>
+    <div class = 'excerpt_header'>
+      <h3 class = 'post_link'>
         <a href='https://jangari-ntk.github.io/post/2021-08-07/'>【メモ】ESXi 7.0 の Kickstart の %post で boot.cfg を触る</a>
       </h3>
       <div class = 'post_meta'>
@@ -359,43 +400,6 @@ PowerCLI 12.4 - What&rsquo;s New - VMware PowerCLI Blog
     </div>
   </li>
   
-      
-<li class = 'post_item'>
-  <div class = 'excerpt'>
-    <div class = 'excerpt_header'>
-      <h3 class = 'post_link'>
-        <a href='https://jangari-ntk.github.io/post/2021-02-10/'>VCDB から MAC アドレスの一覧を SELECT してみる</a>
-      </h3>
-      <div class = 'post_meta'>
-  <svg class="icon">
-    <use xlink:href="#calendar"></use>
-  </svg>
-  <span class="post_date">
-    Feb 10, 2021</span>
-  <a href = 'https://jangari-ntk.github.io/tags/vcenter-server' class = 'post_tag button button_translucent'>vCenter Server
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/network' class = 'post_tag button button_translucent'>Network
-  </a>
-  <a href = 'https://jangari-ntk.github.io/tags/management' class = 'post_tag button button_translucent'>Management
-  </a>
-</div>
-
-    </div>
-    <div class = 'excerpt_footer partition'>
-      <div class = 'excerpt_thumbnail'>
-      <img src = '/images/2021-02-10/thumbnail.PNG'>
-      </div>
-      
-        <div>
-          <p class = 'pale'>はじめに vSphere の仮想マシンに固定 MAC アドレスを割り振る場合のベストプラクティスとして、事前にデータベースから MAC アドレスの一覧を参照して重複が無いことを確認しましょうといった KB が1月ごろに公開されていました。
-Best practices for assigning static MAC address to a Virtual machine vNIC (82139)
- Before assigning the static MAC address, refer the table MAC_ADDRESS table(select * from VPX_NIC) in the VCDB to make …</p>
-          <a href='https://jangari-ntk.github.io/post/2021-02-10/' class='excerpt_more button'>Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
-  
     <li>
 <ul class="pagination">
   <li class="page-item">
@@ -467,6 +471,9 @@ Best practices for assigning static MAC address to a Virtual machine vNIC (82139
     <ul class="flex-column">
       
       <li>
+        <a href="https://jangari-ntk.github.io/post/2025-05-11/" class="nav-link">【備忘録】TKG 2.5.2 用の Linux カスタムイメージのビルドで引っかかった箇所のメモ書き</a>
+      </li>
+      <li>
         <a href="https://jangari-ntk.github.io/post/2025-04-29/" class="nav-link">【備忘録】vsphere-csi-provider と TKG 2.x のサポート期間のドキュメント</a>
       </li>
       <li>
@@ -486,9 +493,6 @@ Best practices for assigning static MAC address to a Virtual machine vNIC (82139
       </li>
       <li>
         <a href="https://jangari-ntk.github.io/post/2022-10-08/" class="nav-link">不正な VIB のインストールからのセキュアブートによる ESXi の保護</a>
-      </li>
-      <li>
-        <a href="https://jangari-ntk.github.io/post/2022-09-21/" class="nav-link">execInstalledOnly による ESXi での信頼できないバイナリの実行防止</a>
       </li>
     </ul>
     <h2>Search</h2>
@@ -511,7 +515,7 @@ Best practices for assigning static MAC address to a Virtual machine vNIC (82139
         
         <a href='https://jangari-ntk.github.io/categories/kubernetes/' class=" post_tag button button_translucent">
           KUBERNETES
-          <span class='button_tally'>1</span>
+          <span class='button_tally'>2</span>
         </a>
         
         
@@ -533,7 +537,7 @@ Best practices for assigning static MAC address to a Virtual machine vNIC (82139
         
         <a href='https://jangari-ntk.github.io/tags/tips/' class=" post_tag button button_translucent">
           TIPS
-          <span class='button_tally'>20</span>
+          <span class='button_tally'>21</span>
         </a>
         
         <a href='https://jangari-ntk.github.io/tags/vcenter-server/' class=" post_tag button button_translucent">
@@ -697,11 +701,11 @@ Best practices for assigning static MAC address to a Virtual machine vNIC (82139
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/tanzu-kubernetes-grid/' class=" post_tag button button_translucent" data-position=1>TANZU-KUBERNETES-GRID<span class='button_tally'>1</span>
+            <a href='https://jangari-ntk.github.io/tags/tanzu-kubernetes-grid/' class=" post_tag button button_translucent" data-position=2>TANZU-KUBERNETES-GRID<span class='button_tally'>2</span>
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/tips/' class=" post_tag button button_translucent" data-position=20>TIPS<span class='button_tally'>20</span>
+            <a href='https://jangari-ntk.github.io/tags/tips/' class=" post_tag button button_translucent" data-position=21>TIPS<span class='button_tally'>21</span>
             </a>
             
             
