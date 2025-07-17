@@ -1,0 +1,903 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tips on vSoliloquy</title>
+    <link>https://jangari-ntk.github.io/tags/tips/</link>
+    <description>Recent content in Tips on vSoliloquy</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>Copyright © 2025 VSOLILOQUY. All Rights Reserved.</copyright>
+    <lastBuildDate>Thu, 17 Jul 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://jangari-ntk.github.io/tags/tips/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>VCF Installer に Offline Depot 用の CA 証明書を API でインポートする</title>
+      <link>https://jangari-ntk.github.io/post/2025-07-17/</link>
+      <pubDate>Thu, 17 Jul 2025 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2025-07-17/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;VCF Installer での VCF9 のデプロイにあたり、オフラインデポに HTTPS での接続を試みたところ以下の KB#403203 に記載の事象に遭遇しました。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://knowledge.broadcom.com/external/article/403203/set-up-an-offline-depot-from-vcf-90-inst.html&#34;&gt;Set Up an Offline Depot from VCF 9.0 Installer GUI fails with Secure protocol communication error&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;オフラインデポのサーバ証明書に署名した CA 証明書が VCF Installer 側には無いので、サーバ証明書の検証がおこなえないため失敗する状況は想定できました。しかし、VCF 9 デプロイ前の VCF Installer の（まだ SDDC Manager でない）状態では CA 証明書をインポートする UI が無いようです。&lt;/p&gt;
+&lt;p&gt;すでに &lt;a href=&#34;https://williamlam.com/2025/06/using-http-with-vcf-9-0-installer-for-offline-depot.html&#34;&gt;Broadcom の中の人&lt;/a&gt;がオフラインデポへの接続で TLS を無効する方法（裏技？）を公開していますが、せっかくなので Broadcom 公式から開発者向けドキュメントが公開されている API を使用して CA 証明書をインポートすることで解決してみました。&lt;/p&gt;
+&lt;h2 id=&#34;事前準備-オフラインデポを構成&#34;&gt;事前準備: オフラインデポを構成&lt;/h2&gt;
+&lt;p&gt;まずはオフラインデポを構成するため、&lt;a href=&#34;https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-9-0-and-later/9-0/lifecycle-management/what-is-the-vcf-download-tool-/vcf-download-tool-binaries-commands.html&#34;&gt;VCF Download Tool&lt;/a&gt; を使用して各コンポーネントのバイナリをダウンロードします（&lt;a href=&#34;https://knowledge.broadcom.com/external/article/390098&#34;&gt;ダウンロードトークン&lt;/a&gt;が必要です）。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-gdscript3&#34; data-lang=&#34;gdscript3&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;$&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;./&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;bin&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vcf&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;download&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;tool&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;binaries&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;download&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;--&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vcf&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;version&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;9.0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;mf&#34;&gt;0.0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;--&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;automated&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;install&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;d&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mnt&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;depot&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;t&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;INSTALL&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;--&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;depot&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;download&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;token&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;file&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;downloadtoken&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;txt&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;ダウンロードが完了すると、デポのディレクトリ階層は以下のようになります。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;$ tree /mnt/depot/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;/mnt/depot/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;└── PROD
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;    ├── COMP
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;    │   ├── NSX_T_MANAGER
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;    │   │   └── nsx-unified-appliance-9.0.0.0.24733065.ova
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;    │   ├── SDDC_MANAGER_VCF
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;    │   │   ├── Compatibility
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;    │   │   │   └── VmwareCompatibilityData.json
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;    │   │   └── VCF-SDDC-Manager-Appliance-9.0.0.0.24703748.ova
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;    │   ├── VCENTER
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;    │   │   └── VMware-VCSA-all-9.0.0.0.24755230.iso
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;    │   ├── VCF_OPS_CLOUD_PROXY
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;    │   │   └── Operations-Cloud-Proxy-9.0.0.0.24695833.ova
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;15&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;    │   ├── VRA
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;16&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;    │   │   └── vmsp-vcfa-combined-9.0.0.0.24701403.tar
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;17&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;    │   ├── VROPS
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;18&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;    │   │   └── Operations-Appliance-9.0.0.0.24695812.ova
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;19&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;    │   └── VRSLCM
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;20&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;    │       └── VCF-OPS-Lifecycle-Manager-Appliance-9.0.0.0.24695816.ova
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;21&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;    ├── metadata
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;22&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;    │   ├── manifest
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;23&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;    │   │   └── v1
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;24&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;    │   │       └── vcfManifest.json
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;25&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;    │   └── productVersionCatalog
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;26&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;    │       └── v1
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;27&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;    │           ├── productVersionCatalog.json
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;28&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;    │           └── productVersionCatalog.sig
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;29&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;    └── vsan
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;30&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;        └── hcl
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;31&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;            ├── all.json
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;32&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;            └── lastupdatedtime.json
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;33&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;34&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;18 directories, 13 files
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;こちらのデポをルートとして HTTP(S) サーバで公開します。今回は nginx で構成しました。CA 証明書やサーバ証明書（Subject Alternative Name を含む）、秘密鍵は予め作成しておいたものを使用します。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>【備忘録】TKG 2.5.2 用の Linux カスタムイメージのビルドで引っかかった箇所のメモ書き</title>
+      <link>https://jangari-ntk.github.io/post/2025-05-11/</link>
+      <pubDate>Sun, 11 May 2025 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2025-05-11/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;諸事情で検証用に Ubuntu Server 24.04 上で TKG 2.5.2 の Management Cluster 用の Photon OS カスタムイメージをビルドしていたのですが、ドキュメントの誤植やハマりどころがあまりにも多かったため ~~~(怒りの発散も兼ねて)~~~ メモしておきます。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://techdocs.broadcom.com/us/en/vmware-tanzu/standalone-components/tanzu-kubernetes-grid/2-5/tkg/mgmt-byoi-linux.html&#34;&gt;Linux Custom Machine Images - Tanzu Kubernetes Grid 2.5&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;なお、本記事の執筆中に TKG 2.5.3 がリリースされドキュメントが更新されていったため（それでもまだ誤植ありますが）、現在のドキュメントの状態はマシになっている可能性もあること、メモし忘れた箇所もあるかもしれないこと、作業環境起因の可能性もあるため、あくまでも参考レベルとの認識でお願いします。&lt;/p&gt;
+&lt;h2 id=&#34;linux-resource-bundle-コンテナイメージのリポジトリパス&#34;&gt;Linux resource bundle コンテナイメージのリポジトリパス&lt;/h2&gt;
+&lt;p&gt;ドキュメントではバージョンが「linux-resource-bundle:v1.28.11+vmware.1-tkg.3」となっていますが「linux-resource-bundle:v1.28.11_vmware.2-tkg.2」が正しいようです（&amp;quot;+&amp;quot; でなく &amp;ldquo;_&amp;quot;）。&lt;/p&gt;
+&lt;p&gt;docker run コマンドは以下のようになります(docker pull は省略)。kubernetes の各種バイナリなどは本コンテナからダウンロードされるため、カスタムイメージのビルド前に事前に起動しておくのを忘れずに。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;docker run -d -p 3000:3000 projects.registry.vmware.com/tkg/linux-resource-bundle:v1.28.11_vmware.2-tkg.2
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;tkg-image-builder-for-kubernetes-の構成&#34;&gt;TKG Image Builder for Kubernetes の構成&lt;/h2&gt;
+&lt;p&gt;はじめに Sample Exchange から Image Builder の TKG 用 Configuration Files をダウンロードして unzip します。以降は展開された「TKG-Image-Builder-for-Kubernetes-v1_28_11---vmware_2-tkg_v2_5_2」ディレクトリを作業ディレクトリとしています。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://community.broadcom.com/vmware-code/viewdocument/tkg-image-builder-for-kubernetes-v1-3?CommunityKey=d743a854-b7b6-437f-9698-4dd8983b11cf&amp;amp;tab=librarydocuments&#34;&gt;TKG Image Builder for Kubernetes v1.28.11 on TKG v2.5.2 - Sample Exchange - VMware {Code} Community&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;まずは tkg.json 内の pause コンテナイメージのリポジトリパスがおかしいので修正します。（Broadcom 社員向けか何かのリポジトリの書き換え漏れ？）&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>【備忘録】vsphere-csi-provider と TKG 2.x のサポート期間のドキュメント</title>
+      <link>https://jangari-ntk.github.io/post/2025-04-29/</link>
+      <pubDate>Tue, 29 Apr 2025 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2025-04-29/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;vSphere Contaier Storage Plug-in (いわゆる vsphere-csi-provider) と Tanzu Kubernetes Grid 2.x のサポート期間の探し方が不明だったため、2025/04 時点の調べ方を備忘録として記載しておきます。&lt;/p&gt;
+&lt;h2 id=&#34;vsphere-contaier-storage-plug-in-のサポート期間&#34;&gt;vSphere Contaier Storage Plug-in のサポート期間&lt;/h2&gt;
+&lt;p&gt;以下のBroadcom社のドキュメントに EOL Date の表があります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/container-storage-plugin/3-0/getting-started-with-vmware-vsphere-container-storage-plug-in-3-0/vsphere-container-storage-plug-in-concepts/compatibility-matrix-for-vsphere-container-storage-plug-in.html&#34;&gt;Compatibility Matrices for vSphere Container Storage Plug-in&lt;/a&gt;&lt;br&gt;
+→ Kubernetes Versions Compatible with vSphere Container Storage Plug-in&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;https://jangari-ntk.github.io/images/2025-04-29/vsphere-csi-provider_EOLdate.jpg&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;2025/04 時点では 3.0.x 以前の vsphere-csi-provider バージョンはサポート終了しているようです。&lt;/p&gt;
+&lt;h2 id=&#34;tanzu-kubernetes-grid-2x-のサポート期間&#34;&gt;Tanzu Kubernetes Grid 2.x のサポート期間&lt;/h2&gt;
+&lt;p&gt;以下の Broadcom 社ドキュメントを確認すると、&lt;a href=&#34;https://support.broadcom.com/group/ecx/productlifecycle&#34;&gt;Product Lifecycle Matrix&lt;/a&gt; で「VMware Tanzu Kubernetes Grid Management」を確認しろとの記載があります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://techdocs.broadcom.com/us/en/vmware-tanzu/standalone-components/tanzu-kubernetes-grid/2-5/tkg/about-tkg-support-policies.html&#34;&gt;Tanzu Kubernetes Grid Version Support Policies, Kubernetes Support, and Feature States&lt;/a&gt;&lt;br&gt;
+→ Supported Tanzu Kubernetes Grid Versions&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;https://jangari-ntk.github.io/images/2025-04-29/tkg2.x_EOLdate_001.jpg&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>VMware Skyline Health Diagnostics を vSphere Client プラグインとして使用する</title>
+      <link>https://jangari-ntk.github.io/post/2023-06-18/</link>
+      <pubDate>Sun, 18 Jun 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2023-06-18/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;4月～5月にかけて &lt;a href=&#34;https://blogs.vmware.com/vsphere/2023/05/vsphere-8-update-1-general-availability.html&#34;&gt;vSphere 8.0 Update 1 が Initial Availability (IA) / General Availability (GA)&lt;/a&gt; となりましたが、新機能の一つとして VMware Skyline Health Diagnostics (SHD) の vSphere Client プラグインが追加されました。これにより SHD が vSphere Client と統合され、インストールや操作が単一の UI で可能になります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/8.0/rn/vsphere-vcenter-server-801-release-notes/index.html&#34;&gt;VMware vCenter Server 8.0 Update 1 リリース ノート&lt;/a&gt;&lt;br&gt;
+→ 新機能&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;VMware Skyline™ Health Diagnostics™ と vCenter Server の統合：vSphere 8.0 Update 1 以降では、vSphere Client と統合された VMware Skyline Health Diagnostics セルフサービス診断プラットフォームを使用して、vSphere 環境の問題を検出して修正できます。詳細については、VMware Skyline Health Diagnostics for vSphere Documentationを参照してください。&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;p&gt;そこから VMware Skyline Health Diagnostics 側でも 6/15 にリリースされたバージョン 4.0.0 で、プラグイン統合に対応した仮想アプライアンスが提供されるようになりました。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>PowerCLI で vCenter Server 管理下の ESXi の NTP 設定を一括変更</title>
+      <link>https://jangari-ntk.github.io/post/2023-02-04/</link>
+      <pubDate>Sat, 04 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2023-02-04/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;ESXi 7.0 Update 3 以降では /etc/ntp.conf の内容が configstore 内に移行されファイル自体が read-only となり、ntp.conf の直接編集がサポートされなくなりました。ntp.conf への追記が必要な場合、代わりに esxcli system ntp set の -f オプションで設定ファイルを投入する必要があります。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/87176&#34;&gt;vSphere ESXi 7.0 U3 and later versions configuration files for NTP and PTP can no longer be edited (87176)&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The ESXi configuration files /etc/ntp.conf and /etc/ptp.conf can no longer be edited directly.&lt;br&gt;
+It is no longer possible to make changes to NTP, PTP by editing these config files directly. From ESXi 7.0 Update 3, files under /etc are read-only and edits do not persist across reboot.&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>PowerCLI で vCenter Server のトリガー済みアラームを取得</title>
+      <link>https://jangari-ntk.github.io/post/2022-12-09/</link>
+      <pubDate>Fri, 09 Dec 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2022-12-09/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;vCenter Server の各インベントリオブジェクトのトリガー済みアラームは公式の &lt;a href=&#34;https://github.com/vmware/PowerCLI-Example-Scripts/blob/master/Scripts/Get-TriggeredAlarm.ps1&#34;&gt;PowerCLI サンプルスクリプト&lt;/a&gt;にもあるように $entity.ExtensionData.TriggeredAlarmState で取得できます。&lt;/p&gt;
+&lt;p&gt;今回は以下のような vCenter Server オブジェクトに表示される全トリガー済みアラームを取得してみます。&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;https://jangari-ntk.github.io/images/2022-12-09/vc_triggered_alarm_gui.PNG&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;インベントリ階層とデータセンターフォルダ&#34;&gt;インベントリ階層とデータセンターフォルダ&lt;/h2&gt;
+&lt;p&gt;vCenter Server のインベントリ階層は以下のVMware社ドキュメントに記載があります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-03B36057-B38C-479C-BD78-341CD83A0584.html&#34;&gt;権限の階層的な継承&lt;/a&gt;&lt;br&gt;
+→ vSphere のインベントリ階層&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;以下の図は上記ドキュメントからの引用です。&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;https://jangari-ntk.github.io/images/2022-12-09/inventory_hierarchy.PNG&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;アラームのターゲットタイプのうち階層の最上位のタイプは &amp;ldquo;vCenter Server&amp;rdquo; ですが、これは実際は図の上から３番目の「データセンターフォルダ」に対応しています。トリガー済みアラーム画面でオブジェクトタイプをよく見ると vCenter Server は「フォルダ」扱いになっていることが分かります。&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;https://jangari-ntk.github.io/images/2022-12-09/vc_triggered_alarm_gui_root_folder.PNG&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;トリガー済みアラームの一覧を取得する&#34;&gt;トリガー済みアラームの一覧を取得する&lt;/h2&gt;
+&lt;p&gt;データセンターフォルダは名前が「Datacenters」または ID が「Folder-group-d1」なので、Get-Folder でこれらを指定すれば取得できます。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/vmware/PowerCLI-Example-Scripts/blob/master/Scripts/Get-TriggeredAlarm.ps1&#34;&gt;PowerCLI サンプルスクリプト&lt;/a&gt;からコードを拝借し、少しカスタマイズした PowerShell 関数が以下です。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-powershell&#34; data-lang=&#34;powershell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;Get-AllTriggeredAlarm&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nv&#34;&gt;$alarmOutput&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;vm&#34;&gt;@&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;c&#34;&gt;# Get the folder named &amp;#34;Datacenters&amp;#34;, which is the root of the inventory tree.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nv&#34;&gt;$entity&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;Get-Folder&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;-Name&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Datacenters&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$entity&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;py&#34;&gt;ExtensionData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;py&#34;&gt;TriggeredAlarmState&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-ne&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;      &lt;span class=&#34;k&#34;&gt;foreach&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$alarm&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$entity&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;py&#34;&gt;ExtensionData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;TriggeredAlarmState&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;          &lt;span class=&#34;nv&#34;&gt;$tempObj&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;Select-Object&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;-Property&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Alarm&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Entity&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;EntityMoRef&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;AlarmStatus&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Time&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;AlarmMoRef&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;          &lt;span class=&#34;nv&#34;&gt;$tempObj&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;py&#34;&gt;Entity&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;Get-View&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$alarm&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;py&#34;&gt;Entity&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;Select-Object&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;-ExpandProperty&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Name&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;          &lt;span class=&#34;nv&#34;&gt;$tempObj&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;py&#34;&gt;Alarm&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;Get-View&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$alarm&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;py&#34;&gt;Alarm&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;Select-Object&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;-ExpandProperty&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Info&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;Select-Object&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;-ExpandProperty&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Name&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;          &lt;span class=&#34;nv&#34;&gt;$tempObj&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;py&#34;&gt;AlarmStatus&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$alarm&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;py&#34;&gt;OverallStatus&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;          &lt;span class=&#34;nv&#34;&gt;$tempObj&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;py&#34;&gt;AlarmMoRef&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$alarm&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;py&#34;&gt;Alarm&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;15&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;          &lt;span class=&#34;nv&#34;&gt;$tempObj&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;py&#34;&gt;EntityMoRef&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$alarm&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;py&#34;&gt;Entity&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;16&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;          &lt;span class=&#34;nv&#34;&gt;$tempObj&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;py&#34;&gt;Time&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$alarm&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;py&#34;&gt;Time&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;17&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;          &lt;span class=&#34;nv&#34;&gt;$alarmOutput&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$tempObj&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;18&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;      &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;19&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;20&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;21&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$alarmOutput&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;22&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;23&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;この関数を実行すると以下のように vCenter Server に定義が存在するトリガー済みアラームも取得できます。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>PowerCLI を使って ESXi の忘れた root パスワードをリセットする</title>
+      <link>https://jangari-ntk.github.io/post/2021-12-16/</link>
+      <pubDate>Thu, 16 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2021-12-16/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://jangari-ntk.github.io/post/2021-12-14/&#34;&gt;前回の記事&lt;/a&gt;ではホストプロファイルで ESXi の root ユーザーのパスワードをリセットしました。&lt;/p&gt;
+&lt;p&gt;今回の記事は PowerCLI を使用し vCenter Server 経由で ESXi の root ユーザーのパスワードをリセットしてみます。ホストプロファイルは vSphere Enterprise Plus が必要となる機能ですが、PowerCLI は vSphere Essentials 以上の全てのエディションで使用可能です。&lt;/p&gt;
+&lt;p&gt;なお、前回の記事と同様に ESXi が vCenter Server に管理・接続されていることが前提となります。&lt;/p&gt;
+&lt;h2 id=&#34;esxi-のローカルユーザーの管理&#34;&gt;ESXi のローカルユーザーの管理&lt;/h2&gt;
+&lt;p&gt;ESXi のローカルユーザーを管理する手段としては主に以下の2つがあります。vCenter Server のユーザーが ESXi のローカルユーザーを直接管理することはできません。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Host Client を使用する&lt;/li&gt;
+&lt;li&gt;esxcli system account コマンドを使用する&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;今回は PowerCLI を使用して後者の esxcli を呼び出すことで ESXi のローカルユーザーを操作します。&lt;/p&gt;
+&lt;p&gt;なお、esxcli system account コマンドは vSphere 6.0 のリリースから追加されています。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://vdc-download.vmware.com/vmwb-repository/dcr-public/5068a138-314e-45c3-87cf-e4c8c3d72df7/a31b6594-284f-4c9f-81d5-c37e737cc3fa/vsp6_60_vcli_relnotes.html&#34;&gt;vSphere Command-Line Interface 6.0 Release Notes&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;ESXCLI new and changed commands — New commands have been added and one command has changed.&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>ホストプロファイルを使って ESXi の忘れた root パスワードをリセットする</title>
+      <link>https://jangari-ntk.github.io/post/2021-12-14/</link>
+      <pubDate>Tue, 14 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2021-12-14/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;ESXi の root ユーザーのパスワードを忘れてしまった場合、基本的には ESXi の再インストールが必要になりますが、vSphere Enterprise Plus のライセンスを持っている場合、vCenter Server のホストプロファイルを使用することでパスワードのリセット(上書き)が可能です。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/1317898&#34;&gt;Steps to reset a lost or forgotten root password of an ESX/ESXi host (1317898)&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Reinstalling the ESXi host is the only supported way to reset a password on ESXi. From ESXi 4.1 onwards, the host profile feature was introduced.
+If the host is managed by vCenter and is still connected, you can the reset by leveraging the host profile feature. For Host Profile feature you must have Enterprise Plus Licensing -  For more information refer to KB : &lt;a href=&#34;https://kb.vmware.com/s/article/68079&#34;&gt;Reset ESXi Root Password with Host Profile&lt;/a&gt;&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>【小ネタ】vCenter Server 7.0 Update 3 でイベントのエクスポート機能が追加</title>
+      <link>https://jangari-ntk.github.io/post/2021-11-13/</link>
+      <pubDate>Sat, 13 Nov 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2021-11-13/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://jangari-ntk.github.io/post/2020-08-01/&#34;&gt;以前の記事&lt;/a&gt;で vCenter Server 7.0 でイベントをエクスポートする方法をいくつか記載していました。&lt;/p&gt;
+&lt;p&gt;リリースノートなどに情報が載っていなかったのですが、vCenter Server 7.0 Update 3 で vSphere Client のイベントコンソールでのイベント一覧のエクスポート機能が追加されたようです。&lt;/p&gt;
+&lt;p&gt;VMware Docs にもエクスポートに関するドキュメントが追加されていました。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.monitoring.doc/GUID-1A7FF15C-FC88-4BEF-B5AB-4BDA54D17F96.html&#34;&gt;vSphere Client 内のイベントのエクスポート&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;ドキュメントの更新日が VC 7.0 U3 のリリースより2ヶ月ほど古いのが気になりますが、少なくとも直前の VC 7.0 U2d で確認する限り本機能は未実装のようだったので、VC 7.0 U3 で追加された機能と考えて良さそうです。&lt;/p&gt;
+&lt;h2 id=&#34;イベントのエクスポート手順&#34;&gt;イベントのエクスポート手順&lt;/h2&gt;
+&lt;p&gt;vSphere Client のインベントリで、各オブジェクトの [監視] タブ &amp;gt; [イベント] から [エクスポート] をクリックすると、&amp;ldquo;ExportEventsLog.csv.csv&amp;rdquo; といったファイル名でダウンロードが始まります。&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;https://jangari-ntk.github.io/images/2021-11-13/event-export.PNG&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;注意点&#34;&gt;注意点&lt;/h2&gt;
+&lt;p&gt;エクスポートされるイベントは一覧に表示されている1ページ分のみなので、表示件数に指定できる100件がエクスポート可能な最大件数となります。それ以上の件数や期間を指定してエクスポートしたい場合、現状ではやはり PowerCLI などを使う必要がありそうです。&lt;/p&gt;
+&lt;p&gt;また、試した限りでは列のフィルタを行った後にエクスポートを行ってもエクスポート結果は変わらないようでした。アラームがトリガーされた際のイベントやステータスが警告のイベントのみ抽出してエクスポート、といったことはできないようです。&lt;/p&gt;
+&lt;h2 id=&#34;おわりに&#34;&gt;おわりに&lt;/h2&gt;
+&lt;p&gt;今回は vCenter Server 7.0 Update 3 で追加されていたイベントのエクスポート機能を試してみました。表示中の1ページ分ですがエクスポートが行えるようになったので、簡易的なイベントのエクスポートには使えそうかなと感じます。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>PowerCLI の vSphere Automation API SDK モジュールで vCenter Server のマシン SSL 証明書を更新する</title>
+      <link>https://jangari-ntk.github.io/post/2021-09-18/</link>
+      <pubDate>Sat, 18 Sep 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2021-09-18/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://jangari-ntk.github.io/post/2021-03-29/&#34;&gt;以前の記事&lt;/a&gt;で REST API を使って vCenter Server のマシン SSL 証明書を置き換えていましたが、先日の PowerCLI 12.4 のリリースで PowerCLI のコマンドレットが追加されました。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://blogs.vmware.com/PowerCLI/2021/09/powercli-12-4-whats-new.html&#34;&gt;PowerCLI 12.4 – What’s New&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The new vSphere Management Module
+A new module is introduced for vSphere Management. It is a PowerShell-based module backed by the newly introduced vSphere Automation API SDK modules. &amp;hellip; Currently, the module contains 6 cmdlets to complement certificate management. Explore the cmdlet documentation to know more.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Add-VITrustedCertificate&lt;/li&gt;
+&lt;li&gt;Get-VIMachineCertificate&lt;/li&gt;
+&lt;li&gt;Get-VITrustedCertificate&lt;/li&gt;
+&lt;li&gt;New-VIMachineCertificateSigningRequest&lt;/li&gt;
+&lt;li&gt;Remove-VITrustedCertificate&lt;/li&gt;
+&lt;li&gt;Set-VIMachineCertificate&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;p&gt;PowerCLI のリファレンスを見ると &lt;a href=&#34;https://developer.vmware.com/docs/powercli/latest/vmware.powercli.vcenter/commands/set-vimachinecertificate/#VCenter&#34;&gt;Set-VIMachineCertificate&lt;/a&gt; コマンドレットによりカスタム証明書でマシン SSL 証明書を置き換えることが出来るようです。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>【Tips】共有ストレージなし＆VCSA デプロイ済みのクラスタで EVC を有効にする【自宅ラボ用】</title>
+      <link>https://jangari-ntk.github.io/post/2021-08-17/</link>
+      <pubDate>Tue, 17 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2021-08-17/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;背景&#34;&gt;背景&lt;/h2&gt;
+&lt;p&gt;仮想マシンとしてデプロイされた vCenter Server が存在するクラスタ上で EVC を有効にする場合、KB2147821 のように EVC がそれぞれ無効／有効な2つのクラスタを用意し、そのクラスタ間で vCenter Server 仮想マシンをインベントリ上で再登録する必要があります。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/2147821?lang=ja&#34;&gt;vCenter Server 6.5 および 6.7 で vCenter Server 自身の仮想マシンが実行されるクラスタの EVC を有効にする方法 (2147821)&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;先日、Intel NUC 10 1台で構成していた自宅ラボに Intel NUC 11 の ESXi 7.0 を追加したため EVC を有効にしようとしたのですが、共有ストレージを用意していなかったためホスト間でのインベントリの再登録が行えませんでした。&lt;/p&gt;
+&lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;遊びで使っている自宅ラボでの EVC の有効化のためだけに共有ストレージを追加するのも面倒でしたので、以下のような少々トリッキーな手段で EVC を有効にしてみました。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;vCenter Server 仮想マシンを停止＆スナップショットを作成&lt;/li&gt;
+&lt;li&gt;ハードウェアバージョン14以降へのアップグレード&lt;/li&gt;
+&lt;li&gt;仮想マシンに Per-VM EVC のパラメータを追加&lt;/li&gt;
+&lt;li&gt;vCenter Server 仮想マシンをパワーオンしてクラスタの EVC を有効化&lt;/li&gt;
+&lt;li&gt;1.のスナップショットにリストアして再度クラスタの EVC を有効化&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;vCenter Server 仮想マシンが存在するクラスタ上で EVC を有効にする場合、vCenter Server 仮想マシン自身の CPU 互換性が問題になります。&lt;/p&gt;
+&lt;p&gt;一度クラスタで EVC を構成してしまえば vCenter Server が停止していてもホストの EVC モードは維持されるので、手作業で vCenter Server 仮想マシンの CPUID をマスクした後、クラスタの EVC を構成し、作業前のスナップショットにリストアすることで vCenter Server 仮想マシンをクラスタの EVC モードで起動させます。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>【メモ】ESXi 7.0 の Kickstart の %post で boot.cfg を触る</title>
+      <link>https://jangari-ntk.github.io/post/2021-08-07/</link>
+      <pubDate>Sat, 07 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2021-08-07/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://jangari-ntk.github.io/post/2020-08-23/&#34;&gt;以前の Nested ESXi の記事&lt;/a&gt;や &lt;a href=&#34;https://kb.vmware.com/s/article/2149444?lang=ja&#34;&gt;KB2149444&lt;/a&gt; 等でも言及されていますが、ESXi のブートオプションは /bootbank/boot.cfg の kernelopt 行に記載されます。&lt;/p&gt;
+&lt;p&gt;ESXi は &lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/6.5/com.vmware.vsphere.install.doc/GUID-870A07BC-F8B4-47AF-9476-D542BA53F1F5.html&#34;&gt;キックスタートファイルを使用した自動インストール&lt;/a&gt;が可能なので、%post や %firstboot のセクションで編集できないかと思い、各セクションで以下のような sed コマンドを実行して試してみました。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;sed -i &amp;#34;s/kernelopt=.*/kernelopt=autoPartition=FALSE allowLegacyCPU=true/&amp;#34; /bootbank/boot.cfg
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;今回の環境は ESXi 7.0 Update 2 です。&lt;/p&gt;
+&lt;h2 id=&#34;結果&#34;&gt;結果&lt;/h2&gt;
+&lt;p&gt;%firstboot セクションでは sed により boot.cfg の内容が置換されました。しかし、%post セクションでは sed の実行がエラーになり置換されませんでした。&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;https://jangari-ntk.github.io/images/2021-08-07/esxi-ks-post-failed.PNG&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;原因&#34;&gt;原因&lt;/h2&gt;
+&lt;p&gt;sed コマンドがエラーになっていることから /bootbank の状態が気になるので、ks.cfg 内で以下のコマンドを実行して %post の時の状態を覗いてみました。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;%post --interpreter=busybox
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;ls -laR / &amp;gt; /vmfs/volumes/datastore1/_ks_post_ls_-laR.txt
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;結果としては、%post 時点では /bootbank のリンク先が /tmp になっていました。また、/tmp には boot.cfg が存在していなかったので、/bootbank/boot.cfg が無いために sed がエラーになっていることが分かりました。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>PTP を使用して ESXi を時刻同期する</title>
+      <link>https://jangari-ntk.github.io/post/2021-06-20/</link>
+      <pubDate>Sun, 20 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2021-06-20/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;前回の記事では vSphere 7 で実装された PTP 関連の機能のうち、仮想マシンのプレシジョンクロックデバイスを取り上げました。今回の記事ではもう一つの機能である ESXi の PTP による時刻同期を試してみたいと思います。&lt;/p&gt;
+&lt;p&gt;なお、PTP のプロトコルの概要は省きますが、&lt;a href=&#34;https://jangari-ntk.github.io/post/2021-06-10/#ptp-precision-time-protocol&#34;&gt;前回の記事&lt;/a&gt;で挙げた参考 URL のほか、Cisco の有志の方が書かれている以下の記事も参考になると思います。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://qiita.com/nkawabat/items/87223d4d8fbf633db958&#34;&gt;【初心者向け】時刻同期101 - PTP の基本動作&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;グランドマスタークロックのセットアップ&#34;&gt;グランドマスタークロックのセットアップ&lt;/h2&gt;
+&lt;h3 id=&#34;前置き今回の記事の構成&#34;&gt;前置き：今回の記事の構成&lt;/h3&gt;
+&lt;p&gt;本来はグランドマスタークロックとして PTP 対応の原子時計などを用意し、境界クロック(BC)やトランスペアレントクロック(TC)として機能するスイッチなどを経由して、末端のスレーブクロックに接続することでマイクロ秒～ナノ秒レベルの同期精度が維持されます。&lt;/p&gt;
+&lt;p&gt;今回の記事では単純な機能のテスト目的のため、グランドマスタークロックを仮想マシンの CentOS 8 Stream ＋ ptp4l で用意し、ESXi と同じネットワークセグメントに接続するだけの構成としています。&lt;/p&gt;
+&lt;p&gt;クロック精度のハードウェア支援や BC/TC も無いため同期精度は完全に無視していますので、あくまでもテスト目的であり、決して本番環境向けの構成ではないことを予めご認識おきください。&lt;/p&gt;
+&lt;h3 id=&#34;セットアップ手順&#34;&gt;セットアップ手順&lt;/h3&gt;
+&lt;p&gt;まずは CentOS 8 Stream をインストールした後、linuxptp パッケージをインストールします。linuxptp パッケージに PTPv2 を実装したプログラム(ptp4l 等)が含まれています。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# yum install linuxptp&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;次に、ソフトウェアタイムスタンプを利用するよう ptp4l を構成します。ptp4l.conf の time_stamping オプションを hardware から software に編集することで可能です。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# vi /etc/ptp4l.conf&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;略&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;time_stamping           software
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;また、適切な NIC を使用するように ptp4l の -i オプションを指定します。/etc/sysconfig/ptp4l を編集することで可能です。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>プレシジョンクロックデバイスで ESXi とゲストOSを時刻同期</title>
+      <link>https://jangari-ntk.github.io/post/2021-06-10/</link>
+      <pubDate>Thu, 10 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2021-06-10/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;vSphere 7.0 ではゲストの時刻同期に関する新機能としてプレシジョンクロックデバイスという新しい仮想デバイスが追加されています。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://blogs.vmware.com/apps/2020/04/highlights-of-new-features-and-improvements-in-vsphere-7-vsan-7-nsx-t-3-for-high-performance-computing-and-machine-learning.html&#34;&gt;Highlights of New Features and Improvements in vSphere 7/vSAN 7/NSX-T 3 for High Performance Computing and Machine Learning&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.vm_admin.doc/GUID-4E6AE904-75C6-475F-8732-07E4542D7798.html&#34;&gt;仮想マシンへのプレシジョン クロック デバイスの追加&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;仮想マシンにプレシジョンクロックデバイスを構成すると、ゲストOSからは PTP ハードウェアクロック(PHC)というデバイスとして見えます。ゲストOSはこのデバイスを参照することで、ESXi のシステム時刻を取得して同期できるようになります。&lt;/p&gt;
+&lt;p&gt;今回の記事では Windows Server 2019 と Red Hat Enterprise Linux 8.3 でプレシジョンクロックデバイスを使用したホスト－ゲスト間の時刻同期を試してみたいと思います。&lt;/p&gt;
+&lt;h2 id=&#34;ptp-precision-time-protocol&#34;&gt;PTP (Precision Time Protocol)&lt;/h2&gt;
+&lt;p&gt;時刻同期に広く使われているネットワークプロトコルとして NTP がありますが、NTP の精度は一般にミリ秒レベルです。これに対して PTP ではハードウェア(NIC)によるタイムスタンプと正確な転送遅延時間の測定により、ナノ秒以下の精度を目標として時刻同期を行うためのプロトコルとなっています。&lt;/p&gt;
+&lt;p&gt;PTP はマスター／スレーブ型のプロトコルで、(誤解を恐れずに言うと)グランドマスタークロックがタイムスタンプ情報をマルチキャストで配信、スレーブ(NIC)は受信したタイムスタンプ情報から自身のハードウェアタイムスタンプを限りなくマスターに近づけ、OS のシステム時刻は NIC から取得したハードウェアタイムスタンプを使用して同期します。&lt;/p&gt;
+&lt;p&gt;PTP の概要は日本語だと以下のセイコーソリューションズ社の Web サイトや Interop 2016 の資料、Red Hat 社の linuxptp のドキュメントなどが参考になるかなと思います。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.seiko-sol.co.jp/leap-second/no-05/&#34;&gt;セイコーの｢うるう秒｣対策（第５回）　「うるう秒」を全く使わない時間系 | セイコーソリューションズ&lt;/a&gt;&lt;br&gt;
+→ &lt;a href=&#34;https://www.seiko-sol.co.jp/wp-content/uploads/2016/12/leap_second_seminar-PART2-201610.pdf&#34;&gt;高精度時刻同期プロトコルIEEE1588 PTPのご紹介&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.slideshare.net/InteropTokyo-ShowNet/ptp-precision-time-protocol&#34;&gt;2016-ShowNet-PTP (Precision Time Protocol)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/7/html/system_administrators_guide/ch-configuring_ptp_using_ptp4l&#34;&gt;第20章 ptp4l を使用した PTP の設定 Red Hat Enterprise Linux 7 | Red Hat Customer Portal&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;vsphere-7-での-ptp-サポート&#34;&gt;vSphere 7 での PTP サポート&lt;/h2&gt;
+&lt;p&gt;vSphere 7 では PTP に関連する新機能として以下の２つの機能が追加されています。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>Fedora 33 で VMware Tools による解像度変更が効かない問題と対処</title>
+      <link>https://jangari-ntk.github.io/post/2021-04-08/</link>
+      <pubDate>Thu, 08 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2021-04-08/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;VMware Workstation 16 Pro 上に Fedora 33 をインストールしたのですが、VMware Workstation のウィンドウサイズにゲストの解像度が追従しない状況が発生しました。&lt;/p&gt;
+&lt;p&gt;本来は VMware Tools (open-vm-tools) によってゲストの解像度が追従するはずなので、open-vm-tools の動きが怪しいと思いワークアラウンドを調べてみました。&lt;/p&gt;
+&lt;h2 id=&#34;原因&#34;&gt;原因&lt;/h2&gt;
+&lt;p&gt;Bugzilla や GitHub の Issue を見る限りでは、VMware Tools が Xorg 用のドライバ検知に失敗して resolutionKMS / resolutionSet プラグインが自動で有効にならず、解像度変更が動作しないといった問題のようです。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://bugzilla.redhat.com/show_bug.cgi?id=1890815&#34;&gt;https://bugzilla.redhat.com/show_bug.cgi?id=1890815&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/vmware/open-vm-tools/issues/491&#34;&gt;https://github.com/vmware/open-vm-tools/issues/491&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/vmware/open-vm-tools/issues/501&#34;&gt;https://github.com/vmware/open-vm-tools/issues/501&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;※resolutionKMS / resolutionSet はゲストの GUI 周りを操作するプラグインです。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-Tools/11.2.0/com.vmware.vsphere.vmwaretools.doc/GUID-0BD592B1-A300-4C09-808A-BB447FAE2C2A.html&#34;&gt;VMware Tools Service&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;resolutionKMS - ゲスト ユーザー インターフェイス トポロジと vmwgfx drm（ダイレクト レンダリング マネージャ）ドライバの通信を処理します。
+注：
+このプラグインは、Linux 専用です。&lt;/li&gt;
+&lt;li&gt;resolutionSet - vmwgfx drm（ダイレクト レンダリング マネージャ）ドライバが利用できない場合のゲスト画面のサイズ変更を処理します。&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;p&gt;なお、同じ Wayland を使っている RHEL8 や CentOS Stream では再現しなかったので、Fedora 33 (以降) との組み合わせで発生する問題のようです。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>REST API で vCenter Server のマシンSSL証明書を置き換える</title>
+      <link>https://jangari-ntk.github.io/post/2021-03-29/</link>
+      <pubDate>Mon, 29 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2021-03-29/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;20210916-追記-powercli-124-で証明書管理が追加&#34;&gt;2021/09/16 追記: PowerCLI 12.4 で証明書管理が追加&lt;/h2&gt;
+&lt;p&gt;2021/09/16 にリリースされた PowerCLI 12.4 で vSphere Automation API のモジュールが追加されました。このモジュールには vCenter Server の証明書管理のコマンドレットが含まれています。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://blogs.vmware.com/PowerCLI/2021/09/powercli-12-4-whats-new.html&#34;&gt;PowerCLI 12.4 - What&amp;rsquo;s New - VMware PowerCLI Blog&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The new vSphere Management Module
+A new module is introduced for vSphere Management. It is a PowerShell-based module backed by the newly introduced vSphere Automation API SDK modules. &amp;hellip; Currently, the module contains 6 cmdlets to complement certificate management. Explore the cmdlet documentation to know more.&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>vCenter Server 7.0 で CSR を生成してカスタム証明書に置き換える</title>
+      <link>https://jangari-ntk.github.io/post/2021-03-24/</link>
+      <pubDate>Wed, 24 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2021-03-24/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;vSphere 6.7 以降では vSphere Client から証明書の管理が可能になっています。カスタム証明書の CSR を vCenter Server で生成する手順について文言など多少混乱した点があったので、記録として残しておきたいと思います。&lt;/p&gt;
+&lt;p&gt;流れは一般的な証明書の発行と同じく以下の３つです。今回のケースでは手順1, 3 は vCenter Server 側、手順 2 は CA 側で実施する操作になります。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;証明書署名要求 (CSR) の生成&lt;/li&gt;
+&lt;li&gt;署名済み証明書の発行&lt;/li&gt;
+&lt;li&gt;署名済み証明書のインポート&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;注意カスタム証明書の置き換えに関する既知問題&#34;&gt;注意：カスタム証明書の置き換えに関する既知問題&lt;/h2&gt;
+&lt;p&gt;vCenter Server 7.0 ではマシン SSL 証明書をカスタム証明書に置き換えると vCenter Server のサービスが起動に失敗する既知問題があります。vCenter Server 7.0 Update 1c で修正されていますが、それ以前のリリースで発生した場合のワークアラウンドは無いようです。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/82168&#34;&gt;vCenter Server 7.0 fails to start after replacing VMCA certificates with CA-signed certificates. (82168)&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;私の環境では再現できませんでしたが修正リリース以降へのアップデートの実施が推奨されますので、カスタム証明書を使用する場合は事前に既知問題に該当する vCenter Server 7.0 リリースか確認するようにしましょう。&lt;/p&gt;
+&lt;p&gt;2021/03/28 追記：インポートする証明書の改行コードなどに起因する既知問題を観測したので、本記事の末尾に内容などを追記しました。&lt;/p&gt;
+&lt;h2 id=&#34;証明書署名要求-csr-の生成&#34;&gt;証明書署名要求 (CSR) の生成&lt;/h2&gt;
+&lt;p&gt;vSphere Client の [ホーム] &amp;gt; [管理] &amp;gt; [証明書の管理] を開き、[アクション] から [証明書署名要求 (CSR) の生成] をクリックします。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>journalctl コマンドで vCenter Server のイベントを見てみる</title>
+      <link>https://jangari-ntk.github.io/post/2021-02-12/</link>
+      <pubDate>Fri, 12 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2021-02-12/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;以前、&lt;a href=&#34;https://jangari-ntk.github.io/post/2020-08-01&#34;&gt;こちらの記事&lt;/a&gt;で vCenter Server 7.0 でのイベントのエクスポート方法 (PowerCLI / syslog) について書いていました。記事でも書いたとおり、vCenter Server Appliance 6.5 以降ではイベントストリーミングが追加され既定で有効になっていますが、syslog 転送は手動で構成する必要がありました。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.monitoring.doc/GUID-FD51CE83-8B2A-4EBA-A16C-75DB2E384E95.html&#34;&gt;リモートの Syslog サーバへのイベント ストリーミングの構成&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;vCenter Serverストリーミング機能へのイベントの書き込みを構成することもできます。イベントのストリーミングは、vCenter Server でのみサポートされます。リモート Syslog サーバに対するイベントのストリーミングは、デフォルトで無効になっています。リモート Syslog サーバへの vCenter Server イベントのストリーミングは、vCenter Server 管理インターフェイスで有効にして設定することができます。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;ol start=&#34;6&#34;&gt;
+&lt;li&gt;vpxd.event.syslogオプションを有効または無効にします。&lt;br&gt;
+この設定のデフォルト値は「有効」です。&lt;/li&gt;
+&lt;/ol&gt;&lt;/blockquote&gt;
+&lt;p&gt;syslog で転送できるのであればデータベース以外のどこかに記録されてないかなと思い色々と試してみたところ、journalctl コマンドで vMon のジャーナルを参照すると syslog 転送時と同じイベントの記録が確認できたので、参考までに見つけた流れなどを備忘録として残しておきたいと思います。&lt;/p&gt;
+&lt;p&gt;なお、公式マニュアルやナレッジベースなどの公開情報は見当たらなかったのでサポート外の操作になるとは思われます。vCenter Server Appliance が壊れるような操作では無いはずですが実施する場合は自己責任でお願いします。&lt;/p&gt;
+&lt;h2 id=&#34;vmware-service-lifecycle-manager-vmon&#34;&gt;VMware Service Lifecycle Manager (vMon)&lt;/h2&gt;
+&lt;p&gt;vSphere 6.5 以降では vCenter Server のアーキテクチャが変わっており、多くの vCenter Server 関連サービスは VMware Service Lifecycle Manager サービス (vMon) の子プロセスとして動作するようになっています(PSC 関連など一部のサービスは対象外)&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/2109881?lang=ja&#34;&gt;vCenter Server 6.x のサービスを停止、開始、再起動する方法 (2109881)&lt;/a&gt;&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>vRealize Automation 8.1 で Nested ESXi の Blueprint を作ってみた</title>
+      <link>https://jangari-ntk.github.io/post/2020-08-30/</link>
+      <pubDate>Sun, 30 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2020-08-30/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.vmug.com/vmug2019/membership/evalexperience&#34;&gt;VMUG Advantage の Eval Experience&lt;/a&gt; に vRealize Suite 2019 Enterprise の評価ライセンスがありましたので、試しに自宅の vSphere に vRealize Automation (以下 vRA) 8.1 をデプロイして遊んでみています。&lt;/p&gt;
+&lt;p&gt;今回、Nested ESXi が展開できるブループリントでも作ってみたら面白いかなと思い、新しい UI 等に慣れるのを半分、ネタを半分にやってみました。vRA は過去に 7.x 系を少し触っていただけの初心者のため詳細な解説などは難しいですが、せっかくなので記事にしてみたいと思います。&lt;/p&gt;
+&lt;h2 id=&#34;vrealize-automation-の概要&#34;&gt;vRealize Automation の概要&lt;/h2&gt;
+&lt;p&gt;vRealize Automation は VMware 製品の中でもクラウドの管理や自動化(Cloud Management)といったカテゴリに属する製品です。vSphere や vSAN、NSX-T はインフラストラクチャ寄りの製品ですが、vRA はそれらも含めてユーザーがクラウド環境を容易に利用できるようサービスとして提供することが主な役割です。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.vmware.com/jp/products/vrealize-automation.html&#34;&gt;vRealize Automation（vRA）の概要| クラウド自動化ツール | VMware | JP&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;各担当者のニーズに応えながら、ユーザーの利便性も確保するハイブリッド クラウド自動化プラットフォーム&lt;/p&gt;
+&lt;p&gt;IT 運用部門、ビジネス運用部門、DevOps、ビジネス部門、開発者のニーズに応じてハイブリッド クラウド環境やマルチクラウド環境を管理することは複雑な作業です。インフラストラクチャとアプリケーションのプロビジョニングが、複数のツールとスクリプトで半自動化されていると、効率性、生産性、一貫性が低下し、セキュリティとコンプライアンス上のリスクを招きます。vRealize Automation を使用すれば、ユーザーは必要なときに必要なサービスを入手できます。リリースの自動化プロセスは DevOps チームが管理し、セキュリティとガバナンスの保守については IT チームが担当します。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;例えば、開発者などのユーザーからシステム管理者に仮想マシンの払い出しの要求があった場合、システム管理者がユーザーに仮想マシンの払い出しを行って管理するなどの対応が必要となります。この場合、完了までにかかる時間の多くはシステム管理者に依存します。&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;Traditional IT Service Request&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;https://jangari-ntk.github.io/images/2020-08-30/Traditional_IT_Service_Request.png&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;vRA を使った場合、仮想マシンの払い出しや管理などは事前に自動化されているテンプレートから vRA が提供を行うため、多くをユーザーの作業のみで迅速に完結させることができます。これによりシステム管理者はその他のシステム管理業務に注力することが出来ます。&lt;br&gt;
+※ユーザーが「セルフサービスで」出来るようになるところが一番のポイントです。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>Nested ESXi のテンプレート作りに必要な設定と解説</title>
+      <link>https://jangari-ntk.github.io/post/2020-08-23/</link>
+      <pubDate>Sun, 23 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2020-08-23/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;20210822-追記esxi-70-u2-以降では安全なブート領域の複製が不可&#34;&gt;2021/08/22 追記：ESXi 7.0 U2 以降では安全なブート領域の複製が不可&lt;/h2&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;Nested ESXi のクローン、ESXi 7.0 U2 以降は完全に終了みたい。多分 configstore 周りの変更とかだろうなぁ・・・&lt;br&gt;&lt;br&gt;After upgrading to ESXi 7.0U2, corruption can occur on VMFS datastores if the ESXi hosts sharing those LUNs had their boot devices cloned (84349)&lt;a href=&#34;https://t.co/mJOY0iPvc8&#34;&gt;https://t.co/mJOY0iPvc8&lt;/a&gt;&lt;/p&gt;&amp;mdash; Jangari (@Jangari_nTK) &lt;a href=&#34;https://twitter.com/Jangari_nTK/status/1422894456567595015?ref_src=twsrc%5Etfw&#34;&gt;August 4, 2021&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;ESXi 7.0 Update 2 以降では ESXi の UUID への依存関係が増えているようで、esx.conf 内の UUID の修正のみでは足りなくなったようで、安全なブート領域のクローンが行えなくなりました。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://williamlam.com/2013/12/how-to-properly-clone-nested-esxi-vm.html&#34;&gt;How to properly clone a Nested ESXi VM? - WilliamLam.com&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;UPDATE (07/01/21) - As of ESXi 7.0 Update 2, cloning an ESXi boot volume (Nested or Physical) is no longer safe and can lead to data corruption. Please refer to the following two VMware KB articles for more information on this topic &lt;a href=&#34;https://kb.vmware.com/kb/84280&#34;&gt;https://kb.vmware.com/kb/84280&lt;/a&gt; and &lt;a href=&#34;https://kb.vmware.com/kb/84349&#34;&gt;https://kb.vmware.com/kb/84349&lt;/a&gt;&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>pyVmomi から API 操作で Instant Clone をやってみる</title>
+      <link>https://jangari-ntk.github.io/post/2020-08-07/</link>
+      <pubDate>Fri, 07 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2020-08-07/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;本記事では pyVmomi を使って vSphere 単体で Instant Clone を行う方法について書いていきます。&lt;/p&gt;
+&lt;p&gt;事の発端は以下のVMware社の中の人が PowerCLI から Nested ESXi をインスタントクローンする記事です。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.virtuallyghetto.com/2018/05/leveraging-instant-clone-in-vsphere-6-7-for-extremely-fast-nested-esxi-provisioning.html&#34;&gt;Leveraging Instant Clone in vSphere 6.7 for extremely fast Nested ESXi provisioning&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;vsphere-web-services-api-と-pyvmomi&#34;&gt;vSphere Web Services API と pyVmomi&lt;/h2&gt;
+&lt;p&gt;vCenter Server のタスクをコマンドで実行する場合、PowerCLI を使うことが多いと思います。もしくは、開発やトラブルシューティングなどの一環で MOB (Managed Object Browser) を使用したことがある方もいらっしゃるかもしれません。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://code.vmware.com/web/tool/12.0.0/vmware-powercli&#34;&gt;VMware PowerCLI - VMware {code}&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://code.vmware.com/docs/6536/vsphere-sdk-for-perl-programming-guide/doc/GUID-9D615A34-EEA5-4BBE-A612-E4600F47B555.html&#34;&gt;Online Documentation - vSphere SDK for Perl Programming Guide - VMware {code}&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;これらのツールは「vSphere Web Services API」という vSphere のローレベルな SOAP API を操作しています&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://code.vmware.com/web/sdk/7.0/vsphere-management&#34;&gt;vSphere Management SDK - VMware {code}&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://code.vmware.com/apis/968/vsphere&#34;&gt;vSphere Web Services API - VMware API Explorer - VMware {code}&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;今回の記事で紹介する「pyVmomi」という Python SDK も PowerCLI と同様に vSphere Web Services API を操作することが出来ます。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>vCenter Server 7.0 のイベントをテキストで取得</title>
+      <link>https://jangari-ntk.github.io/post/2020-08-01/</link>
+      <pubDate>Sat, 01 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2020-08-01/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;vSphere Web Client (Flash 版) が vSphere 7 で遂に廃止となりました。vSphere Client (HTML5 版) は動作もスムーズで良いのですが、どうやら現時点では従来のイベントのエクスポートが行えないようです。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/2008204&#34;&gt;Exporting virtual machine events from the Tasks &amp;amp; Events tab (2008204)&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Note: The export tasks/Events option is only available on the vSphere Web Client (Flex). The HTML client does not include this feature at this time.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;このため、別の方法でイベントを取得する方法を試してみました。試した方法は以下の２パターンです。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;イベントストリーミングで転送してみる&lt;/li&gt;
+&lt;li&gt;PowerCLI でエクスポートしてみる&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;なお、どちらの方法もメッセージの言語のローカライズは行われないためご注意ください。&lt;/p&gt;
+&lt;h2 id=&#34;vcsa-のイベントストリーミングで転送してみる&#34;&gt;VCSA のイベントストリーミングで転送してみる&lt;/h2&gt;
+&lt;p&gt;イベントストリーミングでの転送では以下の２点の設定が必要ですが、後者は既定で設定済みなので、実質的には前者のリモート Syslog 転送の設定だけ行うことでイベントが転送されるようになります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.monitoring.doc/GUID-9633A961-A5C3-4658-B099-B81E0512DC21.html&#34;&gt;vCenter Server のログ ファイルを リモート Syslog サーバへ転送&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.monitoring.doc/GUID-FD51CE83-8B2A-4EBA-A16C-75DB2E384E95.html&#34;&gt;リモートの Syslog サーバへのイベント ストリーミングの構成&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Syslog 転送の構成はアプライアンス管理インターフェイス (VAMI) から行います。まず root ユーザーで VAMI にログインして以下のように [syslog] を開きましょう。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Network on My New Hugo Site</title>
+    <link>http://localhost:1313/tags/network/</link>
+    <description>Recent content in Network on My New Hugo Site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 04 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/network/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PowerCLI で vCenter Server 管理下の ESXi の NTP 設定を一括変更</title>
+      <link>http://localhost:1313/post/2023-02-04/</link>
+      <pubDate>Sat, 04 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2023-02-04/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;ESXi 7.0 Update 3 以降では /etc/ntp.conf の内容が configstore 内に移行されファイル自体が read-only となり、ntp.conf の直接編集がサポートされなくなりました。ntp.conf への追記が必要な場合、代わりに esxcli system ntp set の -f オプションで設定ファイルを投入する必要があります。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/87176&#34;&gt;vSphere ESXi 7.0 U3 and later versions configuration files for NTP and PTP can no longer be edited (87176)&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The ESXi configuration files /etc/ntp.conf and /etc/ptp.conf can no longer be edited directly.&lt;br&gt;
+It is no longer possible to make changes to NTP, PTP by editing these config files directly. From ESXi 7.0 Update 3, files under /etc are read-only and edits do not persist across reboot.&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>「偽装転送」ポリシーでフレームがドロップされる仕組み</title>
+      <link>http://localhost:1313/post/2022-03-06/</link>
+      <pubDate>Sun, 06 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2022-03-06/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;今回の記事では仮想スイッチの「偽装転送」ポリシーについて動作の概要や、ポリシー違反が発生する具体的なケースを見ていきます。&lt;/p&gt;
+&lt;p&gt;「偽装転送」ポリシーにより仮想マシンから送信されるフレームの送信元 MAC アドレスのなりすましを防ぐことが可能になります。ただし、特定のネットワーク構成では本ポリシーを「承諾」とする必要があります。&lt;/p&gt;
+&lt;h2 id=&#34;偽装転送ポリシー&#34;&gt;「偽装転送」ポリシー&lt;/h2&gt;
+&lt;p&gt;「偽装転送」ポリシーは仮想マシンから送出されるフレームのうち、送信元 MAC アドレスが書き換えられているフレームをドロップする機能です。具体的には以下の2つの MAC アドレスが一致しない場合は仮想マシンから送信されるフレームをドロップします。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;送出されたフレームの送信元 MAC アドレス&lt;/li&gt;
+&lt;li&gt;仮想ネットワークアダプタの有効な MAC アドレス&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;初期 MAC アドレスと有効な MAC アドレスの違いは&lt;a href=&#34;http://localhost:1313/post/2022-02-23/&#34;&gt;前回の記事&lt;/a&gt;を参照してください。&lt;/p&gt;
+&lt;h2 id=&#34;送信元-mac-アドレスの偽装&#34;&gt;送信元 MAC アドレスの偽装&lt;/h2&gt;
+&lt;p&gt;最も単純な例としては、ゲストOSから送信元 MAC アドレスを書き換えたフレームを実際に送信してみることです。以下、パケット操作ツールである &lt;a href=&#34;https://scapy.net/&#34;&gt;Scapy&lt;/a&gt; のインタラクティブシェルを使って送信元 MAC アドレスを偽装したフレームを送信してみます。&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;http://localhost:1313/images/2022-03-06/forged_transmit_policy_scapy.png&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# pip install scapy
+# scapy
+  ...
+&amp;gt;&amp;gt;&amp;gt; sendp(Ether(src=&amp;#34;00:11:22:33:44:55&amp;#34;)/IP(dst=&amp;#34;192.168.0.1&amp;#34;))
+.
+Sent 1 packets.
+&amp;gt;&amp;gt;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;ESXi 側で pktcap-uw を仕掛けておきフレームをキャプチャすると、以下のように「偽装転送」ポリシーによってドロップされた状況が確認できます。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# pktcap-uw --capture Drop
+The session capture point is Drop.
+  ...
+16:39:48.479640[1] Captured at Drop point, Drop Reason &amp;#39;MAC Forgery Drop&amp;#39;. Drop Function &amp;#39;L2Sec_FilterSrcMACForgeries&amp;#39;. TSO not enabled, Checksum not offloaded and not verified, SourcePort 67108984, length 60.
+        Segment[0] ---- 60 bytes:
+        0x0000:  001b 8bae d28a 0011 2233 4455 0800 4500
+        0x0010:  001c 0001 0000 4001 f98a c0a8 0004 c0a8
+        0x0020:  0001 0800 f7ff 0000 0000 0000 0000 0000
+        0x0030:  0000 0000 0000 0000 0000 0000
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;フレームの送信元 MAC アドレスが書き換えられる例としては Microsoft NLB のユニキャストモードがあります。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>初期 MAC アドレス、有効な MAC アドレス、「MAC アドレス変更」ポリシー</title>
+      <link>http://localhost:1313/post/2022-02-23/</link>
+      <pubDate>Wed, 23 Feb 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2022-02-23/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;vSphere では仮想スイッチで利用可能なセキュリティポリシーとして以下の3種類があります。これらのセキュリティポリシーを使用することで、MAC アドレスのなりすましのような L2 レイヤーの攻撃からネットワークを保護できます。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-942BD3AA-731B-4A05-8196-66F2B4BF1ACB.html&#34;&gt;MAC アドレス変更&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-7DC6486F-5400-44DF-8A62-6273798A2F80.html&#34;&gt;偽装転送&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-92F3AB1F-B4C5-4F25-A010-8820D7250350.html&#34;&gt;無差別モード操作&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;ただし、特定のネットワーク構成ではセキュリティポリシーの無効化が必要なケースがあります。セキュリティ機能が適切に構成されないと意図せずシステムに脆弱性を作り込んでしまう可能性もあるため、セキュリティ機能の仕様や動作を理解した上で適切に構成する必要があります。&lt;/p&gt;
+&lt;p&gt;今回の記事では「MAC アドレス変更」のセキュリティポリシーと、その前提知識としての初期 MAC アドレス・有効な MAC アドレスについて、簡易的な検証も交えつつ実際の動作を確認していきます。&lt;/p&gt;
+&lt;h2 id=&#34;仮想ネットワークアダプタの2種類の-mac-アドレス&#34;&gt;仮想ネットワークアダプタの2種類の MAC アドレス&lt;/h2&gt;
+&lt;p&gt;vSphere の文脈では、仮想ネットワークアダプタの MAC アドレスとして以下の2つを定義しています。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;初期 MAC アドレス (Initial MAC Address)&lt;/li&gt;
+&lt;li&gt;有効な MAC アドレス (Effective MAC Address)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;「MAC アドレス変更」のセキュリティポリシーの理解にあたってはこれらの理解が必須になるため、以下それぞれの概要を記載します。&lt;/p&gt;
+&lt;h3 id=&#34;初期-mac-アドレス-initial-mac-address&#34;&gt;初期 MAC アドレス (Initial MAC Address)&lt;/h3&gt;
+&lt;p&gt;初期 MAC アドレスは、仮想マシンの設定や vmx ファイルで確認できる仮想ネットワークアダプタ自体の MAC アドレスです。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-3507432E-AFEA-4B6B-B404-17A020575358.html&#34;&gt;vSphere 標準スイッチのセキュリティ強化&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;初期 MAC アドレス&lt;br&gt;
+初期 MAC アドレスは、アダプタの作成時に割り当てられます。初期 MAC アドレスは、ゲスト OS の外部から再構成できますが、ゲスト OS により変更することはできません。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;http://localhost:1313/images/2022-02-23/mac_address_change_001.PNG&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>VCDB から MAC アドレスの一覧を SELECT してみる</title>
+      <link>http://localhost:1313/post/2021-02-10/</link>
+      <pubDate>Wed, 10 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2021-02-10/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;vSphere の仮想マシンに固定 MAC アドレスを割り振る場合のベストプラクティスとして、事前にデータベースから MAC アドレスの一覧を参照して重複が無いことを確認しましょうといった KB が1月ごろに公開されていました。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/82139&#34;&gt;Best practices for assigning static MAC address to a Virtual machine vNIC (82139)&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Before assigning the static MAC address, refer the table MAC_ADDRESS table(select * from VPX_NIC) in the VCDB to make sure the there is no duplicate.(Irrespective of upper or lowercase)&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;del&gt;個人的にはデータベースを覗き見るのはあまり行儀が良い行為ではない気がするのですが&lt;/del&gt; KB として出ているので vCenter Server 7.0 (vPostgres) で試してみます。&lt;/p&gt;
+&lt;p&gt;基本的にどのバージョンも同じ手順になると思いますが、もしかしたら vCenter Server のバージョンや種類(Windows or Appliance)、データベースの種類によっては SQL クエリの結果など異なる可能性もありますので、その場合は環境に合わせて適宜調整してもらえればと思います。&lt;/p&gt;
+&lt;h2 id=&#34;vcenter-server-データベースに接続する&#34;&gt;vCenter Server データベースに接続する&lt;/h2&gt;
+&lt;p&gt;KB2147285 を参考に、VCSA の Bash シェル上から psql でデータベースに接続します。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

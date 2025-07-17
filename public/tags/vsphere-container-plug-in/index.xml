@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>VSphere Container Plug-In on My New Hugo Site</title>
+    <link>http://localhost:1313/tags/vsphere-container-plug-in/</link>
+    <description>Recent content in VSphere Container Plug-In on My New Hugo Site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 29 Apr 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/vsphere-container-plug-in/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>【備忘録】vsphere-csi-provider と TKG 2.x のサポート期間のドキュメント</title>
+      <link>http://localhost:1313/post/2025-04-29/</link>
+      <pubDate>Tue, 29 Apr 2025 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2025-04-29/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;vSphere Contaier Storage Plug-in (いわゆる vsphere-csi-provider) と Tanzu Kubernetes Grid 2.x のサポート期間の探し方が不明だったため、2025/04 時点の調べ方を備忘録として記載しておきます。&lt;/p&gt;
+&lt;h2 id=&#34;vsphere-contaier-storage-plug-in-のサポート期間&#34;&gt;vSphere Contaier Storage Plug-in のサポート期間&lt;/h2&gt;
+&lt;p&gt;以下のBroadcom社のドキュメントに EOL Date の表があります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/container-storage-plugin/3-0/getting-started-with-vmware-vsphere-container-storage-plug-in-3-0/vsphere-container-storage-plug-in-concepts/compatibility-matrix-for-vsphere-container-storage-plug-in.html&#34;&gt;Compatibility Matrices for vSphere Container Storage Plug-in&lt;/a&gt;&lt;br&gt;
+→ Kubernetes Versions Compatible with vSphere Container Storage Plug-in&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;http://localhost:1313/images/2025-04-29/vsphere-csi-provider_EOLdate.jpg&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;2025/04 時点では 3.0.x 以前の vsphere-csi-provider バージョンはサポート終了しているようです。&lt;/p&gt;
+&lt;h2 id=&#34;tanzu-kubernetes-grid-2x-のサポート期間&#34;&gt;Tanzu Kubernetes Grid 2.x のサポート期間&lt;/h2&gt;
+&lt;p&gt;以下の Broadcom 社ドキュメントを確認すると、&lt;a href=&#34;https://support.broadcom.com/group/ecx/productlifecycle&#34;&gt;Product Lifecycle Matrix&lt;/a&gt; で「VMware Tanzu Kubernetes Grid Management」を確認しろとの記載があります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://techdocs.broadcom.com/us/en/vmware-tanzu/standalone-components/tanzu-kubernetes-grid/2-5/tkg/about-tkg-support-policies.html&#34;&gt;Tanzu Kubernetes Grid Version Support Policies, Kubernetes Support, and Feature States&lt;/a&gt;&lt;br&gt;
+→ Supported Tanzu Kubernetes Grid Versions&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;http://localhost:1313/images/2025-04-29/tkg2.x_EOLdate_001.jpg&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

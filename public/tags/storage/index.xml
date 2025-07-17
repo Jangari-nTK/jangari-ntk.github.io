@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Storage on My New Hugo Site</title>
+    <link>http://localhost:1313/tags/storage/</link>
+    <description>Recent content in Storage on My New Hugo Site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 26 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/storage/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>【メモ】VMFS 6 上のシック形式の仮想ディスクには vmkfstools -K (--punchzero) が効かない</title>
+      <link>http://localhost:1313/post/2022-04-26/</link>
+      <pubDate>Tue, 26 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2022-04-26/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;VMFS5 以前の VMFS データストアでは、シックプロビジョニングの仮想ディスクに vmkfstools -K コマンドを実行することで、ゼロクリアされたブロックの削除とシンプロビジョニングへの変換がおこなえました。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.storage.doc/GUID-CBF31A6B-B36F-4552-B512-CC92B1943902.html&#34;&gt;ゼロクリアされたブロックの削除&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;vmkfstools コマンドを使用して、ゼロクリアされたブロックを削除します。&lt;/p&gt;
+&lt;p&gt;-K|--punchzero&lt;/p&gt;
+&lt;p&gt;このオプションは、ゼロクリアされたすべてのブロックの割り当てを解除し、割り当て済みで有効なデータを含むブロックだけを残します。処理後の仮想ディスクはシン フォーマットになります。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;VMFS6 ではシックプロビジョニングの仮想ディスクに対して vmkfstools -K の実行がサポートされなくなっています。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/2004155&#34;&gt;Storage vMotion to thin disk does not reclaim null blocks (2004155)&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;Erase all unused blocks by running the command:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;vmkfstools -K /path/to/disk-name.vmdk&lt;/p&gt;
+&lt;p&gt;Note: The punchzero (vmkfstools -K) command is not compatible with NFS datastores. &lt;strong&gt;This command is also not supported for thick provisioned disks on VMFS6&lt;/strong&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h2 id=&#34;実際に試してみる&#34;&gt;実際に試してみる&lt;/h2&gt;
+&lt;p&gt;実際に VMFS6 上のシックプロビジョニングの仮想ディスクに vmkfstools -K コマンドを実行すると Function not implemented のエラーとなり、サポートされていないことが分かります。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

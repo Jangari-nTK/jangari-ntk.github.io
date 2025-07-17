@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>VMware Cloud Foundation on My New Hugo Site</title>
+    <link>http://localhost:1313/categories/vmware-cloud-foundation/</link>
+    <description>Recent content in VMware Cloud Foundation on My New Hugo Site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 17 Jul 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/categories/vmware-cloud-foundation/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>VCF Installer に Offline Depot 用の CA 証明書を API でインポートする</title>
+      <link>http://localhost:1313/post/2025-07-17/</link>
+      <pubDate>Thu, 17 Jul 2025 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2025-07-17/</guid>
+      <description>
+        
+          
+            &lt;h1 id=&#34;概要&#34;&gt;概要&lt;/h1&gt;
+&lt;p&gt;VCF Installer での VCF9 のデプロイにあたり、オフラインデポに HTTPS での接続を試みたところ以下の KB#403203 に記載の事象に遭遇しました。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://knowledge.broadcom.com/external/article/403203/set-up-an-offline-depot-from-vcf-90-inst.html&#34;&gt;Set Up an Offline Depot from VCF 9.0 Installer GUI fails with Secure protocol communication error&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;オフラインデポのサーバ証明書に署名した CA 証明書が VCF Installer 側には無いので、サーバ証明書の検証がおこなえないため失敗する状況は想定できました。しかし、VCF 9 デプロイ前の VCF Installer の（まだ SDDC Manager でない）状態では CA 証明書をインポートする UI が無いようです。&lt;/p&gt;
+&lt;p&gt;すでに &lt;a href=&#34;https://williamlam.com/2025/06/using-http-with-vcf-9-0-installer-for-offline-depot.html&#34;&gt;Broadcom の中の人&lt;/a&gt;がオフラインデポへの接続で TLS を無効する方法（裏技？）を公開していますが、せっかくなので Broadcom 公式から開発者向けドキュメントが公開されている API を使用して CA 証明書をインポートすることで解決してみました。&lt;/p&gt;
+&lt;h2 id=&#34;事前準備-オフラインデポを構成&#34;&gt;事前準備: オフラインデポを構成&lt;/h2&gt;
+&lt;p&gt;まずはオフラインデポを構成するため、&lt;a href=&#34;https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-9-0-and-later/9-0/lifecycle-management/what-is-the-vcf-download-tool-/vcf-download-tool-binaries-commands.html&#34;&gt;VCF Download Tool&lt;/a&gt; を使用して各コンポーネントのバイナリをダウンロードします（&lt;a href=&#34;https://knowledge.broadcom.com/external/article/390098&#34;&gt;ダウンロードトークン&lt;/a&gt;が必要です）。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ ./bin/vcf-download-tool binaries download --vcf-version 9.0.0.0 --automated-install -d /mnt/depot -t INSTALL --depot-download-token-file downloadtoken.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;ダウンロードが完了すると、デポのディレクトリ階層は以下のようになります。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Event on My New Hugo Site</title>
+    <link>http://localhost:1313/tags/event/</link>
+    <description>Recent content in Event on My New Hugo Site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 28 Aug 2022 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/event/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>【メモ】個人的に気になる VMware Explore 2022 US セッション</title>
+      <link>http://localhost:1313/post/2022-08-28/</link>
+      <pubDate>Sun, 28 Aug 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2022-08-28/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;US 時間で 8/29 から &lt;a href=&#34;https://www.vmware.com/explore/us.html&#34;&gt;VMware Explore 2022 US&lt;/a&gt; が開催されます。自分用のメモですが vSphere 関連の気になるセッションへのリンクをまとめておきます。&lt;/p&gt;
+&lt;h2 id=&#34;vsphere&#34;&gt;vSphere&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://event.vmware.com/flow/vmware/explore2022us/content/page/catalog?search=CEIB1574US&#34;&gt;10 New and Exciting Things About vSphere That You Absolutely Need to Know [CEIB1574US]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://event.vmware.com/flow/vmware/explore2022us/content/page/catalog?search=CEIM2230US&#34;&gt;VMware vSphere – The New Features [CEIM2230US]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://event.vmware.com/flow/vmware/explore2022us/content/page/catalog?search=CEIB1501USD&#34;&gt;What’s New in vMotion and Workload Mobility [CEIB1501USD]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://event.vmware.com/flow/vmware/explore2022us/content/page/catalog?search=CMK2208US&#34;&gt;vSphere+ and vSAN+: The Next Evolution of VMware Enterprise Workload Platform [CMK2208US]&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;performance--resource-management&#34;&gt;Performance &amp;amp; Resource Management&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://event.vmware.com/flow/vmware/explore2022us/content/page/catalog?search=CEIT1097US&#34;&gt;Extreme Performance Series: vSphere Advanced Performance Tutorial [CEIT1097US]&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;storage&#34;&gt;Storage&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://event.vmware.com/flow/vmware/explore2022us/content/page/catalog?search=CEIB2172US&#34;&gt;Get to Know the Next-Generation of vSAN Architecture [CEIB2172US]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://event.vmware.com/flow/vmware/explore2022us/content/page/catalog?search=CEIB1382USD&#34;&gt;Core Storage Best Practice Deep Dive [CEIB1382USD]&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;security&#34;&gt;Security&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://event.vmware.com/flow/vmware/explore2022us/content/page/catalog?search=SECB2350US&#34;&gt;How the vSphere Engineer Became a Critical Part of Modern Security Design [SECB2350US]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://event.vmware.com/flow/vmware/explore2022us/content/page/catalog?search=CEIB3019US&#34;&gt;Deploying Full-Stack Security for Enterprise Workloads with VMware Cloud Foundation [CEIB3019US]&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;troubleshooting&#34;&gt;Troubleshooting&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://event.vmware.com/flow/vmware/explore2022us/content/page/catalog?search=CXS2145US&#34;&gt;Advanced Troubleshooting of ESXi Server 7.x for vSphere Gurus [CXS2145US]&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;project-monterey&#34;&gt;Project Monterey&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://event.vmware.com/flow/vmware/explore2022us/content/page/catalog?search=CEIB2209US&#34;&gt;Accelerate and Secure Your Data Centers with Project Monterey [CEIB2209US]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://event.vmware.com/flow/vmware/explore2022us/content/page/catalog?search=CEIB1450US&#34;&gt;Increase Security and Performance using Project Monterey and NVIDIA DPUs [CEIB1450US]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://event.vmware.com/flow/vmware/explore2022us/content/page/catalog?search=SECB2397USD&#34;&gt;Next-Gen Networking and Security Services Architecture Using SmartNIC [SECB2397USD]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://event.vmware.com/flow/vmware/explore2022us/content/page/catalog?search=CEIB1576US&#34;&gt;Project Monterey Behind the Scenes: A Technical Deep Dive [CEIB1576US]&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;project-capitola&#34;&gt;Project Capitola&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://event.vmware.com/flow/vmware/explore2022us/content/page/catalog?search=VIB1390US&#34;&gt;How Your Future Server Purchase Should Be Ready for Tiered Memory [VIB1390US]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://event.vmware.com/flow/vmware/explore2022us/content/page/catalog?search=CEIB1268USD&#34;&gt;Software Memory Tiering [CEIB1268USD]&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

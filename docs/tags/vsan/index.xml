@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>VSAN on vSoliloquy</title>
+    <link>https://jangari-ntk.github.io/tags/vsan/</link>
+    <description>Recent content in VSAN on vSoliloquy</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>Copyright © 2025 VSOLILOQUY. All Rights Reserved.</copyright>
+    <lastBuildDate>Fri, 09 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jangari-ntk.github.io/tags/vsan/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>【HomeLab】ホストの USB デバイスを vSAN で使用するための設定</title>
+      <link>https://jangari-ntk.github.io/post/2020-10-09/</link>
+      <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2020-10-09/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;Project Monterey の発表で ESXi on SmartNIC が言及されていましたが、先日の vSphere 7.0 Update 1 のリリース時に合わせて ESXi on Arm が Flings として公開されました。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://flings.vmware.com/esxi-arm-edition&#34;&gt;ESXi Arm Edition | VMware Flings&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;ESXi-Arm インストール完了！&lt;br&gt;&lt;br&gt;ラズパイで ESXi 動いてるの感動する &lt;a href=&#34;https://t.co/3fi8QqCuHE&#34;&gt;pic.twitter.com/3fi8QqCuHE&lt;/a&gt;&lt;/p&gt;&amp;mdash; Jangari (@Jangari_nTK) &lt;a href=&#34;https://twitter.com/Jangari_nTK/status/1313610646861180928?ref_src=twsrc%5Etfw&#34;&gt;October 6, 2020&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;私も Raspberry Pi 4b 8GB にインストールして遊んでみており、ESXi on Arm を監視ホスト(Witness Host)とした 2ノード vSAN を組んでみました。ESXi on Arm が使えるようになったら真っ先に試してみたかった構成の一つです。&lt;/p&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;I&amp;#39;ve tried to configure 2-node vSAN with &lt;a href=&#34;https://twitter.com/hashtag/ESXionARM?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#ESXionARM&lt;/a&gt; as a witness host. It works! &lt;a href=&#34;https://t.co/f2XMaGMMW3&#34;&gt;pic.twitter.com/f2XMaGMMW3&lt;/a&gt;&lt;/p&gt;&amp;mdash; Jangari (@Jangari_nTK) &lt;a href=&#34;https://twitter.com/Jangari_nTK/status/1313704535299248128?ref_src=twsrc%5Etfw&#34;&gt;October 7, 2020&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;ESXi on Arm を使った 2ノード vSAN を組んでいる中で、Raspberry Pi 4b の場合は USB 接続のディスクを利用することになりますが、USB デバイスを vSAN のキャッシュデバイスやキャパシティデバイスに使おうとするとトリッキーな設定が必要でしたので、備忘録として残しておきたいと思います。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>【備忘録】vSAN HCI Mesh Tech Note を読む</title>
+      <link>https://jangari-ntk.github.io/post/2020-09-19/</link>
+      <pubDate>Sat, 19 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2020-09-19/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;vSAN 7.0 Update 1 で HCI Mesh なる気になる機能が出てきたようなので、Tech Note を読んで咀嚼して「これポイントかな～」と思ったものを自分用の備忘録としてメモしておく。本記事時点では vSAN 7.0 Update 1 もリリースされていないので検証もしておらず、また、ほとんど落書きに近い内容のため、情報の正確さ等は保証できないことに留意されたし。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://core.vmware.com/resource/vmware-vsan-hci-mesh-tech-note&#34;&gt;VMware vSAN HCI Mesh Tech Note&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;why-hci-mesh&#34;&gt;Why HCI Mesh&lt;/h2&gt;
+&lt;p&gt;従来の vSAN はホストの追加で Computing と Storage の両方を同時にスケールできる。このため、アプリケーションのワークロードの増加に合わせて Computing と Storage が共に自然に増加すれば、長期的なキャパシティプランニングを行いやすい。&lt;/p&gt;
+&lt;p&gt;その一方で、以下のようなイベントが起きると Computing と Storage のどちらかにリソース要求が偏ったり、キャパシティプランニングが難しくなったりする。このため一方のリソースを使い切る or 無駄なリソースが余るといったように、vSAN として適切なサイジングが難しくなる可能性がある。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;アプリケーションの改修でログ出力用にストレージが大量に必要になる。&lt;/li&gt;
+&lt;li&gt;新しい分析サービスの提供にあたって大量のコンピューティングリソースが消費される。&lt;/li&gt;
+&lt;li&gt;企業の M&amp;amp;A で新部門にストレージが必要になるが事前に見積もれない。&lt;/li&gt;
+&lt;li&gt;NSX などのネットワーク仮想化で既存のレガシーなクラスタを統合／移行したい。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;伝統的なストレージでは、複数のストレージアレイを1つにまとめて仮想化するソリューション(多分 EMC ViPR みたいなのを指してる)があるものの、レイテンシや構成の複雑さも追加されるため、管理者がベーシックなオペレーションだったりトラブルシューティングだったりで複数の UI やツールの使用を強いられるケースがある。&lt;/p&gt;
+&lt;p&gt;vSAN でも同じ実装にすると色々と辛いのでネイティブの通信プロトコルを使ったアプローチを取ったらしい。確かに、もう一段階抽象レイヤーを加えて複数の vSAN データストアを統合、みたいなアプローチだと更に複雑になりそうなので妥当な印象。&lt;/p&gt;
+&lt;p&gt;また、vSAN では既に iSCSI や NFS としてエクスポート出来るにも関わらず、あえてネイティブな vSAN プロトコルで実装した理由は主に以下のようなもの。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ストレージポリシーベース管理(SPBM)を維持できる。&lt;/li&gt;
+&lt;li&gt;vSAN の RDT プロトコルなら compute や I/O のオーバーヘッドが少ない。&lt;/li&gt;
+&lt;li&gt;I/O のモニタリングに vSAN パフォーマンスサービスが使える。&lt;/li&gt;
+&lt;li&gt;iSCSI の LUN や NFS の exports など、個別のストレージ管理も余計な抽象レイヤーも必要ない。&lt;/li&gt;
+&lt;li&gt;ストレージリソースを引き続きクラスタのリソースとして管理＆メンテナンスできる。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;見る限り、vSAN のメリットをなるべく損なわずに享受できるようにしたいという意図が見える。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

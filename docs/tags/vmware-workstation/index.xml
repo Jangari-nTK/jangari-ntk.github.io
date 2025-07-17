@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>VMware Workstation on vSoliloquy</title>
+    <link>https://jangari-ntk.github.io/tags/vmware-workstation/</link>
+    <description>Recent content in VMware Workstation on vSoliloquy</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>Copyright © 2025 VSOLILOQUY. All Rights Reserved.</copyright>
+    <lastBuildDate>Thu, 08 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://jangari-ntk.github.io/tags/vmware-workstation/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Fedora 33 で VMware Tools による解像度変更が効かない問題と対処</title>
+      <link>https://jangari-ntk.github.io/post/2021-04-08/</link>
+      <pubDate>Thu, 08 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2021-04-08/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;VMware Workstation 16 Pro 上に Fedora 33 をインストールしたのですが、VMware Workstation のウィンドウサイズにゲストの解像度が追従しない状況が発生しました。&lt;/p&gt;
+&lt;p&gt;本来は VMware Tools (open-vm-tools) によってゲストの解像度が追従するはずなので、open-vm-tools の動きが怪しいと思いワークアラウンドを調べてみました。&lt;/p&gt;
+&lt;h2 id=&#34;原因&#34;&gt;原因&lt;/h2&gt;
+&lt;p&gt;Bugzilla や GitHub の Issue を見る限りでは、VMware Tools が Xorg 用のドライバ検知に失敗して resolutionKMS / resolutionSet プラグインが自動で有効にならず、解像度変更が動作しないといった問題のようです。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://bugzilla.redhat.com/show_bug.cgi?id=1890815&#34;&gt;https://bugzilla.redhat.com/show_bug.cgi?id=1890815&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/vmware/open-vm-tools/issues/491&#34;&gt;https://github.com/vmware/open-vm-tools/issues/491&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/vmware/open-vm-tools/issues/501&#34;&gt;https://github.com/vmware/open-vm-tools/issues/501&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;※resolutionKMS / resolutionSet はゲストの GUI 周りを操作するプラグインです。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-Tools/11.2.0/com.vmware.vsphere.vmwaretools.doc/GUID-0BD592B1-A300-4C09-808A-BB447FAE2C2A.html&#34;&gt;VMware Tools Service&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;resolutionKMS - ゲスト ユーザー インターフェイス トポロジと vmwgfx drm（ダイレクト レンダリング マネージャ）ドライバの通信を処理します。
+注：
+このプラグインは、Linux 専用です。&lt;/li&gt;
+&lt;li&gt;resolutionSet - vmwgfx drm（ダイレクト レンダリング マネージャ）ドライバが利用できない場合のゲスト画面のサイズ変更を処理します。&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;p&gt;なお、同じ Wayland を使っている RHEL8 や CentOS Stream では再現しなかったので、Fedora 33 (以降) との組み合わせで発生する問題のようです。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

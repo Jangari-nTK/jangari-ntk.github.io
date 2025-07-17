@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SDK/API on My New Hugo Site</title>
+    <link>http://localhost:1313/tags/sdk/api/</link>
+    <description>Recent content in SDK/API on My New Hugo Site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 07 Aug 2020 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/sdk/api/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>pyVmomi から API 操作で Instant Clone をやってみる</title>
+      <link>http://localhost:1313/post/2020-08-07/</link>
+      <pubDate>Fri, 07 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2020-08-07/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;本記事では pyVmomi を使って vSphere 単体で Instant Clone を行う方法について書いていきます。&lt;/p&gt;
+&lt;p&gt;事の発端は以下のVMware社の中の人が PowerCLI から Nested ESXi をインスタントクローンする記事です。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.virtuallyghetto.com/2018/05/leveraging-instant-clone-in-vsphere-6-7-for-extremely-fast-nested-esxi-provisioning.html&#34;&gt;Leveraging Instant Clone in vSphere 6.7 for extremely fast Nested ESXi provisioning&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;vsphere-web-services-api-と-pyvmomi&#34;&gt;vSphere Web Services API と pyVmomi&lt;/h2&gt;
+&lt;p&gt;vCenter Server のタスクをコマンドで実行する場合、PowerCLI を使うことが多いと思います。もしくは、開発やトラブルシューティングなどの一環で MOB (Managed Object Browser) を使用したことがある方もいらっしゃるかもしれません。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://code.vmware.com/web/tool/12.0.0/vmware-powercli&#34;&gt;VMware PowerCLI - VMware {code}&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://code.vmware.com/docs/6536/vsphere-sdk-for-perl-programming-guide/doc/GUID-9D615A34-EEA5-4BBE-A612-E4600F47B555.html&#34;&gt;Online Documentation - vSphere SDK for Perl Programming Guide - VMware {code}&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;これらのツールは「vSphere Web Services API」という vSphere のローレベルな SOAP API を操作しています&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://code.vmware.com/web/sdk/7.0/vsphere-management&#34;&gt;vSphere Management SDK - VMware {code}&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://code.vmware.com/apis/968/vsphere&#34;&gt;vSphere Web Services API - VMware API Explorer - VMware {code}&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;今回の記事で紹介する「pyVmomi」という Python SDK も PowerCLI と同様に vSphere Web Services API を操作することが出来ます。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

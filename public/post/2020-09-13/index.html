@@ -1,0 +1,842 @@
+
+<!DOCTYPE html>
+<html
+  lang="en"
+  data-figures=""
+  
+    class="page"
+  
+  
+  >
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<title>【Part.3-1】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus | My New Hugo Site</title>
+<meta charset="utf-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+
+  
+<meta property="og:locale" content="en" />
+
+<meta property="og:type" content="article">
+<meta name="description" content="前回の記事の続きです。今回と次回で VMworld 2017 SER2965BU のセッションでの 27:00 ～ 48:20 頃までの内容、七つ道具2セット目である７つのコマンドについて見ていきます。" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:creator" content="">
+<meta name="twitter:title" content="【Part.3-1】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus" />
+<meta name="twitter:image" content="http://localhost:1313/images/2020-09-13/thumbnail.PNG"/>
+<meta property="og:url" content="http://localhost:1313/post/2020-09-13/" />
+<meta property="og:title" content="【Part.3-1】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus" />
+<meta property="og:description" content="前回の記事の続きです。今回と次回で VMworld 2017 SER2965BU のセッションでの 27:00 ～ 48:20 頃までの内容、七つ道具2セット目である７つのコマンドについて見ていきます。" />
+<meta property="og:image" content="http://localhost:1313/images/2020-09-13/thumbnail.PNG" />
+  <meta name="keywords" content="vSphere,ESXi,Troubleshooting,CLI,Architecture" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/icons/favicon-32x32.png">
+<link rel="manifest" href="http://localhost:1313/icons/site.webmanifest">
+
+<link rel="canonical" href="http://localhost:1313/post/2020-09-13/">
+
+
+
+<link rel="preload" href="http://localhost:1313/css/styles.dc38388a8f0b890e788bd3a99b7495d14e7d5ac4359ed3b49abeb778497863b284ad4cc7e496ef58c84139295f9bafed82f5a41345eda86bd2d429cccb7c2596.css" integrity = "sha512-3Dg4io8LiQ54i9Opm3SV0U59WsQ1ntO0mr63eEl4Y7KErUzH5JbvWMhBOSlfm6/tgvWkE0XtqGvS1CnMy3wllg==" as="style" crossorigin="anonymous">
+
+
+
+<link rel="preload" href="http://localhost:1313/en/js/bundle.84e7640170829f904da39c3d23a2c4064096bd26b37eca6f71d955e2d668377185b71761a1e9b7742b677b7bfba71d4b863f4d54a152f0bb480ab6ade26df8c8.js" as="script" integrity=
+"sha512-hOdkAXCCn5BNo5w9I6LEBkCWvSazfspvcdlV4tZoN3GFtxdhoem3dCtne3v7px1Lhj9NVKFS8LtICrat4m34yA==" crossorigin="anonymous">
+
+
+<link rel="stylesheet" type="text/css" href="http://localhost:1313/css/styles.dc38388a8f0b890e788bd3a99b7495d14e7d5ac4359ed3b49abeb778497863b284ad4cc7e496ef58c84139295f9bafed82f5a41345eda86bd2d429cccb7c2596.css" integrity="sha512-3Dg4io8LiQ54i9Opm3SV0U59WsQ1ntO0mr63eEl4Y7KErUzH5JbvWMhBOSlfm6/tgvWkE0XtqGvS1CnMy3wllg==" crossorigin="anonymous">
+
+  </head>
+  <body
+    data-code="100"
+    data-lines="false"
+    id="documentTop"
+    data-lang="en"
+  >
+
+<header class="nav_header" >
+  <nav class="nav"><a href='http://localhost:1313/' class="nav_brand nav_item" title="My New Hugo Site">My New Hugo Site
+  <div class="nav_close">
+    <div><svg class="icon">
+  <title>open-menu</title>
+  <use xlink:href="#open-menu"></use>
+</svg>
+<svg class="icon">
+  <title>closeme</title>
+  <use xlink:href="#closeme"></use>
+</svg>
+</div>
+  </div>
+</a>
+
+    <div class='nav_body nav_body_left'>
+      
+      
+      
+        
+
+      
+<div class='follow'>
+<div class="color_mode">
+  <input type="checkbox" class="color_choice" id="mode">
+</div>
+
+</div>
+
+    </div>
+  </nav>
+</header>
+
+    <main>
+  
+<div class="grid-inverse wrap content">
+  <article class="post_content">
+    <h1 class="post_title">【Part.3-1】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</h1>
+  <div class="post_meta">
+    <span><svg class="icon">
+  <title>calendar</title>
+  <use xlink:href="#calendar"></use>
+</svg>
+</span>
+    <span class="post_date">
+      Sep 13, 2020	  
+    </span>
+    <span class="post_time"> · 7 min read</span><span>&nbsp;· <a href='http://localhost:1313/tags/vsphere/' title="vSphere" class="post_tag button button_translucent">vSphere
+        </a><a href='http://localhost:1313/tags/esxi/' title="ESXi" class="post_tag button button_translucent">ESXi
+        </a><a href='http://localhost:1313/tags/troubleshooting/' title="Troubleshooting" class="post_tag button button_translucent">Troubleshooting
+        </a><a href='http://localhost:1313/tags/cli/' title="CLI" class="post_tag button button_translucent">CLI
+        </a><a href='http://localhost:1313/tags/architecture/' title="Architecture" class="post_tag button button_translucent">Architecture
+        </a>
+    </span>
+    <span class="page_only">&nbsp;·
+  <div class="post_share">
+    Share on:
+    <a href="https://twitter.com/intent/tweet?text=%e3%80%90Part.3-1%e3%80%91Advanced%20Troubleshooting%20of%20VMware%20ESXi%20Server%206.x%20for%20vSphere%20Gurus&url=http%3a%2f%2flocalhost%3a1313%2fpost%2f2020-09-13%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
+      <svg class="icon">
+  <title>twitter</title>
+  <use xlink:href="#twitter"></use>
+</svg>
+
+    </a>
+    <a href="https://www.facebook.com/sharer.php?u=http%3a%2f%2flocalhost%3a1313%2fpost%2f2020-09-13%2f&t=%e3%80%90Part.3-1%e3%80%91Advanced%20Troubleshooting%20of%20VMware%20ESXi%20Server%206.x%20for%20vSphere%20Gurus" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
+      <svg class="icon">
+  <title>facebook</title>
+  <use xlink:href="#facebook"></use>
+</svg>
+
+    </a>
+    <a href="#linkedinshare" id = "linkedinshare" class="linkedin" title="Share on LinkedIn" rel="nofollow">
+      <svg class="icon">
+  <title>linkedin</title>
+  <use xlink:href="#linkedin"></use>
+</svg>
+
+    </a>
+    <a href="http://localhost:1313/post/2020-09-13/" title="Copy Link" class="link link_yank">
+      <svg class="icon">
+  <title>copy</title>
+  <use xlink:href="#copy"></use>
+</svg>
+
+    </a>
+  </div>
+  </span>
+  </div>
+
+      <div class="post_toc">
+        <h2>Overview</h2>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#はじめに">はじめに</a></li>
+    <li><a href="#esxi-shell-と-ssh-の有効化">ESXi Shell と SSH の有効化</a></li>
+    <li><a href="#esxcli---esxi-の設定の確認や変更">esxcli - ESXi の設定の確認や変更</a></li>
+    <li><a href="#vsish---vmkernel-sysinfo-shell">vsish - VMkernel Sysinfo Shell</a></li>
+    <li><a href="#vim-cmd---esxi-と仮想マシンの構成の管理">vim-cmd - ESXi と仮想マシンの構成の管理</a></li>
+    <li><a href="#vmkfstools---データストアや仮想ディスクの管理">vmkfstools - データストアや仮想ディスクの管理</a></li>
+    <li><a href="#to-be-continued">To be continued&hellip;</a></li>
+  </ul>
+</nav>
+      </div>
+    
+    <div class="post_body"><h2 id="はじめに">はじめに</h2>
+<p>VMworld 2017 SER2965BU のセッションでの 27:00 ～ 48:20 頃までの内容、七つ道具2セット目である７つのコマンドについて見ていきます。</p>
+<ol>
+<li>esxcli - ESXi の設定の確認や変更</li>
+<li>vsish - VMkernel Sysinfo Shell</li>
+<li>vim-cmd - ESXi と仮想マシンの構成の管理</li>
+<li>vmkfstools - データストアや仮想ディスクの管理</li>
+<li>memstats- 詳細なメモリ統計情報</li>
+<li>pktcap-uw - パケットのキャプチャ＆トレース</li>
+<li>esxtop - パフォーマンスモニタリング</li>
+</ol>
+<p>今回の記事では esxcli ～ vmkfstools までのコマンドを見ていきます。これだけでも長いため memstats ～ esxtop は次回の記事で。</p>
+<p>esxcli, vmkfstools, pktcap-uw, esxtop は公式ドキュメントもあり、非常に便利で強力なトラブルシューティングツールです。これらは平時でも使えるように HOL や Nested ESXi で練習しておいた方が良いかなと思います。</p>
+<p>セッションでは公開情報がない裏技的なコマンドも紹介されていますが、ESXi の仕組みの理解に役立つので本記事でも概要を紹介しています。</p>
+<h2 id="esxi-shell-と-ssh-の有効化">ESXi Shell と SSH の有効化</h2>
+<p>ESXi のコマンドは ESXi Shell か SSH で実行しますので、コマンドの利用にはまずこれらの有効化が必要になります。ESXi Shell の有効化の手順などは以下の KB2004746 に記載されていますので、こちらをご参照ください。</p>
+<p><a href="https://kb.vmware.com/s/article/2004746?lang=ja">ESXi 5.x および 6.x での ESXi Shell の使い方 (2004746)</a></p>
+<p>なお、あくまでもトラブルシューティング用に使う機能のため、通常運用時はセキュリティの観点から無効にしておくことが推奨されます。</p>
+<h2 id="esxcli---esxi-の設定の確認や変更">esxcli - ESXi の設定の確認や変更</h2>
+<p>一番有名でよく使うコマンドといえば esxcli です。ESXi のストレージ、ネットワーク、システム情報、ソフトウェアパッケージ、vSAN 構成、仮想マシンなど、色々な情報を取得したり操作に使うことができます。</p>
+<p>非常に多彩なコマンドがありますが、基本的に使用できるコマンドは vSphere CLI や Standalone ESXCLI と同じです。すべてを記事にするのは困難かつセッションの範疇外なので、各種コマンドの詳細な内容は VMware {code} にあるコマンドリファレンスなどを参照してもらえればと思います。</p>
+<ul>
+<li><a href="https://code.vmware.com/web/tool/6.7/vsphere-cli">vSphere CLI - VMware {code}</a></li>
+<li><a href="https://code.vmware.com/web/tool/7.0/esxcli">ESXCLI - VMware {code}</a></li>
+</ul>
+<p>esxcli のユースケースは色々ありますがセッションで挙げられているものに言及すると、esxcli network ip neighbor list コマンドで ESXi の ARP テーブルを確認することが出来ます。</p>
+<pre tabindex="0"><code># esxcli network ip neighbor list
+Neighbor                  Mac Address        Vmknic     Expiry  State  Type
+------------------------  -----------------  ------  ---------  -----  -------
+192.168.0.129             00:0c:29:16:e6:3f  vmk0     1105 sec         Unknown
+192.168.0.1               00:1b:8b:ae:d2:8a  vmk0      862 sec         Unknown
+192.168.0.130             00:50:56:ad:ce:76  vmk0     1139 sec         Unknown
+192.168.0.3               00:d8:61:a5:e9:d3  vmk0     1199 sec         Unknown
+fe80::21b:8bff:feae:d28a  00:1b:8b:ae:d2:8a  vmk0    78801 sec  Stale  Unknown
+</code></pre><p>カスタム TCP/IP スタックが使われている場合は -N オプションでデフォルト以外の TCP/IP スタックを指定して確認することも出来ます。以下は NSX-T の vxlan スタック (GENEVE で通信する TEP のカスタム TCP/IP スタック) に対しての実行結果です。</p>
+<pre tabindex="0"><code># esxcli network ip neighbor list -N vxlan
+Neighbor    Mac Address        Vmknic    Expiry  State  Type
+----------  -----------------  ------  --------  -----  ----
+10.3.0.3    00:50:56:60:a0:40  vmk10   1192 sec         Dynamic
+10.3.0.2    00:50:56:6e:89:3e  vmk10   1173 sec         Dynamic
+10.3.0.5    00:50:56:ad:c7:8d  vmk10   1196 sec         Dynamic
+10.3.0.4    00:50:56:69:49:90  vmk10   1193 sec         Dynamic
+</code></pre><p>他には esxcli vm process list コマンドで実行中の仮想マシンの一覧を確認するなども可能です。仮想マシン自体がハングしてしまい、kill -9 コマンドで強制終了する必要があるケースなどにはよく使用されます。</p>
+<pre tabindex="0"><code># esxcli vm process list
+VCSA01a
+   World ID: 2100060
+   Process ID: 0
+   VMX Cartel ID: 2100059
+   UUID: 42 2d c4 e7 72 b6 e6 47-aa e6 43 dd e7 81 b2 60
+   Display Name: VCSA01a
+   Config File: /vmfs/volumes/5ef41cb4-a94a9e8c-e0ab-b8ac6f12a79c/VCSA01a.vmx
+
+ADCS
+   World ID: 2100515
+   Process ID: 0
+   VMX Cartel ID: 2100514
+   UUID: 42 2d 80 9d ce ee c5 b8-d9 9d f3 b1 75 48 84 41
+   Display Name: ADCS
+   Config File: /vmfs/volumes/5ef41cb4-a94a9e8c-e0ab-b8ac6f12a79c/ADCS.vmx
+</code></pre><p>個人的によく使うのは esxcli network nic list や esxcli storage core adapter list でしょうか。</p>
+<pre tabindex="0"><code># esxcli network nic list
+Name    PCI Device    Driver  Admin Status  Link Status  Speed  Duplex  MAC Address         MTU  Description
+------  ------------  ------  ------------  -----------  -----  ------  -----------------  ----  -------------------------------------------------------------
+vmnic0  0000:01:00.0  qflge   Up            Up            1000  Full    b8:ac:6f:12:a7:9c  9000  Broadcom Corporation Broadcom NetXtreme II BCM5709 1000Base-T
+vmnic1  0000:01:00.1  qflge   Up            Down             0  Half    b8:ac:6f:12:a7:9e  1500  Broadcom Corporation Broadcom NetXtreme II BCM5709 1000Base-T
+vmnic2  0000:02:00.0  qflge   Up            Down             0  Half    b8:ac:6f:12:a7:a0  1500  Broadcom Corporation Broadcom NetXtreme II BCM5709 1000Base-T
+vmnic3  0000:02:00.1  qflge   Up            Down             0  Half    b8:ac:6f:12:a7:a2  1500  Broadcom Corporation Broadcom NetXtreme II BCM5709 1000Base-T
+</code></pre><pre tabindex="0"><code># esxcli storage core adapter list
+HBA Name  Driver        Link State  UID             Capabilities         Description
+--------  ------------  ----------  --------------  -------------------  ------------------------------------------------------------------
+vmhba0    megaraid_sas  link-n/a    unknown.vmhba0                       (0000:03:00.0) LSI / Symbios Logic Dell PERC 6/i Integrated
+vmhba1    vmkata        link-n/a    sata.vmhba1                          (0000:00:1f.2) Intel Corporation 2 port SATA IDE Controller (ICH9)
+vmhba64   vmkata        link-n/a    sata.vmhba64                         (0000:00:1f.2) Intel Corporation 2 port SATA IDE Controller (ICH9)
+vmhba65   iscsi_vmk     online      iscsi.vmhba65   Second Level Lun ID  iSCSI Software Adapter
+</code></pre><p>NIC や HBA で実際に使用されているドライバを確認したり、PCI スロット番号をハードウェアのマニュアルと照らし合わせてハードウェア上での位置を特定する等の用途に使えます。PCI スロットの表記は Linux の lspci 等と同様に「ドメイン:バス:スロット.機能番号」です。</p>
+<p>なお、セッションの esxcli の説明で最初に挙げられていますが、esxcli の使用時に意識しておくべき内容があります。それは esxcli 自体の実行が異様に遅かったり失敗するケースです。</p>
+<p>最初の ESXi のアーキテクチャを思い出してもらえると、以下のように esxcli は hostd に対してアクセスを行っています。つまり、hostd に問題が発生している場合、hostd へのアクセスに失敗して esxcli も使用できない可能性があります。</p>
+<p><figure>
+  <picture>
+
+    
+      
+        
+        
+        
+        
+        
+        
+    <img
+      loading="lazy"
+      decoding="async"
+      alt="ESXi Architecture Diagram Excerpt"
+      
+        class="image_figure image_internal image_unprocessed"
+        src="http://localhost:1313/images/2020-09-13/ESXi-Architecture-excerpt.PNG"
+      
+      
+    />
+
+    </picture>
+</figure>
+</p>
+<p>このような場合、代わりに localcli コマンドを使用することで、hostd を迂回して同じような操作を行うことが出来ます。問題の根本原因が hostd の動作にも影響していて esxcli が使えない<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>、というケースもありますので頭の片隅に留めておくと良いと思います。なお、hostd を迂回するため、整合性を保つ観点から通常運用時は localcli による設定変更は行わない方が良いでしょう。</p>
+<p>esxcli コマンドは使いこなせると非常に強力なツールですので、是非 VMware HOL や Nested ESXi といったサンドボックス環境で実際にいじってマスターすることをおすすめしたいです。</p>
+<h2 id="vsish---vmkernel-sysinfo-shell">vsish - VMkernel Sysinfo Shell</h2>
+<p>VMkernel 内部の情報を取得するための特殊なシェルです。このコマンドは VMware Knowledge Base を検索するとちょこちょこ出てくるのですが、vsish 上でのコマンドの書式やユースケースなどが体系的にまとめられたドキュメントは公開されていないようです。</p>
+<p><a href="https://www.virtuallyghetto.com/2010/08/what-is-vmware-vsish.html">What is VMware vsish?</a></p>
+<p>前提として vsish で設定を「変更」すると予期せず大きなインパクトを与える可能性があります。このため、セッションでは vsish 上で実行するコマンドは get だけに留めるように言及されています。ナレッジベースなどの公開情報で必要と明示されていない限り、それ以外のコマンドを使用することは避けるべきです。</p>
+<p>コマンドの書式としては &ldquo;get /&lt;opt.1&gt;/&lt;opt.2&gt;/&lt;opt.3&gt;&hellip;&rdquo; のように、get の後にディレクトリのような階層構造で取得するオプションを指定します。オプションについては Tab キーで一覧を表示できます。</p>
+<p>例えば、CPU 情報を取得したい場合、vsish シェルを起動してから以下のように get コマンドを実行します。</p>
+<pre tabindex="0"><code># vsish
+/&gt; get /hardware/cpu/cpuInfo
+CPU global information {
+   Hyperthreading state:Hyperthreading state: 3 -&gt; enabled
+   HV state:HV state: 3 -&gt; HV Enabled
+   Number of packages:2
+   Number of cores:12
+   Number of CPUs (threads):24
+   Number of licensable cores:12
+   SLC64 capable:0
+   HV Replay capable:0
+   First of reasons why replay is disabled on Host:Reason replay is disabled on Host: 1 -&gt; CPU does not support HV Replay
+   Several reasons why replay is disabled on Host:Reason replay is disabled on Host: 1 -&gt; CPU does not support HV Replay
+   NVOA:0
+   Hyperthreading security vulnerability mitigated:0
+}
+</code></pre><p>vsish の実行時に -e オプションと合わせてワンライナーとしても実行できます。</p>
+<pre tabindex="0"><code>※以下でも同じ結果を得られます。
+# vsish -e get /hardware/cpu/cpuInfo
+</code></pre><p>vsish を使うサンプルケースとして、2vCPU 仮想マシン2台の CPU 使用率が常に 100% になっている仮定において、2vCPU という構成が妥当かどうかを一例として見ています。具体的には、vsish での仮想マシンの CPU 統計情報から demand-entitlement-ratio (仮想マシンのリソース要求と実際の割り当ての比率) という値を一つの目安としています。</p>
+<pre tabindex="0"><code># ps | grep vmx
+2100059  2100059  vmx
+
+# vsish
+/&gt; get /sched/Vcpus/2100059/groupID
+13871
+/&gt; get /sched/groups/13871/stats/cpuStatsDir/cpuStats
+group CpuStats {
+   number of vsmps:26
+   size:40
+   used-time:7637451738 usec
+   latency-stats:latency-stats {
+      cpu-latency:cpu-latency {
+         stolen-time:1892717578 usec
+         ready-time:248449051 usec
+         costop-time:3489838 usec
+         limbo-time:0 usec
+         execution-skew-time:1640778689 usec
+      }
+      (中略)
+   demand:1052 MHz
+   demand-entitlement-ratio:45
+}
+</code></pre><p>この値が 100% を超えている状況、例えば 150% などであれば、単純に仮想マシンからの CPU 要求が割り当てを超過しているため、vCPU の追加が必要との判断に移れます。逆に 100% を大きく下回っている、例えば 50% や 25% であればオーバープロビジョニングの可能性が考えられるので、esxtop で %READY の値を見て CPU がオーバーコミットしていないかをチェックするなどの対応が必要という判断に移れます。</p>
+<p>なお、あくまでも上記は vsish の使い方のサンプルです。一般には、仮想マシンの性能情報は以下のようなガイドラインを見つつ esxtop で見る方が多いかなと思います。冒頭の通り vsish については体系的な公開情報も無いので、あくまで「こういう目安の出し方もあるよ」といった程度に考えておくと良いかなと思います。</p>
+<ul>
+<li><a href="https://kb.vmware.com/s/article/2001003?lang=ja">ESX/ESXi 仮想マシンのパフォーマンス問題のトラブルシューティング (2001003)</a></li>
+<li><a href="https://kb.vmware.com/s/article/1017926?lang=ja">応答しなくなった仮想マシンのトラブルシューティング： VMM とゲスト CPU 使用量の比較 (1017926)</a></li>
+</ul>
+<p>また、セッションでは hardware, net, storage の3点の最上位のオプションから以下が一例として抜粋されていますが詳細は解説されていないので、本記事でもオプションの一覧と概要だけに留めます。</p>
+<ul>
+<li>/hardware/bios - BIOS 情報 (ベンダーやバージョンなど)</li>
+<li>/hardware/hardwareInfo - ハードウェア情報 (NUMA ノード数しか出てこず使い道が不明)</li>
+<li>/net/pNics/vmnic&lt;n&gt;/stats - アップリンクの統計情報 (各種エラーフレームのカウントなど)</li>
+<li>/net/portsets/&lt;vSwitch&gt;/stats - 仮想スイッチの統計情報</li>
+<li>/storage/scsifw/devices/&lt;device identifier&gt;/stats - ストレージデバイスの統計情報</li>
+<li>/storage/scsifw/adapters/vmhba&lt;n&gt;/stats - ストレージアダプタの統計情報</li>
+</ul>
+<h2 id="vim-cmd---esxi-と仮想マシンの構成の管理">vim-cmd - ESXi と仮想マシンの構成の管理</h2>
+<p>vim-cmd も体系的なドキュメントはありませんが、以下のような仮想マシンのパワーオンなどで使用したことがある人もいると思います。こちらのコマンドは仮想マシンのパワーオンなどのタスク以外にも、ホスト単体で行えるようなタスク、例えばスナップショットの作成などは vim-cmd コマンドで行えるようになっています。</p>
+<p><a href="https://kb.vmware.com/s/article/1038043?lang=ja">vSphere Client を使用してホストを管理できない場合にコマンド ラインから仮想マシンをパワーオンする (1038043)</a></p>
+<p>vim-cmd も vsish と同じようにオプションは階層構造で指定します。上述の通り体系的な情報はありませんが、ざっと見た感じ最上位のオプションは以下のような対応付けのようです。</p>
+<ul>
+<li>vmsvc - 仮想マシン関連の操作</li>
+<li>hostsvc - ホスト関連を操作</li>
+<li>solo - 仮想マシンの登録など独立した操作</li>
+<li>vimsvc - タスク管理などの操作</li>
+<li>proxysvc - rhttpproxy (ESXi のリバースプロキシ) 周りの操作</li>
+<li>internalsvc - ホストの内部処理</li>
+<li>hbrsvc - vSphere Replication のレプリケーション関連の操作</li>
+</ul>
+<p>セッションでは以下の２つのコマンドについて説明されています。</p>
+<ul>
+<li>vim-cmd /vmsvc/getallvms (ホストのインベントリ上の仮想マシン一覧を表示)</li>
+<li>vim-cmd /vimsvc/task_list (ホストで実行されたタスクの一覧)</li>
+</ul>
+<p>1つ目の /vmsvc/getallvms は前回のログに関する記事で hostd.log の解説時にも少し見ました。ホスト上の仮想マシンの一覧を表示することができますが、それ以外にもコマンドが正常に実行されるかどうかで hostd が正常に動作しているかの切り分けに利用することが出来ます。</p>
+<pre tabindex="0"><code># vim-cmd help /vmsvc/getallvms
+Usage: getallvms [includeConfigNotAvailable]
+
+getallvms
+
+Get the list of virtual machines on the host.
+
+# vim-cmd /vmsvc/getallvms
+Vmid    Name                                 File                                      Guest OS         Version                           Annotation
+4      Photon   [vsanDatastore] be93505f-43a9-269e-7f16-005056adc982/Photon.vmx   other3xLinux64Guest   vmx-11    This OVA provides a minimal installed profile of PhotonOS.
+</code></pre><p>2つ目の /vimsvc/task_list は、GUI で表示されないものも含めてホストで実行された最近のタスクを一覧で確認できます。スナップショットの統合が滞留しているなどの場合には、こちらでタスクを確認して /vimsvc/task_info で詳細を確認するなどの対応も可能です。</p>
+<pre tabindex="0"><code># vim-cmd help /vimsvc/task_list
+Usage: task_list
+
+Get list of recent tasks.
+
+# vim-cmd /vimsvc/task_list
+(ManagedObjectReference) [
+   &#39;vim.Task:haTask-4-vim.VirtualMachine.reconfigure-2471509727&#39;,
+   &#39;vim.Task:haTask-ha-host-vim.host.NetworkSystem.refresh-2471509741&#39;,
+   &#39;vim.Task:haTask--vim.vslm.host.CatalogSyncManager.queryCatalogChange-2471509796&#39;,
+   &#39;vim.Task:haTask-ha-host-vim.host.NetworkSystem.refresh-2471509800&#39;,
+   &#39;vim.Task:haTask--vim.vslm.host.CatalogSyncManager.queryCatalogChange-2471509859&#39;,
+   &#39;vim.Task:haTask-ha-host-vim.host.PatchManager.Query-2471509865&#39;,
+   &#39;vim.Task:haTask-4-vim.VirtualMachine.powerOn-2471509883&#39;
+]
+</code></pre><p>なお、/vimsvc/task_cancel でのタスクのキャンセルは、GUI からの実施と同様に種類によってはキャンセルできなかったり問題が発生する場合もあります。タスクのキャンセルは GUI / CLI に関わらず注意が必要です。</p>
+<h2 id="vmkfstools---データストアや仮想ディスクの管理">vmkfstools - データストアや仮想ディスクの管理</h2>
+<p>vmkfstools はデータストアや仮想ディスクの管理操作に使えるコマンドです。vmkfstools についてはスナップショットの統合や仮想ディスクのクローンで使用したことがある人も多いかなと思います。</p>
+<p>vmkfstools は以下の「vSphere のストレージ」のドキュメントにコマンドの構文やオプションがまとめられており、esxcli と同様に慣れておきたいコマンドの一つとして挙げられます。</p>
+<p><a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.storage.doc/GUID-A5D85C33-A510-4A3E-8FC7-93E6BA0A048F.html">vmkfstools の使用</a></p>
+<p>個人的には以下のオプションは比較的よく使います。この3つに関しては覚えてしまって損はないです。</p>
+<pre tabindex="0"><code>VMFS データストアの構成情報の確認
+# vmkfstools -P -h /vmfs/volumes/&lt;datastore name&gt;
+
+仮想ディスクをシンプロビジョニングに変換
+# vmkfstools -K thickdisk.vmdk
+
+仮想ディスクをシンプロビジョニングでクローン
+# vmkfstools -i srcdisk.vmdk -d thin tgtdisk.vmdk
+</code></pre><p>セッションでは -e, -t10 -v10, -x という3つの少しマイナーな組み合わせについて解説されています。</p>
+<p>まず１つ目の -e オプションですが、こちらはスナップショットチェーンの整合性が維持されているかをチェックします。</p>
+<p>例えば、ログの記事で言及した <a href="https://kb.vmware.com/s/article/1007969">KB1007969</a> のようにスナップショットチェーンの整合性が取れていなくなった状態を仮定します。今回は実験として以下のように親ディスクの CID を vi で編集しましたが、実験以外では絶対にやらないようにお願いします。</p>
+<pre tabindex="0"><code>■Example.vmdk (ベースディスク＝親ディスク)
+# Disk DescriptorFile
+version=1
+encoding=&#34;UTF-8&#34;
+CID=f1171234  ※親の CID
+parentCID=ffffffff
+createType=&#34;vmfs&#34;
+
+■Example-000001.vmdk (子ディスク)
+# Disk DescriptorFile
+version=1
+encoding=&#34;UTF-8&#34;
+CID=0826a84f
+parentCID=f11708be  ※親の CID と一致してない＝チェーン破損
+createType=&#34;seSparse&#34;
+parentFileNameHint=&#34;Example.vmdk&#34;
+</code></pre><p>この状態で vmkfstools -e コマンドを実行すると、以下のように子ディスクから親ディスクへのスナップショットチェーンが破損していることが確認できます。</p>
+<pre tabindex="0"><code># vmkfstools -e Example.vmdk
+Disk chain is consistent.
+
+# vmkfstools -e Example-000001.vmdk
+Disk link /vmfs/volumes/5ef41cb4-a94a9e8c-e0ab-b8ac6f12a79c/Example/Example-000001.vmdk successfully opened.
+Disk link /vmfs/volumes/5ef41cb4-a94a9e8c-e0ab-b8ac6f12a79c/Example/Example.vmdk successfully opened.
+Cannot establish parent(/vmfs/volumes/5ef41cb4-a94a9e8c-e0ab-b8ac6f12a79c/Example/Example.vmdk)-child(/vmfs/volumes/5ef41cb4-a94a9e8c-e0ab-b8ac6f12a79c/Example/Example-000001.vmdk) relationship : The parent virtual disk has been modified since the child was created. The content ID of the parent virtual disk does not match the corresponding parent content ID in the child (18)
+Parent link description
+        Name: /vmfs/volumes/5ef41cb4-a94a9e8c-e0ab-b8ac6f12a79c/Example/Example.vmdk
+        Create Type: vmfs
+        Capacity: 274877906944
+        Content ID: 4044821044
+        Parent Content ID: 4294967295
+Child link description
+        Name: /vmfs/volumes/5ef41cb4-a94a9e8c-e0ab-b8ac6f12a79c/Example/Example-000001.vmdk
+        Create Type: seSparse
+        Capacity: 274877906944
+        Content ID: 136751183
+        Parent Content ID: 4044818622
+Disk chain is not consistent : The parent virtual disk has been modified since the child was created. The content ID of the parent virtual disk does not match the corresponding parent content ID in the child (18)
+</code></pre><p>もしこの状況に陥ってしまった場合には、<a href="https://kb.vmware.com/s/article/1007969">KB1007969</a> を参考に頑張って VMDK ファイルを修正した上でゲストが正常に起動できることを祈るか、仮想マシンのバックアップからリストアしてください。ゲストが正常に動作する保証もないことから基本的にバックアップからのリストアを推奨します。</p>
+<p>次に２つ目の -t オプションです。-t オプションはコマンドのヘルプにすら表示されませんが、仮想ディスクと VMFS データストアのブロックの対応付けや整合性が確認できるようです。ただし、ゲストOSのファイルシステムの破損はもちろん確認できないので、あくまでも仮想ディスクと VMFS の間での確認であることに留意が必要です。</p>
+<p>シンプロビジョニングの仮想ディスクでの実行結果を示します。実行結果を見る限りでは以下の表記と思われます。</p>
+<p>[VMDK 上のオフセット: 連続して確保したサイズ] --&gt; [VMFS or 未割り当て(NOMP) -- 連続する領域]</p>
+<pre tabindex="0"><code># vmkfstools -t10 Example.vmdk
+Mapping for file Example.vmdk (274877906944 bytes in size):
+[           0:     1048576] --&gt; [VMFS -- LVID:5ef41cb3-9908b450-562d-b8ac6f12a79c/5ef41cb3-8ebb96d4-b073-b8ac6f12a79c/1:( 143363407872 --&gt;  143364456448)]
+[     1048576:     2097152] --&gt; [VMFS -- LVID:5ef41cb3-9908b450-562d-b8ac6f12a79c/5ef41cb3-8ebb96d4-b073-b8ac6f12a79c/1:( 143371796480 --&gt;  143373893632)]
+[     3145728:   103809024] --&gt; [NOMP -- :(           0 --&gt;    103809024)]
+[   106954752:     1048576] --&gt; [VMFS -- LVID:5ef41cb3-9908b450-562d-b8ac6f12a79c/5ef41cb3-8ebb96d4-b073-b8ac6f12a79c/1:( 143365505024 --&gt;  143366553600)]
+[   108003328:     2097152] --&gt; [VMFS -- LVID:5ef41cb3-9908b450-562d-b8ac6f12a79c/5ef41cb3-8ebb96d4-b073-b8ac6f12a79c/1:( 143373893632 --&gt;  143375990784)]
+[   110100480:   167772160] --&gt; [VMFS -- LVID:5ef41cb3-9908b450-562d-b8ac6f12a79c/5ef41cb3-8ebb96d4-b073-b8ac6f12a79c/1:( 143488188416 --&gt;  143655960576)]
+[   277872640:     1048576] --&gt; [VMFS -- LVID:5ef41cb3-9908b450-562d-b8ac6f12a79c/5ef41cb3-8ebb96d4-b073-b8ac6f12a79c/1:( 143865675776 --&gt;  143866724352)]
+[   278921216:   536870912] --&gt; [NOMP -- :(           0 --&gt;    536870912)]
+[   815792128:   536870912] --&gt; [NOMP -- :(           0 --&gt;    536870912)]
+  (中略)
+[ 274662948864:   213909504] --&gt; [NOMP -- :(           0 --&gt;    213909504)]
+[ 274876858368:     1048576] --&gt; [VMFS -- LVID:5ef41cb3-9908b450-562d-b8ac6f12a79c/5ef41cb3-8ebb96d4-b073-b8ac6f12a79c/1:( 143364456448 --&gt;  143365505024)]
+</code></pre><p>最後に３つ目の -x オプションです。こちらはホストのクラッシュやストレージの障害でディスクの中身が破損した場合にチェックや修復を行います。</p>
+<p>-x check は問題がなければ以下のように Disk is error free と出ます。</p>
+<pre tabindex="0"><code># vmkfstools -x check Example.vmdk
+Disk is error free
+</code></pre><p>ディスクに問題があると Disk needs repair. と表示されるので、その場合は -x repair として修復します。ただし、あらゆる状況に対応できるわけではないため、修復しても駄目だった場合は最終手段として仮想マシンのバックアップからリストアが必要になります。</p>
+<h2 id="to-be-continued">To be continued&hellip;</h2>
+<p>次回も残りの ESXi のコマンドについて見ていきます。</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>あるあるのケースはストレージの All Path Down (APD) の発生時です。APD によりストレージデバイスへアクセス不可になった際、I/O が詰まって hostd の動作が非常に重たくなる、というのは非常によく見かけます。この辺りの詳細は <a href="https://kb.vmware.com/s/article/2004684?lang=ja">KB2004684</a> をご覧ください。&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+    </div><div class="post_comments">
+  
+  
+  
+  
+</div>
+
+
+
+
+  </article>
+<aside class="sidebar">
+  <section class="sidebar_inner">
+    <br>
+    
+
+
+    
+    <h2 class="mt-4">Recent Posts</h2>
+    <ul class="flex-column">
+      <li>
+        <a href="http://localhost:1313/post/2025-07-17/" class="nav-link" title="VCF Installer に Offline Depot 用の CA 証明書を API でインポートする">VCF Installer に Offline Depot 用の CA 証明書を API でインポートする</a>
+      </li>
+      <li>
+        <a href="http://localhost:1313/post/2025-05-11/" class="nav-link" title="【備忘録】TKG 2.5.2 用の Linux カスタムイメージのビルドで引っかかった箇所のメモ書き">【備忘録】TKG 2.5.2 用の Linux カスタムイメージのビルドで引っかかった箇所のメモ書き</a>
+      </li>
+      <li>
+        <a href="http://localhost:1313/post/2025-04-29/" class="nav-link" title="【備忘録】vsphere-csi-provider と TKG 2.x のサポート期間のドキュメント">【備忘録】vsphere-csi-provider と TKG 2.x のサポート期間のドキュメント</a>
+      </li>
+      <li>
+        <a href="http://localhost:1313/post/2023-06-18/" class="nav-link" title="VMware Skyline Health Diagnostics を vSphere Client プラグインとして使用する">VMware Skyline Health Diagnostics を vSphere Client プラグインとして使用する</a>
+      </li>
+      <li>
+        <a href="http://localhost:1313/post/2023-02-04/" class="nav-link" title="PowerCLI で vCenter Server 管理下の ESXi の NTP 設定を一括変更">PowerCLI で vCenter Server 管理下の ESXi の NTP 設定を一括変更</a>
+      </li>
+      <li>
+        <a href="http://localhost:1313/post/2022-12-09/" class="nav-link" title="PowerCLI で vCenter Server のトリガー済みアラームを取得">PowerCLI で vCenter Server のトリガー済みアラームを取得</a>
+      </li>
+      <li>
+        <a href="http://localhost:1313/post/2022-12-08_2/" class="nav-link" title="【後編】Sandbox による ESXi の保護: Daemon Sandboxing in ESXi 8.0">【後編】Sandbox による ESXi の保護: Daemon Sandboxing in ESXi 8.0</a>
+      </li>
+      <li>
+        <a href="http://localhost:1313/post/2022-12-08_1/" class="nav-link" title="【前編】Sandbox による ESXi の保護: VM Sandboxing in ESXi 6.5">【前編】Sandbox による ESXi の保護: VM Sandboxing in ESXi 6.5</a>
+      </li>
+    </ul>
+    <div>
+      <h2 class="mt-4 taxonomy" id="categories-section">Categories</h2>
+      <nav class="tags_nav">
+        <a href='http://localhost:1313/categories/vsphere/' class="post_tag button button_translucent" title="vsphere">
+          VSPHERE
+          <span class="button_tally">49</span>
+        </a>
+        
+        <a href='http://localhost:1313/categories/kubernetes/' class="post_tag button button_translucent" title="kubernetes">
+          KUBERNETES
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='http://localhost:1313/categories/vmware-cloud-foundation/' class="post_tag button button_translucent" title="vmware cloud foundation">
+          VMWARE CLOUD FOUNDATION
+          <span class="button_tally">1</span>
+        </a>
+        
+        
+      </nav>
+    </div>
+    <div>
+      <h2 class="mt-4 taxonomy" id="tags-section">Tags</h2>
+      <nav class="tags_nav">
+        <a href='http://localhost:1313/tags/vsphere/' class="post_tag button button_translucent" title="vsphere">
+          VSPHERE
+          <span class="button_tally">43</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/esxi/' class="post_tag button button_translucent" title="esxi">
+          ESXI
+          <span class="button_tally">27</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/tips/' class="post_tag button button_translucent" title="tips">
+          TIPS
+          <span class="button_tally">22</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/vcenter-server/' class="post_tag button button_translucent" title="vcenter server">
+          VCENTER SERVER
+          <span class="button_tally">20</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/security/' class="post_tag button button_translucent" title="security">
+          SECURITY
+          <span class="button_tally">12</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/vsphere-7.0/' class="post_tag button button_translucent" title="vsphere 7.0">
+          VSPHERE 7.0
+          <span class="button_tally">10</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/troubleshooting/' class="post_tag button button_translucent" title="troubleshooting">
+          TROUBLESHOOTING
+          <span class="button_tally">8</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/architecture/' class="post_tag button button_translucent" title="architecture">
+          ARCHITECTURE
+          <span class="button_tally">6</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/featured/' class="post_tag button button_translucent" title="featured">
+          FEATURED
+          <span class="button_tally">4</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/network/' class="post_tag button button_translucent" title="network">
+          NETWORK
+          <span class="button_tally">4</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/cli/' class="post_tag button button_translucent" title="cli">
+          CLI
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/monitoring/' class="post_tag button button_translucent" title="monitoring">
+          MONITORING
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/nested/' class="post_tag button button_translucent" title="nested">
+          NESTED
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/esxi-on-arm/' class="post_tag button button_translucent" title="esxi on arm">
+          ESXI ON ARM
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/tanzu-kubernetes-grid/' class="post_tag button button_translucent" title="tanzu kubernetes grid">
+          TANZU KUBERNETES GRID
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/vmware-cloud-foundation/' class="post_tag button button_translucent" title="vmware cloud foundation">
+          VMWARE CLOUD FOUNDATION
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/vsan/' class="post_tag button button_translucent" title="vsan">
+          VSAN
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/arm/' class="post_tag button button_translucent" title="arm">
+          ARM
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/backup-and-restore/' class="post_tag button button_translucent" title="backup and restore">
+          BACKUP AND RESTORE
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/centos/' class="post_tag button button_translucent" title="centos">
+          CENTOS
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/driver/' class="post_tag button button_translucent" title="driver">
+          DRIVER
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/event/' class="post_tag button button_translucent" title="event">
+          EVENT
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/fedora/' class="post_tag button button_translucent" title="fedora">
+          FEDORA
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/hardware/' class="post_tag button button_translucent" title="hardware">
+          HARDWARE
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/installation/' class="post_tag button button_translucent" title="installation">
+          INSTALLATION
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/instant-clone/' class="post_tag button button_translucent" title="instant clone">
+          INSTANT CLONE
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/linux/' class="post_tag button button_translucent" title="linux">
+          LINUX
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/management/' class="post_tag button button_translucent" title="management">
+          MANAGEMENT
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/memory/' class="post_tag button button_translucent" title="memory">
+          MEMORY
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/raspberry-pi/' class="post_tag button button_translucent" title="raspberry pi">
+          RASPBERRY PI
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/resource-management/' class="post_tag button button_translucent" title="resource management">
+          RESOURCE MANAGEMENT
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/sdk/api/' class="post_tag button button_translucent" title="sdk/api">
+          SDK/API
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/storage/' class="post_tag button button_translucent" title="storage">
+          STORAGE
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/vcf-installer/' class="post_tag button button_translucent" title="vcf installer">
+          VCF INSTALLER
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/vmware-tools/' class="post_tag button button_translucent" title="vmware tools">
+          VMWARE TOOLS
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/vmware-workstation/' class="post_tag button button_translucent" title="vmware workstation">
+          VMWARE WORKSTATION
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/vrealize-automation/' class="post_tag button button_translucent" title="vrealize automation">
+          VREALIZE AUTOMATION
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/vsphere-container-plug-in/' class="post_tag button button_translucent" title="vsphere container plug-in">
+          VSPHERE CONTAINER PLUG-IN
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/vulnerability/' class="post_tag button button_translucent" title="vulnerability">
+          VULNERABILITY
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='http://localhost:1313/tags/x86/' class="post_tag button button_translucent" title="x86">
+          X86
+          <span class="button_tally">1</span>
+        </a>
+        
+        
+      </nav>
+    </div>
+  </section>
+</aside>
+
+  
+</div>
+    </main><svg width="0" height="0" class="hidden">
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="facebook">
+    <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h151V331h-60v-90h60v-61c0-49.629 40.371-90 90-90h91v90h-91v61h91l-15 90h-76v181h121c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zm0 0"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18.001 18.001" id="twitter">
+    <path d="M15.891 4.013c.808-.496 1.343-1.173 1.605-2.034a8.68 8.68 0 0 1-2.351.861c-.703-.756-1.593-1.14-2.66-1.14-1.043 0-1.924.366-2.643 1.078a3.56 3.56 0 0 0-1.076 2.605c0 .309.039.585.117.819-3.076-.105-5.622-1.381-7.628-3.837-.34.601-.51 1.213-.51 1.846 0 1.301.549 2.332 1.645 3.089-.625-.053-1.176-.211-1.645-.47 0 .929.273 1.705.82 2.388a3.623 3.623 0 0 0 2.115 1.291c-.312.08-.641.118-.979.118-.312 0-.533-.026-.664-.083.23.757.664 1.371 1.291 1.841a3.652 3.652 0 0 0 2.152.743C4.148 14.173 2.625 14.69.902 14.69c-.422 0-.721-.006-.902-.038 1.697 1.102 3.586 1.649 5.676 1.649 2.139 0 4.029-.542 5.674-1.626 1.645-1.078 2.859-2.408 3.639-3.974a10.77 10.77 0 0 0 1.172-4.892v-.468a7.788 7.788 0 0 0 1.84-1.921 8.142 8.142 0 0 1-2.11.593z"
+      ></path>
+  </symbol>
+  <symbol aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="mail">
+    <path  d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="calendar">
+    <path d="M452 40h-24V0h-40v40H124V0H84v40H60C26.916 40 0 66.916 0 100v352c0 33.084 26.916 60 60 60h392c33.084 0 60-26.916 60-60V100c0-33.084-26.916-60-60-60zm20 412c0 11.028-8.972 20-20 20H60c-11.028 0-20-8.972-20-20V188h432v264zm0-304H40v-48c0-11.028 8.972-20 20-20h24v40h40V80h264v40h40V80h24c11.028 0 20 8.972 20 20v48z"></path>
+    <path d="M76 230h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zM76 310h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zM76 390h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zm80-80h40v40h-40z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="github">
+    <path d="M255.968 5.329C114.624 5.329 0 120.401 0 262.353c0 113.536 73.344 209.856 175.104 243.872 12.8 2.368 17.472-5.568 17.472-12.384 0-6.112-.224-22.272-.352-43.712-71.2 15.52-86.24-34.464-86.24-34.464-11.616-29.696-28.416-37.6-28.416-37.6-23.264-15.936 1.728-15.616 1.728-15.616 25.696 1.824 39.2 26.496 39.2 26.496 22.848 39.264 59.936 27.936 74.528 21.344 2.304-16.608 8.928-27.936 16.256-34.368-56.832-6.496-116.608-28.544-116.608-127.008 0-28.064 9.984-51.008 26.368-68.992-2.656-6.496-11.424-32.64 2.496-68 0 0 21.504-6.912 70.4 26.336 20.416-5.696 42.304-8.544 64.096-8.64 21.728.128 43.648 2.944 64.096 8.672 48.864-33.248 70.336-26.336 70.336-26.336 13.952 35.392 5.184 61.504 2.56 68 16.416 17.984 26.304 40.928 26.304 68.992 0 98.72-59.84 120.448-116.864 126.816 9.184 7.936 17.376 23.616 17.376 47.584 0 34.368-.32 62.08-.32 70.496 0 6.88 4.608 14.88 17.6 12.352C438.72 472.145 512 375.857 512 262.353 512 120.401 397.376 5.329 255.968 5.329z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 212 212" id="gitlab">
+    <path d="M12.3 74.7h54L43.3 3c-1-3.6-6.4-3.6-7.6 0L12.3 74.8z" />
+    <path d="M12.3 74.7L.5 111c-1 3.2 0 6.8 3 8.8l101.6 74-92.5-119z"/>
+    <path d="M105 193.7l-38.6-119h-54l92.7 119z"/>
+    <path d="M105 193.7l38.7-119H66.4l38.7 119z"/>
+    <path d="M105 193.7l38.7-119H198l-93 119z"/>
+    <path d="M198 74.7l11.6 36.2c1 3 0 6.6-3 8.6l-101.5 74 93-119z"/>
+    <path d="M198 74.7h-54.3L167 3c1.2-3.6 6.4-3.6 7.6 0L198 74.8z"/>
+  </symbol>
+  <symbol viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="rss">
+    <circle cx="3.429" cy="20.571" r="3.429"></circle>
+    <path d="M11.429 24h4.57C15.999 15.179 8.821 8.001 0 8v4.572c6.302.001 11.429 5.126 11.429 11.428z"></path>
+    <path d="M24 24C24 10.766 13.234 0 0 0v4.571c10.714 0 19.43 8.714 19.43 19.429z"></path>
+  </symbol>
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="linkedin">
+    <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h362c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zM181 406h-60V196h60zm0-240h-60v-60h60zm210 240h-60V286c0-16.54-13.46-30-30-30s-30 13.46-30 30v120h-60V196h60v11.309C286.719 202.422 296.93 196 316 196c40.691.043 75 36.547 75 79.688zm0 0"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="to-top">
+    <path d="M604.501 440.509L325.398 134.956c-5.331-5.357-12.423-7.627-19.386-7.27-6.989-.357-14.056 1.913-19.387 7.27L7.499 440.509c-9.999 10.024-9.999 26.298 0 36.323s26.223 10.024 36.222 0l262.293-287.164L568.28 476.832c9.999 10.024 26.222 10.024 36.221 0 9.999-10.023 9.999-26.298 0-36.323z"></path>
+  </symbol>
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="carly">
+    <path d="M504.971 239.029L448 182.059V84c0-46.317-37.682-84-84-84h-44c-13.255 0-24 10.745-24 24s10.745 24 24 24h44c19.851 0 36 16.149 36 36v108c0 6.365 2.529 12.47 7.029 16.971L454.059 256l-47.029 47.029A24.002 24.002 0 0 0 400 320v108c0 19.851-16.149 36-36 36h-44c-13.255 0-24 10.745-24 24s10.745 24 24 24h44c46.318 0 84-37.683 84-84v-98.059l56.971-56.971c9.372-9.372 9.372-24.568 0-33.941zM112 192V84c0-19.851 16.149-36 36-36h44c13.255 0 24-10.745 24-24S205.255 0 192 0h-44c-46.318 0-84 37.683-84 84v98.059l-56.971 56.97c-9.373 9.373-9.373 24.568 0 33.941L64 329.941V428c0 46.317 37.682 84 84 84h44c13.255 0 24-10.745 24-24s-10.745-24-24-24h-44c-19.851 0-36-16.149-36-36V320c0-6.365-2.529-12.47-7.029-16.971L57.941 256l47.029-47.029A24.002 24.002 0 0 0 112 192z"></path>
+  </symbol>
+  <symbol viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="copy">
+    <path d="M23 2.75A2.75 2.75 0 0 0 20.25 0H8.75A2.75 2.75 0 0 0 6 2.75v13.5A2.75 2.75 0 0 0 8.75 19h11.5A2.75 2.75 0 0 0 23 16.25zM18.25 14.5h-7.5a.75.75 0 0 1 0-1.5h7.5a.75.75 0 0 1 0 1.5zm0-3h-7.5a.75.75 0 0 1 0-1.5h7.5a.75.75 0 0 1 0 1.5zm0-3h-7.5a.75.75 0 0 1 0-1.5h7.5a.75.75 0 0 1 0 1.5z"></path>
+    <path d="M8.75 20.5a4.255 4.255 0 0 1-4.25-4.25V2.75c0-.086.02-.166.025-.25H3.75A2.752 2.752 0 0 0 1 5.25v16A2.752 2.752 0 0 0 3.75 24h12a2.752 2.752 0 0 0 2.75-2.75v-.75z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001" id="closeme">
+    <path d="M284.286 256.002L506.143 34.144c7.811-7.811 7.811-20.475 0-28.285-7.811-7.81-20.475-7.811-28.285 0L256 227.717 34.143 5.859c-7.811-7.811-20.475-7.811-28.285 0-7.81 7.811-7.811 20.475 0 28.285l221.857 221.857L5.858 477.859c-7.811 7.811-7.811 20.475 0 28.285a19.938 19.938 0 0 0 14.143 5.857 19.94 19.94 0 0 0 14.143-5.857L256 284.287l221.857 221.857c3.905 3.905 9.024 5.857 14.143 5.857s10.237-1.952 14.143-5.857c7.811-7.811 7.811-20.475 0-28.285L284.286 256.002z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="open-menu">
+    <path d="M492 236H20c-11.046 0-20 8.954-20 20s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20zm0-160H20C8.954 76 0 84.954 0 96s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20zm0 320H20c-11.046 0-20 8.954-20 20s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="instagram">
+    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id=youtube>
+    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="stackoverflow">
+    <path d="M21 27v-8h3v11H0V19h3v8h18z"></path><path d="M17.1.2L15 1.8l7.9 10.6 2.1-1.6L17.1.2zm3.7 14.7L10.6 6.4l1.7-2 10.2 8.5-1.7 2zM7.2 12.3l12 5.6 1.1-2.4-12-5.6-1.1 2.4zm-1.8 6.8l13.56 1.96.17-2.38-13.26-2.55-.47 2.97zM19 25H5v-3h14v3z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="xing">
+    <path d="M18.188 0c-.517 0-.741.325-.927.66 0 0-7.455 13.224-7.702 13.657.015.024 4.919 9.023 4.919 9.023.17.308.436.66.967.66h3.454c.211 0 .375-.078.463-.22.089-.151.089-.346-.009-.536l-4.879-8.916c-.004-.006-.004-.016 0-.022L22.139.756c.095-.191.097-.387.006-.535C22.056.078 21.894 0 21.686 0h-3.498zM3.648 4.74c-.211 0-.385.074-.473.216-.09.149-.078.339.02.531l2.34 4.05c.004.01.004.016 0 .021L1.86 16.051c-.099.188-.093.381 0 .529.085.142.239.234.45.234h3.461c.518 0 .766-.348.945-.667l3.734-6.609-2.378-4.155c-.172-.315-.434-.659-.962-.659H3.648v.016z"/>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 71 55" id="discord">
+    <path d="M60.1045 4.8978C55.5792 2.8214 50.7265 1.2916 45.6527 0.41542C45.5603 0.39851 45.468 0.440769 45.4204 0.525289C44.7963 1.6353 44.105 3.0834 43.6209 4.2216C38.1637 3.4046 32.7345 3.4046 27.3892 4.2216C26.905 3.0581 26.1886 1.6353 25.5617 0.525289C25.5141 0.443589 25.4218 0.40133 25.3294 0.41542C20.2584 1.2888 15.4057 2.8186 10.8776 4.8978C10.8384 4.9147 10.8048 4.9429 10.7825 4.9795C1.57795 18.7309 -0.943561 32.1443 0.293408 45.3914C0.299005 45.4562 0.335386 45.5182 0.385761 45.5576C6.45866 50.0174 12.3413 52.7249 18.1147 54.5195C18.2071 54.5477 18.305 54.5139 18.3638 54.4378C19.7295 52.5728 20.9469 50.6063 21.9907 48.5383C22.0523 48.4172 21.9935 48.2735 21.8676 48.2256C19.9366 47.4931 18.0979 46.6 16.3292 45.5858C16.1893 45.5041 16.1781 45.304 16.3068 45.2082C16.679 44.9293 17.0513 44.6391 17.4067 44.3461C17.471 44.2926 17.5606 44.2813 17.6362 44.3151C29.2558 49.6202 41.8354 49.6202 53.3179 44.3151C53.3935 44.2785 53.4831 44.2898 53.5502 44.3433C53.9057 44.6363 54.2779 44.9293 54.6529 45.2082C54.7816 45.304 54.7732 45.5041 54.6333 45.5858C52.8646 46.6197 51.0259 47.4931 49.0921 48.2228C48.9662 48.2707 48.9102 48.4172 48.9718 48.5383C50.038 50.6034 51.2554 52.5699 52.5959 54.435C52.6519 54.5139 52.7526 54.5477 52.845 54.5195C58.6464 52.7249 64.529 50.0174 70.6019 45.5576C70.6551 45.5182 70.6887 45.459 70.6943 45.3942C72.1747 30.0791 68.2147 16.7757 60.1968 4.9823C60.1772 4.9429 60.1437 4.9147 60.1045 4.8978ZM23.7259 37.3253C20.2276 37.3253 17.3451 34.1136 17.3451 30.1693C17.3451 26.225 20.1717 23.0133 23.7259 23.0133C27.308 23.0133 30.1626 26.2532 30.1066 30.1693C30.1066 34.1136 27.28 37.3253 23.7259 37.3253ZM47.3178 37.3253C43.8196 37.3253 40.9371 34.1136 40.9371 30.1693C40.9371 26.225 43.7636 23.0133 47.3178 23.0133C50.9 23.0133 53.7545 26.2532 53.6986 30.1693C53.6986 34.1136 50.9 37.3253 47.3178 37.3253Z"/>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17 18" id="mastodon">
+    <path
+    fill="#ffffff"
+    d="m 15.054695,9.8859583 c -0.22611,1.1632697 -2.02517,2.4363497 -4.09138,2.6830797 -1.0774504,0.12856 -2.1382704,0.24673 -3.2694704,0.19484 -1.84996,-0.0848 -3.30971,-0.44157 -3.30971,-0.44157 0,0.1801 0.0111,0.35157 0.0333,0.51194 0.24051,1.82571 1.81034,1.93508 3.29737,1.98607 1.50088,0.0514 2.8373104,-0.37004 2.8373104,-0.37004 l 0.0617,1.35686 c 0,0 -1.0498104,0.56374 -2.9199404,0.66742 -1.03124,0.0567 -2.3117,-0.0259 -3.80308,-0.42069 -3.23454998,-0.85613 -3.79081998,-4.304 -3.87592998,-7.8024197 -0.026,-1.03871 -0.01,-2.01815 -0.01,-2.83732 0,-3.57732 2.34385998,-4.62587996 2.34385998,-4.62587996 1.18184,-0.54277 3.20976,-0.77101 5.318,-0.7882499985409 h 0.0518 C 9.8267646,0.01719834 11.856025,0.24547834 13.037775,0.78824834 c 0,0 2.34377,1.04855996 2.34377,4.62587996 0,0 0.0294,2.63937 -0.32687,4.47183"/>
+ <path
+    fill="#000000"
+    d="m 12.616925,5.6916583 v 4.3315297 h -1.71607 V 5.8189683 c 0,-0.88624 -0.37289,-1.33607 -1.1187604,-1.33607 -0.82467,0 -1.23799,0.53361 -1.23799,1.58875 v 2.30122 h -1.70594 v -2.30122 c 0,-1.05514 -0.4134,-1.58875 -1.23808,-1.58875 -0.74587,0 -1.11876,0.44983 -1.11876,1.33607 v 4.2042197 h -1.71607 V 5.6916583 c 0,-0.88527 0.22541,-1.58876 0.67817,-2.10922 0.46689,-0.52047 1.07833,-0.78727 1.83735,-0.78727 0.87816,0 1.54317,0.33752 1.98288,1.01267 l 0.42744,0.71655 0.42753,-0.71655 c 0.43961,-0.67515 1.10463,-1.01267 1.9828704,-1.01267 0.75893,0 1.37037,0.2668 1.83735,0.78727 0.45268,0.52046 0.67808,1.22395 0.67808,2.10922"/>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 530" id="bluesky" >
+    <path d="m135.72 44.03c66.496 49.921 138.02 151.14 164.28 205.46 26.262-54.316 97.782-155.54 164.28-205.46 47.98-36.021 125.72-63.892 125.72 24.795 0 17.712-10.155 148.79-16.111 170.07-20.703 73.984-96.144 92.854-163.25 81.433 117.3 19.964 147.14 86.092 82.697 152.22-122.39 125.59-175.91-31.511-189.63-71.766-2.514-7.3797-3.6904-10.832-3.7077-7.8964-0.0174-2.9357-1.1937 0.51669-3.7077 7.8964-13.714 40.255-67.233 197.36-189.63 71.766-64.444-66.128-34.605-132.26 82.697-152.22-67.108 11.421-142.55-7.4491-163.25-81.433-5.9562-21.282-16.111-152.36-16.111-170.07 0-88.687 77.742-60.816 125.72-24.795z"/>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" id="ko-fi">
+    <path fill="#ffffff" d="M4.5,9.8527H32.7947a0,0,0,0,1,0,0v19.225a9.07,9.07,0,0,1-9.07,9.07H13.57a9.07,9.07,0,0,1-9.07-9.07V9.8527A0,0,0,0,1,4.5,9.8527Z"/>
+    <path fill="#000000" d="M12.197,25.9493l6.45,6.45,6.45-6.45a8.2,8.2,0,0,0,2.4016-5.798h0a4.5082,4.5082,0,0,0-4.212-4.5459,4.4262,4.4262,0,0,0-4.64,4.4209,4.4261,4.4261,0,0,0-4.64-4.4209,4.5082,4.5082,0,0,0-4.212,4.5459h0A8.2,8.2,0,0,0,12.197,25.9493Z"/>
+    <path fill="#ffffff" d="M32.7947,9.8527H35.73a7.77,7.77,0,0,1,0,15.5394H32.7947"/>
+  </svg>
+  </symbol>
+</svg>
+
+<footer class="footer">
+  <div class="footer_inner wrap pale">
+    <img src='http://localhost:1313/icons/apple-touch-icon.png' class="icon icon_2 transparent" alt="My New Hugo Site">
+    <p>Copyright&nbsp;<span class="year"></span>&nbsp;MY NEW HUGO SITE. All Rights Reserved</p><a class="to_top" href="#documentTop">
+  <svg class="icon">
+  <title>to-top</title>
+  <use xlink:href="#to-top"></use>
+</svg>
+
+</a>
+
+  </div>
+</footer>
+
+<script type="text/javascript" src="http://localhost:1313/en/js/bundle.84e7640170829f904da39c3d23a2c4064096bd26b37eca6f71d955e2d668377185b71761a1e9b7742b677b7bfba71d4b863f4d54a152f0bb480ab6ade26df8c8.js" integrity="sha512-hOdkAXCCn5BNo5w9I6LEBkCWvSazfspvcdlV4tZoN3GFtxdhoem3dCtne3v7px1Lhj9NVKFS8LtICrat4m34yA==" crossorigin="anonymous"></script>
+  </body>
+</html>

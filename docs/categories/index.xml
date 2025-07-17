@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on vSoliloquy</title>
+    <link>https://jangari-ntk.github.io/categories/</link>
+    <description>Recent content in Categories on vSoliloquy</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>Copyright © 2025 VSOLILOQUY. All Rights Reserved.</copyright>
+    <lastBuildDate>Thu, 17 Jul 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://jangari-ntk.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+  </channel>
+</rss>

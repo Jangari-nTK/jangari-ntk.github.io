@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Backup and Restore on vSoliloquy</title>
+    <link>https://jangari-ntk.github.io/tags/backup-and-restore/</link>
+    <description>Recent content in Backup and Restore on vSoliloquy</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>Copyright © 2025 VSOLILOQUY. All Rights Reserved.</copyright>
+    <lastBuildDate>Mon, 10 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://jangari-ntk.github.io/tags/backup-and-restore/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>REST API で VCSA をバックアップからリストアする</title>
+      <link>https://jangari-ntk.github.io/post/2022-01-10/</link>
+      <pubDate>Mon, 10 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2022-01-10/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://jangari-ntk.github.io/post/2022-01-07/&#34;&gt;前回の記事&lt;/a&gt;では OVFTool で vCenter Server Appliance (以下 VCSA) をデプロイしました。今回の記事では VCSA のインストールのステージ1が完了したところから、REST API を使って vCenter Server のリストアを実行してみます。&lt;/p&gt;
+&lt;h2 id=&#34;なぜ-api-でやろうと思ったのか&#34;&gt;なぜ API でやろうと思ったのか&lt;/h2&gt;
+&lt;p&gt;vCenter Server 7.0 Update 3 時点で、VCSA の CLI インストーラにはリストアの機能だけ存在しません。VMware Docs には GUI インストーラを使う手順と、vSphere Client で OVA のデプロイ後に VAMI からステージ2を実行する方法のみが書いてあります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vcenter.install.doc/GUID-F02AF073-7CFD-45B2-ACC8-DE3B6ED28022.html&#34;&gt;ファイルベースのバックアップからの vCenter Server のリストア&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vcenter.install.doc/GUID-1E39EF05-1DD7-4E9B-B9FE-6F373AA81862.html&#34;&gt;ステージ 1 - 新しいアプライアンスをデプロイ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;インストール、アップグレード、マイグレーションは CLI インストーラでも可能になっています。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vcenter.install.doc/GUID-C17AFF44-22DE-41F4-B85D-19B7A995E144.html&#34;&gt;vCenter Server アプライアンスの CLI デプロイ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vcenter.upgrade.doc/GUID-97BA3A0E-CFCB-407D-81FD-FB91AE46786F.html&#34;&gt;vCenter ServerAppliance の CLI アップグレード&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vcenter.upgrade.doc/GUID-AFDCE942-516E-4C5B-ADBF-C1237C9BBA80.html&#34;&gt;CLI による Windows からアプライアンスへの vCenter Serverインストールの移行&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;このため、リストアだけコマンドラインで出来ないのもなぁ・・・と思ったのが API でやってみようとした発端です。&lt;/p&gt;
+&lt;h2 id=&#34;事前準備&#34;&gt;事前準備&lt;/h2&gt;
+&lt;p&gt;事前準備として、以下の2点を実施しておきます。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

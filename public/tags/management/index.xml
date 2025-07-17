@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Management on My New Hugo Site</title>
+    <link>http://localhost:1313/tags/management/</link>
+    <description>Recent content in Management on My New Hugo Site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 10 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/management/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>VCDB から MAC アドレスの一覧を SELECT してみる</title>
+      <link>http://localhost:1313/post/2021-02-10/</link>
+      <pubDate>Wed, 10 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2021-02-10/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;vSphere の仮想マシンに固定 MAC アドレスを割り振る場合のベストプラクティスとして、事前にデータベースから MAC アドレスの一覧を参照して重複が無いことを確認しましょうといった KB が1月ごろに公開されていました。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/82139&#34;&gt;Best practices for assigning static MAC address to a Virtual machine vNIC (82139)&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Before assigning the static MAC address, refer the table MAC_ADDRESS table(select * from VPX_NIC) in the VCDB to make sure the there is no duplicate.(Irrespective of upper or lowercase)&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;del&gt;個人的にはデータベースを覗き見るのはあまり行儀が良い行為ではない気がするのですが&lt;/del&gt; KB として出ているので vCenter Server 7.0 (vPostgres) で試してみます。&lt;/p&gt;
+&lt;p&gt;基本的にどのバージョンも同じ手順になると思いますが、もしかしたら vCenter Server のバージョンや種類(Windows or Appliance)、データベースの種類によっては SQL クエリの結果など異なる可能性もありますので、その場合は環境に合わせて適宜調整してもらえればと思います。&lt;/p&gt;
+&lt;h2 id=&#34;vcenter-server-データベースに接続する&#34;&gt;vCenter Server データベースに接続する&lt;/h2&gt;
+&lt;p&gt;KB2147285 を参考に、VCSA の Bash シェル上から psql でデータベースに接続します。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

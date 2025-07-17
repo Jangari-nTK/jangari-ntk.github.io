@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Raspberry Pi on vSoliloquy</title>
+    <link>https://jangari-ntk.github.io/tags/raspberry-pi/</link>
+    <description>Recent content in Raspberry Pi on vSoliloquy</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>Copyright © 2025 VSOLILOQUY. All Rights Reserved.</copyright>
+    <lastBuildDate>Fri, 09 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jangari-ntk.github.io/tags/raspberry-pi/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>【HomeLab】ホストの USB デバイスを vSAN で使用するための設定</title>
+      <link>https://jangari-ntk.github.io/post/2020-10-09/</link>
+      <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2020-10-09/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;Project Monterey の発表で ESXi on SmartNIC が言及されていましたが、先日の vSphere 7.0 Update 1 のリリース時に合わせて ESXi on Arm が Flings として公開されました。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://flings.vmware.com/esxi-arm-edition&#34;&gt;ESXi Arm Edition | VMware Flings&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;ESXi-Arm インストール完了！&lt;br&gt;&lt;br&gt;ラズパイで ESXi 動いてるの感動する &lt;a href=&#34;https://t.co/3fi8QqCuHE&#34;&gt;pic.twitter.com/3fi8QqCuHE&lt;/a&gt;&lt;/p&gt;&amp;mdash; Jangari (@Jangari_nTK) &lt;a href=&#34;https://twitter.com/Jangari_nTK/status/1313610646861180928?ref_src=twsrc%5Etfw&#34;&gt;October 6, 2020&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;私も Raspberry Pi 4b 8GB にインストールして遊んでみており、ESXi on Arm を監視ホスト(Witness Host)とした 2ノード vSAN を組んでみました。ESXi on Arm が使えるようになったら真っ先に試してみたかった構成の一つです。&lt;/p&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;I&amp;#39;ve tried to configure 2-node vSAN with &lt;a href=&#34;https://twitter.com/hashtag/ESXionARM?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#ESXionARM&lt;/a&gt; as a witness host. It works! &lt;a href=&#34;https://t.co/f2XMaGMMW3&#34;&gt;pic.twitter.com/f2XMaGMMW3&lt;/a&gt;&lt;/p&gt;&amp;mdash; Jangari (@Jangari_nTK) &lt;a href=&#34;https://twitter.com/Jangari_nTK/status/1313704535299248128?ref_src=twsrc%5Etfw&#34;&gt;October 7, 2020&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;ESXi on Arm を使った 2ノード vSAN を組んでいる中で、Raspberry Pi 4b の場合は USB 接続のディスクを利用することになりますが、USB デバイスを vSAN のキャッシュデバイスやキャパシティデバイスに使おうとするとトリッキーな設定が必要でしたので、備忘録として残しておきたいと思います。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

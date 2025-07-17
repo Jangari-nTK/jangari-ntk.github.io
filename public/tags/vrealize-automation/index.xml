@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>VRealize Automation on My New Hugo Site</title>
+    <link>http://localhost:1313/tags/vrealize-automation/</link>
+    <description>Recent content in VRealize Automation on My New Hugo Site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 30 Aug 2020 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/vrealize-automation/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>vRealize Automation 8.1 で Nested ESXi の Blueprint を作ってみた</title>
+      <link>http://localhost:1313/post/2020-08-30/</link>
+      <pubDate>Sun, 30 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2020-08-30/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.vmug.com/vmug2019/membership/evalexperience&#34;&gt;VMUG Advantage の Eval Experience&lt;/a&gt; に vRealize Suite 2019 Enterprise の評価ライセンスがありましたので、試しに自宅の vSphere に vRealize Automation (以下 vRA) 8.1 をデプロイして遊んでみています。&lt;/p&gt;
+&lt;p&gt;今回、Nested ESXi が展開できるブループリントでも作ってみたら面白いかなと思い、新しい UI 等に慣れるのを半分、ネタを半分にやってみました。vRA は過去に 7.x 系を少し触っていただけの初心者のため詳細な解説などは難しいですが、せっかくなので記事にしてみたいと思います。&lt;/p&gt;
+&lt;h2 id=&#34;vrealize-automation-の概要&#34;&gt;vRealize Automation の概要&lt;/h2&gt;
+&lt;p&gt;vRealize Automation は VMware 製品の中でもクラウドの管理や自動化(Cloud Management)といったカテゴリに属する製品です。vSphere や vSAN、NSX-T はインフラストラクチャ寄りの製品ですが、vRA はそれらも含めてユーザーがクラウド環境を容易に利用できるようサービスとして提供することが主な役割です。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.vmware.com/jp/products/vrealize-automation.html&#34;&gt;vRealize Automation（vRA）の概要| クラウド自動化ツール | VMware | JP&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;各担当者のニーズに応えながら、ユーザーの利便性も確保するハイブリッド クラウド自動化プラットフォーム&lt;/p&gt;
+&lt;p&gt;IT 運用部門、ビジネス運用部門、DevOps、ビジネス部門、開発者のニーズに応じてハイブリッド クラウド環境やマルチクラウド環境を管理することは複雑な作業です。インフラストラクチャとアプリケーションのプロビジョニングが、複数のツールとスクリプトで半自動化されていると、効率性、生産性、一貫性が低下し、セキュリティとコンプライアンス上のリスクを招きます。vRealize Automation を使用すれば、ユーザーは必要なときに必要なサービスを入手できます。リリースの自動化プロセスは DevOps チームが管理し、セキュリティとガバナンスの保守については IT チームが担当します。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;例えば、開発者などのユーザーからシステム管理者に仮想マシンの払い出しの要求があった場合、システム管理者がユーザーに仮想マシンの払い出しを行って管理するなどの対応が必要となります。この場合、完了までにかかる時間の多くはシステム管理者に依存します。&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;Traditional IT Service Request&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;http://localhost:1313/images/2020-08-30/Traditional_IT_Service_Request.png&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;vRA を使った場合、仮想マシンの払い出しや管理などは事前に自動化されているテンプレートから vRA が提供を行うため、多くをユーザーの作業のみで迅速に完結させることができます。これによりシステム管理者はその他のシステム管理業務に注力することが出来ます。&lt;br&gt;
+※ユーザーが「セルフサービスで」出来るようになるところが一番のポイントです。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

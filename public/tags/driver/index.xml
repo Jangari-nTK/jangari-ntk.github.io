@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Driver on My New Hugo Site</title>
+    <link>http://localhost:1313/tags/driver/</link>
+    <description>Recent content in Driver on My New Hugo Site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 30 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/driver/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>【備忘録】Intel NUC 10 の SATA ケーブルを交換した話</title>
+      <link>http://localhost:1313/post/2022-01-30/</link>
+      <pubDate>Sun, 30 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2022-01-30/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;Intel NUC 10 (NUC10i7FNH) で ESXi 7.0 を動かしているのですが、SATA ケーブルが故障したため互換品に交換しました。&lt;/p&gt;
+&lt;p&gt;使用した NUC 10 互換の SATA ケーブルは以下です。色々と調べましたが NUC 10/11 向けはこれしか無いようでした&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.amazon.com/gp/product/B0931VSHX4&#34;&gt;Intel NUC Internal FPC/FCC 22 Pin SATA/Power Cable for 2.5 Inch Drives&lt;/a&gt; (&lt;a href=&#34;https://www.microsatacables.com/intel-nuc-internal-fpc-fcc-22-pin-sata-power-cable-for-2-5-inch-drives&#34;&gt;Micro Sata Cables&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;なお、NUC の購入証明があれば Intel のサポートに依頼するといったことは出来るらしいです。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://gigazine.net/news/20211226-nuc-repair/&#34;&gt;Intelのベアボーンキット「BXNUC10I7FNH」が壊れたので修理に出してみた - GIGAZINE&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://qiita.com/god19/items/0e4d987c8bbf70458c31&#34;&gt;NUC 電源トラブル - Qiita&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;ただ、そもそも ESXi は NUC のサポート外 OS であり、加えて今回の壊れ方も中途半端なものだったため、サポート対象 OS での再現確認や Intel サポートとのコミュニケーションなどの手間や時間的なコストが高くつきそうです。このため自前で保守することにしました。&lt;/p&gt;
+&lt;p&gt;当然ながらサポートされる方法ではありませんので交換は自己責任でお願いします。&lt;/p&gt;
+&lt;h2 id=&#34;背景&#34;&gt;背景&lt;/h2&gt;
+&lt;p&gt;事の発端は SATA 接続の 2.5 インチ SSD 上の VMFS データストアにコールド移行や OVF テンプレートのデプロイを実行したところエラーで失敗したことです。再現性があるので esxtop のストレージ関連のパネルを眺めてみると、ディスクへの書き込み自体は始まっているものの、しばらくするとタスクのエラーと同時に書き込みが止まるような状況でした。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

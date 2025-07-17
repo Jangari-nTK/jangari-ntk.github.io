@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Monitoring on My New Hugo Site</title>
+    <link>http://localhost:1313/tags/monitoring/</link>
+    <description>Recent content in Monitoring on My New Hugo Site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 18 Jun 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/monitoring/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>VMware Skyline Health Diagnostics を vSphere Client プラグインとして使用する</title>
+      <link>http://localhost:1313/post/2023-06-18/</link>
+      <pubDate>Sun, 18 Jun 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2023-06-18/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;4月～5月にかけて &lt;a href=&#34;https://blogs.vmware.com/vsphere/2023/05/vsphere-8-update-1-general-availability.html&#34;&gt;vSphere 8.0 Update 1 が Initial Availability (IA) / General Availability (GA)&lt;/a&gt; となりましたが、新機能の一つとして VMware Skyline Health Diagnostics (SHD) の vSphere Client プラグインが追加されました。これにより SHD が vSphere Client と統合され、インストールや操作が単一の UI で可能になります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/8.0/rn/vsphere-vcenter-server-801-release-notes/index.html&#34;&gt;VMware vCenter Server 8.0 Update 1 リリース ノート&lt;/a&gt;&lt;br&gt;
+→ 新機能&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;VMware Skyline™ Health Diagnostics™ と vCenter Server の統合：vSphere 8.0 Update 1 以降では、vSphere Client と統合された VMware Skyline Health Diagnostics セルフサービス診断プラットフォームを使用して、vSphere 環境の問題を検出して修正できます。詳細については、VMware Skyline Health Diagnostics for vSphere Documentationを参照してください。&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;p&gt;そこから VMware Skyline Health Diagnostics 側でも 6/15 にリリースされたバージョン 4.0.0 で、プラグイン統合に対応した仮想アプライアンスが提供されるようになりました。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>PowerCLI で vCenter Server のトリガー済みアラームを取得</title>
+      <link>http://localhost:1313/post/2022-12-09/</link>
+      <pubDate>Fri, 09 Dec 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2022-12-09/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;vCenter Server の各インベントリオブジェクトのトリガー済みアラームは公式の &lt;a href=&#34;https://github.com/vmware/PowerCLI-Example-Scripts/blob/master/Scripts/Get-TriggeredAlarm.ps1&#34;&gt;PowerCLI サンプルスクリプト&lt;/a&gt;にもあるように $entity.ExtensionData.TriggeredAlarmState で取得できます。&lt;/p&gt;
+&lt;p&gt;今回は以下のような vCenter Server オブジェクトに表示される全トリガー済みアラームを取得してみます。&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;http://localhost:1313/images/2022-12-09/vc_triggered_alarm_gui.PNG&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;インベントリ階層とデータセンターフォルダ&#34;&gt;インベントリ階層とデータセンターフォルダ&lt;/h2&gt;
+&lt;p&gt;vCenter Server のインベントリ階層は以下のVMware社ドキュメントに記載があります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-03B36057-B38C-479C-BD78-341CD83A0584.html&#34;&gt;権限の階層的な継承&lt;/a&gt;&lt;br&gt;
+→ vSphere のインベントリ階層&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;以下の図は上記ドキュメントからの引用です。&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;http://localhost:1313/images/2022-12-09/inventory_hierarchy.PNG&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;アラームのターゲットタイプのうち階層の最上位のタイプは &amp;ldquo;vCenter Server&amp;rdquo; ですが、これは実際は図の上から３番目の「データセンターフォルダ」に対応しています。トリガー済みアラーム画面でオブジェクトタイプをよく見ると vCenter Server は「フォルダ」扱いになっていることが分かります。&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;http://localhost:1313/images/2022-12-09/vc_triggered_alarm_gui_root_folder.PNG&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;トリガー済みアラームの一覧を取得する&#34;&gt;トリガー済みアラームの一覧を取得する&lt;/h2&gt;
+&lt;p&gt;データセンターフォルダは名前が「Datacenters」または ID が「Folder-group-d1」なので、Get-Folder でこれらを指定すれば取得できます。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/vmware/PowerCLI-Example-Scripts/blob/master/Scripts/Get-TriggeredAlarm.ps1&#34;&gt;PowerCLI サンプルスクリプト&lt;/a&gt;からコードを拝借し、少しカスタマイズした PowerShell 関数が以下です。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-powershell&#34; data-lang=&#34;powershell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt; Get-AllTriggeredAlarm {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  $alarmOutput = @()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;# Get the folder named &amp;#34;Datacenters&amp;#34;, which is the root of the inventory tree.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  $entity = Get-Folder -Name &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Datacenters&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; ($entity.ExtensionData.TriggeredAlarmState &lt;span style=&#34;color:#f92672&#34;&gt;-ne&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;foreach&lt;/span&gt; ($alarm &lt;span style=&#34;color:#66d9ef&#34;&gt;in&lt;/span&gt; $entity.ExtensionData.TriggeredAlarmState) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          $tempObj = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt; | Select-Object -Property Alarm, Entity, EntityMoRef, AlarmStatus, Time, AlarmMoRef
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          $tempObj.Entity = Get-View $alarm.Entity | Select-Object -ExpandProperty Name
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          $tempObj.Alarm = Get-View $alarm.Alarm | Select-Object -ExpandProperty Info | Select-Object -ExpandProperty Name
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          $tempObj.AlarmStatus = $alarm.OverallStatus
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          $tempObj.AlarmMoRef = $alarm.Alarm
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          $tempObj.EntityMoRef = $alarm.Entity
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          $tempObj.Time = $alarm.Time
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          $alarmOutput += $tempObj
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; $alarmOutput
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;この関数を実行すると以下のように vCenter Server に定義が存在するトリガー済みアラームも取得できます。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>esxcli を使用したログフィルタリングの構成</title>
+      <link>http://localhost:1313/post/2022-02-04/</link>
+      <pubDate>Fri, 04 Feb 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2022-02-04/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;ESXi 7.0 Update 2 以降では /etc 配下の多くのファイルが読み取り専用となっていますが、その中にはログのフィルタを記載する logfilters ファイルも含まれています。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/82638&#34;&gt;ESXi configuration files for sfcb snmp and wbem can no longer be edited (82638)&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The ESXi configuration files /etc/sfcb/sfcb.cfg, /etc/vmware/snmp.xml, /etc/vmsyslog.conf, /etc/vmware/logfilters and /etc/vmsyslog.conf.d/*.conf can no longer be edited.
+It is no longer possible to make changes to snmp, sfcb/wbem, or syslog by editing these config files. From ESXi 7.0 Update 2, files under /etc are read-only and edits do not persist across reboot.&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

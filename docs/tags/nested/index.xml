@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Nested on vSoliloquy</title>
+    <link>https://jangari-ntk.github.io/tags/nested/</link>
+    <description>Recent content in Nested on vSoliloquy</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>Copyright © 2025 VSOLILOQUY. All Rights Reserved.</copyright>
+    <lastBuildDate>Sun, 30 Aug 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jangari-ntk.github.io/tags/nested/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>vRealize Automation 8.1 で Nested ESXi の Blueprint を作ってみた</title>
+      <link>https://jangari-ntk.github.io/post/2020-08-30/</link>
+      <pubDate>Sun, 30 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2020-08-30/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.vmug.com/vmug2019/membership/evalexperience&#34;&gt;VMUG Advantage の Eval Experience&lt;/a&gt; に vRealize Suite 2019 Enterprise の評価ライセンスがありましたので、試しに自宅の vSphere に vRealize Automation (以下 vRA) 8.1 をデプロイして遊んでみています。&lt;/p&gt;
+&lt;p&gt;今回、Nested ESXi が展開できるブループリントでも作ってみたら面白いかなと思い、新しい UI 等に慣れるのを半分、ネタを半分にやってみました。vRA は過去に 7.x 系を少し触っていただけの初心者のため詳細な解説などは難しいですが、せっかくなので記事にしてみたいと思います。&lt;/p&gt;
+&lt;h2 id=&#34;vrealize-automation-の概要&#34;&gt;vRealize Automation の概要&lt;/h2&gt;
+&lt;p&gt;vRealize Automation は VMware 製品の中でもクラウドの管理や自動化(Cloud Management)といったカテゴリに属する製品です。vSphere や vSAN、NSX-T はインフラストラクチャ寄りの製品ですが、vRA はそれらも含めてユーザーがクラウド環境を容易に利用できるようサービスとして提供することが主な役割です。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.vmware.com/jp/products/vrealize-automation.html&#34;&gt;vRealize Automation（vRA）の概要| クラウド自動化ツール | VMware | JP&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;各担当者のニーズに応えながら、ユーザーの利便性も確保するハイブリッド クラウド自動化プラットフォーム&lt;/p&gt;
+&lt;p&gt;IT 運用部門、ビジネス運用部門、DevOps、ビジネス部門、開発者のニーズに応じてハイブリッド クラウド環境やマルチクラウド環境を管理することは複雑な作業です。インフラストラクチャとアプリケーションのプロビジョニングが、複数のツールとスクリプトで半自動化されていると、効率性、生産性、一貫性が低下し、セキュリティとコンプライアンス上のリスクを招きます。vRealize Automation を使用すれば、ユーザーは必要なときに必要なサービスを入手できます。リリースの自動化プロセスは DevOps チームが管理し、セキュリティとガバナンスの保守については IT チームが担当します。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;例えば、開発者などのユーザーからシステム管理者に仮想マシンの払い出しの要求があった場合、システム管理者がユーザーに仮想マシンの払い出しを行って管理するなどの対応が必要となります。この場合、完了までにかかる時間の多くはシステム管理者に依存します。&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;Traditional IT Service Request&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;https://jangari-ntk.github.io/images/2020-08-30/Traditional_IT_Service_Request.png&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;vRA を使った場合、仮想マシンの払い出しや管理などは事前に自動化されているテンプレートから vRA が提供を行うため、多くをユーザーの作業のみで迅速に完結させることができます。これによりシステム管理者はその他のシステム管理業務に注力することが出来ます。&lt;br&gt;
+※ユーザーが「セルフサービスで」出来るようになるところが一番のポイントです。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>Nested ESXi のテンプレート作りに必要な設定と解説</title>
+      <link>https://jangari-ntk.github.io/post/2020-08-23/</link>
+      <pubDate>Sun, 23 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2020-08-23/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;20210822-追記esxi-70-u2-以降では安全なブート領域の複製が不可&#34;&gt;2021/08/22 追記：ESXi 7.0 U2 以降では安全なブート領域の複製が不可&lt;/h2&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;Nested ESXi のクローン、ESXi 7.0 U2 以降は完全に終了みたい。多分 configstore 周りの変更とかだろうなぁ・・・&lt;br&gt;&lt;br&gt;After upgrading to ESXi 7.0U2, corruption can occur on VMFS datastores if the ESXi hosts sharing those LUNs had their boot devices cloned (84349)&lt;a href=&#34;https://t.co/mJOY0iPvc8&#34;&gt;https://t.co/mJOY0iPvc8&lt;/a&gt;&lt;/p&gt;&amp;mdash; Jangari (@Jangari_nTK) &lt;a href=&#34;https://twitter.com/Jangari_nTK/status/1422894456567595015?ref_src=twsrc%5Etfw&#34;&gt;August 4, 2021&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;ESXi 7.0 Update 2 以降では ESXi の UUID への依存関係が増えているようで、esx.conf 内の UUID の修正のみでは足りなくなったようで、安全なブート領域のクローンが行えなくなりました。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://williamlam.com/2013/12/how-to-properly-clone-nested-esxi-vm.html&#34;&gt;How to properly clone a Nested ESXi VM? - WilliamLam.com&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;UPDATE (07/01/21) - As of ESXi 7.0 Update 2, cloning an ESXi boot volume (Nested or Physical) is no longer safe and can lead to data corruption. Please refer to the following two VMware KB articles for more information on this topic &lt;a href=&#34;https://kb.vmware.com/kb/84280&#34;&gt;https://kb.vmware.com/kb/84280&lt;/a&gt; and &lt;a href=&#34;https://kb.vmware.com/kb/84349&#34;&gt;https://kb.vmware.com/kb/84349&lt;/a&gt;&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>pyVmomi から API 操作で Instant Clone をやってみる</title>
+      <link>https://jangari-ntk.github.io/post/2020-08-07/</link>
+      <pubDate>Fri, 07 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2020-08-07/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;本記事では pyVmomi を使って vSphere 単体で Instant Clone を行う方法について書いていきます。&lt;/p&gt;
+&lt;p&gt;事の発端は以下のVMware社の中の人が PowerCLI から Nested ESXi をインスタントクローンする記事です。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.virtuallyghetto.com/2018/05/leveraging-instant-clone-in-vsphere-6-7-for-extremely-fast-nested-esxi-provisioning.html&#34;&gt;Leveraging Instant Clone in vSphere 6.7 for extremely fast Nested ESXi provisioning&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;vsphere-web-services-api-と-pyvmomi&#34;&gt;vSphere Web Services API と pyVmomi&lt;/h2&gt;
+&lt;p&gt;vCenter Server のタスクをコマンドで実行する場合、PowerCLI を使うことが多いと思います。もしくは、開発やトラブルシューティングなどの一環で MOB (Managed Object Browser) を使用したことがある方もいらっしゃるかもしれません。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://code.vmware.com/web/tool/12.0.0/vmware-powercli&#34;&gt;VMware PowerCLI - VMware {code}&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://code.vmware.com/docs/6536/vsphere-sdk-for-perl-programming-guide/doc/GUID-9D615A34-EEA5-4BBE-A612-E4600F47B555.html&#34;&gt;Online Documentation - vSphere SDK for Perl Programming Guide - VMware {code}&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;これらのツールは「vSphere Web Services API」という vSphere のローレベルな SOAP API を操作しています&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://code.vmware.com/web/sdk/7.0/vsphere-management&#34;&gt;vSphere Management SDK - VMware {code}&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://code.vmware.com/apis/968/vsphere&#34;&gt;vSphere Web Services API - VMware API Explorer - VMware {code}&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;今回の記事で紹介する「pyVmomi」という Python SDK も PowerCLI と同様に vSphere Web Services API を操作することが出来ます。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

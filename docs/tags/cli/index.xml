@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>CLI on vSoliloquy</title>
+    <link>https://jangari-ntk.github.io/tags/cli/</link>
+    <description>Recent content in CLI on vSoliloquy</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>Copyright © 2025 VSOLILOQUY. All Rights Reserved.</copyright>
+    <lastBuildDate>Wed, 23 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jangari-ntk.github.io/tags/cli/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>【Part.4】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</title>
+      <link>https://jangari-ntk.github.io/post/2020-09-23/</link>
+      <pubDate>Wed, 23 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2020-09-23/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;VMworld 2017 SER2965BU のセッションの記事シリーズの最後です。今回は 48:21 ～ 52:40 頃までの内容、七つ道具3セット目の構成ファイルを見ていきます。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;/etc/vmware/esx.conf&lt;/li&gt;
+&lt;li&gt;/etc/vmware/hostd/vmInventory.xml&lt;/li&gt;
+&lt;li&gt;/etc/vmware/hostd/authorization.xml&lt;/li&gt;
+&lt;li&gt;/etc/vmware/vpxa/vpxa.cfg&lt;/li&gt;
+&lt;li&gt;/etc/vmware/vmkiscsid/*&lt;/li&gt;
+&lt;li&gt;/etc/opt/vmware/fdm/*&lt;/li&gt;
+&lt;li&gt;/etc/vmware/license.cfg&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;セッションでの説明も5分かからない程度でさらっと説明されており、ログに比べれば構成ファイルは参照する頻度も低いので概要を簡単に見ていきたいと思います。&lt;/p&gt;
+&lt;p&gt;なお、ナレッジベースなどで情報公開されている操作でない限り構成ファイルの編集はサポートされる操作ではないので、基本的には確認のみに留めておくことを推奨します。&lt;/p&gt;
+&lt;h2 id=&#34;esxi-の構成情報のバックアップ&#34;&gt;ESXi の構成情報のバックアップ&lt;/h2&gt;
+&lt;p&gt;一番重要な点として、ESXi の構成ファイルは多岐にわたり公開情報が無いものがほとんどのため、その全てを網羅するのは不可能です。加えて、特定の構成ファイルの破損時にどう修正すれば良いかなどの情報が公開されていない場合もありますので、ESXi の構成情報は KB2042141 の手順でバックアップしておくことを推奨します。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/2042141?lang=ja&#34;&gt;ESXi ホストの構成のバックアップ方法 (2042141)&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;etcvmwareesxconf---esxi-の構成情報主にハードウェアネットワークストレージ&#34;&gt;/etc/vmware/esx.conf - ESXi の構成情報(主にハードウェア、ネットワーク、ストレージ)&lt;/h2&gt;
+&lt;p&gt;esx.conf にはハードウェアやストレージ、ネットワークなどの構成情報が含まれています(全てではない)。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/1016106?lang=ja&#34;&gt;KB1016106&lt;/a&gt; の RDM LUN 向け永久予約設定も esx.conf に記載されるので、ホスト単位で調べる場合は esx.conf を grep してみても良いかもしれません。ただし、そもそも KB1016106 には esxcli や PowerCLI で確認する方法も書いてあるので、通常運用時は KB の手順に沿って実施すべきです。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;# grep &amp;#34;perennialResvd&amp;#34; /etc/vmware/esx.conf
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;/storage/lun[/vmfs/devices/disks/naa.6000c29bb59f25dfb1a670841fd458d9]/perennialResvd = &amp;#34;true&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;/storage/lun[/vmfs/devices/disks/naa.6000c296e29dc4a8f763719d8d832792]/perennialResvd = &amp;#34;true&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;esxcli system uuid get で取得できる ESXi の UUID もこちらに記載されています。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>【Part.3-2】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</title>
+      <link>https://jangari-ntk.github.io/post/2020-09-17/</link>
+      <pubDate>Thu, 17 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2020-09-17/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;VMworld 2017 SER2965BU のセッションでの 27:00 ～ 48:20 頃までの内容、七つ道具2セット目である７つのコマンドについて見ていきます。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;esxcli&lt;/li&gt;
+&lt;li&gt;vsish&lt;/li&gt;
+&lt;li&gt;vim-cmd&lt;/li&gt;
+&lt;li&gt;vmkfstools&lt;/li&gt;
+&lt;li&gt;memstats&lt;/li&gt;
+&lt;li&gt;pktcap-uw&lt;/li&gt;
+&lt;li&gt;esxtop&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;今回は残りのコマンドである memstats, pktcap-uw, esxtop を見ていきます(esxtop は概観だけ)。&lt;/p&gt;
+&lt;h2 id=&#34;memstats---詳細なメモリ統計情報&#34;&gt;memstats - 詳細なメモリ統計情報&lt;/h2&gt;
+&lt;p&gt;通常、リアルタイムなメモリの性能情報を見る場合は esxtop を使うと思います。ファイルとして保存する場合はバッチモードを使うかもしれません。&lt;/p&gt;
+&lt;p&gt;memstats コマンドは公開情報がほとんど無い&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;コマンドですが、こちらを使うとコマンド実行時点の様々なメモリ統計情報を取得することが出来ます。&lt;/p&gt;
+&lt;p&gt;セッションではホストがメモリ不足になり仮想マシンでメモリのバルーンやスワップが発生した場合、memstats コマンドで状態を見てみる方法が解説されています。メモリオーバーコミットによるバルーンやスワップの動作は割愛しますが、これらの動作の詳細は以下のドキュメントを参照してください。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.resmgmt.doc/GUID-85BDEAD3-C889-46AC-BC01-D4B39C638E49.html&#34;&gt;メモリの解放&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.resmgmt.doc/GUID-5B45CEFA-6CC6-49F4-A3C7-776AAA22C2A2.html&#34;&gt;メモリ バルーン ドライバ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.resmgmt.doc/GUID-B55F4F6B-44E6-46DE-B8FF-75950020A181.html&#34;&gt;スワップ ファイルの使用&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;memstats -r vm-stats -s &amp;lt;columns&amp;gt; としてコマンドを実行することで、実行中の仮想マシンのメモリの状態を見ることが出来ます。以下は観測対象の仮想マシンの Cartel ID (ps の2列目) を確認し、メモリのバルーンとスワップの状態を見ています。ホスト上で複数の仮想マシンが実行されている場合は全て一覧で表示されます。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;# ps | grep vmx
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;604326  604326  vmx
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;604331  604326  vmx-vthread-604
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;604332  604326  vmx-filtPoll:Photon
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;604333  604326  vmx-mks:Photon
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;604334  604326  vmx-svga:Photon
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;604335  604326  vmx-vcpu-0:Photon
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;# memstats -r vm-stats -s name:balloonTgt:ballooned:swapTgt:swapped:memSize:mapped
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt; VIRTUAL MACHINE STATS: Sat Sep 12 15:45:22 2020
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt; -----------------------------------------------
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;   Start Group ID   : 0
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;   No. of levels    : 12
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;15&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;   Unit             : KB
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;16&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;   Selected columns : name:memSize:balloonTgt:ballooned:swapTgt:swapped:mapped
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;17&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;18&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;---------------------------------------------------------------------------------
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;19&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;           name    memSize balloonTgt  ballooned    swapTgt    swapped     mapped
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;20&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;---------------------------------------------------------------------------------
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;21&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;      vm.604326    2097152          0          0          0          0     212992
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;22&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;---------------------------------------------------------------------------------
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;23&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;          Total    2097152          0          0          0          0     212992
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;24&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;---------------------------------------------------------------------------------
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;実行結果の列は左から順に以下の通りです。上述の結果では特にバルーンやスワップは発生していません。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>【Part.3-1】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</title>
+      <link>https://jangari-ntk.github.io/post/2020-09-13/</link>
+      <pubDate>Sun, 13 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2020-09-13/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;VMworld 2017 SER2965BU のセッションでの 27:00 ～ 48:20 頃までの内容、七つ道具2セット目である７つのコマンドについて見ていきます。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;esxcli - ESXi の設定の確認や変更&lt;/li&gt;
+&lt;li&gt;vsish - VMkernel Sysinfo Shell&lt;/li&gt;
+&lt;li&gt;vim-cmd - ESXi と仮想マシンの構成の管理&lt;/li&gt;
+&lt;li&gt;vmkfstools - データストアや仮想ディスクの管理&lt;/li&gt;
+&lt;li&gt;memstats- 詳細なメモリ統計情報&lt;/li&gt;
+&lt;li&gt;pktcap-uw - パケットのキャプチャ＆トレース&lt;/li&gt;
+&lt;li&gt;esxtop - パフォーマンスモニタリング&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;今回の記事では esxcli ～ vmkfstools までのコマンドを見ていきます。これだけでも長いため memstats ～ esxtop は次回の記事で。&lt;/p&gt;
+&lt;p&gt;esxcli, vmkfstools, pktcap-uw, esxtop は公式ドキュメントもあり、非常に便利で強力なトラブルシューティングツールです。これらは平時でも使えるように HOL や Nested ESXi で練習しておいた方が良いかなと思います。&lt;/p&gt;
+&lt;p&gt;セッションでは公開情報がない裏技的なコマンドも紹介されていますが、ESXi の仕組みの理解に役立つので本記事でも概要を紹介しています。&lt;/p&gt;
+&lt;h2 id=&#34;esxi-shell-と-ssh-の有効化&#34;&gt;ESXi Shell と SSH の有効化&lt;/h2&gt;
+&lt;p&gt;ESXi のコマンドは ESXi Shell か SSH で実行しますので、コマンドの利用にはまずこれらの有効化が必要になります。ESXi Shell の有効化の手順などは以下の KB2004746 に記載されていますので、こちらをご参照ください。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

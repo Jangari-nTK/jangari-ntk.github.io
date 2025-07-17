@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>X86 on vSoliloquy</title>
+    <link>https://jangari-ntk.github.io/tags/x86/</link>
+    <description>Recent content in X86 on vSoliloquy</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>Copyright © 2025 VSOLILOQUY. All Rights Reserved.</copyright>
+    <lastBuildDate>Fri, 02 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jangari-ntk.github.io/tags/x86/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>VMware 社の新プロジェクト「Project Monterey」？</title>
+      <link>https://jangari-ntk.github.io/post/2020-10-02/</link>
+      <pubDate>Fri, 02 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2020-10-02/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;VMworld 2020 のタイミングに合わせて、9/29 に VMware 社の各種ブログにて新しい製品やサービス、プロジェクトが発表されていました。いくつか見ていたのですが、それらの中でも以下の新しいプロジェクト「Project Monterey」が画期的な内容で個人的に興味をそそられました。知らない＆分からない＆そもそも初めて見る内容も多く、調べながら何とかブログ記事から読み取れた範囲の内容にはなりますが頑張って紹介してみたいと思います。&lt;/p&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;Not only is &lt;a href=&#34;https://twitter.com/hashtag/ProjectMontery?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#ProjectMontery&lt;/a&gt; really cool but its also 1st validation of &lt;a href=&#34;https://twitter.com/hashtag/ESXionARM?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#ESXionARM&lt;/a&gt; as most SmartNICs have an &lt;a href=&#34;https://twitter.com/Arm?ref_src=twsrc%5Etfw&#34;&gt;@Arm&lt;/a&gt;  processor. This tech will extend to VMware Cloud Foundation &amp;amp; reimagine vSphere “Cluster”&lt;a href=&#34;https://t.co/ZfldM5IY71&#34;&gt;https://t.co/ZfldM5IY71&lt;/a&gt;&lt;br&gt;&lt;br&gt;Congrats to &lt;a href=&#34;https://twitter.com/esxi_arm?ref_src=twsrc%5Etfw&#34;&gt;@esxi_arm&lt;/a&gt; Team, they must be proud! 🥳&lt;/p&gt;&amp;mdash; William Lam (@lamw) &lt;a href=&#34;https://twitter.com/lamw/status/1310925814972649472?ref_src=twsrc%5Etfw&#34;&gt;September 29, 2020&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+
+
+&lt;h2 id=&#34;project-monterey-の概要&#34;&gt;Project Monterey の概要&lt;/h2&gt;
+&lt;p&gt;従来はハイパーバイザー(VMM)、vSAN、NSX などの機能はすべて単一のハードウェア上の単一の ESXi で動作していました。1つのハードウェア上で1つの OS やハイパーバイザーが実行されることは、ESXi に限らず Windows や Linux といった汎用的な OS でも同じですね。&lt;/p&gt;
+&lt;p&gt;これに対して Project Monterey では「ESXi を実行する x86 サーバに、SmartNIC 上で動作する ESXi を接続する」という形態を取ることで VMware Cloud Foundation (VCF) のアーキテクチャを拡張するというプロジェクトのようです。以下の図はブログ記事からの引用になりますが、従来の環境と Project Monterey の環境の違いを表しています。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

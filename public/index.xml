@@ -1,0 +1,2080 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>My New Hugo Site</title>
+    <link>http://localhost:1313/</link>
+    <description>Recent content on My New Hugo Site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 17 Jul 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>VCF Installer に Offline Depot 用の CA 証明書を API でインポートする</title>
+      <link>http://localhost:1313/post/2025-07-17/</link>
+      <pubDate>Thu, 17 Jul 2025 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2025-07-17/</guid>
+      <description>
+        
+          
+            &lt;h1 id=&#34;概要&#34;&gt;概要&lt;/h1&gt;
+&lt;p&gt;VCF Installer での VCF9 のデプロイにあたり、オフラインデポに HTTPS での接続を試みたところ以下の KB#403203 に記載の事象に遭遇しました。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://knowledge.broadcom.com/external/article/403203/set-up-an-offline-depot-from-vcf-90-inst.html&#34;&gt;Set Up an Offline Depot from VCF 9.0 Installer GUI fails with Secure protocol communication error&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;オフラインデポのサーバ証明書に署名した CA 証明書が VCF Installer 側には無いので、サーバ証明書の検証がおこなえないため失敗する状況は想定できました。しかし、VCF 9 デプロイ前の VCF Installer の（まだ SDDC Manager でない）状態では CA 証明書をインポートする UI が無いようです。&lt;/p&gt;
+&lt;p&gt;すでに &lt;a href=&#34;https://williamlam.com/2025/06/using-http-with-vcf-9-0-installer-for-offline-depot.html&#34;&gt;Broadcom の中の人&lt;/a&gt;がオフラインデポへの接続で TLS を無効する方法（裏技？）を公開していますが、せっかくなので Broadcom 公式から開発者向けドキュメントが公開されている API を使用して CA 証明書をインポートすることで解決してみました。&lt;/p&gt;
+&lt;h2 id=&#34;事前準備-オフラインデポを構成&#34;&gt;事前準備: オフラインデポを構成&lt;/h2&gt;
+&lt;p&gt;まずはオフラインデポを構成するため、&lt;a href=&#34;https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-9-0-and-later/9-0/lifecycle-management/what-is-the-vcf-download-tool-/vcf-download-tool-binaries-commands.html&#34;&gt;VCF Download Tool&lt;/a&gt; を使用して各コンポーネントのバイナリをダウンロードします（&lt;a href=&#34;https://knowledge.broadcom.com/external/article/390098&#34;&gt;ダウンロードトークン&lt;/a&gt;が必要です）。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ ./bin/vcf-download-tool binaries download --vcf-version 9.0.0.0 --automated-install -d /mnt/depot -t INSTALL --depot-download-token-file downloadtoken.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;ダウンロードが完了すると、デポのディレクトリ階層は以下のようになります。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>【備忘録】TKG 2.5.2 用の Linux カスタムイメージのビルドで引っかかった箇所のメモ書き</title>
+      <link>http://localhost:1313/post/2025-05-11/</link>
+      <pubDate>Sun, 11 May 2025 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2025-05-11/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;諸事情で検証用に Ubuntu Server 24.04 上で TKG 2.5.2 の Management Cluster 用の Photon OS カスタムイメージをビルドしていたのですが、ドキュメントの誤植やハマりどころがあまりにも多かったため ~~~(怒りの発散も兼ねて)~~~ メモしておきます。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://techdocs.broadcom.com/us/en/vmware-tanzu/standalone-components/tanzu-kubernetes-grid/2-5/tkg/mgmt-byoi-linux.html&#34;&gt;Linux Custom Machine Images - Tanzu Kubernetes Grid 2.5&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;なお、本記事の執筆中に TKG 2.5.3 がリリースされドキュメントが更新されていったため（それでもまだ誤植ありますが）、現在のドキュメントの状態はマシになっている可能性もあること、メモし忘れた箇所もあるかもしれないこと、作業環境起因の可能性もあるため、あくまでも参考レベルとの認識でお願いします。&lt;/p&gt;
+&lt;h2 id=&#34;linux-resource-bundle-コンテナイメージのリポジトリパス&#34;&gt;Linux resource bundle コンテナイメージのリポジトリパス&lt;/h2&gt;
+&lt;p&gt;ドキュメントではバージョンが「linux-resource-bundle:v1.28.11+vmware.1-tkg.3」となっていますが「linux-resource-bundle:v1.28.11_vmware.2-tkg.2」が正しいようです（&amp;quot;+&amp;quot; でなく &amp;ldquo;_&amp;quot;）。&lt;/p&gt;
+&lt;p&gt;docker run コマンドは以下のようになります(docker pull は省略)。kubernetes の各種バイナリなどは本コンテナからダウンロードされるため、カスタムイメージのビルド前に事前に起動しておくのを忘れずに。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;docker run -d -p 3000:3000 projects.registry.vmware.com/tkg/linux-resource-bundle:v1.28.11_vmware.2-tkg.2
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;tkg-image-builder-for-kubernetes-の構成&#34;&gt;TKG Image Builder for Kubernetes の構成&lt;/h2&gt;
+&lt;p&gt;はじめに Sample Exchange から Image Builder の TKG 用 Configuration Files をダウンロードして unzip します。以降は展開された「TKG-Image-Builder-for-Kubernetes-v1_28_11---vmware_2-tkg_v2_5_2」ディレクトリを作業ディレクトリとしています。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://community.broadcom.com/vmware-code/viewdocument/tkg-image-builder-for-kubernetes-v1-3?CommunityKey=d743a854-b7b6-437f-9698-4dd8983b11cf&amp;amp;tab=librarydocuments&#34;&gt;TKG Image Builder for Kubernetes v1.28.11 on TKG v2.5.2 - Sample Exchange - VMware {Code} Community&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;まずは tkg.json 内の pause コンテナイメージのリポジトリパスがおかしいので修正します。（Broadcom 社員向けか何かのリポジトリの書き換え漏れ？）&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>【備忘録】vsphere-csi-provider と TKG 2.x のサポート期間のドキュメント</title>
+      <link>http://localhost:1313/post/2025-04-29/</link>
+      <pubDate>Tue, 29 Apr 2025 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2025-04-29/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;vSphere Contaier Storage Plug-in (いわゆる vsphere-csi-provider) と Tanzu Kubernetes Grid 2.x のサポート期間の探し方が不明だったため、2025/04 時点の調べ方を備忘録として記載しておきます。&lt;/p&gt;
+&lt;h2 id=&#34;vsphere-contaier-storage-plug-in-のサポート期間&#34;&gt;vSphere Contaier Storage Plug-in のサポート期間&lt;/h2&gt;
+&lt;p&gt;以下のBroadcom社のドキュメントに EOL Date の表があります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/container-storage-plugin/3-0/getting-started-with-vmware-vsphere-container-storage-plug-in-3-0/vsphere-container-storage-plug-in-concepts/compatibility-matrix-for-vsphere-container-storage-plug-in.html&#34;&gt;Compatibility Matrices for vSphere Container Storage Plug-in&lt;/a&gt;&lt;br&gt;
+→ Kubernetes Versions Compatible with vSphere Container Storage Plug-in&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;http://localhost:1313/images/2025-04-29/vsphere-csi-provider_EOLdate.jpg&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;2025/04 時点では 3.0.x 以前の vsphere-csi-provider バージョンはサポート終了しているようです。&lt;/p&gt;
+&lt;h2 id=&#34;tanzu-kubernetes-grid-2x-のサポート期間&#34;&gt;Tanzu Kubernetes Grid 2.x のサポート期間&lt;/h2&gt;
+&lt;p&gt;以下の Broadcom 社ドキュメントを確認すると、&lt;a href=&#34;https://support.broadcom.com/group/ecx/productlifecycle&#34;&gt;Product Lifecycle Matrix&lt;/a&gt; で「VMware Tanzu Kubernetes Grid Management」を確認しろとの記載があります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://techdocs.broadcom.com/us/en/vmware-tanzu/standalone-components/tanzu-kubernetes-grid/2-5/tkg/about-tkg-support-policies.html&#34;&gt;Tanzu Kubernetes Grid Version Support Policies, Kubernetes Support, and Feature States&lt;/a&gt;&lt;br&gt;
+→ Supported Tanzu Kubernetes Grid Versions&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;http://localhost:1313/images/2025-04-29/tkg2.x_EOLdate_001.jpg&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>VMware Skyline Health Diagnostics を vSphere Client プラグインとして使用する</title>
+      <link>http://localhost:1313/post/2023-06-18/</link>
+      <pubDate>Sun, 18 Jun 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2023-06-18/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;4月～5月にかけて &lt;a href=&#34;https://blogs.vmware.com/vsphere/2023/05/vsphere-8-update-1-general-availability.html&#34;&gt;vSphere 8.0 Update 1 が Initial Availability (IA) / General Availability (GA)&lt;/a&gt; となりましたが、新機能の一つとして VMware Skyline Health Diagnostics (SHD) の vSphere Client プラグインが追加されました。これにより SHD が vSphere Client と統合され、インストールや操作が単一の UI で可能になります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/8.0/rn/vsphere-vcenter-server-801-release-notes/index.html&#34;&gt;VMware vCenter Server 8.0 Update 1 リリース ノート&lt;/a&gt;&lt;br&gt;
+→ 新機能&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;VMware Skyline™ Health Diagnostics™ と vCenter Server の統合：vSphere 8.0 Update 1 以降では、vSphere Client と統合された VMware Skyline Health Diagnostics セルフサービス診断プラットフォームを使用して、vSphere 環境の問題を検出して修正できます。詳細については、VMware Skyline Health Diagnostics for vSphere Documentationを参照してください。&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;p&gt;そこから VMware Skyline Health Diagnostics 側でも 6/15 にリリースされたバージョン 4.0.0 で、プラグイン統合に対応した仮想アプライアンスが提供されるようになりました。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>PowerCLI で vCenter Server 管理下の ESXi の NTP 設定を一括変更</title>
+      <link>http://localhost:1313/post/2023-02-04/</link>
+      <pubDate>Sat, 04 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2023-02-04/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;ESXi 7.0 Update 3 以降では /etc/ntp.conf の内容が configstore 内に移行されファイル自体が read-only となり、ntp.conf の直接編集がサポートされなくなりました。ntp.conf への追記が必要な場合、代わりに esxcli system ntp set の -f オプションで設定ファイルを投入する必要があります。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/87176&#34;&gt;vSphere ESXi 7.0 U3 and later versions configuration files for NTP and PTP can no longer be edited (87176)&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The ESXi configuration files /etc/ntp.conf and /etc/ptp.conf can no longer be edited directly.&lt;br&gt;
+It is no longer possible to make changes to NTP, PTP by editing these config files directly. From ESXi 7.0 Update 3, files under /etc are read-only and edits do not persist across reboot.&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>PowerCLI で vCenter Server のトリガー済みアラームを取得</title>
+      <link>http://localhost:1313/post/2022-12-09/</link>
+      <pubDate>Fri, 09 Dec 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2022-12-09/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;vCenter Server の各インベントリオブジェクトのトリガー済みアラームは公式の &lt;a href=&#34;https://github.com/vmware/PowerCLI-Example-Scripts/blob/master/Scripts/Get-TriggeredAlarm.ps1&#34;&gt;PowerCLI サンプルスクリプト&lt;/a&gt;にもあるように $entity.ExtensionData.TriggeredAlarmState で取得できます。&lt;/p&gt;
+&lt;p&gt;今回は以下のような vCenter Server オブジェクトに表示される全トリガー済みアラームを取得してみます。&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;http://localhost:1313/images/2022-12-09/vc_triggered_alarm_gui.PNG&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;インベントリ階層とデータセンターフォルダ&#34;&gt;インベントリ階層とデータセンターフォルダ&lt;/h2&gt;
+&lt;p&gt;vCenter Server のインベントリ階層は以下のVMware社ドキュメントに記載があります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-03B36057-B38C-479C-BD78-341CD83A0584.html&#34;&gt;権限の階層的な継承&lt;/a&gt;&lt;br&gt;
+→ vSphere のインベントリ階層&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;以下の図は上記ドキュメントからの引用です。&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;http://localhost:1313/images/2022-12-09/inventory_hierarchy.PNG&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;アラームのターゲットタイプのうち階層の最上位のタイプは &amp;ldquo;vCenter Server&amp;rdquo; ですが、これは実際は図の上から３番目の「データセンターフォルダ」に対応しています。トリガー済みアラーム画面でオブジェクトタイプをよく見ると vCenter Server は「フォルダ」扱いになっていることが分かります。&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;http://localhost:1313/images/2022-12-09/vc_triggered_alarm_gui_root_folder.PNG&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;トリガー済みアラームの一覧を取得する&#34;&gt;トリガー済みアラームの一覧を取得する&lt;/h2&gt;
+&lt;p&gt;データセンターフォルダは名前が「Datacenters」または ID が「Folder-group-d1」なので、Get-Folder でこれらを指定すれば取得できます。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/vmware/PowerCLI-Example-Scripts/blob/master/Scripts/Get-TriggeredAlarm.ps1&#34;&gt;PowerCLI サンプルスクリプト&lt;/a&gt;からコードを拝借し、少しカスタマイズした PowerShell 関数が以下です。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-powershell&#34; data-lang=&#34;powershell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt; Get-AllTriggeredAlarm {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  $alarmOutput = @()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;# Get the folder named &amp;#34;Datacenters&amp;#34;, which is the root of the inventory tree.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  $entity = Get-Folder -Name &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Datacenters&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; ($entity.ExtensionData.TriggeredAlarmState &lt;span style=&#34;color:#f92672&#34;&gt;-ne&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;foreach&lt;/span&gt; ($alarm &lt;span style=&#34;color:#66d9ef&#34;&gt;in&lt;/span&gt; $entity.ExtensionData.TriggeredAlarmState) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          $tempObj = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt; | Select-Object -Property Alarm, Entity, EntityMoRef, AlarmStatus, Time, AlarmMoRef
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          $tempObj.Entity = Get-View $alarm.Entity | Select-Object -ExpandProperty Name
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          $tempObj.Alarm = Get-View $alarm.Alarm | Select-Object -ExpandProperty Info | Select-Object -ExpandProperty Name
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          $tempObj.AlarmStatus = $alarm.OverallStatus
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          $tempObj.AlarmMoRef = $alarm.Alarm
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          $tempObj.EntityMoRef = $alarm.Entity
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          $tempObj.Time = $alarm.Time
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          $alarmOutput += $tempObj
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; $alarmOutput
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;この関数を実行すると以下のように vCenter Server に定義が存在するトリガー済みアラームも取得できます。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>【後編】Sandbox による ESXi の保護: Daemon Sandboxing in ESXi 8.0</title>
+      <link>http://localhost:1313/post/2022-12-08_2/</link>
+      <pubDate>Thu, 08 Dec 2022 00:10:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2022-12-08_2/</guid>
+      <description>
+        
+          
+            &lt;p&gt;本記事は &lt;a href=&#34;https://adventar.org/calendars/7894&#34;&gt;vExperts Advent Calendar 2022&lt;/a&gt; の８日目の担当です。&lt;/p&gt;
+&lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;http://localhost:1313/post/2022-12-08_1/&#34;&gt;前編&lt;/a&gt;では VM Sandboxing を見ていきました。後編では ESXi 8.0 の Daemon Sandboxing を見ていきます。&lt;/p&gt;
+&lt;h2 id=&#34;daemon-sandboxing&#34;&gt;Daemon Sandboxing&lt;/h2&gt;
+&lt;p&gt;vSphere 8 では仮想マシンだけでなく ESXi 上の各種プロセスも Sandbox ドメイン内で実行させるようになっており、最小限の権限のみをプロセスに付与することでセキュリティを高めています。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://core.vmware.com/resource/whats-new-vsphere-8#section8&#34;&gt;What&amp;rsquo;s New in vSphere 8? | VMware&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Sandboxed Daemons: ESXi 8.0 daemons and processes run in their own sandboxed domain where only the minimum required permissions are available to the process.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;以前のバージョンでは hostd や vpxd などのプロセスは特権レベルのドメイン(superDom)が割り当てられていましたが、vSphere 8 ではこれらのプロセスにも独立したドメインが割り当てられています。&lt;/p&gt;
+&lt;h2 id=&#34;個々のプロセスのドメインを見てみる&#34;&gt;個々のプロセスのドメインを見てみる&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;http://localhost:1313/post/2022-12-08_1/&#34;&gt;前編&lt;/a&gt;と同様、まずは ps コマンドで ESXi 8.0 におけるプロセスのドメインを見てみます。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>【前編】Sandbox による ESXi の保護: VM Sandboxing in ESXi 6.5</title>
+      <link>http://localhost:1313/post/2022-12-08_1/</link>
+      <pubDate>Thu, 08 Dec 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2022-12-08_1/</guid>
+      <description>
+        
+          
+            &lt;p&gt;本記事は &lt;a href=&#34;https://adventar.org/calendars/7894&#34;&gt;vExperts Advent Calendar 2022&lt;/a&gt; の８日目の担当です。&lt;/p&gt;
+&lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;ESXi には SELinux や AppArmor に似た強制アクセス制御の機能が実装されており、最新の ESXi 8.0 では各種プロセスからアクセスできるリソースや実行可能な処理を最小限に絞っています。&lt;/p&gt;
+&lt;p&gt;これにより、悪意のあるユーザーが脆弱性を攻撃してプロセスを乗っ取っても、乗っ取られたプロセスを利用した攻撃の影響範囲が最小限に絞られることになります。この強制アクセス制御の機能は vSphere 6.5 や 8.0 の What&amp;rsquo;s new では Sandbox と呼称されています。&lt;/p&gt;
+&lt;p&gt;以下は vSphere 6.5 で実装された VM Sandboxing のイメージ図です。ゲストOS内で何らかの仮想マシンの脆弱性を突き、VMX プロセスの権限でコードが実行可能になった場合でも、Sandbox の範囲外にアクセスする処理は許可されません。これにより乗っ取られた仮想マシンプロセスからホストや他の仮想マシンが保護されます。&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;http://localhost:1313/images/2022-12-08/sandbox_overview.png&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;今まではこの Sandbox は What’s new に概要が２～３行あるのみで具体的な公開情報がなかなか見当たりませんでした。しかし、ESXi 8.0 のリリースとともに Sandbox に関する KB がいくつか公開され、そこから Sandbox が間接的に関わっていた過去の KB もいくつか見つけられました。&lt;/p&gt;
+&lt;p&gt;今回はそれらの KB から確認した情報や簡単なコマンドで確認できる内容をベースに ESXi の Sandbox がどういった仕様なのか見ていきます。本記事では前編として Sandbox を実装する ESXi の仕組みと ESXi 6.5 の VM Sandboxing の概要を、後編の記事では ESXi 8.0 の新機能である Daemon Sandboxing の概要を見ていきます。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>不正な VIB のインストールからのセキュアブートによる ESXi の保護</title>
+      <link>http://localhost:1313/post/2022-10-08/</link>
+      <pubDate>Sat, 08 Oct 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2022-10-08/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;背景&#34;&gt;背景&lt;/h2&gt;
+&lt;p&gt;先日、VMware社およびMandiant社より、vSphere を標的とする新しい種類のマルウェア(VirtualPITA、VirtualPIE、VirtualGATE)に関する記事が公開されました。この記事のマルウェアの興味深いところとして、ESXi のソフトウェアパッケージである VIB にマルウェアがパッケージングされている点が挙げられます。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://core.vmware.com/vsphere-esxi-mandiant-malware-persistence&#34;&gt;Protecting vSphere From Specialized Malware&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.mandiant.com/resources/blog/esxi-hypervisors-malware-persistence&#34;&gt;Bad VIB(E)s Part One: Investigating Novel Malware Persistence Within ESXi Hypervisors&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;具体的には以下のような特徴があります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;署名が無い不正な VIB にマルウェアをパッケージング&lt;/li&gt;
+&lt;li&gt;VIB の許容レベルは PartnerSupported に偽装&lt;/li&gt;
+&lt;li&gt;不正な VIB の強制インストールによる永続化&lt;/li&gt;
+&lt;li&gt;ESXi の起動時にマルウェアを rc.local 内のスクリプトから実行&lt;/li&gt;
+&lt;li&gt;VIB やマルウェアのファイル名は ESXi にありそうな名称に偽装&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;このような VIB のインストールによるマルウェアの永続化が vSphere としては過去に類を見ない状況だったため、新しい攻撃手法に対する注意を促す記事となっているようです。&lt;/p&gt;
+&lt;p&gt;マルウェアを利用した攻撃を防ぐにあたって、VMware社からは複数のセキュリティのベストプラクティスが提示されています。その中で、ESXi が侵入された後、不正な VIB のインストールを阻止する手段として UEFI セキュアブートの有効化が案内されています。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/89619&#34;&gt;Mitigation and Threat Hunting Guidance for Unsigned vSphere Installation Bundles (VIBs) in ESXi (89619)&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Mitigation&lt;br&gt;
+In addition to implementing various operational security best practices mentioned in &lt;a href=&#34;https://via.vmw.com/WuZ4jJ&#34;&gt;Protecting vSphere From Specialized Malware&lt;/a&gt; to prevent a potential compromise in the first place, VMware recommends enablement of the &lt;a href=&#34;https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-5D5EE0D1-2596-43D7-95C8-0B29733191D9.html&#34;&gt;Secureboot feature&lt;/a&gt; in ESXi to mitigate the risk of malicious actors persisting on a compromised ESXi host via malicious VIB installation. Secure boot was designed to disallow installation of unsigned VIBs on an ESXi host. In addition, secure boot disallows the --force flag which would normally allow an administrator to bypass acceptance level settings on the ESXi host.&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>execInstalledOnly による ESXi での信頼できないバイナリの実行防止</title>
+      <link>http://localhost:1313/post/2022-09-21/</link>
+      <pubDate>Wed, 21 Sep 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2022-09-21/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;先日 vSphere 8 が発表されましたが、その What&amp;rsquo;s New の中で ESXi 8.0 では execInstalledOnly 起動オプションがデフォルトで有効になるとの記載を確認しています。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://core.vmware.com/resource/whats-new-vsphere-8&#34;&gt;What&amp;rsquo;s New in vSphere 8?&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Prevent execution of untrusted binaries: ESXi 8.0 will turn on the execInstalledOnly option by default. This prevents the execution of binaries that are not installed via a VIB.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;以前の &lt;a href=&#34;http://localhost:1313/post/2022-08-02/&#34;&gt;TPM による ESXi の保護に関する記事&lt;/a&gt;の中で execInstalledOnly 起動オプションの有効化を強制する構成について触れていましたが、実際に execInstalledOnly を有効にすると何が変わるのか見ていきたいと思います。&lt;/p&gt;
+&lt;h2 id=&#34;execinstalledonly-とは&#34;&gt;execInstalledOnly とは？&lt;/h2&gt;
+&lt;p&gt;本オプション単体を説明した情報は少ないですが、以下のドキュメントに記載があります。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-751034F3-5337-4DB2-8272-8DAC0980EACA.html&#34;&gt;ホストと VIB の許容レベルの管理&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注：
+ESXi は、許容レベルによって管理される VIB の整合性チェックを実行します。VMkernel.Boot.execInstalledOnly 設定を使用して、ホストにインストールされている有効な VIB から発信されたバイナリのみを実行するように ESXi に指示できます。この設定をセキュア ブートと組み合わせると、ESXi ホストで実行されるすべてのプロセスが署名され、許可され、想定されるようになります。デフォルトでは、vSphere 7 のパートナーとの互換性のために、VMkernel.Boot.execInstalledOnly 設定は無効になっています。この設定を有効にすると（可能な場合）、セキュリティが向上します。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>【メモ】個人的に気になる VMware Explore 2022 US セッション</title>
+      <link>http://localhost:1313/post/2022-08-28/</link>
+      <pubDate>Sun, 28 Aug 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2022-08-28/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;US 時間で 8/29 から &lt;a href=&#34;https://www.vmware.com/explore/us.html&#34;&gt;VMware Explore 2022 US&lt;/a&gt; が開催されます。自分用のメモですが vSphere 関連の気になるセッションへのリンクをまとめておきます。&lt;/p&gt;
+&lt;h2 id=&#34;vsphere&#34;&gt;vSphere&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://event.vmware.com/flow/vmware/explore2022us/content/page/catalog?search=CEIB1574US&#34;&gt;10 New and Exciting Things About vSphere That You Absolutely Need to Know [CEIB1574US]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://event.vmware.com/flow/vmware/explore2022us/content/page/catalog?search=CEIM2230US&#34;&gt;VMware vSphere – The New Features [CEIM2230US]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://event.vmware.com/flow/vmware/explore2022us/content/page/catalog?search=CEIB1501USD&#34;&gt;What’s New in vMotion and Workload Mobility [CEIB1501USD]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://event.vmware.com/flow/vmware/explore2022us/content/page/catalog?search=CMK2208US&#34;&gt;vSphere+ and vSAN+: The Next Evolution of VMware Enterprise Workload Platform [CMK2208US]&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;performance--resource-management&#34;&gt;Performance &amp;amp; Resource Management&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://event.vmware.com/flow/vmware/explore2022us/content/page/catalog?search=CEIT1097US&#34;&gt;Extreme Performance Series: vSphere Advanced Performance Tutorial [CEIT1097US]&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;storage&#34;&gt;Storage&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://event.vmware.com/flow/vmware/explore2022us/content/page/catalog?search=CEIB2172US&#34;&gt;Get to Know the Next-Generation of vSAN Architecture [CEIB2172US]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://event.vmware.com/flow/vmware/explore2022us/content/page/catalog?search=CEIB1382USD&#34;&gt;Core Storage Best Practice Deep Dive [CEIB1382USD]&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;security&#34;&gt;Security&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://event.vmware.com/flow/vmware/explore2022us/content/page/catalog?search=SECB2350US&#34;&gt;How the vSphere Engineer Became a Critical Part of Modern Security Design [SECB2350US]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://event.vmware.com/flow/vmware/explore2022us/content/page/catalog?search=CEIB3019US&#34;&gt;Deploying Full-Stack Security for Enterprise Workloads with VMware Cloud Foundation [CEIB3019US]&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;troubleshooting&#34;&gt;Troubleshooting&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://event.vmware.com/flow/vmware/explore2022us/content/page/catalog?search=CXS2145US&#34;&gt;Advanced Troubleshooting of ESXi Server 7.x for vSphere Gurus [CXS2145US]&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;project-monterey&#34;&gt;Project Monterey&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://event.vmware.com/flow/vmware/explore2022us/content/page/catalog?search=CEIB2209US&#34;&gt;Accelerate and Secure Your Data Centers with Project Monterey [CEIB2209US]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://event.vmware.com/flow/vmware/explore2022us/content/page/catalog?search=CEIB1450US&#34;&gt;Increase Security and Performance using Project Monterey and NVIDIA DPUs [CEIB1450US]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://event.vmware.com/flow/vmware/explore2022us/content/page/catalog?search=SECB2397USD&#34;&gt;Next-Gen Networking and Security Services Architecture Using SmartNIC [SECB2397USD]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://event.vmware.com/flow/vmware/explore2022us/content/page/catalog?search=CEIB1576US&#34;&gt;Project Monterey Behind the Scenes: A Technical Deep Dive [CEIB1576US]&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;project-capitola&#34;&gt;Project Capitola&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://event.vmware.com/flow/vmware/explore2022us/content/page/catalog?search=VIB1390US&#34;&gt;How Your Future Server Purchase Should Be Ready for Tiered Memory [VIB1390US]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://event.vmware.com/flow/vmware/explore2022us/content/page/catalog?search=CEIB1268USD&#34;&gt;Software Memory Tiering [CEIB1268USD]&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>ESXi の構成情報の暗号化、TPM による追加の保護、TPM 障害からの復旧</title>
+      <link>http://localhost:1313/post/2022-08-02/</link>
+      <pubDate>Tue, 02 Aug 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2022-08-02/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;esxi-70-update-2-以降での構成情報の暗号化&#34;&gt;ESXi 7.0 Update 2 以降での構成情報の暗号化&lt;/h2&gt;
+&lt;p&gt;ESXi 7.0 Update 2 以降では、ブートディスクの盗難などから ESXi を保護するために構成情報が暗号化されるようになっています。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-88CDDC04-73F4-44DB-BEF7-E7847E656E84.html&#34;&gt;ESXi 構成をセキュアにする&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;ESXi は、構成ファイルにシークレットを格納します。これらの構成は、アーカイブ ファイルとして ESXi ホストのブートバンクに保持されます。vSphere 7.0 Update 2 以降、このアーカイブ ファイルは暗号化されています。その結果、たとえ ESXi ホストのストレージに物理的にアクセスできたとしても、攻撃者はこのファイルを直接読み取ったり、変更したりすることはできません。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;以前のリリースでは構成情報のアーカイブ(state.tgz)を tar コマンドで順に展開していけば構成情報が確認できてしまいました。それに対して、現在のリリースでは state.tgz に含まれる local.tgz が暗号化されており、tar コマンドでの単純な展開は出来なくなっています。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# tar xzf /bootbank/state.tgz
+# ls
+encryption.info  local.tgz.ve
+# tar xzf local.tgz.ve
+tar: invalid magic
+tar: short read
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;state.tgz に一緒に含まれる encryption.info には暗号化に使用する鍵を導出するための入力が保存されています。ESXi の再起動時には encryption.info の情報を鍵導出関数(KDF)への入力として鍵を導出し、導出された鍵を使用して復号化を行います。&lt;/p&gt;
+&lt;p&gt;上述のように tar コマンドでの単純な展開はできないものの、この暗号化を突破できない状態はあくまでも「使われている鍵導出関数の詳細がわからない」ことに依存しています&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;。万が一、ESXi のコードが解析されるなどで鍵導出関数の詳細が分かってしまえば「ブートディスクを盗んで state.tgz に含まれる encryption.info から鍵を導出して復号化」といった状況も想定できます。&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;http://localhost:1313/images/2022-08-02/esxi_configuration_encryption_without_tpm.drawio.png&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>vSphere Diagnostic Tool を使ってみる</title>
+      <link>http://localhost:1313/post/2022-05-04/</link>
+      <pubDate>Wed, 04 May 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2022-05-04/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;今回の記事では vCenter Server の構成やサービスの問題などのチェックが行える &lt;a href=&#34;https://flings.vmware.com/&#34;&gt;VMware Flings&lt;/a&gt; のツール「vSphere Diagnostic Tool」を紹介したいと思います。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://flings.vmware.com/vsphere-diagnostic-tool&#34;&gt;vSphere Diagnostic Tool&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href=&#34;https://flings.vmware.com/vsphere-diagnostic-tool/license&#34;&gt;Tech Preview License&lt;/a&gt; のため商用サポートなどはないものの、vCenter Server の様々な項目のサマリーを収集できるため障害調査の初動対応に有用だと思います。現時点では以下の項目がチェックできるようです。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The tool itself is currently a set of self contained python and bash scripts that can perform the following tests for vCenter Server Appliance 6.5 or newer:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;vCenter Basic Info&lt;/li&gt;
+&lt;li&gt;Lookup Service Check&lt;/li&gt;
+&lt;li&gt;AD Check&lt;/li&gt;
+&lt;li&gt;vCenter Certificate Check&lt;/li&gt;
+&lt;li&gt;Core File Check&lt;/li&gt;
+&lt;li&gt;Disk Check&lt;/li&gt;
+&lt;li&gt;vCenter DNS Check&lt;/li&gt;
+&lt;li&gt;vCenter NTP Check&lt;/li&gt;
+&lt;li&gt;vCenter Port Check&lt;/li&gt;
+&lt;li&gt;Root Account Check&lt;/li&gt;
+&lt;li&gt;vCenter Services Check&lt;/li&gt;
+&lt;li&gt;VCHA Check&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;p&gt;今回の記事では実際に vCenter Server に障害を発生させてみて、vSphere Diagnostic Tool でどのような情報が取れるのか見てみたいと思います。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>【メモ】VMFS 6 上のシック形式の仮想ディスクには vmkfstools -K (--punchzero) が効かない</title>
+      <link>http://localhost:1313/post/2022-04-26/</link>
+      <pubDate>Tue, 26 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2022-04-26/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;VMFS5 以前の VMFS データストアでは、シックプロビジョニングの仮想ディスクに vmkfstools -K コマンドを実行することで、ゼロクリアされたブロックの削除とシンプロビジョニングへの変換がおこなえました。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.storage.doc/GUID-CBF31A6B-B36F-4552-B512-CC92B1943902.html&#34;&gt;ゼロクリアされたブロックの削除&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;vmkfstools コマンドを使用して、ゼロクリアされたブロックを削除します。&lt;/p&gt;
+&lt;p&gt;-K|--punchzero&lt;/p&gt;
+&lt;p&gt;このオプションは、ゼロクリアされたすべてのブロックの割り当てを解除し、割り当て済みで有効なデータを含むブロックだけを残します。処理後の仮想ディスクはシン フォーマットになります。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;VMFS6 ではシックプロビジョニングの仮想ディスクに対して vmkfstools -K の実行がサポートされなくなっています。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/2004155&#34;&gt;Storage vMotion to thin disk does not reclaim null blocks (2004155)&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;Erase all unused blocks by running the command:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;vmkfstools -K /path/to/disk-name.vmdk&lt;/p&gt;
+&lt;p&gt;Note: The punchzero (vmkfstools -K) command is not compatible with NFS datastores. &lt;strong&gt;This command is also not supported for thick provisioned disks on VMFS6&lt;/strong&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h2 id=&#34;実際に試してみる&#34;&gt;実際に試してみる&lt;/h2&gt;
+&lt;p&gt;実際に VMFS6 上のシックプロビジョニングの仮想ディスクに vmkfstools -K コマンドを実行すると Function not implemented のエラーとなり、サポートされていないことが分かります。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>「偽装転送」ポリシーでフレームがドロップされる仕組み</title>
+      <link>http://localhost:1313/post/2022-03-06/</link>
+      <pubDate>Sun, 06 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2022-03-06/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;今回の記事では仮想スイッチの「偽装転送」ポリシーについて動作の概要や、ポリシー違反が発生する具体的なケースを見ていきます。&lt;/p&gt;
+&lt;p&gt;「偽装転送」ポリシーにより仮想マシンから送信されるフレームの送信元 MAC アドレスのなりすましを防ぐことが可能になります。ただし、特定のネットワーク構成では本ポリシーを「承諾」とする必要があります。&lt;/p&gt;
+&lt;h2 id=&#34;偽装転送ポリシー&#34;&gt;「偽装転送」ポリシー&lt;/h2&gt;
+&lt;p&gt;「偽装転送」ポリシーは仮想マシンから送出されるフレームのうち、送信元 MAC アドレスが書き換えられているフレームをドロップする機能です。具体的には以下の2つの MAC アドレスが一致しない場合は仮想マシンから送信されるフレームをドロップします。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;送出されたフレームの送信元 MAC アドレス&lt;/li&gt;
+&lt;li&gt;仮想ネットワークアダプタの有効な MAC アドレス&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;初期 MAC アドレスと有効な MAC アドレスの違いは&lt;a href=&#34;http://localhost:1313/post/2022-02-23/&#34;&gt;前回の記事&lt;/a&gt;を参照してください。&lt;/p&gt;
+&lt;h2 id=&#34;送信元-mac-アドレスの偽装&#34;&gt;送信元 MAC アドレスの偽装&lt;/h2&gt;
+&lt;p&gt;最も単純な例としては、ゲストOSから送信元 MAC アドレスを書き換えたフレームを実際に送信してみることです。以下、パケット操作ツールである &lt;a href=&#34;https://scapy.net/&#34;&gt;Scapy&lt;/a&gt; のインタラクティブシェルを使って送信元 MAC アドレスを偽装したフレームを送信してみます。&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;http://localhost:1313/images/2022-03-06/forged_transmit_policy_scapy.png&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# pip install scapy
+# scapy
+  ...
+&amp;gt;&amp;gt;&amp;gt; sendp(Ether(src=&amp;#34;00:11:22:33:44:55&amp;#34;)/IP(dst=&amp;#34;192.168.0.1&amp;#34;))
+.
+Sent 1 packets.
+&amp;gt;&amp;gt;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;ESXi 側で pktcap-uw を仕掛けておきフレームをキャプチャすると、以下のように「偽装転送」ポリシーによってドロップされた状況が確認できます。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# pktcap-uw --capture Drop
+The session capture point is Drop.
+  ...
+16:39:48.479640[1] Captured at Drop point, Drop Reason &amp;#39;MAC Forgery Drop&amp;#39;. Drop Function &amp;#39;L2Sec_FilterSrcMACForgeries&amp;#39;. TSO not enabled, Checksum not offloaded and not verified, SourcePort 67108984, length 60.
+        Segment[0] ---- 60 bytes:
+        0x0000:  001b 8bae d28a 0011 2233 4455 0800 4500
+        0x0010:  001c 0001 0000 4001 f98a c0a8 0004 c0a8
+        0x0020:  0001 0800 f7ff 0000 0000 0000 0000 0000
+        0x0030:  0000 0000 0000 0000 0000 0000
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;フレームの送信元 MAC アドレスが書き換えられる例としては Microsoft NLB のユニキャストモードがあります。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>初期 MAC アドレス、有効な MAC アドレス、「MAC アドレス変更」ポリシー</title>
+      <link>http://localhost:1313/post/2022-02-23/</link>
+      <pubDate>Wed, 23 Feb 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2022-02-23/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;vSphere では仮想スイッチで利用可能なセキュリティポリシーとして以下の3種類があります。これらのセキュリティポリシーを使用することで、MAC アドレスのなりすましのような L2 レイヤーの攻撃からネットワークを保護できます。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-942BD3AA-731B-4A05-8196-66F2B4BF1ACB.html&#34;&gt;MAC アドレス変更&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-7DC6486F-5400-44DF-8A62-6273798A2F80.html&#34;&gt;偽装転送&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-92F3AB1F-B4C5-4F25-A010-8820D7250350.html&#34;&gt;無差別モード操作&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;ただし、特定のネットワーク構成ではセキュリティポリシーの無効化が必要なケースがあります。セキュリティ機能が適切に構成されないと意図せずシステムに脆弱性を作り込んでしまう可能性もあるため、セキュリティ機能の仕様や動作を理解した上で適切に構成する必要があります。&lt;/p&gt;
+&lt;p&gt;今回の記事では「MAC アドレス変更」のセキュリティポリシーと、その前提知識としての初期 MAC アドレス・有効な MAC アドレスについて、簡易的な検証も交えつつ実際の動作を確認していきます。&lt;/p&gt;
+&lt;h2 id=&#34;仮想ネットワークアダプタの2種類の-mac-アドレス&#34;&gt;仮想ネットワークアダプタの2種類の MAC アドレス&lt;/h2&gt;
+&lt;p&gt;vSphere の文脈では、仮想ネットワークアダプタの MAC アドレスとして以下の2つを定義しています。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;初期 MAC アドレス (Initial MAC Address)&lt;/li&gt;
+&lt;li&gt;有効な MAC アドレス (Effective MAC Address)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;「MAC アドレス変更」のセキュリティポリシーの理解にあたってはこれらの理解が必須になるため、以下それぞれの概要を記載します。&lt;/p&gt;
+&lt;h3 id=&#34;初期-mac-アドレス-initial-mac-address&#34;&gt;初期 MAC アドレス (Initial MAC Address)&lt;/h3&gt;
+&lt;p&gt;初期 MAC アドレスは、仮想マシンの設定や vmx ファイルで確認できる仮想ネットワークアダプタ自体の MAC アドレスです。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-3507432E-AFEA-4B6B-B404-17A020575358.html&#34;&gt;vSphere 標準スイッチのセキュリティ強化&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;初期 MAC アドレス&lt;br&gt;
+初期 MAC アドレスは、アダプタの作成時に割り当てられます。初期 MAC アドレスは、ゲスト OS の外部から再構成できますが、ゲスト OS により変更することはできません。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;http://localhost:1313/images/2022-02-23/mac_address_change_001.PNG&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>esxcli を使用したログフィルタリングの構成</title>
+      <link>http://localhost:1313/post/2022-02-04/</link>
+      <pubDate>Fri, 04 Feb 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2022-02-04/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;ESXi 7.0 Update 2 以降では /etc 配下の多くのファイルが読み取り専用となっていますが、その中にはログのフィルタを記載する logfilters ファイルも含まれています。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/82638&#34;&gt;ESXi configuration files for sfcb snmp and wbem can no longer be edited (82638)&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The ESXi configuration files /etc/sfcb/sfcb.cfg, /etc/vmware/snmp.xml, /etc/vmsyslog.conf, /etc/vmware/logfilters and /etc/vmsyslog.conf.d/*.conf can no longer be edited.
+It is no longer possible to make changes to snmp, sfcb/wbem, or syslog by editing these config files. From ESXi 7.0 Update 2, files under /etc are read-only and edits do not persist across reboot.&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>【備忘録】Intel NUC 10 の SATA ケーブルを交換した話</title>
+      <link>http://localhost:1313/post/2022-01-30/</link>
+      <pubDate>Sun, 30 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2022-01-30/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;Intel NUC 10 (NUC10i7FNH) で ESXi 7.0 を動かしているのですが、SATA ケーブルが故障したため互換品に交換しました。&lt;/p&gt;
+&lt;p&gt;使用した NUC 10 互換の SATA ケーブルは以下です。色々と調べましたが NUC 10/11 向けはこれしか無いようでした&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.amazon.com/gp/product/B0931VSHX4&#34;&gt;Intel NUC Internal FPC/FCC 22 Pin SATA/Power Cable for 2.5 Inch Drives&lt;/a&gt; (&lt;a href=&#34;https://www.microsatacables.com/intel-nuc-internal-fpc-fcc-22-pin-sata-power-cable-for-2-5-inch-drives&#34;&gt;Micro Sata Cables&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;なお、NUC の購入証明があれば Intel のサポートに依頼するといったことは出来るらしいです。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://gigazine.net/news/20211226-nuc-repair/&#34;&gt;Intelのベアボーンキット「BXNUC10I7FNH」が壊れたので修理に出してみた - GIGAZINE&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://qiita.com/god19/items/0e4d987c8bbf70458c31&#34;&gt;NUC 電源トラブル - Qiita&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;ただ、そもそも ESXi は NUC のサポート外 OS であり、加えて今回の壊れ方も中途半端なものだったため、サポート対象 OS での再現確認や Intel サポートとのコミュニケーションなどの手間や時間的なコストが高くつきそうです。このため自前で保守することにしました。&lt;/p&gt;
+&lt;p&gt;当然ながらサポートされる方法ではありませんので交換は自己責任でお願いします。&lt;/p&gt;
+&lt;h2 id=&#34;背景&#34;&gt;背景&lt;/h2&gt;
+&lt;p&gt;事の発端は SATA 接続の 2.5 インチ SSD 上の VMFS データストアにコールド移行や OVF テンプレートのデプロイを実行したところエラーで失敗したことです。再現性があるので esxtop のストレージ関連のパネルを眺めてみると、ディスクへの書き込み自体は始まっているものの、しばらくするとタスクのエラーと同時に書き込みが止まるような状況でした。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>REST API で VCSA をバックアップからリストアする</title>
+      <link>http://localhost:1313/post/2022-01-10/</link>
+      <pubDate>Mon, 10 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2022-01-10/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;http://localhost:1313/post/2022-01-07/&#34;&gt;前回の記事&lt;/a&gt;では OVFTool で vCenter Server Appliance (以下 VCSA) をデプロイしました。今回の記事では VCSA のインストールのステージ1が完了したところから、REST API を使って vCenter Server のリストアを実行してみます。&lt;/p&gt;
+&lt;h2 id=&#34;なぜ-api-でやろうと思ったのか&#34;&gt;なぜ API でやろうと思ったのか&lt;/h2&gt;
+&lt;p&gt;vCenter Server 7.0 Update 3 時点で、VCSA の CLI インストーラにはリストアの機能だけ存在しません。VMware Docs には GUI インストーラを使う手順と、vSphere Client で OVA のデプロイ後に VAMI からステージ2を実行する方法のみが書いてあります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vcenter.install.doc/GUID-F02AF073-7CFD-45B2-ACC8-DE3B6ED28022.html&#34;&gt;ファイルベースのバックアップからの vCenter Server のリストア&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vcenter.install.doc/GUID-1E39EF05-1DD7-4E9B-B9FE-6F373AA81862.html&#34;&gt;ステージ 1 - 新しいアプライアンスをデプロイ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;インストール、アップグレード、マイグレーションは CLI インストーラでも可能になっています。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vcenter.install.doc/GUID-C17AFF44-22DE-41F4-B85D-19B7A995E144.html&#34;&gt;vCenter Server アプライアンスの CLI デプロイ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vcenter.upgrade.doc/GUID-97BA3A0E-CFCB-407D-81FD-FB91AE46786F.html&#34;&gt;vCenter ServerAppliance の CLI アップグレード&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vcenter.upgrade.doc/GUID-AFDCE942-516E-4C5B-ADBF-C1237C9BBA80.html&#34;&gt;CLI による Windows からアプライアンスへの vCenter Serverインストールの移行&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;このため、リストアだけコマンドラインで出来ないのもなぁ・・・と思ったのが API でやってみようとした発端です。&lt;/p&gt;
+&lt;h2 id=&#34;事前準備&#34;&gt;事前準備&lt;/h2&gt;
+&lt;p&gt;事前準備として、以下の2点を実施しておきます。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>OVFTool で vCenter Server Appliance をインストールする</title>
+      <link>http://localhost:1313/post/2022-01-07/</link>
+      <pubDate>Fri, 07 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2022-01-07/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;vCenter Server Appliance (以下 VCSA) の GUI インストールはステージ1とステージ2に分かれていますが、ステージ1では VCSA の OVA ファイルのインポートが行われています。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vcenter.install.doc/GUID-86FD9381-88B0-40F1-B516-6CC782ED9A14.html&#34;&gt;GUI を使用した vCenter Serverアプライアンスのデプロイ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;今回の記事では GUI/CLI インストーラを使わずに、OVFTool のみを使用して vCenter Server 7.0 Update 3 のインストールを試してみたいと思います。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://developer.vmware.com/web/tool/4.4.0/ovf&#34;&gt;Open Virtualization Format Tool (ovftool)&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;インストールのステージ2まで自動実行&#34;&gt;インストールのステージ2まで自動実行&lt;/h2&gt;
+&lt;p&gt;良い感じに OVF プロパティなどまとまっている情報がないか調べていたところ、以下の KB2110081 に OVFTool で VCSA をデプロイするコマンドのサンプルがありました。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/2110081&#34;&gt;Creating vSAN clusters up to 64 nodes (2110081)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;KB2110081 は 32 ノード以上の vSAN を構成する場合の手順ですが、OVFTool のオプションなどは値を入れ替えればそのまま使えるので拝借しました。&lt;/p&gt;
+&lt;p&gt;Linux で OVFTool を実行する前提で、整形したりオプションを並べ替えたものが以下です。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;ovftool --skipManifestCheck --noSSLVerify --allowExtraConfig --acceptAllEulas --powerOn --sourceType=OVA --overwrite \
+  --X:injectOvfEnv --X:enableHiddenProperties --X:logLevel=verbose --X:logTransferHeaderData --X:waitForIp \
+  --name=vcsa01_jangari_lab \
+  --datastore=local-vmfs \
+  --deploymentOption=tiny \
+  --diskMode=thin \
+  --network=Management \
+  --prop:guestinfo.cis.deployment.autoconfig=True \
+  --prop:guestinfo.cis.deployment.node.type=embedded \
+  --prop:guestinfo.cis.system.vm0.port=443 \
+  --prop:guestinfo.cis.appliance.net.addr.family=ipv4 \
+  --prop:guestinfo.cis.appliance.net.mode=static \
+  --prop:guestinfo.cis.appliance.net.pnid=vcsa01.jangari.lab \
+  --prop:guestinfo.cis.appliance.net.addr=192.168.0.119 \
+  --prop:guestinfo.cis.appliance.net.prefix=24 \
+  --prop:guestinfo.cis.appliance.net.gateway=192.168.0.1 \
+  --prop:guestinfo.cis.appliance.net.dns.servers=192.168.0.189 \
+  --prop:guestinfo.cis.appliance.ntp.servers=ntp.nict.jp \
+  --prop:guestinfo.cis.appliance.ssh.enabled=True \
+  --prop:guestinfo.cis.appliance.root.passwd=VMware1! \
+  --prop:guestinfo.cis.appliance.root.shell=/bin/appliancesh \
+  --prop:guestinfo.cis.vmdir.site-name=Default-First-Site \
+  --prop:guestinfo.cis.vmdir.domain-name=vsphere.local \
+  --prop:guestinfo.cis.vmdir.password=VMware1! \
+  --prop:guestinfo.cis.vmdir.first-instance=True \
+  --prop:guestinfo.cis.ceip_enabled=True \
+  /media/vcsa/VMware-vCenter-Server-Appliance-7.0.3.00200-18901211_OVF10.ova \
+  vi://root:VMware1\!@esxi-01.tanzu.local:443/
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;上述のコマンドを実行すると CLI インストーラと同様に、vCenter Server のインストールのステージ2まで実行されます。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>vc_log4j_mitigator.py での CVE-2021-44228 &amp; CVE-2021-45046 への対処</title>
+      <link>http://localhost:1313/post/2021-12-26/</link>
+      <pubDate>Sun, 26 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2021-12-26/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;Log4j 2.x の脆弱性 (CVE-2021-44228 &amp;amp; CVE-2021-45046) が話題ですが、12/20 に vCenter Server に関する KB87081 と KB87096 が更新され、vc_log4j_mitigator.py の実行のみで対処が可能になっています。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/87081&#34;&gt;Workaround instructions to address CVE-2021-44228 and CVE-2021-45046 in vCenter Server and vCenter Cloud Gateway (87081)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/87096&#34;&gt;Workaround instructions to address CVE-2021-44228 &amp;amp; CVE-2021-45046 in vCenter Server Windows (87096)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;本記事では vc_log4j_mitigator.py を使用して vCenter Server に CVE-2021-44228 &amp;amp; CVE-2021-45046 への対処を実施していきます。&lt;/p&gt;
+&lt;h2 id=&#34;本記事を読む前の注意点&#34;&gt;本記事を読む前の注意点&lt;/h2&gt;
+&lt;p&gt;本脆弱性に関する VMware Security Advisories や各製品の KB は頻繁に更新されており、公開当初から相当な更新や追記が行われています。本記事に記載されている情報は 12/26 時点の情報となり、記事中で対処を行っている環境は vCenter Server Appliance 7.0 Update 3a のため、記事の閲覧時点で異なる部分が発生している可能性もあります。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>PowerCLI を使って ESXi の忘れた root パスワードをリセットする</title>
+      <link>http://localhost:1313/post/2021-12-16/</link>
+      <pubDate>Thu, 16 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2021-12-16/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;http://localhost:1313/post/2021-12-14/&#34;&gt;前回の記事&lt;/a&gt;ではホストプロファイルで ESXi の root ユーザーのパスワードをリセットしました。&lt;/p&gt;
+&lt;p&gt;今回の記事は PowerCLI を使用し vCenter Server 経由で ESXi の root ユーザーのパスワードをリセットしてみます。ホストプロファイルは vSphere Enterprise Plus が必要となる機能ですが、PowerCLI は vSphere Essentials 以上の全てのエディションで使用可能です。&lt;/p&gt;
+&lt;p&gt;なお、前回の記事と同様に ESXi が vCenter Server に管理・接続されていることが前提となります。&lt;/p&gt;
+&lt;h2 id=&#34;esxi-のローカルユーザーの管理&#34;&gt;ESXi のローカルユーザーの管理&lt;/h2&gt;
+&lt;p&gt;ESXi のローカルユーザーを管理する手段としては主に以下の2つがあります。vCenter Server のユーザーが ESXi のローカルユーザーを直接管理することはできません。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Host Client を使用する&lt;/li&gt;
+&lt;li&gt;esxcli system account コマンドを使用する&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;今回は PowerCLI を使用して後者の esxcli を呼び出すことで ESXi のローカルユーザーを操作します。&lt;/p&gt;
+&lt;p&gt;なお、esxcli system account コマンドは vSphere 6.0 のリリースから追加されています。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://vdc-download.vmware.com/vmwb-repository/dcr-public/5068a138-314e-45c3-87cf-e4c8c3d72df7/a31b6594-284f-4c9f-81d5-c37e737cc3fa/vsp6_60_vcli_relnotes.html&#34;&gt;vSphere Command-Line Interface 6.0 Release Notes&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;ESXCLI new and changed commands — New commands have been added and one command has changed.&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>ホストプロファイルを使って ESXi の忘れた root パスワードをリセットする</title>
+      <link>http://localhost:1313/post/2021-12-14/</link>
+      <pubDate>Tue, 14 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2021-12-14/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;ESXi の root ユーザーのパスワードを忘れてしまった場合、基本的には ESXi の再インストールが必要になりますが、vSphere Enterprise Plus のライセンスを持っている場合、vCenter Server のホストプロファイルを使用することでパスワードのリセット(上書き)が可能です。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/1317898&#34;&gt;Steps to reset a lost or forgotten root password of an ESX/ESXi host (1317898)&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Reinstalling the ESXi host is the only supported way to reset a password on ESXi. From ESXi 4.1 onwards, the host profile feature was introduced.
+If the host is managed by vCenter and is still connected, you can the reset by leveraging the host profile feature. For Host Profile feature you must have Enterprise Plus Licensing -  For more information refer to KB : &lt;a href=&#34;https://kb.vmware.com/s/article/68079&#34;&gt;Reset ESXi Root Password with Host Profile&lt;/a&gt;&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>【小ネタ】vCenter Server 7.0 Update 3 でイベントのエクスポート機能が追加</title>
+      <link>http://localhost:1313/post/2021-11-13/</link>
+      <pubDate>Sat, 13 Nov 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2021-11-13/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;http://localhost:1313/post/2020-08-01/&#34;&gt;以前の記事&lt;/a&gt;で vCenter Server 7.0 でイベントをエクスポートする方法をいくつか記載していました。&lt;/p&gt;
+&lt;p&gt;リリースノートなどに情報が載っていなかったのですが、vCenter Server 7.0 Update 3 で vSphere Client のイベントコンソールでのイベント一覧のエクスポート機能が追加されたようです。&lt;/p&gt;
+&lt;p&gt;VMware Docs にもエクスポートに関するドキュメントが追加されていました。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.monitoring.doc/GUID-1A7FF15C-FC88-4BEF-B5AB-4BDA54D17F96.html&#34;&gt;vSphere Client 内のイベントのエクスポート&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;ドキュメントの更新日が VC 7.0 U3 のリリースより2ヶ月ほど古いのが気になりますが、少なくとも直前の VC 7.0 U2d で確認する限り本機能は未実装のようだったので、VC 7.0 U3 で追加された機能と考えて良さそうです。&lt;/p&gt;
+&lt;h2 id=&#34;イベントのエクスポート手順&#34;&gt;イベントのエクスポート手順&lt;/h2&gt;
+&lt;p&gt;vSphere Client のインベントリで、各オブジェクトの [監視] タブ &amp;gt; [イベント] から [エクスポート] をクリックすると、&amp;ldquo;ExportEventsLog.csv.csv&amp;rdquo; といったファイル名でダウンロードが始まります。&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;http://localhost:1313/images/2021-11-13/event-export.PNG&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;注意点&#34;&gt;注意点&lt;/h2&gt;
+&lt;p&gt;エクスポートされるイベントは一覧に表示されている1ページ分のみなので、表示件数に指定できる100件がエクスポート可能な最大件数となります。それ以上の件数や期間を指定してエクスポートしたい場合、現状ではやはり PowerCLI などを使う必要がありそうです。&lt;/p&gt;
+&lt;p&gt;また、試した限りでは列のフィルタを行った後にエクスポートを行ってもエクスポート結果は変わらないようでした。アラームがトリガーされた際のイベントやステータスが警告のイベントのみ抽出してエクスポート、といったことはできないようです。&lt;/p&gt;
+&lt;h2 id=&#34;おわりに&#34;&gt;おわりに&lt;/h2&gt;
+&lt;p&gt;今回は vCenter Server 7.0 Update 3 で追加されていたイベントのエクスポート機能を試してみました。表示中の1ページ分ですがエクスポートが行えるようになったので、簡易的なイベントのエクスポートには使えそうかなと感じます。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>PowerCLI の vSphere Automation API SDK モジュールで vCenter Server のマシン SSL 証明書を更新する</title>
+      <link>http://localhost:1313/post/2021-09-18/</link>
+      <pubDate>Sat, 18 Sep 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2021-09-18/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;http://localhost:1313/post/2021-03-29/&#34;&gt;以前の記事&lt;/a&gt;で REST API を使って vCenter Server のマシン SSL 証明書を置き換えていましたが、先日の PowerCLI 12.4 のリリースで PowerCLI のコマンドレットが追加されました。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://blogs.vmware.com/PowerCLI/2021/09/powercli-12-4-whats-new.html&#34;&gt;PowerCLI 12.4 – What’s New&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The new vSphere Management Module
+A new module is introduced for vSphere Management. It is a PowerShell-based module backed by the newly introduced vSphere Automation API SDK modules. &amp;hellip; Currently, the module contains 6 cmdlets to complement certificate management. Explore the cmdlet documentation to know more.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Add-VITrustedCertificate&lt;/li&gt;
+&lt;li&gt;Get-VIMachineCertificate&lt;/li&gt;
+&lt;li&gt;Get-VITrustedCertificate&lt;/li&gt;
+&lt;li&gt;New-VIMachineCertificateSigningRequest&lt;/li&gt;
+&lt;li&gt;Remove-VITrustedCertificate&lt;/li&gt;
+&lt;li&gt;Set-VIMachineCertificate&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;p&gt;PowerCLI のリファレンスを見ると &lt;a href=&#34;https://developer.vmware.com/docs/powercli/latest/vmware.powercli.vcenter/commands/set-vimachinecertificate/#VCenter&#34;&gt;Set-VIMachineCertificate&lt;/a&gt; コマンドレットによりカスタム証明書でマシン SSL 証明書を置き換えることが出来るようです。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>【Tips】共有ストレージなし＆VCSA デプロイ済みのクラスタで EVC を有効にする【自宅ラボ用】</title>
+      <link>http://localhost:1313/post/2021-08-17/</link>
+      <pubDate>Tue, 17 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2021-08-17/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;背景&#34;&gt;背景&lt;/h2&gt;
+&lt;p&gt;仮想マシンとしてデプロイされた vCenter Server が存在するクラスタ上で EVC を有効にする場合、KB2147821 のように EVC がそれぞれ無効／有効な2つのクラスタを用意し、そのクラスタ間で vCenter Server 仮想マシンをインベントリ上で再登録する必要があります。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/2147821?lang=ja&#34;&gt;vCenter Server 6.5 および 6.7 で vCenter Server 自身の仮想マシンが実行されるクラスタの EVC を有効にする方法 (2147821)&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;先日、Intel NUC 10 1台で構成していた自宅ラボに Intel NUC 11 の ESXi 7.0 を追加したため EVC を有効にしようとしたのですが、共有ストレージを用意していなかったためホスト間でのインベントリの再登録が行えませんでした。&lt;/p&gt;
+&lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;遊びで使っている自宅ラボでの EVC の有効化のためだけに共有ストレージを追加するのも面倒でしたので、以下のような少々トリッキーな手段で EVC を有効にしてみました。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;vCenter Server 仮想マシンを停止＆スナップショットを作成&lt;/li&gt;
+&lt;li&gt;ハードウェアバージョン14以降へのアップグレード&lt;/li&gt;
+&lt;li&gt;仮想マシンに Per-VM EVC のパラメータを追加&lt;/li&gt;
+&lt;li&gt;vCenter Server 仮想マシンをパワーオンしてクラスタの EVC を有効化&lt;/li&gt;
+&lt;li&gt;1.のスナップショットにリストアして再度クラスタの EVC を有効化&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;vCenter Server 仮想マシンが存在するクラスタ上で EVC を有効にする場合、vCenter Server 仮想マシン自身の CPU 互換性が問題になります。&lt;/p&gt;
+&lt;p&gt;一度クラスタで EVC を構成してしまえば vCenter Server が停止していてもホストの EVC モードは維持されるので、手作業で vCenter Server 仮想マシンの CPUID をマスクした後、クラスタの EVC を構成し、作業前のスナップショットにリストアすることで vCenter Server 仮想マシンをクラスタの EVC モードで起動させます。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>【メモ】ESXi 7.0 の Kickstart の %post で boot.cfg を触る</title>
+      <link>http://localhost:1313/post/2021-08-07/</link>
+      <pubDate>Sat, 07 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2021-08-07/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;http://localhost:1313/post/2020-08-23/&#34;&gt;以前の Nested ESXi の記事&lt;/a&gt;や &lt;a href=&#34;https://kb.vmware.com/s/article/2149444?lang=ja&#34;&gt;KB2149444&lt;/a&gt; 等でも言及されていますが、ESXi のブートオプションは /bootbank/boot.cfg の kernelopt 行に記載されます。&lt;/p&gt;
+&lt;p&gt;ESXi は &lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/6.5/com.vmware.vsphere.install.doc/GUID-870A07BC-F8B4-47AF-9476-D542BA53F1F5.html&#34;&gt;キックスタートファイルを使用した自動インストール&lt;/a&gt;が可能なので、%post や %firstboot のセクションで編集できないかと思い、各セクションで以下のような sed コマンドを実行して試してみました。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;sed -i &amp;#34;s/kernelopt=.*/kernelopt=autoPartition=FALSE allowLegacyCPU=true/&amp;#34; /bootbank/boot.cfg
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;今回の環境は ESXi 7.0 Update 2 です。&lt;/p&gt;
+&lt;h2 id=&#34;結果&#34;&gt;結果&lt;/h2&gt;
+&lt;p&gt;%firstboot セクションでは sed により boot.cfg の内容が置換されました。しかし、%post セクションでは sed の実行がエラーになり置換されませんでした。&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;http://localhost:1313/images/2021-08-07/esxi-ks-post-failed.PNG&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;原因&#34;&gt;原因&lt;/h2&gt;
+&lt;p&gt;sed コマンドがエラーになっていることから /bootbank の状態が気になるので、ks.cfg 内で以下のコマンドを実行して %post の時の状態を覗いてみました。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;%post --interpreter=busybox
+ls -laR / &amp;gt; /vmfs/volumes/datastore1/_ks_post_ls_-laR.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;結果としては、%post 時点では /bootbank のリンク先が /tmp になっていました。また、/tmp には boot.cfg が存在していなかったので、/bootbank/boot.cfg が無いために sed がエラーになっていることが分かりました。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;/:
+total 885
+drwxr-xr-x    1 root     root           512 Aug  6 14:54 .
+drwxr-xr-x    1 root     root           512 Aug  6 14:54 ..
+-r--r--r--    1 root     root            20 Feb 17 23:19 .mtoolsrc
+drwxr-xr-x    1 root     root           512 Aug  6 14:51 bin
+lrwxrwxrwx    1 root     root             4 Aug  6 14:54 bootbank -&amp;gt; /tmp
+
+/tmp:
+total 204
+drwxrwxrwt    1 root     root           512 Aug  6 14:57 .
+drwxr-xr-x    1 root     root           512 Aug  6 14:54 ..
+drwx------    1 root     root           512 Aug  6 14:52 _bootbank4uex0li5
+-rwx------    1 root     root            51 Aug  6 14:57 ks-script
+drwxr-xr-x    1 root     root           512 Aug  6 14:57 onetime
+-rw-r--r--    1 root     root        175616 Aug  6 14:57 onetime.tar
+drwxr-xr-x    1 root     root           512 Aug  6 14:54 scratch
+drwx------    1 root     root           512 Aug  6 14:51 vmware-root
+drwx------    1 root     root           512 Aug  6 14:52 vmware-root_67638-4085508114
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;対処&#34;&gt;対処&lt;/h2&gt;
+&lt;p&gt;%post 時点でも /vmfs/volumes/BOOTBANK1 と /vmfs/volumes/BOOTBANK2 は各 Bootbank にシンボリックリンクが張られていたので、それらのパスを指定すれば問題なさそうでした。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>PTP を使用して ESXi を時刻同期する</title>
+      <link>http://localhost:1313/post/2021-06-20/</link>
+      <pubDate>Sun, 20 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2021-06-20/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;前回の記事では vSphere 7 で実装された PTP 関連の機能のうち、仮想マシンのプレシジョンクロックデバイスを取り上げました。今回の記事ではもう一つの機能である ESXi の PTP による時刻同期を試してみたいと思います。&lt;/p&gt;
+&lt;p&gt;なお、PTP のプロトコルの概要は省きますが、&lt;a href=&#34;http://localhost:1313/post/2021-06-10/#ptp-precision-time-protocol&#34;&gt;前回の記事&lt;/a&gt;で挙げた参考 URL のほか、Cisco の有志の方が書かれている以下の記事も参考になると思います。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://qiita.com/nkawabat/items/87223d4d8fbf633db958&#34;&gt;【初心者向け】時刻同期101 - PTP の基本動作&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;グランドマスタークロックのセットアップ&#34;&gt;グランドマスタークロックのセットアップ&lt;/h2&gt;
+&lt;h3 id=&#34;前置き今回の記事の構成&#34;&gt;前置き：今回の記事の構成&lt;/h3&gt;
+&lt;p&gt;本来はグランドマスタークロックとして PTP 対応の原子時計などを用意し、境界クロック(BC)やトランスペアレントクロック(TC)として機能するスイッチなどを経由して、末端のスレーブクロックに接続することでマイクロ秒～ナノ秒レベルの同期精度が維持されます。&lt;/p&gt;
+&lt;p&gt;今回の記事では単純な機能のテスト目的のため、グランドマスタークロックを仮想マシンの CentOS 8 Stream ＋ ptp4l で用意し、ESXi と同じネットワークセグメントに接続するだけの構成としています。&lt;/p&gt;
+&lt;p&gt;クロック精度のハードウェア支援や BC/TC も無いため同期精度は完全に無視していますので、あくまでもテスト目的であり、決して本番環境向けの構成ではないことを予めご認識おきください。&lt;/p&gt;
+&lt;h3 id=&#34;セットアップ手順&#34;&gt;セットアップ手順&lt;/h3&gt;
+&lt;p&gt;まずは CentOS 8 Stream をインストールした後、linuxptp パッケージをインストールします。linuxptp パッケージに PTPv2 を実装したプログラム(ptp4l 等)が含まれています。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# yum install linuxptp&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;次に、ソフトウェアタイムスタンプを利用するよう ptp4l を構成します。ptp4l.conf の time_stamping オプションを hardware から software に編集することで可能です。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# vi /etc/ptp4l.conf&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;略&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;time_stamping           software
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;また、適切な NIC を使用するように ptp4l の -i オプションを指定します。/etc/sysconfig/ptp4l を編集することで可能です。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>プレシジョンクロックデバイスで ESXi とゲストOSを時刻同期</title>
+      <link>http://localhost:1313/post/2021-06-10/</link>
+      <pubDate>Thu, 10 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2021-06-10/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;vSphere 7.0 ではゲストの時刻同期に関する新機能としてプレシジョンクロックデバイスという新しい仮想デバイスが追加されています。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://blogs.vmware.com/apps/2020/04/highlights-of-new-features-and-improvements-in-vsphere-7-vsan-7-nsx-t-3-for-high-performance-computing-and-machine-learning.html&#34;&gt;Highlights of New Features and Improvements in vSphere 7/vSAN 7/NSX-T 3 for High Performance Computing and Machine Learning&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.vm_admin.doc/GUID-4E6AE904-75C6-475F-8732-07E4542D7798.html&#34;&gt;仮想マシンへのプレシジョン クロック デバイスの追加&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;仮想マシンにプレシジョンクロックデバイスを構成すると、ゲストOSからは PTP ハードウェアクロック(PHC)というデバイスとして見えます。ゲストOSはこのデバイスを参照することで、ESXi のシステム時刻を取得して同期できるようになります。&lt;/p&gt;
+&lt;p&gt;今回の記事では Windows Server 2019 と Red Hat Enterprise Linux 8.3 でプレシジョンクロックデバイスを使用したホスト－ゲスト間の時刻同期を試してみたいと思います。&lt;/p&gt;
+&lt;h2 id=&#34;ptp-precision-time-protocol&#34;&gt;PTP (Precision Time Protocol)&lt;/h2&gt;
+&lt;p&gt;時刻同期に広く使われているネットワークプロトコルとして NTP がありますが、NTP の精度は一般にミリ秒レベルです。これに対して PTP ではハードウェア(NIC)によるタイムスタンプと正確な転送遅延時間の測定により、ナノ秒以下の精度を目標として時刻同期を行うためのプロトコルとなっています。&lt;/p&gt;
+&lt;p&gt;PTP はマスター／スレーブ型のプロトコルで、(誤解を恐れずに言うと)グランドマスタークロックがタイムスタンプ情報をマルチキャストで配信、スレーブ(NIC)は受信したタイムスタンプ情報から自身のハードウェアタイムスタンプを限りなくマスターに近づけ、OS のシステム時刻は NIC から取得したハードウェアタイムスタンプを使用して同期します。&lt;/p&gt;
+&lt;p&gt;PTP の概要は日本語だと以下のセイコーソリューションズ社の Web サイトや Interop 2016 の資料、Red Hat 社の linuxptp のドキュメントなどが参考になるかなと思います。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.seiko-sol.co.jp/leap-second/no-05/&#34;&gt;セイコーの｢うるう秒｣対策（第５回）　「うるう秒」を全く使わない時間系 | セイコーソリューションズ&lt;/a&gt;&lt;br&gt;
+→ &lt;a href=&#34;https://www.seiko-sol.co.jp/wp-content/uploads/2016/12/leap_second_seminar-PART2-201610.pdf&#34;&gt;高精度時刻同期プロトコルIEEE1588 PTPのご紹介&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.slideshare.net/InteropTokyo-ShowNet/ptp-precision-time-protocol&#34;&gt;2016-ShowNet-PTP (Precision Time Protocol)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/7/html/system_administrators_guide/ch-configuring_ptp_using_ptp4l&#34;&gt;第20章 ptp4l を使用した PTP の設定 Red Hat Enterprise Linux 7 | Red Hat Customer Portal&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;vsphere-7-での-ptp-サポート&#34;&gt;vSphere 7 での PTP サポート&lt;/h2&gt;
+&lt;p&gt;vSphere 7 では PTP に関連する新機能として以下の２つの機能が追加されています。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>Fedora 33 で VMware Tools による解像度変更が効かない問題と対処</title>
+      <link>http://localhost:1313/post/2021-04-08/</link>
+      <pubDate>Thu, 08 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2021-04-08/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;VMware Workstation 16 Pro 上に Fedora 33 をインストールしたのですが、VMware Workstation のウィンドウサイズにゲストの解像度が追従しない状況が発生しました。&lt;/p&gt;
+&lt;p&gt;本来は VMware Tools (open-vm-tools) によってゲストの解像度が追従するはずなので、open-vm-tools の動きが怪しいと思いワークアラウンドを調べてみました。&lt;/p&gt;
+&lt;h2 id=&#34;原因&#34;&gt;原因&lt;/h2&gt;
+&lt;p&gt;Bugzilla や GitHub の Issue を見る限りでは、VMware Tools が Xorg 用のドライバ検知に失敗して resolutionKMS / resolutionSet プラグインが自動で有効にならず、解像度変更が動作しないといった問題のようです。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://bugzilla.redhat.com/show_bug.cgi?id=1890815&#34;&gt;https://bugzilla.redhat.com/show_bug.cgi?id=1890815&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/vmware/open-vm-tools/issues/491&#34;&gt;https://github.com/vmware/open-vm-tools/issues/491&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/vmware/open-vm-tools/issues/501&#34;&gt;https://github.com/vmware/open-vm-tools/issues/501&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;※resolutionKMS / resolutionSet はゲストの GUI 周りを操作するプラグインです。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-Tools/11.2.0/com.vmware.vsphere.vmwaretools.doc/GUID-0BD592B1-A300-4C09-808A-BB447FAE2C2A.html&#34;&gt;VMware Tools Service&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;resolutionKMS - ゲスト ユーザー インターフェイス トポロジと vmwgfx drm（ダイレクト レンダリング マネージャ）ドライバの通信を処理します。
+注：
+このプラグインは、Linux 専用です。&lt;/li&gt;
+&lt;li&gt;resolutionSet - vmwgfx drm（ダイレクト レンダリング マネージャ）ドライバが利用できない場合のゲスト画面のサイズ変更を処理します。&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;p&gt;なお、同じ Wayland を使っている RHEL8 や CentOS Stream では再現しなかったので、Fedora 33 (以降) との組み合わせで発生する問題のようです。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>REST API で vCenter Server のマシンSSL証明書を置き換える</title>
+      <link>http://localhost:1313/post/2021-03-29/</link>
+      <pubDate>Mon, 29 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2021-03-29/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;20210916-追記-powercli-124-で証明書管理が追加&#34;&gt;2021/09/16 追記: PowerCLI 12.4 で証明書管理が追加&lt;/h2&gt;
+&lt;p&gt;2021/09/16 にリリースされた PowerCLI 12.4 で vSphere Automation API のモジュールが追加されました。このモジュールには vCenter Server の証明書管理のコマンドレットが含まれています。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://blogs.vmware.com/PowerCLI/2021/09/powercli-12-4-whats-new.html&#34;&gt;PowerCLI 12.4 - What&amp;rsquo;s New - VMware PowerCLI Blog&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The new vSphere Management Module
+A new module is introduced for vSphere Management. It is a PowerShell-based module backed by the newly introduced vSphere Automation API SDK modules. &amp;hellip; Currently, the module contains 6 cmdlets to complement certificate management. Explore the cmdlet documentation to know more.&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>vCenter Server 7.0 で CSR を生成してカスタム証明書に置き換える</title>
+      <link>http://localhost:1313/post/2021-03-24/</link>
+      <pubDate>Wed, 24 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2021-03-24/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;vSphere 6.7 以降では vSphere Client から証明書の管理が可能になっています。カスタム証明書の CSR を vCenter Server で生成する手順について文言など多少混乱した点があったので、記録として残しておきたいと思います。&lt;/p&gt;
+&lt;p&gt;流れは一般的な証明書の発行と同じく以下の３つです。今回のケースでは手順1, 3 は vCenter Server 側、手順 2 は CA 側で実施する操作になります。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;証明書署名要求 (CSR) の生成&lt;/li&gt;
+&lt;li&gt;署名済み証明書の発行&lt;/li&gt;
+&lt;li&gt;署名済み証明書のインポート&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;注意カスタム証明書の置き換えに関する既知問題&#34;&gt;注意：カスタム証明書の置き換えに関する既知問題&lt;/h2&gt;
+&lt;p&gt;vCenter Server 7.0 ではマシン SSL 証明書をカスタム証明書に置き換えると vCenter Server のサービスが起動に失敗する既知問題があります。vCenter Server 7.0 Update 1c で修正されていますが、それ以前のリリースで発生した場合のワークアラウンドは無いようです。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/82168&#34;&gt;vCenter Server 7.0 fails to start after replacing VMCA certificates with CA-signed certificates. (82168)&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;私の環境では再現できませんでしたが修正リリース以降へのアップデートの実施が推奨されますので、カスタム証明書を使用する場合は事前に既知問題に該当する vCenter Server 7.0 リリースか確認するようにしましょう。&lt;/p&gt;
+&lt;p&gt;2021/03/28 追記：インポートする証明書の改行コードなどに起因する既知問題を観測したので、本記事の末尾に内容などを追記しました。&lt;/p&gt;
+&lt;h2 id=&#34;証明書署名要求-csr-の生成&#34;&gt;証明書署名要求 (CSR) の生成&lt;/h2&gt;
+&lt;p&gt;vSphere Client の [ホーム] &amp;gt; [管理] &amp;gt; [証明書の管理] を開き、[アクション] から [証明書署名要求 (CSR) の生成] をクリックします。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>journalctl コマンドで vCenter Server のイベントを見てみる</title>
+      <link>http://localhost:1313/post/2021-02-12/</link>
+      <pubDate>Fri, 12 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2021-02-12/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;以前、&lt;a href=&#34;http://localhost:1313/post/2020-08-01&#34;&gt;こちらの記事&lt;/a&gt;で vCenter Server 7.0 でのイベントのエクスポート方法 (PowerCLI / syslog) について書いていました。記事でも書いたとおり、vCenter Server Appliance 6.5 以降ではイベントストリーミングが追加され既定で有効になっていますが、syslog 転送は手動で構成する必要がありました。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.monitoring.doc/GUID-FD51CE83-8B2A-4EBA-A16C-75DB2E384E95.html&#34;&gt;リモートの Syslog サーバへのイベント ストリーミングの構成&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;vCenter Serverストリーミング機能へのイベントの書き込みを構成することもできます。イベントのストリーミングは、vCenter Server でのみサポートされます。リモート Syslog サーバに対するイベントのストリーミングは、デフォルトで無効になっています。リモート Syslog サーバへの vCenter Server イベントのストリーミングは、vCenter Server 管理インターフェイスで有効にして設定することができます。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;ol start=&#34;6&#34;&gt;
+&lt;li&gt;vpxd.event.syslogオプションを有効または無効にします。&lt;br&gt;
+この設定のデフォルト値は「有効」です。&lt;/li&gt;
+&lt;/ol&gt;&lt;/blockquote&gt;
+&lt;p&gt;syslog で転送できるのであればデータベース以外のどこかに記録されてないかなと思い色々と試してみたところ、journalctl コマンドで vMon のジャーナルを参照すると syslog 転送時と同じイベントの記録が確認できたので、参考までに見つけた流れなどを備忘録として残しておきたいと思います。&lt;/p&gt;
+&lt;p&gt;なお、公式マニュアルやナレッジベースなどの公開情報は見当たらなかったのでサポート外の操作になるとは思われます。vCenter Server Appliance が壊れるような操作では無いはずですが実施する場合は自己責任でお願いします。&lt;/p&gt;
+&lt;h2 id=&#34;vmware-service-lifecycle-manager-vmon&#34;&gt;VMware Service Lifecycle Manager (vMon)&lt;/h2&gt;
+&lt;p&gt;vSphere 6.5 以降では vCenter Server のアーキテクチャが変わっており、多くの vCenter Server 関連サービスは VMware Service Lifecycle Manager サービス (vMon) の子プロセスとして動作するようになっています(PSC 関連など一部のサービスは対象外)&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/2109881?lang=ja&#34;&gt;vCenter Server 6.x のサービスを停止、開始、再起動する方法 (2109881)&lt;/a&gt;&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>VCDB から MAC アドレスの一覧を SELECT してみる</title>
+      <link>http://localhost:1313/post/2021-02-10/</link>
+      <pubDate>Wed, 10 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2021-02-10/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;vSphere の仮想マシンに固定 MAC アドレスを割り振る場合のベストプラクティスとして、事前にデータベースから MAC アドレスの一覧を参照して重複が無いことを確認しましょうといった KB が1月ごろに公開されていました。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/82139&#34;&gt;Best practices for assigning static MAC address to a Virtual machine vNIC (82139)&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Before assigning the static MAC address, refer the table MAC_ADDRESS table(select * from VPX_NIC) in the VCDB to make sure the there is no duplicate.(Irrespective of upper or lowercase)&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;del&gt;個人的にはデータベースを覗き見るのはあまり行儀が良い行為ではない気がするのですが&lt;/del&gt; KB として出ているので vCenter Server 7.0 (vPostgres) で試してみます。&lt;/p&gt;
+&lt;p&gt;基本的にどのバージョンも同じ手順になると思いますが、もしかしたら vCenter Server のバージョンや種類(Windows or Appliance)、データベースの種類によっては SQL クエリの結果など異なる可能性もありますので、その場合は環境に合わせて適宜調整してもらえればと思います。&lt;/p&gt;
+&lt;h2 id=&#34;vcenter-server-データベースに接続する&#34;&gt;vCenter Server データベースに接続する&lt;/h2&gt;
+&lt;p&gt;KB2147285 を参考に、VCSA の Bash シェル上から psql でデータベースに接続します。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>仮想マシンのメモリの Active と Comsumed の動きを見る</title>
+      <link>http://localhost:1313/post/2021-01-19/</link>
+      <pubDate>Tue, 19 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2021-01-19/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめにメモリの-active-と-consumed-の概要&#34;&gt;はじめに：メモリの Active と Consumed の概要&lt;/h2&gt;
+&lt;p&gt;vSphere には仮想マシンのメモリ使用量を測るカウンタとして Active (有効なゲストメモリ) と Consumed (消費) の2種類があります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/1002604&#34;&gt;Understanding the Memory Active and Memory Usage indicators on the Performance tab (1002604)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://blogs.vmware.com/vsphere/2013/10/understanding-vsphere-active-memory.html&#34;&gt;Understanding vSphere Active Memory - VMware vSphere Blog&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.monitoring.doc/GUID-461DEC45-EFD9-407E-A3C3-C27ED8F89AB5.html&#34;&gt;メモリ （データ カウンタ）- vSphere の監視とパフォーマンス&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;仮想マシンのサイジングや性能監視などの際によく見られますが、それぞれ以下のメモリ使用量を測定しています。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Active：直近で仮想マシンが積極的にアクセスしていたメモリ(統計値)&lt;/li&gt;
+&lt;li&gt;Consumed：現在 ESXi が仮想マシンへ実際に割り当てている物理メモリ&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;メモリカウンタの動きを実験で見てみる&#34;&gt;メモリカウンタの動きを実験で見てみる&lt;/h2&gt;
+&lt;p&gt;これらはゲストOS内から観測できるメモリ使用量とは観測対象が異なるため、OS のメモリ使用状況とは観測できる値も異なります。今回の記事では Linux ゲストでのページキャッシュの動作を一例として、仮想マシンのメモリの Active / Consumed の値がどのように変化するか見ていきたいと思います。&lt;/p&gt;
+&lt;p&gt;なお、Linux のページキャッシュの説明はしませんが、この辺りは &lt;a href=&#34;https://twitter.com/satoru_takeuchi&#34;&gt;@sat&lt;/a&gt; 様の &lt;a href=&#34;https://www.youtube.com/channel/UCgrUyRFiHhV607Orhriau6w/&#34;&gt;YouTube チャンネル&lt;/a&gt;での解説動画(その20～その26あたり)や書籍「&lt;a href=&#34;https://gihyo.jp/book/2018/978-4-7741-9607-7&#34;&gt;［試して理解］Linuxのしくみ ～実験と図解で学ぶOSとハードウェアの基礎知識&lt;/a&gt;」が非常に分かりやすいと思います。&lt;/p&gt;
+&lt;h2 id=&#34;初期状態&#34;&gt;初期状態&lt;/h2&gt;
+&lt;p&gt;Linux ゲストが起動された直後に実行した free コマンドの状態です。ゲストOSは仮想マシンに構成されているメモリ 8GB を認識しています。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# free -h
+              total        used        free      shared  buff/cache   available
+Mem:          7.6Gi       1.1Gi       5.7Gi        17Mi       806Mi       6.2Gi
+Swap:         1.6Gi          0B       1.6Gi
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;vSphere の仮想マシンのメモリ使用状況は以下のようになっています。VM Consumed の値から仮想マシンに概ね 2.6 GB の物理メモリが割り当てられており、パワーオンした時点では 8GB のメモリが全て割り当てられるわけではないことが分かります。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>open-vm-tools を CentOS 8 aarch64 でビルド＆インストール</title>
+      <link>http://localhost:1313/post/2020-10-17/</link>
+      <pubDate>Sat, 17 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2020-10-17/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;ESXi on Arm でゲストOSを実行する場合、ARM64 アーキテクチャ向けにビルドされた OS をインストールすることになります。現時点で殆どの Linux ディストリビューションでは ARM64 向けの open-vm-tools は公式リポジトリで配布されていないようです。このため、VMware 公式の GitHub リポジトリからソースを取ってきてビルド＆インストールしたいと思います。&lt;/p&gt;
+&lt;p&gt;私の GitHub リポジトリに自動化した CentOS 8 向けのスクリプトを置いてあります。もし良ければこちらもどうぞ。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/Jangari-nTK/ovt-installation-centos8-aarch64&#34;&gt;Jangari-nTK/ovt-installation-centos8-aarch64&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Twitter で中の人が引用リツイートしてくれたのはちょっと嬉しかったです。&lt;/p&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;Awesome! Thanks for sharing script for installing VMware Tools for Arm on CentOS &lt;a href=&#34;https://twitter.com/hashtag/ESXionARM?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#ESXionARM&lt;/a&gt; &lt;a href=&#34;https://t.co/D42peyNHuR&#34;&gt;https://t.co/D42peyNHuR&lt;/a&gt;&lt;/p&gt;&amp;mdash; William Lam (@lamw) &lt;a href=&#34;https://twitter.com/lamw/status/1315391984362635264?ref_src=twsrc%5Etfw&#34;&gt;October 11, 2020&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;なお、ゲストが Raspberry Pi OS (旧 Raspbian) の場合は中の人が記事を書いてくれましたので、こちらを参照してもらえればと思います。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.virtuallyghetto.com/2020/10/installing-vmware-tools-on-raspberry-pi-os-for-esxi-arm.html&#34;&gt;Installing VMware Tools on Raspberry Pi OS for ESXi-Arm&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;おおまかな流れ&#34;&gt;おおまかな流れ&lt;/h2&gt;
+&lt;p&gt;open-vm-tools を一からビルドしてインストールする場合、大まかな流れとしては以下のようになります。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;CentOS 8 (aarch64) を仮想マシンにインストール。&lt;/li&gt;
+&lt;li&gt;ビルドに必要な開発ツールのパッケージをインストール&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/vmware/open-vm-tools&#34;&gt;vmware/open-vm-tools&lt;/a&gt; の GitHub リポジトリをクローン。&lt;/li&gt;
+&lt;li&gt;configure スクリプトを生成・実行して Makefile を生成。&lt;/li&gt;
+&lt;li&gt;make でビルドして make install でインストール。&lt;/li&gt;
+&lt;li&gt;systemd の Unit ファイルを作成して systemctl から有効化。&lt;/li&gt;
+&lt;li&gt;Host Client から VMware Tools の状態を確認。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;順番に見ていきます。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>【HomeLab】ホストの USB デバイスを vSAN で使用するための設定</title>
+      <link>http://localhost:1313/post/2020-10-09/</link>
+      <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2020-10-09/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;Project Monterey の発表で ESXi on SmartNIC が言及されていましたが、先日の vSphere 7.0 Update 1 のリリース時に合わせて ESXi on Arm が Flings として公開されました。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://flings.vmware.com/esxi-arm-edition&#34;&gt;ESXi Arm Edition | VMware Flings&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;ESXi-Arm インストール完了！&lt;br&gt;&lt;br&gt;ラズパイで ESXi 動いてるの感動する &lt;a href=&#34;https://t.co/3fi8QqCuHE&#34;&gt;pic.twitter.com/3fi8QqCuHE&lt;/a&gt;&lt;/p&gt;&amp;mdash; Jangari (@Jangari_nTK) &lt;a href=&#34;https://twitter.com/Jangari_nTK/status/1313610646861180928?ref_src=twsrc%5Etfw&#34;&gt;October 6, 2020&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;私も Raspberry Pi 4b 8GB にインストールして遊んでみており、ESXi on Arm を監視ホスト(Witness Host)とした 2ノード vSAN を組んでみました。ESXi on Arm が使えるようになったら真っ先に試してみたかった構成の一つです。&lt;/p&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;I&amp;#39;ve tried to configure 2-node vSAN with &lt;a href=&#34;https://twitter.com/hashtag/ESXionARM?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#ESXionARM&lt;/a&gt; as a witness host. It works! &lt;a href=&#34;https://t.co/f2XMaGMMW3&#34;&gt;pic.twitter.com/f2XMaGMMW3&lt;/a&gt;&lt;/p&gt;&amp;mdash; Jangari (@Jangari_nTK) &lt;a href=&#34;https://twitter.com/Jangari_nTK/status/1313704535299248128?ref_src=twsrc%5Etfw&#34;&gt;October 7, 2020&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;ESXi on Arm を使った 2ノード vSAN を組んでいる中で、Raspberry Pi 4b の場合は USB 接続のディスクを利用することになりますが、USB デバイスを vSAN のキャッシュデバイスやキャパシティデバイスに使おうとするとトリッキーな設定が必要でしたので、備忘録として残しておきたいと思います。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>VMware 社の新プロジェクト「Project Monterey」？</title>
+      <link>http://localhost:1313/post/2020-10-02/</link>
+      <pubDate>Fri, 02 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2020-10-02/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;VMworld 2020 のタイミングに合わせて、9/29 に VMware 社の各種ブログにて新しい製品やサービス、プロジェクトが発表されていました。いくつか見ていたのですが、それらの中でも以下の新しいプロジェクト「Project Monterey」が画期的な内容で個人的に興味をそそられました。知らない＆分からない＆そもそも初めて見る内容も多く、調べながら何とかブログ記事から読み取れた範囲の内容にはなりますが頑張って紹介してみたいと思います。&lt;/p&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;Not only is &lt;a href=&#34;https://twitter.com/hashtag/ProjectMontery?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#ProjectMontery&lt;/a&gt; really cool but its also 1st validation of &lt;a href=&#34;https://twitter.com/hashtag/ESXionARM?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#ESXionARM&lt;/a&gt; as most SmartNICs have an &lt;a href=&#34;https://twitter.com/Arm?ref_src=twsrc%5Etfw&#34;&gt;@Arm&lt;/a&gt;  processor. This tech will extend to VMware Cloud Foundation &amp;amp; reimagine vSphere “Cluster”&lt;a href=&#34;https://t.co/ZfldM5IY71&#34;&gt;https://t.co/ZfldM5IY71&lt;/a&gt;&lt;br&gt;&lt;br&gt;Congrats to &lt;a href=&#34;https://twitter.com/esxi_arm?ref_src=twsrc%5Etfw&#34;&gt;@esxi_arm&lt;/a&gt; Team, they must be proud! 🥳&lt;/p&gt;&amp;mdash; William Lam (@lamw) &lt;a href=&#34;https://twitter.com/lamw/status/1310925814972649472?ref_src=twsrc%5Etfw&#34;&gt;September 29, 2020&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+
+
+&lt;h2 id=&#34;project-monterey-の概要&#34;&gt;Project Monterey の概要&lt;/h2&gt;
+&lt;p&gt;従来はハイパーバイザー(VMM)、vSAN、NSX などの機能はすべて単一のハードウェア上の単一の ESXi で動作していました。1つのハードウェア上で1つの OS やハイパーバイザーが実行されることは、ESXi に限らず Windows や Linux といった汎用的な OS でも同じですね。&lt;/p&gt;
+&lt;p&gt;これに対して Project Monterey では「ESXi を実行する x86 サーバに、SmartNIC 上で動作する ESXi を接続する」という形態を取ることで VMware Cloud Foundation (VCF) のアーキテクチャを拡張するというプロジェクトのようです。以下の図はブログ記事からの引用になりますが、従来の環境と Project Monterey の環境の違いを表しています。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>【Part.4】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</title>
+      <link>http://localhost:1313/post/2020-09-23/</link>
+      <pubDate>Wed, 23 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2020-09-23/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;VMworld 2017 SER2965BU のセッションの記事シリーズの最後です。今回は 48:21 ～ 52:40 頃までの内容、七つ道具3セット目の構成ファイルを見ていきます。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;/etc/vmware/esx.conf&lt;/li&gt;
+&lt;li&gt;/etc/vmware/hostd/vmInventory.xml&lt;/li&gt;
+&lt;li&gt;/etc/vmware/hostd/authorization.xml&lt;/li&gt;
+&lt;li&gt;/etc/vmware/vpxa/vpxa.cfg&lt;/li&gt;
+&lt;li&gt;/etc/vmware/vmkiscsid/*&lt;/li&gt;
+&lt;li&gt;/etc/opt/vmware/fdm/*&lt;/li&gt;
+&lt;li&gt;/etc/vmware/license.cfg&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;セッションでの説明も5分かからない程度でさらっと説明されており、ログに比べれば構成ファイルは参照する頻度も低いので概要を簡単に見ていきたいと思います。&lt;/p&gt;
+&lt;p&gt;なお、ナレッジベースなどで情報公開されている操作でない限り構成ファイルの編集はサポートされる操作ではないので、基本的には確認のみに留めておくことを推奨します。&lt;/p&gt;
+&lt;h2 id=&#34;esxi-の構成情報のバックアップ&#34;&gt;ESXi の構成情報のバックアップ&lt;/h2&gt;
+&lt;p&gt;一番重要な点として、ESXi の構成ファイルは多岐にわたり公開情報が無いものがほとんどのため、その全てを網羅するのは不可能です。加えて、特定の構成ファイルの破損時にどう修正すれば良いかなどの情報が公開されていない場合もありますので、ESXi の構成情報は KB2042141 の手順でバックアップしておくことを推奨します。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/2042141?lang=ja&#34;&gt;ESXi ホストの構成のバックアップ方法 (2042141)&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;etcvmwareesxconf---esxi-の構成情報主にハードウェアネットワークストレージ&#34;&gt;/etc/vmware/esx.conf - ESXi の構成情報(主にハードウェア、ネットワーク、ストレージ)&lt;/h2&gt;
+&lt;p&gt;esx.conf にはハードウェアやストレージ、ネットワークなどの構成情報が含まれています(全てではない)。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/1016106?lang=ja&#34;&gt;KB1016106&lt;/a&gt; の RDM LUN 向け永久予約設定も esx.conf に記載されるので、ホスト単位で調べる場合は esx.conf を grep してみても良いかもしれません。ただし、そもそも KB1016106 には esxcli や PowerCLI で確認する方法も書いてあるので、通常運用時は KB の手順に沿って実施すべきです。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# grep &amp;#34;perennialResvd&amp;#34; /etc/vmware/esx.conf
+/storage/lun[/vmfs/devices/disks/naa.6000c29bb59f25dfb1a670841fd458d9]/perennialResvd = &amp;#34;true&amp;#34;
+/storage/lun[/vmfs/devices/disks/naa.6000c296e29dc4a8f763719d8d832792]/perennialResvd = &amp;#34;true&amp;#34;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;esxcli system uuid get で取得できる ESXi の UUID もこちらに記載されています。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>【備忘録】vSAN HCI Mesh Tech Note を読む</title>
+      <link>http://localhost:1313/post/2020-09-19/</link>
+      <pubDate>Sat, 19 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2020-09-19/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;vSAN 7.0 Update 1 で HCI Mesh なる気になる機能が出てきたようなので、Tech Note を読んで咀嚼して「これポイントかな～」と思ったものを自分用の備忘録としてメモしておく。本記事時点では vSAN 7.0 Update 1 もリリースされていないので検証もしておらず、また、ほとんど落書きに近い内容のため、情報の正確さ等は保証できないことに留意されたし。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://core.vmware.com/resource/vmware-vsan-hci-mesh-tech-note&#34;&gt;VMware vSAN HCI Mesh Tech Note&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;why-hci-mesh&#34;&gt;Why HCI Mesh&lt;/h2&gt;
+&lt;p&gt;従来の vSAN はホストの追加で Computing と Storage の両方を同時にスケールできる。このため、アプリケーションのワークロードの増加に合わせて Computing と Storage が共に自然に増加すれば、長期的なキャパシティプランニングを行いやすい。&lt;/p&gt;
+&lt;p&gt;その一方で、以下のようなイベントが起きると Computing と Storage のどちらかにリソース要求が偏ったり、キャパシティプランニングが難しくなったりする。このため一方のリソースを使い切る or 無駄なリソースが余るといったように、vSAN として適切なサイジングが難しくなる可能性がある。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;アプリケーションの改修でログ出力用にストレージが大量に必要になる。&lt;/li&gt;
+&lt;li&gt;新しい分析サービスの提供にあたって大量のコンピューティングリソースが消費される。&lt;/li&gt;
+&lt;li&gt;企業の M&amp;amp;A で新部門にストレージが必要になるが事前に見積もれない。&lt;/li&gt;
+&lt;li&gt;NSX などのネットワーク仮想化で既存のレガシーなクラスタを統合／移行したい。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;伝統的なストレージでは、複数のストレージアレイを1つにまとめて仮想化するソリューション(多分 EMC ViPR みたいなのを指してる)があるものの、レイテンシや構成の複雑さも追加されるため、管理者がベーシックなオペレーションだったりトラブルシューティングだったりで複数の UI やツールの使用を強いられるケースがある。&lt;/p&gt;
+&lt;p&gt;vSAN でも同じ実装にすると色々と辛いのでネイティブの通信プロトコルを使ったアプローチを取ったらしい。確かに、もう一段階抽象レイヤーを加えて複数の vSAN データストアを統合、みたいなアプローチだと更に複雑になりそうなので妥当な印象。&lt;/p&gt;
+&lt;p&gt;また、vSAN では既に iSCSI や NFS としてエクスポート出来るにも関わらず、あえてネイティブな vSAN プロトコルで実装した理由は主に以下のようなもの。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ストレージポリシーベース管理(SPBM)を維持できる。&lt;/li&gt;
+&lt;li&gt;vSAN の RDT プロトコルなら compute や I/O のオーバーヘッドが少ない。&lt;/li&gt;
+&lt;li&gt;I/O のモニタリングに vSAN パフォーマンスサービスが使える。&lt;/li&gt;
+&lt;li&gt;iSCSI の LUN や NFS の exports など、個別のストレージ管理も余計な抽象レイヤーも必要ない。&lt;/li&gt;
+&lt;li&gt;ストレージリソースを引き続きクラスタのリソースとして管理＆メンテナンスできる。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;見る限り、vSAN のメリットをなるべく損なわずに享受できるようにしたいという意図が見える。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>【Part.3-2】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</title>
+      <link>http://localhost:1313/post/2020-09-17/</link>
+      <pubDate>Thu, 17 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2020-09-17/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;VMworld 2017 SER2965BU のセッションでの 27:00 ～ 48:20 頃までの内容、七つ道具2セット目である７つのコマンドについて見ていきます。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;esxcli&lt;/li&gt;
+&lt;li&gt;vsish&lt;/li&gt;
+&lt;li&gt;vim-cmd&lt;/li&gt;
+&lt;li&gt;vmkfstools&lt;/li&gt;
+&lt;li&gt;memstats&lt;/li&gt;
+&lt;li&gt;pktcap-uw&lt;/li&gt;
+&lt;li&gt;esxtop&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;今回は残りのコマンドである memstats, pktcap-uw, esxtop を見ていきます(esxtop は概観だけ)。&lt;/p&gt;
+&lt;h2 id=&#34;memstats---詳細なメモリ統計情報&#34;&gt;memstats - 詳細なメモリ統計情報&lt;/h2&gt;
+&lt;p&gt;通常、リアルタイムなメモリの性能情報を見る場合は esxtop を使うと思います。ファイルとして保存する場合はバッチモードを使うかもしれません。&lt;/p&gt;
+&lt;p&gt;memstats コマンドは公開情報がほとんど無い&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;コマンドですが、こちらを使うとコマンド実行時点の様々なメモリ統計情報を取得することが出来ます。&lt;/p&gt;
+&lt;p&gt;セッションではホストがメモリ不足になり仮想マシンでメモリのバルーンやスワップが発生した場合、memstats コマンドで状態を見てみる方法が解説されています。メモリオーバーコミットによるバルーンやスワップの動作は割愛しますが、これらの動作の詳細は以下のドキュメントを参照してください。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.resmgmt.doc/GUID-85BDEAD3-C889-46AC-BC01-D4B39C638E49.html&#34;&gt;メモリの解放&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.resmgmt.doc/GUID-5B45CEFA-6CC6-49F4-A3C7-776AAA22C2A2.html&#34;&gt;メモリ バルーン ドライバ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.resmgmt.doc/GUID-B55F4F6B-44E6-46DE-B8FF-75950020A181.html&#34;&gt;スワップ ファイルの使用&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;memstats -r vm-stats -s &amp;lt;columns&amp;gt; としてコマンドを実行することで、実行中の仮想マシンのメモリの状態を見ることが出来ます。以下は観測対象の仮想マシンの Cartel ID (ps の2列目) を確認し、メモリのバルーンとスワップの状態を見ています。ホスト上で複数の仮想マシンが実行されている場合は全て一覧で表示されます。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# ps | grep vmx
+604326  604326  vmx
+604331  604326  vmx-vthread-604
+604332  604326  vmx-filtPoll:Photon
+604333  604326  vmx-mks:Photon
+604334  604326  vmx-svga:Photon
+604335  604326  vmx-vcpu-0:Photon
+
+# memstats -r vm-stats -s name:balloonTgt:ballooned:swapTgt:swapped:memSize:mapped
+
+ VIRTUAL MACHINE STATS: Sat Sep 12 15:45:22 2020
+ -----------------------------------------------
+   Start Group ID   : 0
+   No. of levels    : 12
+   Unit             : KB
+   Selected columns : name:memSize:balloonTgt:ballooned:swapTgt:swapped:mapped
+
+---------------------------------------------------------------------------------
+           name    memSize balloonTgt  ballooned    swapTgt    swapped     mapped
+---------------------------------------------------------------------------------
+      vm.604326    2097152          0          0          0          0     212992
+---------------------------------------------------------------------------------
+          Total    2097152          0          0          0          0     212992
+---------------------------------------------------------------------------------
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;実行結果の列は左から順に以下の通りです。上述の結果では特にバルーンやスワップは発生していません。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>【Part.3-1】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</title>
+      <link>http://localhost:1313/post/2020-09-13/</link>
+      <pubDate>Sun, 13 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2020-09-13/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;VMworld 2017 SER2965BU のセッションでの 27:00 ～ 48:20 頃までの内容、七つ道具2セット目である７つのコマンドについて見ていきます。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;esxcli - ESXi の設定の確認や変更&lt;/li&gt;
+&lt;li&gt;vsish - VMkernel Sysinfo Shell&lt;/li&gt;
+&lt;li&gt;vim-cmd - ESXi と仮想マシンの構成の管理&lt;/li&gt;
+&lt;li&gt;vmkfstools - データストアや仮想ディスクの管理&lt;/li&gt;
+&lt;li&gt;memstats- 詳細なメモリ統計情報&lt;/li&gt;
+&lt;li&gt;pktcap-uw - パケットのキャプチャ＆トレース&lt;/li&gt;
+&lt;li&gt;esxtop - パフォーマンスモニタリング&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;今回の記事では esxcli ～ vmkfstools までのコマンドを見ていきます。これだけでも長いため memstats ～ esxtop は次回の記事で。&lt;/p&gt;
+&lt;p&gt;esxcli, vmkfstools, pktcap-uw, esxtop は公式ドキュメントもあり、非常に便利で強力なトラブルシューティングツールです。これらは平時でも使えるように HOL や Nested ESXi で練習しておいた方が良いかなと思います。&lt;/p&gt;
+&lt;p&gt;セッションでは公開情報がない裏技的なコマンドも紹介されていますが、ESXi の仕組みの理解に役立つので本記事でも概要を紹介しています。&lt;/p&gt;
+&lt;h2 id=&#34;esxi-shell-と-ssh-の有効化&#34;&gt;ESXi Shell と SSH の有効化&lt;/h2&gt;
+&lt;p&gt;ESXi のコマンドは ESXi Shell か SSH で実行しますので、コマンドの利用にはまずこれらの有効化が必要になります。ESXi Shell の有効化の手順などは以下の KB2004746 に記載されていますので、こちらをご参照ください。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>【Part.2】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</title>
+      <link>http://localhost:1313/post/2020-09-06/</link>
+      <pubDate>Sun, 06 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2020-09-06/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;前回の記事の続きです。今回は &lt;a href=&#34;https://www.youtube.com/watch?v=_wRRXEZkeXo&#34;&gt;VMworld 2017 SER2965BU のセッション&lt;/a&gt;での 4:28 ～ 26:54 頃までの内容、七つ道具x3セットの１セット目である７つのログについて見ていきます。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;vmksummary.log&lt;/li&gt;
+&lt;li&gt;boot.gz.log&lt;/li&gt;
+&lt;li&gt;hostd.log &amp;amp; hostd-probe.log&lt;/li&gt;
+&lt;li&gt;vmware.log&lt;/li&gt;
+&lt;li&gt;vmkernel.log&lt;/li&gt;
+&lt;li&gt;vobd.log&lt;/li&gt;
+&lt;li&gt;fdm.log&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;この辺りの基本的なログの特徴を理解しつつログとの対話を重ねていくと、障害時などにログから原因の推測などがしやすくなると思います。なお、実際に出力されるメッセージは事象によりケースバイケースで異なるため、今回の記事ではセッションと同様、ログファイルの概観とログを見るためのポイントを押さえるといった程度に留めます。&lt;/p&gt;
+&lt;h2 id=&#34;免責事項&#34;&gt;免責事項&lt;/h2&gt;
+&lt;p&gt;当サイトでは可能な限り公式から情報公開されている内容などの情報源を記載するようにはしていますが、記事を参考にしたことで障害調査が遅延したなど何らかの問題が発生した場合においては一切の責任を負いかねますので、予めご了承いただきますようお願いいたします。&lt;/p&gt;
+&lt;h2 id=&#34;ログファイルの場所&#34;&gt;ログファイルの場所&lt;/h2&gt;
+&lt;p&gt;まずログを見るために最も重要な点はログファイルの場所です。基本的には /var/log 配下にカレントのログなどが、/var/run/log 配下にローテートされたログファイルも含めて配置されています。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.monitoring.doc/GUID-DACC9E0E-E857-4AE1-A469-3FDAE2B391A0.html&#34;&gt;ESXi のシステム ログ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-832A2618-6B11-4A28-9672-93296DA931D0.html&#34;&gt;ESXi ログ ファイルの場所&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/2004201&#34;&gt;Location of ESXi 5.0 log files (2004201)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;なお、ログの実体は既定でスクラッチパーティション (ESXi 7 では ESX-OSData 領域) に格納されています。何らかの要因でスクラッチ領域が未設定だとログが /tmp 領域(＝メモリ上)に配置され、ESXi の再起動でメモリ内容の破棄とともにログが消失してしまいます。&lt;/p&gt;
+&lt;p&gt;特に ESXi が USB メモリや SD カードから起動される環境ではスクラッチ領域の作成自体が行われませんので、ESXi のインストール後に設定が必要になることにご注意ください。スクラッチ領域の詳細は以下の KB1033696 をご確認いただければと思います。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/1033696?lang=ja&#34;&gt;ESXi 7.x/6.x/5.x/4.x の永続的スクラッチの場所の作成 (1033696)&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;それではログの場所も確認できたところで順にログファイルを見ていきます。&lt;/p&gt;
+&lt;h2 id=&#34;vmksummarylog---突然のホスト再起動&#34;&gt;vmksummary.log - 突然のホスト再起動&lt;/h2&gt;
+&lt;p&gt;突然、ある ESXi ホストが再起動したといったケースで見るべきログが vmksummary.log です。まず、適切な ESXi の再起動が行われた場合、ESXi は自分から再起動や起動を行うので、vmksummary.log には以下のように Host is rebooting (＝今から再起動する) と Host has booted (＝起動がおわった) の記録が残ります。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>【Part.1】Advanced Troubleshooting of VMware ESXi Server 6.x for vSphere Gurus</title>
+      <link>http://localhost:1313/post/2020-09-01/</link>
+      <pubDate>Tue, 01 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2020-09-01/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;以前開催された VMworld 2017 のセッションが &lt;a href=&#34;https://www.youtube.com/channel/UCaC9l9CYIEazFB5-pWfCNKw&#34;&gt;VMworld の公式 YouTube チャンネル&lt;/a&gt;で一般公開されています。&lt;/p&gt;
+
+&lt;div class=&#34;video&#34;&gt;
+  &lt;iframe src=&#34;https://www.youtube.com/embed/_wRRXEZkeXo?controls=1&amp;rel=0&#34; loading=&#34;lazy&#34;&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+
+&lt;p&gt;こちらの SER2965BU のセッションは ESXi のトラブルシューティングで使うツールとユースケースを解説している非常に貴重な資料です。しかし、ただでさえトラブルシューティングの話でそこそこハードルが高いことに加えて英語のセッションのため、可能な範囲で日本語で補足もしつつ見ていきたいと思います。&lt;/p&gt;
+&lt;h2 id=&#34;本記事シリーズについて&#34;&gt;本記事シリーズについて&lt;/h2&gt;
+&lt;p&gt;SER2965BU のセッション動画は vSphere の管理者が ESXi の障害に直面した時に自力でトラブルシューティングをするためのステップが解説されています。本記事シリーズではセッションの Objectives (動画の 1:57～) に沿って見ていきたいと思います。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ESXi のアーキテクチャ概要をコンポーネントに深堀りして理解する&lt;/li&gt;
+&lt;li&gt;トラブルシューティング七つ道具 3セットについて見ていく
+&lt;ol&gt;
+&lt;li&gt;ログファイル：いつ、どのログファイルを見るか&lt;/li&gt;
+&lt;li&gt;ESXi のコマンド：問題の切り分けと対処を行うために&lt;/li&gt;
+&lt;li&gt;構成ファイル：トラブルシューティングの中でとっても重要&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;今回はまず最初に準備編として ESXi のアーキテクチャの概要を押さえていきます。動画では 3:08 ～ 4:30 くらいでサラッと流されているので少しだけ踏み込みたいと思います。ESXi の構造を頭に入れておくだけでも、ホストのトラブルシューティング時にイメージがしやすくなるかなと思います。&lt;/p&gt;
+&lt;p&gt;なお、原初の ESXi のアーキテクチャは以下のホワイトペーパーで公開されています。現在の ESXi とは異なる部分もありますが、基本的なコンセプトの理解にはとても役立つと思います(これも英語ですが・・・)。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.vmware.com/content/dam/digitalmarketing/vmware/en/pdf/techpaper/ESXi_architecture.pdf&#34;&gt;The Architecture of VMware ESXi&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;esxi-のアーキテクチャ概観&#34;&gt;ESXi のアーキテクチャ概観&lt;/h2&gt;
+&lt;p&gt;まず ESXi の各種コンポーネントおよび関連コンポーネント (vCenter Server やクライアント、ゲストOS) がどのようにコミュニケーションするか、セッションの 3:08～ のダイアグラムを以下に引用します。&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;ESXi Architecture&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;http://localhost:1313/images/2020-09-01/ESXi-Architecture.PNG&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;ESXi を構成するコンポーネントを大まかに分類すると以下の３種類があります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;VMkernel&lt;/li&gt;
+&lt;li&gt;Userworld&lt;/li&gt;
+&lt;li&gt;Virtual Machine Monitor&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;ESXi も Windows や Linux などの OS と同じくカーネルとユーザープロセス(のようなもの)が存在します。前者は VMkernel、後者は Userworld と呼ばれます。主な Userworld には hostd, vpxa, fdm などがあります。後ほど個別に説明します。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>vRealize Automation 8.1 で Nested ESXi の Blueprint を作ってみた</title>
+      <link>http://localhost:1313/post/2020-08-30/</link>
+      <pubDate>Sun, 30 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2020-08-30/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.vmug.com/vmug2019/membership/evalexperience&#34;&gt;VMUG Advantage の Eval Experience&lt;/a&gt; に vRealize Suite 2019 Enterprise の評価ライセンスがありましたので、試しに自宅の vSphere に vRealize Automation (以下 vRA) 8.1 をデプロイして遊んでみています。&lt;/p&gt;
+&lt;p&gt;今回、Nested ESXi が展開できるブループリントでも作ってみたら面白いかなと思い、新しい UI 等に慣れるのを半分、ネタを半分にやってみました。vRA は過去に 7.x 系を少し触っていただけの初心者のため詳細な解説などは難しいですが、せっかくなので記事にしてみたいと思います。&lt;/p&gt;
+&lt;h2 id=&#34;vrealize-automation-の概要&#34;&gt;vRealize Automation の概要&lt;/h2&gt;
+&lt;p&gt;vRealize Automation は VMware 製品の中でもクラウドの管理や自動化(Cloud Management)といったカテゴリに属する製品です。vSphere や vSAN、NSX-T はインフラストラクチャ寄りの製品ですが、vRA はそれらも含めてユーザーがクラウド環境を容易に利用できるようサービスとして提供することが主な役割です。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.vmware.com/jp/products/vrealize-automation.html&#34;&gt;vRealize Automation（vRA）の概要| クラウド自動化ツール | VMware | JP&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;各担当者のニーズに応えながら、ユーザーの利便性も確保するハイブリッド クラウド自動化プラットフォーム&lt;/p&gt;
+&lt;p&gt;IT 運用部門、ビジネス運用部門、DevOps、ビジネス部門、開発者のニーズに応じてハイブリッド クラウド環境やマルチクラウド環境を管理することは複雑な作業です。インフラストラクチャとアプリケーションのプロビジョニングが、複数のツールとスクリプトで半自動化されていると、効率性、生産性、一貫性が低下し、セキュリティとコンプライアンス上のリスクを招きます。vRealize Automation を使用すれば、ユーザーは必要なときに必要なサービスを入手できます。リリースの自動化プロセスは DevOps チームが管理し、セキュリティとガバナンスの保守については IT チームが担当します。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;例えば、開発者などのユーザーからシステム管理者に仮想マシンの払い出しの要求があった場合、システム管理者がユーザーに仮想マシンの払い出しを行って管理するなどの対応が必要となります。この場合、完了までにかかる時間の多くはシステム管理者に依存します。&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;Traditional IT Service Request&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;http://localhost:1313/images/2020-08-30/Traditional_IT_Service_Request.png&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;vRA を使った場合、仮想マシンの払い出しや管理などは事前に自動化されているテンプレートから vRA が提供を行うため、多くをユーザーの作業のみで迅速に完結させることができます。これによりシステム管理者はその他のシステム管理業務に注力することが出来ます。&lt;br&gt;
+※ユーザーが「セルフサービスで」出来るようになるところが一番のポイントです。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>Nested ESXi のテンプレート作りに必要な設定と解説</title>
+      <link>http://localhost:1313/post/2020-08-23/</link>
+      <pubDate>Sun, 23 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2020-08-23/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;20210822-追記esxi-70-u2-以降では安全なブート領域の複製が不可&#34;&gt;2021/08/22 追記：ESXi 7.0 U2 以降では安全なブート領域の複製が不可&lt;/h2&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;Nested ESXi のクローン、ESXi 7.0 U2 以降は完全に終了みたい。多分 configstore 周りの変更とかだろうなぁ・・・&lt;br&gt;&lt;br&gt;After upgrading to ESXi 7.0U2, corruption can occur on VMFS datastores if the ESXi hosts sharing those LUNs had their boot devices cloned (84349)&lt;a href=&#34;https://t.co/mJOY0iPvc8&#34;&gt;https://t.co/mJOY0iPvc8&lt;/a&gt;&lt;/p&gt;&amp;mdash; Jangari (@Jangari_nTK) &lt;a href=&#34;https://twitter.com/Jangari_nTK/status/1422894456567595015?ref_src=twsrc%5Etfw&#34;&gt;August 4, 2021&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;ESXi 7.0 Update 2 以降では ESXi の UUID への依存関係が増えているようで、esx.conf 内の UUID の修正のみでは足りなくなったようで、安全なブート領域のクローンが行えなくなりました。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://williamlam.com/2013/12/how-to-properly-clone-nested-esxi-vm.html&#34;&gt;How to properly clone a Nested ESXi VM? - WilliamLam.com&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;UPDATE (07/01/21) - As of ESXi 7.0 Update 2, cloning an ESXi boot volume (Nested or Physical) is no longer safe and can lead to data corruption. Please refer to the following two VMware KB articles for more information on this topic &lt;a href=&#34;https://kb.vmware.com/kb/84280&#34;&gt;https://kb.vmware.com/kb/84280&lt;/a&gt; and &lt;a href=&#34;https://kb.vmware.com/kb/84349&#34;&gt;https://kb.vmware.com/kb/84349&lt;/a&gt;&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>Active Directory over LDAPS の ID ソースを構成する</title>
+      <link>http://localhost:1313/post/2020-08-18/</link>
+      <pubDate>Tue, 18 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2020-08-18/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;前回、3記事に渡って vSphere 7 の新機能である Identity Federation の構成を行っていきました。しかし、いきなり AD FS を用意するのはシステム的／コスト的に難しい場合もあると思いますので、今回の記事では従来の vCenter SSO で Active Directory over LDAPS の ID ソースを構成していきたいと思います。&lt;/p&gt;
+&lt;h2 id=&#34;vcenter-single-sign-on-とは&#34;&gt;vCenter Single Sign-On とは？&lt;/h2&gt;
+&lt;p&gt;vCenter Single Sign-On (以下 vCenter SSO) は vSpehre Web Client (Flash) と併せて vSphere 5.1 で初めて導入された、vCenter Server でユーザー認証を行うためのコンポーネントです。SAML 2.0 による認証フロー&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;が採用されており、vCenter SSO は SAML における Identity Provider (IdP) として動作します。&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;従来の vCenter SSO による認証&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;http://localhost:1313/images/2020-08-11/Traditional_vCenter_SSO_diagram.PNG&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;なお、前回の記事シリーズでの Identity Federation は、vCenter Server に組み込まれている vCenter SSO (SAML) を使用せず、ID プロバイダに AD FS (OpenID Connect) を使用しています。以下の図と比較してもらえると、vCenter SSO の立ち位置が丸ごと AD FS に置き換わっていることが分かると思います。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>vCenter Server 7.0 で Identity Federation を構成【Part 3】</title>
+      <link>http://localhost:1313/post/2020-08-14/</link>
+      <pubDate>Fri, 14 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2020-08-14/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;本記事は&lt;a href=&#34;http://localhost:1313/post/2020-08-11/&#34;&gt;Identity Federation の構成記事&lt;/a&gt;の Part 3 となります。&lt;a href=&#34;http://localhost:1313/post/2020-08-12/&#34;&gt;前回&lt;/a&gt;は AD FS 側の構成をおこないました。今回はいよいよ vCenter Server 側での構成を行っていきます。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意: 本機能の &lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-0A3A19E6-150A-493B-8B57-37E19AB420F2.html&#34;&gt;VMware Docs&lt;/a&gt; での名称は vCenter Server ID プロバイダ フェデレーション (vCenter Server Identity Provider Federation)、&lt;a href=&#34;https://blogs.vmware.com/vsphere/2020/03/vsphere-7-identity-federation.html&#34;&gt;公式 Blog の記事&lt;/a&gt;などでは Identity Federation と呼称されています。本記事では文字数の便宜上、当該機能を Identity Federation として呼称することとします。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;2020/08/18 追記: 当方の &lt;a href=&#34;https://portal.msrc.microsoft.com/en-us/security-guidance/advisory/ADV190023&#34;&gt;ADV190023&lt;/a&gt;の対応に関する認識に誤りがあり、[おわりに] で「AD LDAP のデフォルトの動作が変更される」旨を記載していましたが、正しくは「設定変更が推奨であるものの既存の設定は変更されない」でした。このため、記事の内容を修正したとともに、誤った情報を記載したことをお詫び申し上げます。&lt;/p&gt;
+&lt;p&gt;なお、ADV190023 周りの詳細は「&lt;a href=&#34;https://support.microsoft.com/en-ie/help/4520412/2020-ldap-channel-binding-and-ldap-signing-requirements-for-windows&#34;&gt;2020 LDAP channel binding and LDAP signing requirements for Windows&lt;/a&gt;」を参照しています。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h2 id=&#34;vcenter-server-での作業に入る前に確認&#34;&gt;vCenter Server での作業に入る前に確認&lt;/h2&gt;
+&lt;p&gt;再掲になりますが、まずは前回の作業で使用した AD FS でのアプリケーショングループの以下の３点の情報を揃えておきます。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;クライアント識別子&lt;/li&gt;
+&lt;li&gt;共有シークレット&lt;/li&gt;
+&lt;li&gt;AD FS の openid-configuration の URL&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;active-directory-の-ldaps-の-ssltls-証明書の取得&#34;&gt;Active Directory の LDAPS の SSL/TLS 証明書の取得&lt;/h2&gt;
+&lt;p&gt;認証には使われない(はず)ですが、vCenter Server 側でのロールによる認可にあたり Active Directory のユーザーの一覧が必要になります&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;。この一覧の取得にあたり、vCenter Server から Active Directory の LDAPS への接続が必要になります。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>vCenter Server 7.0 で Identity Federation を構成【Part 2】</title>
+      <link>http://localhost:1313/post/2020-08-12/</link>
+      <pubDate>Wed, 12 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2020-08-12/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;本記事は &lt;a href=&#34;http://localhost:1313/post/2020-08-11/&#34;&gt;Identity Federation の構成記事&lt;/a&gt;の Part 2 となります。今回は AD FS 側の構成を行っていきます。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意: 本機能の &lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-0A3A19E6-150A-493B-8B57-37E19AB420F2.html&#34;&gt;VMware Docs&lt;/a&gt; での名称は vCenter Server ID プロバイダ フェデレーション (vCenter Server Identity Provider Federation)、&lt;a href=&#34;https://blogs.vmware.com/vsphere/2020/03/vsphere-7-identity-federation.html&#34;&gt;公式 Blog の記事&lt;/a&gt;などでは Identity Federation と呼称されています。本記事では文字数の便宜上、当該機能を Identity Federation として呼称することとします。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h2 id=&#34;vcenter-server-のリダイレクト-uri-の確認&#34;&gt;vCenter Server のリダイレクト URI の確認&lt;/h2&gt;
+&lt;p&gt;まず前回の記事からの再掲になりますが、vSphere Client の [ホーム] &amp;gt; [管理] &amp;gt; [vCenter Single Sign-On] &amp;gt; [設定] で [ID プロバイダの変更] の右に (i) の情報アイコンがあるので、これをクリックすると以下のようにポップアップが表示されます。&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;OpenID Connect のリダイレクト URI&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;http://localhost:1313/images/2020-08-11/vcentersso-idp-list-002.PNG&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;この2点の URI が AD FS からのリダイレクト先になる URI となります(前者はログアウト時、後者がログイン時)。AD FS に登録するため、メモ帳などにコピー＆ペーストで保存しておきます。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>vCenter Server 7.0 で Identity Federation を構成【Part 1】</title>
+      <link>http://localhost:1313/post/2020-08-11/</link>
+      <pubDate>Tue, 11 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2020-08-11/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;本記事シリーズでは vCenter Server 7.0 の新機能である Identity Federation を構成する方法を数回に分けてご紹介します。今回は Identity Federation の紹介と、最初の vCenter Server 側での手順について見ていきます。残りの AD FS の手順、その後の vCenter Server の手順は次回以降で見ていきます。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意: 本機能の &lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-0A3A19E6-150A-493B-8B57-37E19AB420F2.html&#34;&gt;VMware Docs&lt;/a&gt; での名称は vCenter Server ID プロバイダ フェデレーション (vCenter Server Identity Provider Federation)、&lt;a href=&#34;https://blogs.vmware.com/vsphere/2020/03/vsphere-7-identity-federation.html&#34;&gt;公式 Blog の記事&lt;/a&gt;などでは Identity Federation と呼称されています。本記事では文字数の便宜上、当該機能を Identity Federation として呼称することとします。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h2 id=&#34;vcenter-server-70-の-identity-federation-とは&#34;&gt;vCenter Server 7.0 の Identity Federation とは？&lt;/h2&gt;
+&lt;p&gt;Identity Federation は vCenter Server 7.0 の新機能で、AD FS と OpenID Connect (OIDC) を使用してユーザー認証を行う機能です。ユーザー認証を外部の ID プロバイダに移譲することで、vCenter Server に依存せず柔軟なシングルサインオンが実現できます。&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-157188E3-531C-4CC2-BDD4-8BF01EA26BDC.html&#34;&gt;こちらの VMware Docs&lt;/a&gt; では具体的に以下のようなメリットが挙げられています。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>pyVmomi から API 操作で Instant Clone をやってみる</title>
+      <link>http://localhost:1313/post/2020-08-07/</link>
+      <pubDate>Fri, 07 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2020-08-07/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;本記事では pyVmomi を使って vSphere 単体で Instant Clone を行う方法について書いていきます。&lt;/p&gt;
+&lt;p&gt;事の発端は以下のVMware社の中の人が PowerCLI から Nested ESXi をインスタントクローンする記事です。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.virtuallyghetto.com/2018/05/leveraging-instant-clone-in-vsphere-6-7-for-extremely-fast-nested-esxi-provisioning.html&#34;&gt;Leveraging Instant Clone in vSphere 6.7 for extremely fast Nested ESXi provisioning&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;vsphere-web-services-api-と-pyvmomi&#34;&gt;vSphere Web Services API と pyVmomi&lt;/h2&gt;
+&lt;p&gt;vCenter Server のタスクをコマンドで実行する場合、PowerCLI を使うことが多いと思います。もしくは、開発やトラブルシューティングなどの一環で MOB (Managed Object Browser) を使用したことがある方もいらっしゃるかもしれません。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://code.vmware.com/web/tool/12.0.0/vmware-powercli&#34;&gt;VMware PowerCLI - VMware {code}&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://code.vmware.com/docs/6536/vsphere-sdk-for-perl-programming-guide/doc/GUID-9D615A34-EEA5-4BBE-A612-E4600F47B555.html&#34;&gt;Online Documentation - vSphere SDK for Perl Programming Guide - VMware {code}&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;これらのツールは「vSphere Web Services API」という vSphere のローレベルな SOAP API を操作しています&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://code.vmware.com/web/sdk/7.0/vsphere-management&#34;&gt;vSphere Management SDK - VMware {code}&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://code.vmware.com/apis/968/vsphere&#34;&gt;vSphere Web Services API - VMware API Explorer - VMware {code}&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;今回の記事で紹介する「pyVmomi」という Python SDK も PowerCLI と同様に vSphere Web Services API を操作することが出来ます。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>vCenter Server 7.0 のイベントをテキストで取得</title>
+      <link>http://localhost:1313/post/2020-08-01/</link>
+      <pubDate>Sat, 01 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2020-08-01/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;vSphere Web Client (Flash 版) が vSphere 7 で遂に廃止となりました。vSphere Client (HTML5 版) は動作もスムーズで良いのですが、どうやら現時点では従来のイベントのエクスポートが行えないようです。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/2008204&#34;&gt;Exporting virtual machine events from the Tasks &amp;amp; Events tab (2008204)&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Note: The export tasks/Events option is only available on the vSphere Web Client (Flex). The HTML client does not include this feature at this time.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;このため、別の方法でイベントを取得する方法を試してみました。試した方法は以下の２パターンです。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;イベントストリーミングで転送してみる&lt;/li&gt;
+&lt;li&gt;PowerCLI でエクスポートしてみる&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;なお、どちらの方法もメッセージの言語のローカライズは行われないためご注意ください。&lt;/p&gt;
+&lt;h2 id=&#34;vcsa-のイベントストリーミングで転送してみる&#34;&gt;VCSA のイベントストリーミングで転送してみる&lt;/h2&gt;
+&lt;p&gt;イベントストリーミングでの転送では以下の２点の設定が必要ですが、後者は既定で設定済みなので、実質的には前者のリモート Syslog 転送の設定だけ行うことでイベントが転送されるようになります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.monitoring.doc/GUID-9633A961-A5C3-4658-B099-B81E0512DC21.html&#34;&gt;vCenter Server のログ ファイルを リモート Syslog サーバへ転送&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.monitoring.doc/GUID-FD51CE83-8B2A-4EBA-A16C-75DB2E384E95.html&#34;&gt;リモートの Syslog サーバへのイベント ストリーミングの構成&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Syslog 転送の構成はアプライアンス管理インターフェイス (VAMI) から行います。まず root ユーザーで VAMI にログインして以下のように [syslog] を開きましょう。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

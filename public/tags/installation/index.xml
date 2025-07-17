@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Installation on My New Hugo Site</title>
+    <link>http://localhost:1313/tags/installation/</link>
+    <description>Recent content in Installation on My New Hugo Site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 07 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/installation/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>OVFTool で vCenter Server Appliance をインストールする</title>
+      <link>http://localhost:1313/post/2022-01-07/</link>
+      <pubDate>Fri, 07 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2022-01-07/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;vCenter Server Appliance (以下 VCSA) の GUI インストールはステージ1とステージ2に分かれていますが、ステージ1では VCSA の OVA ファイルのインポートが行われています。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vcenter.install.doc/GUID-86FD9381-88B0-40F1-B516-6CC782ED9A14.html&#34;&gt;GUI を使用した vCenter Serverアプライアンスのデプロイ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;今回の記事では GUI/CLI インストーラを使わずに、OVFTool のみを使用して vCenter Server 7.0 Update 3 のインストールを試してみたいと思います。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://developer.vmware.com/web/tool/4.4.0/ovf&#34;&gt;Open Virtualization Format Tool (ovftool)&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;インストールのステージ2まで自動実行&#34;&gt;インストールのステージ2まで自動実行&lt;/h2&gt;
+&lt;p&gt;良い感じに OVF プロパティなどまとまっている情報がないか調べていたところ、以下の KB2110081 に OVFTool で VCSA をデプロイするコマンドのサンプルがありました。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/2110081&#34;&gt;Creating vSAN clusters up to 64 nodes (2110081)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;KB2110081 は 32 ノード以上の vSAN を構成する場合の手順ですが、OVFTool のオプションなどは値を入れ替えればそのまま使えるので拝借しました。&lt;/p&gt;
+&lt;p&gt;Linux で OVFTool を実行する前提で、整形したりオプションを並べ替えたものが以下です。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;ovftool --skipManifestCheck --noSSLVerify --allowExtraConfig --acceptAllEulas --powerOn --sourceType=OVA --overwrite \
+  --X:injectOvfEnv --X:enableHiddenProperties --X:logLevel=verbose --X:logTransferHeaderData --X:waitForIp \
+  --name=vcsa01_jangari_lab \
+  --datastore=local-vmfs \
+  --deploymentOption=tiny \
+  --diskMode=thin \
+  --network=Management \
+  --prop:guestinfo.cis.deployment.autoconfig=True \
+  --prop:guestinfo.cis.deployment.node.type=embedded \
+  --prop:guestinfo.cis.system.vm0.port=443 \
+  --prop:guestinfo.cis.appliance.net.addr.family=ipv4 \
+  --prop:guestinfo.cis.appliance.net.mode=static \
+  --prop:guestinfo.cis.appliance.net.pnid=vcsa01.jangari.lab \
+  --prop:guestinfo.cis.appliance.net.addr=192.168.0.119 \
+  --prop:guestinfo.cis.appliance.net.prefix=24 \
+  --prop:guestinfo.cis.appliance.net.gateway=192.168.0.1 \
+  --prop:guestinfo.cis.appliance.net.dns.servers=192.168.0.189 \
+  --prop:guestinfo.cis.appliance.ntp.servers=ntp.nict.jp \
+  --prop:guestinfo.cis.appliance.ssh.enabled=True \
+  --prop:guestinfo.cis.appliance.root.passwd=VMware1! \
+  --prop:guestinfo.cis.appliance.root.shell=/bin/appliancesh \
+  --prop:guestinfo.cis.vmdir.site-name=Default-First-Site \
+  --prop:guestinfo.cis.vmdir.domain-name=vsphere.local \
+  --prop:guestinfo.cis.vmdir.password=VMware1! \
+  --prop:guestinfo.cis.vmdir.first-instance=True \
+  --prop:guestinfo.cis.ceip_enabled=True \
+  /media/vcsa/VMware-vCenter-Server-Appliance-7.0.3.00200-18901211_OVF10.ova \
+  vi://root:VMware1\!@esxi-01.tanzu.local:443/
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;上述のコマンドを実行すると CLI インストーラと同様に、vCenter Server のインストールのステージ2まで実行されます。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,765 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>VCenter Server on My New Hugo Site</title>
+    <link>http://localhost:1313/tags/vcenter-server/</link>
+    <description>Recent content in VCenter Server on My New Hugo Site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 18 Jun 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/vcenter-server/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>VMware Skyline Health Diagnostics を vSphere Client プラグインとして使用する</title>
+      <link>http://localhost:1313/post/2023-06-18/</link>
+      <pubDate>Sun, 18 Jun 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2023-06-18/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;4月～5月にかけて &lt;a href=&#34;https://blogs.vmware.com/vsphere/2023/05/vsphere-8-update-1-general-availability.html&#34;&gt;vSphere 8.0 Update 1 が Initial Availability (IA) / General Availability (GA)&lt;/a&gt; となりましたが、新機能の一つとして VMware Skyline Health Diagnostics (SHD) の vSphere Client プラグインが追加されました。これにより SHD が vSphere Client と統合され、インストールや操作が単一の UI で可能になります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/8.0/rn/vsphere-vcenter-server-801-release-notes/index.html&#34;&gt;VMware vCenter Server 8.0 Update 1 リリース ノート&lt;/a&gt;&lt;br&gt;
+→ 新機能&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;VMware Skyline™ Health Diagnostics™ と vCenter Server の統合：vSphere 8.0 Update 1 以降では、vSphere Client と統合された VMware Skyline Health Diagnostics セルフサービス診断プラットフォームを使用して、vSphere 環境の問題を検出して修正できます。詳細については、VMware Skyline Health Diagnostics for vSphere Documentationを参照してください。&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;p&gt;そこから VMware Skyline Health Diagnostics 側でも 6/15 にリリースされたバージョン 4.0.0 で、プラグイン統合に対応した仮想アプライアンスが提供されるようになりました。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>PowerCLI で vCenter Server のトリガー済みアラームを取得</title>
+      <link>http://localhost:1313/post/2022-12-09/</link>
+      <pubDate>Fri, 09 Dec 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2022-12-09/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;vCenter Server の各インベントリオブジェクトのトリガー済みアラームは公式の &lt;a href=&#34;https://github.com/vmware/PowerCLI-Example-Scripts/blob/master/Scripts/Get-TriggeredAlarm.ps1&#34;&gt;PowerCLI サンプルスクリプト&lt;/a&gt;にもあるように $entity.ExtensionData.TriggeredAlarmState で取得できます。&lt;/p&gt;
+&lt;p&gt;今回は以下のような vCenter Server オブジェクトに表示される全トリガー済みアラームを取得してみます。&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;http://localhost:1313/images/2022-12-09/vc_triggered_alarm_gui.PNG&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;インベントリ階層とデータセンターフォルダ&#34;&gt;インベントリ階層とデータセンターフォルダ&lt;/h2&gt;
+&lt;p&gt;vCenter Server のインベントリ階層は以下のVMware社ドキュメントに記載があります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-03B36057-B38C-479C-BD78-341CD83A0584.html&#34;&gt;権限の階層的な継承&lt;/a&gt;&lt;br&gt;
+→ vSphere のインベントリ階層&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;以下の図は上記ドキュメントからの引用です。&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;http://localhost:1313/images/2022-12-09/inventory_hierarchy.PNG&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;アラームのターゲットタイプのうち階層の最上位のタイプは &amp;ldquo;vCenter Server&amp;rdquo; ですが、これは実際は図の上から３番目の「データセンターフォルダ」に対応しています。トリガー済みアラーム画面でオブジェクトタイプをよく見ると vCenter Server は「フォルダ」扱いになっていることが分かります。&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;http://localhost:1313/images/2022-12-09/vc_triggered_alarm_gui_root_folder.PNG&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;トリガー済みアラームの一覧を取得する&#34;&gt;トリガー済みアラームの一覧を取得する&lt;/h2&gt;
+&lt;p&gt;データセンターフォルダは名前が「Datacenters」または ID が「Folder-group-d1」なので、Get-Folder でこれらを指定すれば取得できます。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/vmware/PowerCLI-Example-Scripts/blob/master/Scripts/Get-TriggeredAlarm.ps1&#34;&gt;PowerCLI サンプルスクリプト&lt;/a&gt;からコードを拝借し、少しカスタマイズした PowerShell 関数が以下です。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-powershell&#34; data-lang=&#34;powershell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt; Get-AllTriggeredAlarm {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  $alarmOutput = @()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;# Get the folder named &amp;#34;Datacenters&amp;#34;, which is the root of the inventory tree.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  $entity = Get-Folder -Name &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Datacenters&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; ($entity.ExtensionData.TriggeredAlarmState &lt;span style=&#34;color:#f92672&#34;&gt;-ne&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;foreach&lt;/span&gt; ($alarm &lt;span style=&#34;color:#66d9ef&#34;&gt;in&lt;/span&gt; $entity.ExtensionData.TriggeredAlarmState) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          $tempObj = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt; | Select-Object -Property Alarm, Entity, EntityMoRef, AlarmStatus, Time, AlarmMoRef
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          $tempObj.Entity = Get-View $alarm.Entity | Select-Object -ExpandProperty Name
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          $tempObj.Alarm = Get-View $alarm.Alarm | Select-Object -ExpandProperty Info | Select-Object -ExpandProperty Name
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          $tempObj.AlarmStatus = $alarm.OverallStatus
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          $tempObj.AlarmMoRef = $alarm.Alarm
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          $tempObj.EntityMoRef = $alarm.Entity
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          $tempObj.Time = $alarm.Time
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          $alarmOutput += $tempObj
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; $alarmOutput
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;この関数を実行すると以下のように vCenter Server に定義が存在するトリガー済みアラームも取得できます。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>vSphere Diagnostic Tool を使ってみる</title>
+      <link>http://localhost:1313/post/2022-05-04/</link>
+      <pubDate>Wed, 04 May 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2022-05-04/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;今回の記事では vCenter Server の構成やサービスの問題などのチェックが行える &lt;a href=&#34;https://flings.vmware.com/&#34;&gt;VMware Flings&lt;/a&gt; のツール「vSphere Diagnostic Tool」を紹介したいと思います。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://flings.vmware.com/vsphere-diagnostic-tool&#34;&gt;vSphere Diagnostic Tool&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href=&#34;https://flings.vmware.com/vsphere-diagnostic-tool/license&#34;&gt;Tech Preview License&lt;/a&gt; のため商用サポートなどはないものの、vCenter Server の様々な項目のサマリーを収集できるため障害調査の初動対応に有用だと思います。現時点では以下の項目がチェックできるようです。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The tool itself is currently a set of self contained python and bash scripts that can perform the following tests for vCenter Server Appliance 6.5 or newer:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;vCenter Basic Info&lt;/li&gt;
+&lt;li&gt;Lookup Service Check&lt;/li&gt;
+&lt;li&gt;AD Check&lt;/li&gt;
+&lt;li&gt;vCenter Certificate Check&lt;/li&gt;
+&lt;li&gt;Core File Check&lt;/li&gt;
+&lt;li&gt;Disk Check&lt;/li&gt;
+&lt;li&gt;vCenter DNS Check&lt;/li&gt;
+&lt;li&gt;vCenter NTP Check&lt;/li&gt;
+&lt;li&gt;vCenter Port Check&lt;/li&gt;
+&lt;li&gt;Root Account Check&lt;/li&gt;
+&lt;li&gt;vCenter Services Check&lt;/li&gt;
+&lt;li&gt;VCHA Check&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;p&gt;今回の記事では実際に vCenter Server に障害を発生させてみて、vSphere Diagnostic Tool でどのような情報が取れるのか見てみたいと思います。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>REST API で VCSA をバックアップからリストアする</title>
+      <link>http://localhost:1313/post/2022-01-10/</link>
+      <pubDate>Mon, 10 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2022-01-10/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;http://localhost:1313/post/2022-01-07/&#34;&gt;前回の記事&lt;/a&gt;では OVFTool で vCenter Server Appliance (以下 VCSA) をデプロイしました。今回の記事では VCSA のインストールのステージ1が完了したところから、REST API を使って vCenter Server のリストアを実行してみます。&lt;/p&gt;
+&lt;h2 id=&#34;なぜ-api-でやろうと思ったのか&#34;&gt;なぜ API でやろうと思ったのか&lt;/h2&gt;
+&lt;p&gt;vCenter Server 7.0 Update 3 時点で、VCSA の CLI インストーラにはリストアの機能だけ存在しません。VMware Docs には GUI インストーラを使う手順と、vSphere Client で OVA のデプロイ後に VAMI からステージ2を実行する方法のみが書いてあります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vcenter.install.doc/GUID-F02AF073-7CFD-45B2-ACC8-DE3B6ED28022.html&#34;&gt;ファイルベースのバックアップからの vCenter Server のリストア&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vcenter.install.doc/GUID-1E39EF05-1DD7-4E9B-B9FE-6F373AA81862.html&#34;&gt;ステージ 1 - 新しいアプライアンスをデプロイ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;インストール、アップグレード、マイグレーションは CLI インストーラでも可能になっています。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vcenter.install.doc/GUID-C17AFF44-22DE-41F4-B85D-19B7A995E144.html&#34;&gt;vCenter Server アプライアンスの CLI デプロイ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vcenter.upgrade.doc/GUID-97BA3A0E-CFCB-407D-81FD-FB91AE46786F.html&#34;&gt;vCenter ServerAppliance の CLI アップグレード&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vcenter.upgrade.doc/GUID-AFDCE942-516E-4C5B-ADBF-C1237C9BBA80.html&#34;&gt;CLI による Windows からアプライアンスへの vCenter Serverインストールの移行&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;このため、リストアだけコマンドラインで出来ないのもなぁ・・・と思ったのが API でやってみようとした発端です。&lt;/p&gt;
+&lt;h2 id=&#34;事前準備&#34;&gt;事前準備&lt;/h2&gt;
+&lt;p&gt;事前準備として、以下の2点を実施しておきます。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>OVFTool で vCenter Server Appliance をインストールする</title>
+      <link>http://localhost:1313/post/2022-01-07/</link>
+      <pubDate>Fri, 07 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2022-01-07/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;vCenter Server Appliance (以下 VCSA) の GUI インストールはステージ1とステージ2に分かれていますが、ステージ1では VCSA の OVA ファイルのインポートが行われています。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vcenter.install.doc/GUID-86FD9381-88B0-40F1-B516-6CC782ED9A14.html&#34;&gt;GUI を使用した vCenter Serverアプライアンスのデプロイ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;今回の記事では GUI/CLI インストーラを使わずに、OVFTool のみを使用して vCenter Server 7.0 Update 3 のインストールを試してみたいと思います。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://developer.vmware.com/web/tool/4.4.0/ovf&#34;&gt;Open Virtualization Format Tool (ovftool)&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;インストールのステージ2まで自動実行&#34;&gt;インストールのステージ2まで自動実行&lt;/h2&gt;
+&lt;p&gt;良い感じに OVF プロパティなどまとまっている情報がないか調べていたところ、以下の KB2110081 に OVFTool で VCSA をデプロイするコマンドのサンプルがありました。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/2110081&#34;&gt;Creating vSAN clusters up to 64 nodes (2110081)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;KB2110081 は 32 ノード以上の vSAN を構成する場合の手順ですが、OVFTool のオプションなどは値を入れ替えればそのまま使えるので拝借しました。&lt;/p&gt;
+&lt;p&gt;Linux で OVFTool を実行する前提で、整形したりオプションを並べ替えたものが以下です。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;ovftool --skipManifestCheck --noSSLVerify --allowExtraConfig --acceptAllEulas --powerOn --sourceType=OVA --overwrite \
+  --X:injectOvfEnv --X:enableHiddenProperties --X:logLevel=verbose --X:logTransferHeaderData --X:waitForIp \
+  --name=vcsa01_jangari_lab \
+  --datastore=local-vmfs \
+  --deploymentOption=tiny \
+  --diskMode=thin \
+  --network=Management \
+  --prop:guestinfo.cis.deployment.autoconfig=True \
+  --prop:guestinfo.cis.deployment.node.type=embedded \
+  --prop:guestinfo.cis.system.vm0.port=443 \
+  --prop:guestinfo.cis.appliance.net.addr.family=ipv4 \
+  --prop:guestinfo.cis.appliance.net.mode=static \
+  --prop:guestinfo.cis.appliance.net.pnid=vcsa01.jangari.lab \
+  --prop:guestinfo.cis.appliance.net.addr=192.168.0.119 \
+  --prop:guestinfo.cis.appliance.net.prefix=24 \
+  --prop:guestinfo.cis.appliance.net.gateway=192.168.0.1 \
+  --prop:guestinfo.cis.appliance.net.dns.servers=192.168.0.189 \
+  --prop:guestinfo.cis.appliance.ntp.servers=ntp.nict.jp \
+  --prop:guestinfo.cis.appliance.ssh.enabled=True \
+  --prop:guestinfo.cis.appliance.root.passwd=VMware1! \
+  --prop:guestinfo.cis.appliance.root.shell=/bin/appliancesh \
+  --prop:guestinfo.cis.vmdir.site-name=Default-First-Site \
+  --prop:guestinfo.cis.vmdir.domain-name=vsphere.local \
+  --prop:guestinfo.cis.vmdir.password=VMware1! \
+  --prop:guestinfo.cis.vmdir.first-instance=True \
+  --prop:guestinfo.cis.ceip_enabled=True \
+  /media/vcsa/VMware-vCenter-Server-Appliance-7.0.3.00200-18901211_OVF10.ova \
+  vi://root:VMware1\!@esxi-01.tanzu.local:443/
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;上述のコマンドを実行すると CLI インストーラと同様に、vCenter Server のインストールのステージ2まで実行されます。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>vc_log4j_mitigator.py での CVE-2021-44228 &amp; CVE-2021-45046 への対処</title>
+      <link>http://localhost:1313/post/2021-12-26/</link>
+      <pubDate>Sun, 26 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2021-12-26/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;Log4j 2.x の脆弱性 (CVE-2021-44228 &amp;amp; CVE-2021-45046) が話題ですが、12/20 に vCenter Server に関する KB87081 と KB87096 が更新され、vc_log4j_mitigator.py の実行のみで対処が可能になっています。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/87081&#34;&gt;Workaround instructions to address CVE-2021-44228 and CVE-2021-45046 in vCenter Server and vCenter Cloud Gateway (87081)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/87096&#34;&gt;Workaround instructions to address CVE-2021-44228 &amp;amp; CVE-2021-45046 in vCenter Server Windows (87096)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;本記事では vc_log4j_mitigator.py を使用して vCenter Server に CVE-2021-44228 &amp;amp; CVE-2021-45046 への対処を実施していきます。&lt;/p&gt;
+&lt;h2 id=&#34;本記事を読む前の注意点&#34;&gt;本記事を読む前の注意点&lt;/h2&gt;
+&lt;p&gt;本脆弱性に関する VMware Security Advisories や各製品の KB は頻繁に更新されており、公開当初から相当な更新や追記が行われています。本記事に記載されている情報は 12/26 時点の情報となり、記事中で対処を行っている環境は vCenter Server Appliance 7.0 Update 3a のため、記事の閲覧時点で異なる部分が発生している可能性もあります。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>PowerCLI を使って ESXi の忘れた root パスワードをリセットする</title>
+      <link>http://localhost:1313/post/2021-12-16/</link>
+      <pubDate>Thu, 16 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2021-12-16/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;http://localhost:1313/post/2021-12-14/&#34;&gt;前回の記事&lt;/a&gt;ではホストプロファイルで ESXi の root ユーザーのパスワードをリセットしました。&lt;/p&gt;
+&lt;p&gt;今回の記事は PowerCLI を使用し vCenter Server 経由で ESXi の root ユーザーのパスワードをリセットしてみます。ホストプロファイルは vSphere Enterprise Plus が必要となる機能ですが、PowerCLI は vSphere Essentials 以上の全てのエディションで使用可能です。&lt;/p&gt;
+&lt;p&gt;なお、前回の記事と同様に ESXi が vCenter Server に管理・接続されていることが前提となります。&lt;/p&gt;
+&lt;h2 id=&#34;esxi-のローカルユーザーの管理&#34;&gt;ESXi のローカルユーザーの管理&lt;/h2&gt;
+&lt;p&gt;ESXi のローカルユーザーを管理する手段としては主に以下の2つがあります。vCenter Server のユーザーが ESXi のローカルユーザーを直接管理することはできません。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Host Client を使用する&lt;/li&gt;
+&lt;li&gt;esxcli system account コマンドを使用する&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;今回は PowerCLI を使用して後者の esxcli を呼び出すことで ESXi のローカルユーザーを操作します。&lt;/p&gt;
+&lt;p&gt;なお、esxcli system account コマンドは vSphere 6.0 のリリースから追加されています。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://vdc-download.vmware.com/vmwb-repository/dcr-public/5068a138-314e-45c3-87cf-e4c8c3d72df7/a31b6594-284f-4c9f-81d5-c37e737cc3fa/vsp6_60_vcli_relnotes.html&#34;&gt;vSphere Command-Line Interface 6.0 Release Notes&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;ESXCLI new and changed commands — New commands have been added and one command has changed.&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>ホストプロファイルを使って ESXi の忘れた root パスワードをリセットする</title>
+      <link>http://localhost:1313/post/2021-12-14/</link>
+      <pubDate>Tue, 14 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2021-12-14/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;ESXi の root ユーザーのパスワードを忘れてしまった場合、基本的には ESXi の再インストールが必要になりますが、vSphere Enterprise Plus のライセンスを持っている場合、vCenter Server のホストプロファイルを使用することでパスワードのリセット(上書き)が可能です。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/1317898&#34;&gt;Steps to reset a lost or forgotten root password of an ESX/ESXi host (1317898)&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Reinstalling the ESXi host is the only supported way to reset a password on ESXi. From ESXi 4.1 onwards, the host profile feature was introduced.
+If the host is managed by vCenter and is still connected, you can the reset by leveraging the host profile feature. For Host Profile feature you must have Enterprise Plus Licensing -  For more information refer to KB : &lt;a href=&#34;https://kb.vmware.com/s/article/68079&#34;&gt;Reset ESXi Root Password with Host Profile&lt;/a&gt;&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>【小ネタ】vCenter Server 7.0 Update 3 でイベントのエクスポート機能が追加</title>
+      <link>http://localhost:1313/post/2021-11-13/</link>
+      <pubDate>Sat, 13 Nov 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2021-11-13/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;http://localhost:1313/post/2020-08-01/&#34;&gt;以前の記事&lt;/a&gt;で vCenter Server 7.0 でイベントをエクスポートする方法をいくつか記載していました。&lt;/p&gt;
+&lt;p&gt;リリースノートなどに情報が載っていなかったのですが、vCenter Server 7.0 Update 3 で vSphere Client のイベントコンソールでのイベント一覧のエクスポート機能が追加されたようです。&lt;/p&gt;
+&lt;p&gt;VMware Docs にもエクスポートに関するドキュメントが追加されていました。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.monitoring.doc/GUID-1A7FF15C-FC88-4BEF-B5AB-4BDA54D17F96.html&#34;&gt;vSphere Client 内のイベントのエクスポート&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;ドキュメントの更新日が VC 7.0 U3 のリリースより2ヶ月ほど古いのが気になりますが、少なくとも直前の VC 7.0 U2d で確認する限り本機能は未実装のようだったので、VC 7.0 U3 で追加された機能と考えて良さそうです。&lt;/p&gt;
+&lt;h2 id=&#34;イベントのエクスポート手順&#34;&gt;イベントのエクスポート手順&lt;/h2&gt;
+&lt;p&gt;vSphere Client のインベントリで、各オブジェクトの [監視] タブ &amp;gt; [イベント] から [エクスポート] をクリックすると、&amp;ldquo;ExportEventsLog.csv.csv&amp;rdquo; といったファイル名でダウンロードが始まります。&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;http://localhost:1313/images/2021-11-13/event-export.PNG&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;注意点&#34;&gt;注意点&lt;/h2&gt;
+&lt;p&gt;エクスポートされるイベントは一覧に表示されている1ページ分のみなので、表示件数に指定できる100件がエクスポート可能な最大件数となります。それ以上の件数や期間を指定してエクスポートしたい場合、現状ではやはり PowerCLI などを使う必要がありそうです。&lt;/p&gt;
+&lt;p&gt;また、試した限りでは列のフィルタを行った後にエクスポートを行ってもエクスポート結果は変わらないようでした。アラームがトリガーされた際のイベントやステータスが警告のイベントのみ抽出してエクスポート、といったことはできないようです。&lt;/p&gt;
+&lt;h2 id=&#34;おわりに&#34;&gt;おわりに&lt;/h2&gt;
+&lt;p&gt;今回は vCenter Server 7.0 Update 3 で追加されていたイベントのエクスポート機能を試してみました。表示中の1ページ分ですがエクスポートが行えるようになったので、簡易的なイベントのエクスポートには使えそうかなと感じます。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>PowerCLI の vSphere Automation API SDK モジュールで vCenter Server のマシン SSL 証明書を更新する</title>
+      <link>http://localhost:1313/post/2021-09-18/</link>
+      <pubDate>Sat, 18 Sep 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2021-09-18/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;http://localhost:1313/post/2021-03-29/&#34;&gt;以前の記事&lt;/a&gt;で REST API を使って vCenter Server のマシン SSL 証明書を置き換えていましたが、先日の PowerCLI 12.4 のリリースで PowerCLI のコマンドレットが追加されました。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://blogs.vmware.com/PowerCLI/2021/09/powercli-12-4-whats-new.html&#34;&gt;PowerCLI 12.4 – What’s New&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The new vSphere Management Module
+A new module is introduced for vSphere Management. It is a PowerShell-based module backed by the newly introduced vSphere Automation API SDK modules. &amp;hellip; Currently, the module contains 6 cmdlets to complement certificate management. Explore the cmdlet documentation to know more.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Add-VITrustedCertificate&lt;/li&gt;
+&lt;li&gt;Get-VIMachineCertificate&lt;/li&gt;
+&lt;li&gt;Get-VITrustedCertificate&lt;/li&gt;
+&lt;li&gt;New-VIMachineCertificateSigningRequest&lt;/li&gt;
+&lt;li&gt;Remove-VITrustedCertificate&lt;/li&gt;
+&lt;li&gt;Set-VIMachineCertificate&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;p&gt;PowerCLI のリファレンスを見ると &lt;a href=&#34;https://developer.vmware.com/docs/powercli/latest/vmware.powercli.vcenter/commands/set-vimachinecertificate/#VCenter&#34;&gt;Set-VIMachineCertificate&lt;/a&gt; コマンドレットによりカスタム証明書でマシン SSL 証明書を置き換えることが出来るようです。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>【Tips】共有ストレージなし＆VCSA デプロイ済みのクラスタで EVC を有効にする【自宅ラボ用】</title>
+      <link>http://localhost:1313/post/2021-08-17/</link>
+      <pubDate>Tue, 17 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2021-08-17/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;背景&#34;&gt;背景&lt;/h2&gt;
+&lt;p&gt;仮想マシンとしてデプロイされた vCenter Server が存在するクラスタ上で EVC を有効にする場合、KB2147821 のように EVC がそれぞれ無効／有効な2つのクラスタを用意し、そのクラスタ間で vCenter Server 仮想マシンをインベントリ上で再登録する必要があります。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/2147821?lang=ja&#34;&gt;vCenter Server 6.5 および 6.7 で vCenter Server 自身の仮想マシンが実行されるクラスタの EVC を有効にする方法 (2147821)&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;先日、Intel NUC 10 1台で構成していた自宅ラボに Intel NUC 11 の ESXi 7.0 を追加したため EVC を有効にしようとしたのですが、共有ストレージを用意していなかったためホスト間でのインベントリの再登録が行えませんでした。&lt;/p&gt;
+&lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;遊びで使っている自宅ラボでの EVC の有効化のためだけに共有ストレージを追加するのも面倒でしたので、以下のような少々トリッキーな手段で EVC を有効にしてみました。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;vCenter Server 仮想マシンを停止＆スナップショットを作成&lt;/li&gt;
+&lt;li&gt;ハードウェアバージョン14以降へのアップグレード&lt;/li&gt;
+&lt;li&gt;仮想マシンに Per-VM EVC のパラメータを追加&lt;/li&gt;
+&lt;li&gt;vCenter Server 仮想マシンをパワーオンしてクラスタの EVC を有効化&lt;/li&gt;
+&lt;li&gt;1.のスナップショットにリストアして再度クラスタの EVC を有効化&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;vCenter Server 仮想マシンが存在するクラスタ上で EVC を有効にする場合、vCenter Server 仮想マシン自身の CPU 互換性が問題になります。&lt;/p&gt;
+&lt;p&gt;一度クラスタで EVC を構成してしまえば vCenter Server が停止していてもホストの EVC モードは維持されるので、手作業で vCenter Server 仮想マシンの CPUID をマスクした後、クラスタの EVC を構成し、作業前のスナップショットにリストアすることで vCenter Server 仮想マシンをクラスタの EVC モードで起動させます。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>REST API で vCenter Server のマシンSSL証明書を置き換える</title>
+      <link>http://localhost:1313/post/2021-03-29/</link>
+      <pubDate>Mon, 29 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2021-03-29/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;20210916-追記-powercli-124-で証明書管理が追加&#34;&gt;2021/09/16 追記: PowerCLI 12.4 で証明書管理が追加&lt;/h2&gt;
+&lt;p&gt;2021/09/16 にリリースされた PowerCLI 12.4 で vSphere Automation API のモジュールが追加されました。このモジュールには vCenter Server の証明書管理のコマンドレットが含まれています。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://blogs.vmware.com/PowerCLI/2021/09/powercli-12-4-whats-new.html&#34;&gt;PowerCLI 12.4 - What&amp;rsquo;s New - VMware PowerCLI Blog&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The new vSphere Management Module
+A new module is introduced for vSphere Management. It is a PowerShell-based module backed by the newly introduced vSphere Automation API SDK modules. &amp;hellip; Currently, the module contains 6 cmdlets to complement certificate management. Explore the cmdlet documentation to know more.&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>vCenter Server 7.0 で CSR を生成してカスタム証明書に置き換える</title>
+      <link>http://localhost:1313/post/2021-03-24/</link>
+      <pubDate>Wed, 24 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2021-03-24/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;vSphere 6.7 以降では vSphere Client から証明書の管理が可能になっています。カスタム証明書の CSR を vCenter Server で生成する手順について文言など多少混乱した点があったので、記録として残しておきたいと思います。&lt;/p&gt;
+&lt;p&gt;流れは一般的な証明書の発行と同じく以下の３つです。今回のケースでは手順1, 3 は vCenter Server 側、手順 2 は CA 側で実施する操作になります。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;証明書署名要求 (CSR) の生成&lt;/li&gt;
+&lt;li&gt;署名済み証明書の発行&lt;/li&gt;
+&lt;li&gt;署名済み証明書のインポート&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;注意カスタム証明書の置き換えに関する既知問題&#34;&gt;注意：カスタム証明書の置き換えに関する既知問題&lt;/h2&gt;
+&lt;p&gt;vCenter Server 7.0 ではマシン SSL 証明書をカスタム証明書に置き換えると vCenter Server のサービスが起動に失敗する既知問題があります。vCenter Server 7.0 Update 1c で修正されていますが、それ以前のリリースで発生した場合のワークアラウンドは無いようです。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/82168&#34;&gt;vCenter Server 7.0 fails to start after replacing VMCA certificates with CA-signed certificates. (82168)&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;私の環境では再現できませんでしたが修正リリース以降へのアップデートの実施が推奨されますので、カスタム証明書を使用する場合は事前に既知問題に該当する vCenter Server 7.0 リリースか確認するようにしましょう。&lt;/p&gt;
+&lt;p&gt;2021/03/28 追記：インポートする証明書の改行コードなどに起因する既知問題を観測したので、本記事の末尾に内容などを追記しました。&lt;/p&gt;
+&lt;h2 id=&#34;証明書署名要求-csr-の生成&#34;&gt;証明書署名要求 (CSR) の生成&lt;/h2&gt;
+&lt;p&gt;vSphere Client の [ホーム] &amp;gt; [管理] &amp;gt; [証明書の管理] を開き、[アクション] から [証明書署名要求 (CSR) の生成] をクリックします。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>journalctl コマンドで vCenter Server のイベントを見てみる</title>
+      <link>http://localhost:1313/post/2021-02-12/</link>
+      <pubDate>Fri, 12 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2021-02-12/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;以前、&lt;a href=&#34;http://localhost:1313/post/2020-08-01&#34;&gt;こちらの記事&lt;/a&gt;で vCenter Server 7.0 でのイベントのエクスポート方法 (PowerCLI / syslog) について書いていました。記事でも書いたとおり、vCenter Server Appliance 6.5 以降ではイベントストリーミングが追加され既定で有効になっていますが、syslog 転送は手動で構成する必要がありました。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.monitoring.doc/GUID-FD51CE83-8B2A-4EBA-A16C-75DB2E384E95.html&#34;&gt;リモートの Syslog サーバへのイベント ストリーミングの構成&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;vCenter Serverストリーミング機能へのイベントの書き込みを構成することもできます。イベントのストリーミングは、vCenter Server でのみサポートされます。リモート Syslog サーバに対するイベントのストリーミングは、デフォルトで無効になっています。リモート Syslog サーバへの vCenter Server イベントのストリーミングは、vCenter Server 管理インターフェイスで有効にして設定することができます。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;ol start=&#34;6&#34;&gt;
+&lt;li&gt;vpxd.event.syslogオプションを有効または無効にします。&lt;br&gt;
+この設定のデフォルト値は「有効」です。&lt;/li&gt;
+&lt;/ol&gt;&lt;/blockquote&gt;
+&lt;p&gt;syslog で転送できるのであればデータベース以外のどこかに記録されてないかなと思い色々と試してみたところ、journalctl コマンドで vMon のジャーナルを参照すると syslog 転送時と同じイベントの記録が確認できたので、参考までに見つけた流れなどを備忘録として残しておきたいと思います。&lt;/p&gt;
+&lt;p&gt;なお、公式マニュアルやナレッジベースなどの公開情報は見当たらなかったのでサポート外の操作になるとは思われます。vCenter Server Appliance が壊れるような操作では無いはずですが実施する場合は自己責任でお願いします。&lt;/p&gt;
+&lt;h2 id=&#34;vmware-service-lifecycle-manager-vmon&#34;&gt;VMware Service Lifecycle Manager (vMon)&lt;/h2&gt;
+&lt;p&gt;vSphere 6.5 以降では vCenter Server のアーキテクチャが変わっており、多くの vCenter Server 関連サービスは VMware Service Lifecycle Manager サービス (vMon) の子プロセスとして動作するようになっています(PSC 関連など一部のサービスは対象外)&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/2109881?lang=ja&#34;&gt;vCenter Server 6.x のサービスを停止、開始、再起動する方法 (2109881)&lt;/a&gt;&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>VCDB から MAC アドレスの一覧を SELECT してみる</title>
+      <link>http://localhost:1313/post/2021-02-10/</link>
+      <pubDate>Wed, 10 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2021-02-10/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;vSphere の仮想マシンに固定 MAC アドレスを割り振る場合のベストプラクティスとして、事前にデータベースから MAC アドレスの一覧を参照して重複が無いことを確認しましょうといった KB が1月ごろに公開されていました。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/82139&#34;&gt;Best practices for assigning static MAC address to a Virtual machine vNIC (82139)&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Before assigning the static MAC address, refer the table MAC_ADDRESS table(select * from VPX_NIC) in the VCDB to make sure the there is no duplicate.(Irrespective of upper or lowercase)&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;del&gt;個人的にはデータベースを覗き見るのはあまり行儀が良い行為ではない気がするのですが&lt;/del&gt; KB として出ているので vCenter Server 7.0 (vPostgres) で試してみます。&lt;/p&gt;
+&lt;p&gt;基本的にどのバージョンも同じ手順になると思いますが、もしかしたら vCenter Server のバージョンや種類(Windows or Appliance)、データベースの種類によっては SQL クエリの結果など異なる可能性もありますので、その場合は環境に合わせて適宜調整してもらえればと思います。&lt;/p&gt;
+&lt;h2 id=&#34;vcenter-server-データベースに接続する&#34;&gt;vCenter Server データベースに接続する&lt;/h2&gt;
+&lt;p&gt;KB2147285 を参考に、VCSA の Bash シェル上から psql でデータベースに接続します。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>Active Directory over LDAPS の ID ソースを構成する</title>
+      <link>http://localhost:1313/post/2020-08-18/</link>
+      <pubDate>Tue, 18 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2020-08-18/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;前回、3記事に渡って vSphere 7 の新機能である Identity Federation の構成を行っていきました。しかし、いきなり AD FS を用意するのはシステム的／コスト的に難しい場合もあると思いますので、今回の記事では従来の vCenter SSO で Active Directory over LDAPS の ID ソースを構成していきたいと思います。&lt;/p&gt;
+&lt;h2 id=&#34;vcenter-single-sign-on-とは&#34;&gt;vCenter Single Sign-On とは？&lt;/h2&gt;
+&lt;p&gt;vCenter Single Sign-On (以下 vCenter SSO) は vSpehre Web Client (Flash) と併せて vSphere 5.1 で初めて導入された、vCenter Server でユーザー認証を行うためのコンポーネントです。SAML 2.0 による認証フロー&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;が採用されており、vCenter SSO は SAML における Identity Provider (IdP) として動作します。&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;従来の vCenter SSO による認証&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;http://localhost:1313/images/2020-08-11/Traditional_vCenter_SSO_diagram.PNG&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;なお、前回の記事シリーズでの Identity Federation は、vCenter Server に組み込まれている vCenter SSO (SAML) を使用せず、ID プロバイダに AD FS (OpenID Connect) を使用しています。以下の図と比較してもらえると、vCenter SSO の立ち位置が丸ごと AD FS に置き換わっていることが分かると思います。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>vCenter Server 7.0 で Identity Federation を構成【Part 3】</title>
+      <link>http://localhost:1313/post/2020-08-14/</link>
+      <pubDate>Fri, 14 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2020-08-14/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;本記事は&lt;a href=&#34;http://localhost:1313/post/2020-08-11/&#34;&gt;Identity Federation の構成記事&lt;/a&gt;の Part 3 となります。&lt;a href=&#34;http://localhost:1313/post/2020-08-12/&#34;&gt;前回&lt;/a&gt;は AD FS 側の構成をおこないました。今回はいよいよ vCenter Server 側での構成を行っていきます。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意: 本機能の &lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-0A3A19E6-150A-493B-8B57-37E19AB420F2.html&#34;&gt;VMware Docs&lt;/a&gt; での名称は vCenter Server ID プロバイダ フェデレーション (vCenter Server Identity Provider Federation)、&lt;a href=&#34;https://blogs.vmware.com/vsphere/2020/03/vsphere-7-identity-federation.html&#34;&gt;公式 Blog の記事&lt;/a&gt;などでは Identity Federation と呼称されています。本記事では文字数の便宜上、当該機能を Identity Federation として呼称することとします。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;2020/08/18 追記: 当方の &lt;a href=&#34;https://portal.msrc.microsoft.com/en-us/security-guidance/advisory/ADV190023&#34;&gt;ADV190023&lt;/a&gt;の対応に関する認識に誤りがあり、[おわりに] で「AD LDAP のデフォルトの動作が変更される」旨を記載していましたが、正しくは「設定変更が推奨であるものの既存の設定は変更されない」でした。このため、記事の内容を修正したとともに、誤った情報を記載したことをお詫び申し上げます。&lt;/p&gt;
+&lt;p&gt;なお、ADV190023 周りの詳細は「&lt;a href=&#34;https://support.microsoft.com/en-ie/help/4520412/2020-ldap-channel-binding-and-ldap-signing-requirements-for-windows&#34;&gt;2020 LDAP channel binding and LDAP signing requirements for Windows&lt;/a&gt;」を参照しています。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h2 id=&#34;vcenter-server-での作業に入る前に確認&#34;&gt;vCenter Server での作業に入る前に確認&lt;/h2&gt;
+&lt;p&gt;再掲になりますが、まずは前回の作業で使用した AD FS でのアプリケーショングループの以下の３点の情報を揃えておきます。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;クライアント識別子&lt;/li&gt;
+&lt;li&gt;共有シークレット&lt;/li&gt;
+&lt;li&gt;AD FS の openid-configuration の URL&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;active-directory-の-ldaps-の-ssltls-証明書の取得&#34;&gt;Active Directory の LDAPS の SSL/TLS 証明書の取得&lt;/h2&gt;
+&lt;p&gt;認証には使われない(はず)ですが、vCenter Server 側でのロールによる認可にあたり Active Directory のユーザーの一覧が必要になります&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;。この一覧の取得にあたり、vCenter Server から Active Directory の LDAPS への接続が必要になります。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>vCenter Server 7.0 で Identity Federation を構成【Part 2】</title>
+      <link>http://localhost:1313/post/2020-08-12/</link>
+      <pubDate>Wed, 12 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2020-08-12/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;本記事は &lt;a href=&#34;http://localhost:1313/post/2020-08-11/&#34;&gt;Identity Federation の構成記事&lt;/a&gt;の Part 2 となります。今回は AD FS 側の構成を行っていきます。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意: 本機能の &lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-0A3A19E6-150A-493B-8B57-37E19AB420F2.html&#34;&gt;VMware Docs&lt;/a&gt; での名称は vCenter Server ID プロバイダ フェデレーション (vCenter Server Identity Provider Federation)、&lt;a href=&#34;https://blogs.vmware.com/vsphere/2020/03/vsphere-7-identity-federation.html&#34;&gt;公式 Blog の記事&lt;/a&gt;などでは Identity Federation と呼称されています。本記事では文字数の便宜上、当該機能を Identity Federation として呼称することとします。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h2 id=&#34;vcenter-server-のリダイレクト-uri-の確認&#34;&gt;vCenter Server のリダイレクト URI の確認&lt;/h2&gt;
+&lt;p&gt;まず前回の記事からの再掲になりますが、vSphere Client の [ホーム] &amp;gt; [管理] &amp;gt; [vCenter Single Sign-On] &amp;gt; [設定] で [ID プロバイダの変更] の右に (i) の情報アイコンがあるので、これをクリックすると以下のようにポップアップが表示されます。&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;picture&gt;
+
+    
+      
+        
+        
+        
+        
+        
+        
+    &lt;img
+      loading=&#34;lazy&#34;
+      decoding=&#34;async&#34;
+      alt=&#34;OpenID Connect のリダイレクト URI&#34;
+      
+        class=&#34;image_figure image_internal image_unprocessed&#34;
+        src=&#34;http://localhost:1313/images/2020-08-11/vcentersso-idp-list-002.PNG&#34;
+      
+      
+    /&gt;
+
+    &lt;/picture&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;この2点の URI が AD FS からのリダイレクト先になる URI となります(前者はログアウト時、後者がログイン時)。AD FS に登録するため、メモ帳などにコピー＆ペーストで保存しておきます。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>vCenter Server 7.0 で Identity Federation を構成【Part 1】</title>
+      <link>http://localhost:1313/post/2020-08-11/</link>
+      <pubDate>Tue, 11 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2020-08-11/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;本記事シリーズでは vCenter Server 7.0 の新機能である Identity Federation を構成する方法を数回に分けてご紹介します。今回は Identity Federation の紹介と、最初の vCenter Server 側での手順について見ていきます。残りの AD FS の手順、その後の vCenter Server の手順は次回以降で見ていきます。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意: 本機能の &lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-0A3A19E6-150A-493B-8B57-37E19AB420F2.html&#34;&gt;VMware Docs&lt;/a&gt; での名称は vCenter Server ID プロバイダ フェデレーション (vCenter Server Identity Provider Federation)、&lt;a href=&#34;https://blogs.vmware.com/vsphere/2020/03/vsphere-7-identity-federation.html&#34;&gt;公式 Blog の記事&lt;/a&gt;などでは Identity Federation と呼称されています。本記事では文字数の便宜上、当該機能を Identity Federation として呼称することとします。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h2 id=&#34;vcenter-server-70-の-identity-federation-とは&#34;&gt;vCenter Server 7.0 の Identity Federation とは？&lt;/h2&gt;
+&lt;p&gt;Identity Federation は vCenter Server 7.0 の新機能で、AD FS と OpenID Connect (OIDC) を使用してユーザー認証を行う機能です。ユーザー認証を外部の ID プロバイダに移譲することで、vCenter Server に依存せず柔軟なシングルサインオンが実現できます。&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-157188E3-531C-4CC2-BDD4-8BF01EA26BDC.html&#34;&gt;こちらの VMware Docs&lt;/a&gt; では具体的に以下のようなメリットが挙げられています。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>vCenter Server 7.0 のイベントをテキストで取得</title>
+      <link>http://localhost:1313/post/2020-08-01/</link>
+      <pubDate>Sat, 01 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/2020-08-01/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;vSphere Web Client (Flash 版) が vSphere 7 で遂に廃止となりました。vSphere Client (HTML5 版) は動作もスムーズで良いのですが、どうやら現時点では従来のイベントのエクスポートが行えないようです。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://kb.vmware.com/s/article/2008204&#34;&gt;Exporting virtual machine events from the Tasks &amp;amp; Events tab (2008204)&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Note: The export tasks/Events option is only available on the vSphere Web Client (Flex). The HTML client does not include this feature at this time.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;このため、別の方法でイベントを取得する方法を試してみました。試した方法は以下の２パターンです。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;イベントストリーミングで転送してみる&lt;/li&gt;
+&lt;li&gt;PowerCLI でエクスポートしてみる&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;なお、どちらの方法もメッセージの言語のローカライズは行われないためご注意ください。&lt;/p&gt;
+&lt;h2 id=&#34;vcsa-のイベントストリーミングで転送してみる&#34;&gt;VCSA のイベントストリーミングで転送してみる&lt;/h2&gt;
+&lt;p&gt;イベントストリーミングでの転送では以下の２点の設定が必要ですが、後者は既定で設定済みなので、実質的には前者のリモート Syslog 転送の設定だけ行うことでイベントが転送されるようになります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.monitoring.doc/GUID-9633A961-A5C3-4658-B099-B81E0512DC21.html&#34;&gt;vCenter Server のログ ファイルを リモート Syslog サーバへ転送&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.monitoring.doc/GUID-FD51CE83-8B2A-4EBA-A16C-75DB2E384E95.html&#34;&gt;リモートの Syslog サーバへのイベント ストリーミングの構成&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Syslog 転送の構成はアプライアンス管理インターフェイス (VAMI) から行います。まず root ユーザーで VAMI にログインして以下のように [syslog] を開きましょう。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>
