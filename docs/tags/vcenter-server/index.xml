@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>VCenter Server on vSoliloquy</title>
-    <link>https://jangari-ntk.github.io/tags/vcenter-server/</link>
+    <link>http://localhost:1313/tags/vcenter-server/</link>
     <description>Recent content in VCenter Server on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Copyright © 2025 VSOLILOQUY. All Rights Reserved.</copyright>
-    <lastBuildDate>Sun, 18 Jun 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://jangari-ntk.github.io/tags/vcenter-server/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 18 Jun 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/vcenter-server/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>VMware Skyline Health Diagnostics を vSphere Client プラグインとして使用する</title>
-      <link>https://jangari-ntk.github.io/post/2023-06-18/</link>
+      <link>http://localhost:1313/post/2023-06-18/</link>
       <pubDate>Sun, 18 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2023-06-18/</guid>
+      <guid>http://localhost:1313/post/2023-06-18/</guid>
       <description>
         
           
@@ -36,10 +36,10 @@
     
     <item>
       <title>PowerCLI で vCenter Server のトリガー済みアラームを取得</title>
-      <link>https://jangari-ntk.github.io/post/2022-12-09/</link>
+      <link>http://localhost:1313/post/2022-12-09/</link>
       <pubDate>Fri, 09 Dec 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2022-12-09/</guid>
+      <guid>http://localhost:1313/post/2022-12-09/</guid>
       <description>
         
           
@@ -63,7 +63,7 @@
       alt=&#34;&#34;
       
         class=&#34;image_figure image_internal image_unprocessed&#34;
-        src=&#34;https://jangari-ntk.github.io/images/2022-12-09/vc_triggered_alarm_gui.PNG&#34;
+        src=&#34;http://localhost:1313/images/2022-12-09/vc_triggered_alarm_gui.PNG&#34;
       
       
     /&gt;
@@ -95,7 +95,7 @@
       alt=&#34;&#34;
       
         class=&#34;image_figure image_internal image_unprocessed&#34;
-        src=&#34;https://jangari-ntk.github.io/images/2022-12-09/inventory_hierarchy.PNG&#34;
+        src=&#34;http://localhost:1313/images/2022-12-09/inventory_hierarchy.PNG&#34;
       
       
     /&gt;
@@ -121,7 +121,7 @@
       alt=&#34;&#34;
       
         class=&#34;image_figure image_internal image_unprocessed&#34;
-        src=&#34;https://jangari-ntk.github.io/images/2022-12-09/vc_triggered_alarm_gui_root_folder.PNG&#34;
+        src=&#34;http://localhost:1313/images/2022-12-09/vc_triggered_alarm_gui_root_folder.PNG&#34;
       
       
     /&gt;
@@ -164,10 +164,10 @@
     
     <item>
       <title>vSphere Diagnostic Tool を使ってみる</title>
-      <link>https://jangari-ntk.github.io/post/2022-05-04/</link>
+      <link>http://localhost:1313/post/2022-05-04/</link>
       <pubDate>Wed, 04 May 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2022-05-04/</guid>
+      <guid>http://localhost:1313/post/2022-05-04/</guid>
       <description>
         
           
@@ -202,15 +202,15 @@
     
     <item>
       <title>REST API で VCSA をバックアップからリストアする</title>
-      <link>https://jangari-ntk.github.io/post/2022-01-10/</link>
+      <link>http://localhost:1313/post/2022-01-10/</link>
       <pubDate>Mon, 10 Jan 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2022-01-10/</guid>
+      <guid>http://localhost:1313/post/2022-01-10/</guid>
       <description>
         
           
             &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&#34;https://jangari-ntk.github.io/post/2022-01-07/&#34;&gt;前回の記事&lt;/a&gt;では OVFTool で vCenter Server Appliance (以下 VCSA) をデプロイしました。今回の記事では VCSA のインストールのステージ1が完了したところから、REST API を使って vCenter Server のリストアを実行してみます。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://localhost:1313/post/2022-01-07/&#34;&gt;前回の記事&lt;/a&gt;では OVFTool で vCenter Server Appliance (以下 VCSA) をデプロイしました。今回の記事では VCSA のインストールのステージ1が完了したところから、REST API を使って vCenter Server のリストアを実行してみます。&lt;/p&gt;
 &lt;h2 id=&#34;なぜ-api-でやろうと思ったのか&#34;&gt;なぜ API でやろうと思ったのか&lt;/h2&gt;
 &lt;p&gt;vCenter Server 7.0 Update 3 時点で、VCSA の CLI インストーラにはリストアの機能だけ存在しません。VMware Docs には GUI インストーラを使う手順と、vSphere Client で OVA のデプロイ後に VAMI からステージ2を実行する方法のみが書いてあります。&lt;/p&gt;
 &lt;ul&gt;
@@ -234,10 +234,10 @@
     
     <item>
       <title>OVFTool で vCenter Server Appliance をインストールする</title>
-      <link>https://jangari-ntk.github.io/post/2022-01-07/</link>
+      <link>http://localhost:1313/post/2022-01-07/</link>
       <pubDate>Fri, 07 Jan 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2022-01-07/</guid>
+      <guid>http://localhost:1313/post/2022-01-07/</guid>
       <description>
         
           
@@ -292,10 +292,10 @@
     
     <item>
       <title>vc_log4j_mitigator.py での CVE-2021-44228 &amp; CVE-2021-45046 への対処</title>
-      <link>https://jangari-ntk.github.io/post/2021-12-26/</link>
+      <link>http://localhost:1313/post/2021-12-26/</link>
       <pubDate>Sun, 26 Dec 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2021-12-26/</guid>
+      <guid>http://localhost:1313/post/2021-12-26/</guid>
       <description>
         
           
@@ -316,15 +316,15 @@
     
     <item>
       <title>PowerCLI を使って ESXi の忘れた root パスワードをリセットする</title>
-      <link>https://jangari-ntk.github.io/post/2021-12-16/</link>
+      <link>http://localhost:1313/post/2021-12-16/</link>
       <pubDate>Thu, 16 Dec 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2021-12-16/</guid>
+      <guid>http://localhost:1313/post/2021-12-16/</guid>
       <description>
         
           
             &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&#34;https://jangari-ntk.github.io/post/2021-12-14/&#34;&gt;前回の記事&lt;/a&gt;ではホストプロファイルで ESXi の root ユーザーのパスワードをリセットしました。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://localhost:1313/post/2021-12-14/&#34;&gt;前回の記事&lt;/a&gt;ではホストプロファイルで ESXi の root ユーザーのパスワードをリセットしました。&lt;/p&gt;
 &lt;p&gt;今回の記事は PowerCLI を使用し vCenter Server 経由で ESXi の root ユーザーのパスワードをリセットしてみます。ホストプロファイルは vSphere Enterprise Plus が必要となる機能ですが、PowerCLI は vSphere Essentials 以上の全てのエディションで使用可能です。&lt;/p&gt;
 &lt;p&gt;なお、前回の記事と同様に ESXi が vCenter Server に管理・接続されていることが前提となります。&lt;/p&gt;
 &lt;h2 id=&#34;esxi-のローカルユーザーの管理&#34;&gt;ESXi のローカルユーザーの管理&lt;/h2&gt;
@@ -346,10 +346,10 @@
     
     <item>
       <title>ホストプロファイルを使って ESXi の忘れた root パスワードをリセットする</title>
-      <link>https://jangari-ntk.github.io/post/2021-12-14/</link>
+      <link>http://localhost:1313/post/2021-12-14/</link>
       <pubDate>Tue, 14 Dec 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2021-12-14/</guid>
+      <guid>http://localhost:1313/post/2021-12-14/</guid>
       <description>
         
           
@@ -367,15 +367,15 @@ If the host is managed by vCenter and is still connected, you can the reset by l
     
     <item>
       <title>【小ネタ】vCenter Server 7.0 Update 3 でイベントのエクスポート機能が追加</title>
-      <link>https://jangari-ntk.github.io/post/2021-11-13/</link>
+      <link>http://localhost:1313/post/2021-11-13/</link>
       <pubDate>Sat, 13 Nov 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2021-11-13/</guid>
+      <guid>http://localhost:1313/post/2021-11-13/</guid>
       <description>
         
           
             &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&#34;https://jangari-ntk.github.io/post/2020-08-01/&#34;&gt;以前の記事&lt;/a&gt;で vCenter Server 7.0 でイベントをエクスポートする方法をいくつか記載していました。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://localhost:1313/post/2020-08-01/&#34;&gt;以前の記事&lt;/a&gt;で vCenter Server 7.0 でイベントをエクスポートする方法をいくつか記載していました。&lt;/p&gt;
 &lt;p&gt;リリースノートなどに情報が載っていなかったのですが、vCenter Server 7.0 Update 3 で vSphere Client のイベントコンソールでのイベント一覧のエクスポート機能が追加されたようです。&lt;/p&gt;
 &lt;p&gt;VMware Docs にもエクスポートに関するドキュメントが追加されていました。&lt;/p&gt;
 &lt;ul&gt;
@@ -401,7 +401,7 @@ If the host is managed by vCenter and is still connected, you can the reset by l
       alt=&#34;&#34;
       
         class=&#34;image_figure image_internal image_unprocessed&#34;
-        src=&#34;https://jangari-ntk.github.io/images/2021-11-13/event-export.PNG&#34;
+        src=&#34;http://localhost:1313/images/2021-11-13/event-export.PNG&#34;
       
       
     /&gt;
@@ -422,15 +422,15 @@ If the host is managed by vCenter and is still connected, you can the reset by l
     
     <item>
       <title>PowerCLI の vSphere Automation API SDK モジュールで vCenter Server のマシン SSL 証明書を更新する</title>
-      <link>https://jangari-ntk.github.io/post/2021-09-18/</link>
+      <link>http://localhost:1313/post/2021-09-18/</link>
       <pubDate>Sat, 18 Sep 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2021-09-18/</guid>
+      <guid>http://localhost:1313/post/2021-09-18/</guid>
       <description>
         
           
             &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&#34;https://jangari-ntk.github.io/post/2021-03-29/&#34;&gt;以前の記事&lt;/a&gt;で REST API を使って vCenter Server のマシン SSL 証明書を置き換えていましたが、先日の PowerCLI 12.4 のリリースで PowerCLI のコマンドレットが追加されました。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://localhost:1313/post/2021-03-29/&#34;&gt;以前の記事&lt;/a&gt;で REST API を使って vCenter Server のマシン SSL 証明書を置き換えていましたが、先日の PowerCLI 12.4 のリリースで PowerCLI のコマンドレットが追加されました。&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;https://blogs.vmware.com/PowerCLI/2021/09/powercli-12-4-whats-new.html&#34;&gt;PowerCLI 12.4 – What’s New&lt;/a&gt;&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;The new vSphere Management Module
@@ -452,10 +452,10 @@ A new module is introduced for vSphere Management. It is a PowerShell-based modu
     
     <item>
       <title>【Tips】共有ストレージなし＆VCSA デプロイ済みのクラスタで EVC を有効にする【自宅ラボ用】</title>
-      <link>https://jangari-ntk.github.io/post/2021-08-17/</link>
+      <link>http://localhost:1313/post/2021-08-17/</link>
       <pubDate>Tue, 17 Aug 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2021-08-17/</guid>
+      <guid>http://localhost:1313/post/2021-08-17/</guid>
       <description>
         
           
@@ -482,10 +482,10 @@ A new module is introduced for vSphere Management. It is a PowerShell-based modu
     
     <item>
       <title>REST API で vCenter Server のマシンSSL証明書を置き換える</title>
-      <link>https://jangari-ntk.github.io/post/2021-03-29/</link>
+      <link>http://localhost:1313/post/2021-03-29/</link>
       <pubDate>Mon, 29 Mar 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2021-03-29/</guid>
+      <guid>http://localhost:1313/post/2021-03-29/</guid>
       <description>
         
           
@@ -503,10 +503,10 @@ A new module is introduced for vSphere Management. It is a PowerShell-based modu
     
     <item>
       <title>vCenter Server 7.0 で CSR を生成してカスタム証明書に置き換える</title>
-      <link>https://jangari-ntk.github.io/post/2021-03-24/</link>
+      <link>http://localhost:1313/post/2021-03-24/</link>
       <pubDate>Wed, 24 Mar 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2021-03-24/</guid>
+      <guid>http://localhost:1313/post/2021-03-24/</guid>
       <description>
         
           
@@ -533,15 +533,15 @@ A new module is introduced for vSphere Management. It is a PowerShell-based modu
     
     <item>
       <title>journalctl コマンドで vCenter Server のイベントを見てみる</title>
-      <link>https://jangari-ntk.github.io/post/2021-02-12/</link>
+      <link>http://localhost:1313/post/2021-02-12/</link>
       <pubDate>Fri, 12 Feb 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2021-02-12/</guid>
+      <guid>http://localhost:1313/post/2021-02-12/</guid>
       <description>
         
           
             &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
-&lt;p&gt;以前、&lt;a href=&#34;https://jangari-ntk.github.io/post/2020-08-01&#34;&gt;こちらの記事&lt;/a&gt;で vCenter Server 7.0 でのイベントのエクスポート方法 (PowerCLI / syslog) について書いていました。記事でも書いたとおり、vCenter Server Appliance 6.5 以降ではイベントストリーミングが追加され既定で有効になっていますが、syslog 転送は手動で構成する必要がありました。&lt;/p&gt;
+&lt;p&gt;以前、&lt;a href=&#34;http://localhost:1313/post/2020-08-01&#34;&gt;こちらの記事&lt;/a&gt;で vCenter Server 7.0 でのイベントのエクスポート方法 (PowerCLI / syslog) について書いていました。記事でも書いたとおり、vCenter Server Appliance 6.5 以降ではイベントストリーミングが追加され既定で有効になっていますが、syslog 転送は手動で構成する必要がありました。&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.monitoring.doc/GUID-FD51CE83-8B2A-4EBA-A16C-75DB2E384E95.html&#34;&gt;リモートの Syslog サーバへのイベント ストリーミングの構成&lt;/a&gt;&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;vCenter Serverストリーミング機能へのイベントの書き込みを構成することもできます。イベントのストリーミングは、vCenter Server でのみサポートされます。リモート Syslog サーバに対するイベントのストリーミングは、デフォルトで無効になっています。リモート Syslog サーバへの vCenter Server イベントのストリーミングは、vCenter Server 管理インターフェイスで有効にして設定することができます。&lt;/p&gt;&lt;/blockquote&gt;
@@ -563,10 +563,10 @@ A new module is introduced for vSphere Management. It is a PowerShell-based modu
     
     <item>
       <title>VCDB から MAC アドレスの一覧を SELECT してみる</title>
-      <link>https://jangari-ntk.github.io/post/2021-02-10/</link>
+      <link>http://localhost:1313/post/2021-02-10/</link>
       <pubDate>Wed, 10 Feb 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2021-02-10/</guid>
+      <guid>http://localhost:1313/post/2021-02-10/</guid>
       <description>
         
           
@@ -587,10 +587,10 @@ A new module is introduced for vSphere Management. It is a PowerShell-based modu
     
     <item>
       <title>Active Directory over LDAPS の ID ソースを構成する</title>
-      <link>https://jangari-ntk.github.io/post/2020-08-18/</link>
+      <link>http://localhost:1313/post/2020-08-18/</link>
       <pubDate>Tue, 18 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2020-08-18/</guid>
+      <guid>http://localhost:1313/post/2020-08-18/</guid>
       <description>
         
           
@@ -615,7 +615,7 @@ A new module is introduced for vSphere Management. It is a PowerShell-based modu
       alt=&#34;従来の vCenter SSO による認証&#34;
       
         class=&#34;image_figure image_internal image_unprocessed&#34;
-        src=&#34;https://jangari-ntk.github.io/images/2020-08-11/Traditional_vCenter_SSO_diagram.PNG&#34;
+        src=&#34;http://localhost:1313/images/2020-08-11/Traditional_vCenter_SSO_diagram.PNG&#34;
       
       
     /&gt;
@@ -632,15 +632,15 @@ A new module is introduced for vSphere Management. It is a PowerShell-based modu
     
     <item>
       <title>vCenter Server 7.0 で Identity Federation を構成【Part 3】</title>
-      <link>https://jangari-ntk.github.io/post/2020-08-14/</link>
+      <link>http://localhost:1313/post/2020-08-14/</link>
       <pubDate>Fri, 14 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2020-08-14/</guid>
+      <guid>http://localhost:1313/post/2020-08-14/</guid>
       <description>
         
           
             &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
-&lt;p&gt;本記事は&lt;a href=&#34;https://jangari-ntk.github.io/post/2020-08-11/&#34;&gt;Identity Federation の構成記事&lt;/a&gt;の Part 3 となります。&lt;a href=&#34;https://jangari-ntk.github.io/post/2020-08-12/&#34;&gt;前回&lt;/a&gt;は AD FS 側の構成をおこないました。今回はいよいよ vCenter Server 側での構成を行っていきます。&lt;/p&gt;
+&lt;p&gt;本記事は&lt;a href=&#34;http://localhost:1313/post/2020-08-11/&#34;&gt;Identity Federation の構成記事&lt;/a&gt;の Part 3 となります。&lt;a href=&#34;http://localhost:1313/post/2020-08-12/&#34;&gt;前回&lt;/a&gt;は AD FS 側の構成をおこないました。今回はいよいよ vCenter Server 側での構成を行っていきます。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;注意: 本機能の &lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-0A3A19E6-150A-493B-8B57-37E19AB420F2.html&#34;&gt;VMware Docs&lt;/a&gt; での名称は vCenter Server ID プロバイダ フェデレーション (vCenter Server Identity Provider Federation)、&lt;a href=&#34;https://blogs.vmware.com/vsphere/2020/03/vsphere-7-identity-federation.html&#34;&gt;公式 Blog の記事&lt;/a&gt;などでは Identity Federation と呼称されています。本記事では文字数の便宜上、当該機能を Identity Federation として呼称することとします。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;blockquote&gt;
@@ -663,15 +663,15 @@ A new module is introduced for vSphere Management. It is a PowerShell-based modu
     
     <item>
       <title>vCenter Server 7.0 で Identity Federation を構成【Part 2】</title>
-      <link>https://jangari-ntk.github.io/post/2020-08-12/</link>
+      <link>http://localhost:1313/post/2020-08-12/</link>
       <pubDate>Wed, 12 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2020-08-12/</guid>
+      <guid>http://localhost:1313/post/2020-08-12/</guid>
       <description>
         
           
             &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
-&lt;p&gt;本記事は &lt;a href=&#34;https://jangari-ntk.github.io/post/2020-08-11/&#34;&gt;Identity Federation の構成記事&lt;/a&gt;の Part 2 となります。今回は AD FS 側の構成を行っていきます。&lt;/p&gt;
+&lt;p&gt;本記事は &lt;a href=&#34;http://localhost:1313/post/2020-08-11/&#34;&gt;Identity Federation の構成記事&lt;/a&gt;の Part 2 となります。今回は AD FS 側の構成を行っていきます。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;注意: 本機能の &lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-0A3A19E6-150A-493B-8B57-37E19AB420F2.html&#34;&gt;VMware Docs&lt;/a&gt; での名称は vCenter Server ID プロバイダ フェデレーション (vCenter Server Identity Provider Federation)、&lt;a href=&#34;https://blogs.vmware.com/vsphere/2020/03/vsphere-7-identity-federation.html&#34;&gt;公式 Blog の記事&lt;/a&gt;などでは Identity Federation と呼称されています。本記事では文字数の便宜上、当該機能を Identity Federation として呼称することとします。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h2 id=&#34;vcenter-server-のリダイレクト-uri-の確認&#34;&gt;vCenter Server のリダイレクト URI の確認&lt;/h2&gt;
@@ -693,7 +693,7 @@ A new module is introduced for vSphere Management. It is a PowerShell-based modu
       alt=&#34;OpenID Connect のリダイレクト URI&#34;
       
         class=&#34;image_figure image_internal image_unprocessed&#34;
-        src=&#34;https://jangari-ntk.github.io/images/2020-08-11/vcentersso-idp-list-002.PNG&#34;
+        src=&#34;http://localhost:1313/images/2020-08-11/vcentersso-idp-list-002.PNG&#34;
       
       
     /&gt;
@@ -710,10 +710,10 @@ A new module is introduced for vSphere Management. It is a PowerShell-based modu
     
     <item>
       <title>vCenter Server 7.0 で Identity Federation を構成【Part 1】</title>
-      <link>https://jangari-ntk.github.io/post/2020-08-11/</link>
+      <link>http://localhost:1313/post/2020-08-11/</link>
       <pubDate>Tue, 11 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2020-08-11/</guid>
+      <guid>http://localhost:1313/post/2020-08-11/</guid>
       <description>
         
           
@@ -731,10 +731,10 @@ A new module is introduced for vSphere Management. It is a PowerShell-based modu
     
     <item>
       <title>vCenter Server 7.0 のイベントをテキストで取得</title>
-      <link>https://jangari-ntk.github.io/post/2020-08-01/</link>
+      <link>http://localhost:1313/post/2020-08-01/</link>
       <pubDate>Sat, 01 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2020-08-01/</guid>
+      <guid>http://localhost:1313/post/2020-08-01/</guid>
       <description>
         
           

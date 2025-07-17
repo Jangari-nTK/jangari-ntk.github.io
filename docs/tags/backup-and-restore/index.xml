@@ -2,23 +2,23 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Backup and Restore on vSoliloquy</title>
-    <link>https://jangari-ntk.github.io/tags/backup-and-restore/</link>
+    <link>http://localhost:1313/tags/backup-and-restore/</link>
     <description>Recent content in Backup and Restore on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Copyright © 2025 VSOLILOQUY. All Rights Reserved.</copyright>
-    <lastBuildDate>Mon, 10 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://jangari-ntk.github.io/tags/backup-and-restore/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 10 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/backup-and-restore/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>REST API で VCSA をバックアップからリストアする</title>
-      <link>https://jangari-ntk.github.io/post/2022-01-10/</link>
+      <link>http://localhost:1313/post/2022-01-10/</link>
       <pubDate>Mon, 10 Jan 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2022-01-10/</guid>
+      <guid>http://localhost:1313/post/2022-01-10/</guid>
       <description>
         
           
             &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&#34;https://jangari-ntk.github.io/post/2022-01-07/&#34;&gt;前回の記事&lt;/a&gt;では OVFTool で vCenter Server Appliance (以下 VCSA) をデプロイしました。今回の記事では VCSA のインストールのステージ1が完了したところから、REST API を使って vCenter Server のリストアを実行してみます。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://localhost:1313/post/2022-01-07/&#34;&gt;前回の記事&lt;/a&gt;では OVFTool で vCenter Server Appliance (以下 VCSA) をデプロイしました。今回の記事では VCSA のインストールのステージ1が完了したところから、REST API を使って vCenter Server のリストアを実行してみます。&lt;/p&gt;
 &lt;h2 id=&#34;なぜ-api-でやろうと思ったのか&#34;&gt;なぜ API でやろうと思ったのか&lt;/h2&gt;
 &lt;p&gt;vCenter Server 7.0 Update 3 時点で、VCSA の CLI インストーラにはリストアの機能だけ存在しません。VMware Docs には GUI インストーラを使う手順と、vSphere Client で OVA のデプロイ後に VAMI からステージ2を実行する方法のみが書いてあります。&lt;/p&gt;
 &lt;ul&gt;

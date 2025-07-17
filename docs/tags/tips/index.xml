@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tips on vSoliloquy</title>
-    <link>https://jangari-ntk.github.io/tags/tips/</link>
+    <link>http://localhost:1313/tags/tips/</link>
     <description>Recent content in Tips on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Copyright © 2025 VSOLILOQUY. All Rights Reserved.</copyright>
-    <lastBuildDate>Thu, 17 Jul 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://jangari-ntk.github.io/tags/tips/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 17 Jul 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/tips/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>VCF Installer に Offline Depot 用の CA 証明書を API でインポートする</title>
-      <link>https://jangari-ntk.github.io/post/2025-07-17/</link>
+      <link>http://localhost:1313/post/2025-07-17/</link>
       <pubDate>Thu, 17 Jul 2025 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2025-07-17/</guid>
+      <guid>http://localhost:1313/post/2025-07-17/</guid>
       <description>
         
           
@@ -71,10 +71,10 @@
     
     <item>
       <title>【備忘録】TKG 2.5.2 用の Linux カスタムイメージのビルドで引っかかった箇所のメモ書き</title>
-      <link>https://jangari-ntk.github.io/post/2025-05-11/</link>
+      <link>http://localhost:1313/post/2025-05-11/</link>
       <pubDate>Sun, 11 May 2025 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2025-05-11/</guid>
+      <guid>http://localhost:1313/post/2025-05-11/</guid>
       <description>
         
           
@@ -102,10 +102,10 @@
     
     <item>
       <title>【備忘録】vsphere-csi-provider と TKG 2.x のサポート期間のドキュメント</title>
-      <link>https://jangari-ntk.github.io/post/2025-04-29/</link>
+      <link>http://localhost:1313/post/2025-04-29/</link>
       <pubDate>Tue, 29 Apr 2025 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2025-04-29/</guid>
+      <guid>http://localhost:1313/post/2025-04-29/</guid>
       <description>
         
           
@@ -134,7 +134,7 @@
       alt=&#34;&#34;
       
         class=&#34;image_figure image_internal image_unprocessed&#34;
-        src=&#34;https://jangari-ntk.github.io/images/2025-04-29/vsphere-csi-provider_EOLdate.jpg&#34;
+        src=&#34;http://localhost:1313/images/2025-04-29/vsphere-csi-provider_EOLdate.jpg&#34;
       
       
     /&gt;
@@ -166,7 +166,7 @@
       alt=&#34;&#34;
       
         class=&#34;image_figure image_internal image_unprocessed&#34;
-        src=&#34;https://jangari-ntk.github.io/images/2025-04-29/tkg2.x_EOLdate_001.jpg&#34;
+        src=&#34;http://localhost:1313/images/2025-04-29/tkg2.x_EOLdate_001.jpg&#34;
       
       
     /&gt;
@@ -182,10 +182,10 @@
     
     <item>
       <title>VMware Skyline Health Diagnostics を vSphere Client プラグインとして使用する</title>
-      <link>https://jangari-ntk.github.io/post/2023-06-18/</link>
+      <link>http://localhost:1313/post/2023-06-18/</link>
       <pubDate>Sun, 18 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2023-06-18/</guid>
+      <guid>http://localhost:1313/post/2023-06-18/</guid>
       <description>
         
           
@@ -208,10 +208,10 @@
     
     <item>
       <title>PowerCLI で vCenter Server 管理下の ESXi の NTP 設定を一括変更</title>
-      <link>https://jangari-ntk.github.io/post/2023-02-04/</link>
+      <link>http://localhost:1313/post/2023-02-04/</link>
       <pubDate>Sat, 04 Feb 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2023-02-04/</guid>
+      <guid>http://localhost:1313/post/2023-02-04/</guid>
       <description>
         
           
@@ -229,10 +229,10 @@ It is no longer possible to make changes to NTP, PTP by editing these config fil
     
     <item>
       <title>PowerCLI で vCenter Server のトリガー済みアラームを取得</title>
-      <link>https://jangari-ntk.github.io/post/2022-12-09/</link>
+      <link>http://localhost:1313/post/2022-12-09/</link>
       <pubDate>Fri, 09 Dec 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2022-12-09/</guid>
+      <guid>http://localhost:1313/post/2022-12-09/</guid>
       <description>
         
           
@@ -256,7 +256,7 @@ It is no longer possible to make changes to NTP, PTP by editing these config fil
       alt=&#34;&#34;
       
         class=&#34;image_figure image_internal image_unprocessed&#34;
-        src=&#34;https://jangari-ntk.github.io/images/2022-12-09/vc_triggered_alarm_gui.PNG&#34;
+        src=&#34;http://localhost:1313/images/2022-12-09/vc_triggered_alarm_gui.PNG&#34;
       
       
     /&gt;
@@ -288,7 +288,7 @@ It is no longer possible to make changes to NTP, PTP by editing these config fil
       alt=&#34;&#34;
       
         class=&#34;image_figure image_internal image_unprocessed&#34;
-        src=&#34;https://jangari-ntk.github.io/images/2022-12-09/inventory_hierarchy.PNG&#34;
+        src=&#34;http://localhost:1313/images/2022-12-09/inventory_hierarchy.PNG&#34;
       
       
     /&gt;
@@ -314,7 +314,7 @@ It is no longer possible to make changes to NTP, PTP by editing these config fil
       alt=&#34;&#34;
       
         class=&#34;image_figure image_internal image_unprocessed&#34;
-        src=&#34;https://jangari-ntk.github.io/images/2022-12-09/vc_triggered_alarm_gui_root_folder.PNG&#34;
+        src=&#34;http://localhost:1313/images/2022-12-09/vc_triggered_alarm_gui_root_folder.PNG&#34;
       
       
     /&gt;
@@ -357,15 +357,15 @@ It is no longer possible to make changes to NTP, PTP by editing these config fil
     
     <item>
       <title>PowerCLI を使って ESXi の忘れた root パスワードをリセットする</title>
-      <link>https://jangari-ntk.github.io/post/2021-12-16/</link>
+      <link>http://localhost:1313/post/2021-12-16/</link>
       <pubDate>Thu, 16 Dec 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2021-12-16/</guid>
+      <guid>http://localhost:1313/post/2021-12-16/</guid>
       <description>
         
           
             &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&#34;https://jangari-ntk.github.io/post/2021-12-14/&#34;&gt;前回の記事&lt;/a&gt;ではホストプロファイルで ESXi の root ユーザーのパスワードをリセットしました。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://localhost:1313/post/2021-12-14/&#34;&gt;前回の記事&lt;/a&gt;ではホストプロファイルで ESXi の root ユーザーのパスワードをリセットしました。&lt;/p&gt;
 &lt;p&gt;今回の記事は PowerCLI を使用し vCenter Server 経由で ESXi の root ユーザーのパスワードをリセットしてみます。ホストプロファイルは vSphere Enterprise Plus が必要となる機能ですが、PowerCLI は vSphere Essentials 以上の全てのエディションで使用可能です。&lt;/p&gt;
 &lt;p&gt;なお、前回の記事と同様に ESXi が vCenter Server に管理・接続されていることが前提となります。&lt;/p&gt;
 &lt;h2 id=&#34;esxi-のローカルユーザーの管理&#34;&gt;ESXi のローカルユーザーの管理&lt;/h2&gt;
@@ -387,10 +387,10 @@ It is no longer possible to make changes to NTP, PTP by editing these config fil
     
     <item>
       <title>ホストプロファイルを使って ESXi の忘れた root パスワードをリセットする</title>
-      <link>https://jangari-ntk.github.io/post/2021-12-14/</link>
+      <link>http://localhost:1313/post/2021-12-14/</link>
       <pubDate>Tue, 14 Dec 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2021-12-14/</guid>
+      <guid>http://localhost:1313/post/2021-12-14/</guid>
       <description>
         
           
@@ -408,15 +408,15 @@ If the host is managed by vCenter and is still connected, you can the reset by l
     
     <item>
       <title>【小ネタ】vCenter Server 7.0 Update 3 でイベントのエクスポート機能が追加</title>
-      <link>https://jangari-ntk.github.io/post/2021-11-13/</link>
+      <link>http://localhost:1313/post/2021-11-13/</link>
       <pubDate>Sat, 13 Nov 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2021-11-13/</guid>
+      <guid>http://localhost:1313/post/2021-11-13/</guid>
       <description>
         
           
             &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&#34;https://jangari-ntk.github.io/post/2020-08-01/&#34;&gt;以前の記事&lt;/a&gt;で vCenter Server 7.0 でイベントをエクスポートする方法をいくつか記載していました。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://localhost:1313/post/2020-08-01/&#34;&gt;以前の記事&lt;/a&gt;で vCenter Server 7.0 でイベントをエクスポートする方法をいくつか記載していました。&lt;/p&gt;
 &lt;p&gt;リリースノートなどに情報が載っていなかったのですが、vCenter Server 7.0 Update 3 で vSphere Client のイベントコンソールでのイベント一覧のエクスポート機能が追加されたようです。&lt;/p&gt;
 &lt;p&gt;VMware Docs にもエクスポートに関するドキュメントが追加されていました。&lt;/p&gt;
 &lt;ul&gt;
@@ -442,7 +442,7 @@ If the host is managed by vCenter and is still connected, you can the reset by l
       alt=&#34;&#34;
       
         class=&#34;image_figure image_internal image_unprocessed&#34;
-        src=&#34;https://jangari-ntk.github.io/images/2021-11-13/event-export.PNG&#34;
+        src=&#34;http://localhost:1313/images/2021-11-13/event-export.PNG&#34;
       
       
     /&gt;
@@ -463,15 +463,15 @@ If the host is managed by vCenter and is still connected, you can the reset by l
     
     <item>
       <title>PowerCLI の vSphere Automation API SDK モジュールで vCenter Server のマシン SSL 証明書を更新する</title>
-      <link>https://jangari-ntk.github.io/post/2021-09-18/</link>
+      <link>http://localhost:1313/post/2021-09-18/</link>
       <pubDate>Sat, 18 Sep 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2021-09-18/</guid>
+      <guid>http://localhost:1313/post/2021-09-18/</guid>
       <description>
         
           
             &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&#34;https://jangari-ntk.github.io/post/2021-03-29/&#34;&gt;以前の記事&lt;/a&gt;で REST API を使って vCenter Server のマシン SSL 証明書を置き換えていましたが、先日の PowerCLI 12.4 のリリースで PowerCLI のコマンドレットが追加されました。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://localhost:1313/post/2021-03-29/&#34;&gt;以前の記事&lt;/a&gt;で REST API を使って vCenter Server のマシン SSL 証明書を置き換えていましたが、先日の PowerCLI 12.4 のリリースで PowerCLI のコマンドレットが追加されました。&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;https://blogs.vmware.com/PowerCLI/2021/09/powercli-12-4-whats-new.html&#34;&gt;PowerCLI 12.4 – What’s New&lt;/a&gt;&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;The new vSphere Management Module
@@ -493,10 +493,10 @@ A new module is introduced for vSphere Management. It is a PowerShell-based modu
     
     <item>
       <title>【Tips】共有ストレージなし＆VCSA デプロイ済みのクラスタで EVC を有効にする【自宅ラボ用】</title>
-      <link>https://jangari-ntk.github.io/post/2021-08-17/</link>
+      <link>http://localhost:1313/post/2021-08-17/</link>
       <pubDate>Tue, 17 Aug 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2021-08-17/</guid>
+      <guid>http://localhost:1313/post/2021-08-17/</guid>
       <description>
         
           
@@ -523,15 +523,15 @@ A new module is introduced for vSphere Management. It is a PowerShell-based modu
     
     <item>
       <title>【メモ】ESXi 7.0 の Kickstart の %post で boot.cfg を触る</title>
-      <link>https://jangari-ntk.github.io/post/2021-08-07/</link>
+      <link>http://localhost:1313/post/2021-08-07/</link>
       <pubDate>Sat, 07 Aug 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2021-08-07/</guid>
+      <guid>http://localhost:1313/post/2021-08-07/</guid>
       <description>
         
           
             &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&#34;https://jangari-ntk.github.io/post/2020-08-23/&#34;&gt;以前の Nested ESXi の記事&lt;/a&gt;や &lt;a href=&#34;https://kb.vmware.com/s/article/2149444?lang=ja&#34;&gt;KB2149444&lt;/a&gt; 等でも言及されていますが、ESXi のブートオプションは /bootbank/boot.cfg の kernelopt 行に記載されます。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://localhost:1313/post/2020-08-23/&#34;&gt;以前の Nested ESXi の記事&lt;/a&gt;や &lt;a href=&#34;https://kb.vmware.com/s/article/2149444?lang=ja&#34;&gt;KB2149444&lt;/a&gt; 等でも言及されていますが、ESXi のブートオプションは /bootbank/boot.cfg の kernelopt 行に記載されます。&lt;/p&gt;
 &lt;p&gt;ESXi は &lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/6.5/com.vmware.vsphere.install.doc/GUID-870A07BC-F8B4-47AF-9476-D542BA53F1F5.html&#34;&gt;キックスタートファイルを使用した自動インストール&lt;/a&gt;が可能なので、%post や %firstboot のセクションで編集できないかと思い、各セクションで以下のような sed コマンドを実行して試してみました。&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;sed -i &amp;#34;s/kernelopt=.*/kernelopt=autoPartition=FALSE allowLegacyCPU=true/&amp;#34; /bootbank/boot.cfg
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;今回の環境は ESXi 7.0 Update 2 です。&lt;/p&gt;
@@ -554,7 +554,7 @@ A new module is introduced for vSphere Management. It is a PowerShell-based modu
       alt=&#34;&#34;
       
         class=&#34;image_figure image_internal image_unprocessed&#34;
-        src=&#34;https://jangari-ntk.github.io/images/2021-08-07/esxi-ks-post-failed.PNG&#34;
+        src=&#34;http://localhost:1313/images/2021-08-07/esxi-ks-post-failed.PNG&#34;
       
       
     /&gt;
@@ -575,16 +575,16 @@ A new module is introduced for vSphere Management. It is a PowerShell-based modu
     
     <item>
       <title>PTP を使用して ESXi を時刻同期する</title>
-      <link>https://jangari-ntk.github.io/post/2021-06-20/</link>
+      <link>http://localhost:1313/post/2021-06-20/</link>
       <pubDate>Sun, 20 Jun 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2021-06-20/</guid>
+      <guid>http://localhost:1313/post/2021-06-20/</guid>
       <description>
         
           
             &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
 &lt;p&gt;前回の記事では vSphere 7 で実装された PTP 関連の機能のうち、仮想マシンのプレシジョンクロックデバイスを取り上げました。今回の記事ではもう一つの機能である ESXi の PTP による時刻同期を試してみたいと思います。&lt;/p&gt;
-&lt;p&gt;なお、PTP のプロトコルの概要は省きますが、&lt;a href=&#34;https://jangari-ntk.github.io/post/2021-06-10/#ptp-precision-time-protocol&#34;&gt;前回の記事&lt;/a&gt;で挙げた参考 URL のほか、Cisco の有志の方が書かれている以下の記事も参考になると思います。&lt;/p&gt;
+&lt;p&gt;なお、PTP のプロトコルの概要は省きますが、&lt;a href=&#34;http://localhost:1313/post/2021-06-10/#ptp-precision-time-protocol&#34;&gt;前回の記事&lt;/a&gt;で挙げた参考 URL のほか、Cisco の有志の方が書かれている以下の記事も参考になると思います。&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;https://qiita.com/nkawabat/items/87223d4d8fbf633db958&#34;&gt;【初心者向け】時刻同期101 - PTP の基本動作&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&#34;グランドマスタークロックのセットアップ&#34;&gt;グランドマスタークロックのセットアップ&lt;/h2&gt;
 &lt;h3 id=&#34;前置き今回の記事の構成&#34;&gt;前置き：今回の記事の構成&lt;/h3&gt;
@@ -608,10 +608,10 @@ A new module is introduced for vSphere Management. It is a PowerShell-based modu
     
     <item>
       <title>プレシジョンクロックデバイスで ESXi とゲストOSを時刻同期</title>
-      <link>https://jangari-ntk.github.io/post/2021-06-10/</link>
+      <link>http://localhost:1313/post/2021-06-10/</link>
       <pubDate>Thu, 10 Jun 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2021-06-10/</guid>
+      <guid>http://localhost:1313/post/2021-06-10/</guid>
       <description>
         
           
@@ -643,10 +643,10 @@ A new module is introduced for vSphere Management. It is a PowerShell-based modu
     
     <item>
       <title>Fedora 33 で VMware Tools による解像度変更が効かない問題と対処</title>
-      <link>https://jangari-ntk.github.io/post/2021-04-08/</link>
+      <link>http://localhost:1313/post/2021-04-08/</link>
       <pubDate>Thu, 08 Apr 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2021-04-08/</guid>
+      <guid>http://localhost:1313/post/2021-04-08/</guid>
       <description>
         
           
@@ -678,10 +678,10 @@ A new module is introduced for vSphere Management. It is a PowerShell-based modu
     
     <item>
       <title>REST API で vCenter Server のマシンSSL証明書を置き換える</title>
-      <link>https://jangari-ntk.github.io/post/2021-03-29/</link>
+      <link>http://localhost:1313/post/2021-03-29/</link>
       <pubDate>Mon, 29 Mar 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2021-03-29/</guid>
+      <guid>http://localhost:1313/post/2021-03-29/</guid>
       <description>
         
           
@@ -699,10 +699,10 @@ A new module is introduced for vSphere Management. It is a PowerShell-based modu
     
     <item>
       <title>vCenter Server 7.0 で CSR を生成してカスタム証明書に置き換える</title>
-      <link>https://jangari-ntk.github.io/post/2021-03-24/</link>
+      <link>http://localhost:1313/post/2021-03-24/</link>
       <pubDate>Wed, 24 Mar 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2021-03-24/</guid>
+      <guid>http://localhost:1313/post/2021-03-24/</guid>
       <description>
         
           
@@ -729,15 +729,15 @@ A new module is introduced for vSphere Management. It is a PowerShell-based modu
     
     <item>
       <title>journalctl コマンドで vCenter Server のイベントを見てみる</title>
-      <link>https://jangari-ntk.github.io/post/2021-02-12/</link>
+      <link>http://localhost:1313/post/2021-02-12/</link>
       <pubDate>Fri, 12 Feb 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2021-02-12/</guid>
+      <guid>http://localhost:1313/post/2021-02-12/</guid>
       <description>
         
           
             &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
-&lt;p&gt;以前、&lt;a href=&#34;https://jangari-ntk.github.io/post/2020-08-01&#34;&gt;こちらの記事&lt;/a&gt;で vCenter Server 7.0 でのイベントのエクスポート方法 (PowerCLI / syslog) について書いていました。記事でも書いたとおり、vCenter Server Appliance 6.5 以降ではイベントストリーミングが追加され既定で有効になっていますが、syslog 転送は手動で構成する必要がありました。&lt;/p&gt;
+&lt;p&gt;以前、&lt;a href=&#34;http://localhost:1313/post/2020-08-01&#34;&gt;こちらの記事&lt;/a&gt;で vCenter Server 7.0 でのイベントのエクスポート方法 (PowerCLI / syslog) について書いていました。記事でも書いたとおり、vCenter Server Appliance 6.5 以降ではイベントストリーミングが追加され既定で有効になっていますが、syslog 転送は手動で構成する必要がありました。&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.monitoring.doc/GUID-FD51CE83-8B2A-4EBA-A16C-75DB2E384E95.html&#34;&gt;リモートの Syslog サーバへのイベント ストリーミングの構成&lt;/a&gt;&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;vCenter Serverストリーミング機能へのイベントの書き込みを構成することもできます。イベントのストリーミングは、vCenter Server でのみサポートされます。リモート Syslog サーバに対するイベントのストリーミングは、デフォルトで無効になっています。リモート Syslog サーバへの vCenter Server イベントのストリーミングは、vCenter Server 管理インターフェイスで有効にして設定することができます。&lt;/p&gt;&lt;/blockquote&gt;
@@ -759,10 +759,10 @@ A new module is introduced for vSphere Management. It is a PowerShell-based modu
     
     <item>
       <title>vRealize Automation 8.1 で Nested ESXi の Blueprint を作ってみた</title>
-      <link>https://jangari-ntk.github.io/post/2020-08-30/</link>
+      <link>http://localhost:1313/post/2020-08-30/</link>
       <pubDate>Sun, 30 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2020-08-30/</guid>
+      <guid>http://localhost:1313/post/2020-08-30/</guid>
       <description>
         
           
@@ -793,7 +793,7 @@ A new module is introduced for vSphere Management. It is a PowerShell-based modu
       alt=&#34;Traditional IT Service Request&#34;
       
         class=&#34;image_figure image_internal image_unprocessed&#34;
-        src=&#34;https://jangari-ntk.github.io/images/2020-08-30/Traditional_IT_Service_Request.png&#34;
+        src=&#34;http://localhost:1313/images/2020-08-30/Traditional_IT_Service_Request.png&#34;
       
       
     /&gt;
@@ -811,10 +811,10 @@ A new module is introduced for vSphere Management. It is a PowerShell-based modu
     
     <item>
       <title>Nested ESXi のテンプレート作りに必要な設定と解説</title>
-      <link>https://jangari-ntk.github.io/post/2020-08-23/</link>
+      <link>http://localhost:1313/post/2020-08-23/</link>
       <pubDate>Sun, 23 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2020-08-23/</guid>
+      <guid>http://localhost:1313/post/2020-08-23/</guid>
       <description>
         
           
@@ -837,10 +837,10 @@ A new module is introduced for vSphere Management. It is a PowerShell-based modu
     
     <item>
       <title>pyVmomi から API 操作で Instant Clone をやってみる</title>
-      <link>https://jangari-ntk.github.io/post/2020-08-07/</link>
+      <link>http://localhost:1313/post/2020-08-07/</link>
       <pubDate>Fri, 07 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2020-08-07/</guid>
+      <guid>http://localhost:1313/post/2020-08-07/</guid>
       <description>
         
           
@@ -868,10 +868,10 @@ A new module is introduced for vSphere Management. It is a PowerShell-based modu
     
     <item>
       <title>vCenter Server 7.0 のイベントをテキストで取得</title>
-      <link>https://jangari-ntk.github.io/post/2020-08-01/</link>
+      <link>http://localhost:1313/post/2020-08-01/</link>
       <pubDate>Sat, 01 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2020-08-01/</guid>
+      <guid>http://localhost:1313/post/2020-08-01/</guid>
       <description>
         
           

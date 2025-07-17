@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Instant Clone on vSoliloquy</title>
-    <link>https://jangari-ntk.github.io/tags/instant-clone/</link>
+    <link>http://localhost:1313/tags/instant-clone/</link>
     <description>Recent content in Instant Clone on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Copyright © 2025 VSOLILOQUY. All Rights Reserved.</copyright>
-    <lastBuildDate>Fri, 07 Aug 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jangari-ntk.github.io/tags/instant-clone/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 07 Aug 2020 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/instant-clone/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>pyVmomi から API 操作で Instant Clone をやってみる</title>
-      <link>https://jangari-ntk.github.io/post/2020-08-07/</link>
+      <link>http://localhost:1313/post/2020-08-07/</link>
       <pubDate>Fri, 07 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2020-08-07/</guid>
+      <guid>http://localhost:1313/post/2020-08-07/</guid>
       <description>
         
           

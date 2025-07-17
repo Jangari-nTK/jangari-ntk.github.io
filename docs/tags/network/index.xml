@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Network on vSoliloquy</title>
-    <link>https://jangari-ntk.github.io/tags/network/</link>
+    <link>http://localhost:1313/tags/network/</link>
     <description>Recent content in Network on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Copyright © 2025 VSOLILOQUY. All Rights Reserved.</copyright>
-    <lastBuildDate>Sat, 04 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://jangari-ntk.github.io/tags/network/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 04 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/network/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>PowerCLI で vCenter Server 管理下の ESXi の NTP 設定を一括変更</title>
-      <link>https://jangari-ntk.github.io/post/2023-02-04/</link>
+      <link>http://localhost:1313/post/2023-02-04/</link>
       <pubDate>Sat, 04 Feb 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2023-02-04/</guid>
+      <guid>http://localhost:1313/post/2023-02-04/</guid>
       <description>
         
           
@@ -31,10 +31,10 @@ It is no longer possible to make changes to NTP, PTP by editing these config fil
     
     <item>
       <title>「偽装転送」ポリシーでフレームがドロップされる仕組み</title>
-      <link>https://jangari-ntk.github.io/post/2022-03-06/</link>
+      <link>http://localhost:1313/post/2022-03-06/</link>
       <pubDate>Sun, 06 Mar 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2022-03-06/</guid>
+      <guid>http://localhost:1313/post/2022-03-06/</guid>
       <description>
         
           
@@ -47,7 +47,7 @@ It is no longer possible to make changes to NTP, PTP by editing these config fil
 &lt;li&gt;送出されたフレームの送信元 MAC アドレス&lt;/li&gt;
 &lt;li&gt;仮想ネットワークアダプタの有効な MAC アドレス&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;初期 MAC アドレスと有効な MAC アドレスの違いは&lt;a href=&#34;https://jangari-ntk.github.io/post/2022-02-23/&#34;&gt;前回の記事&lt;/a&gt;を参照してください。&lt;/p&gt;
+&lt;p&gt;初期 MAC アドレスと有効な MAC アドレスの違いは&lt;a href=&#34;http://localhost:1313/post/2022-02-23/&#34;&gt;前回の記事&lt;/a&gt;を参照してください。&lt;/p&gt;
 &lt;h2 id=&#34;送信元-mac-アドレスの偽装&#34;&gt;送信元 MAC アドレスの偽装&lt;/h2&gt;
 &lt;p&gt;最も単純な例としては、ゲストOSから送信元 MAC アドレスを書き換えたフレームを実際に送信してみることです。以下、パケット操作ツールである &lt;a href=&#34;https://scapy.net/&#34;&gt;Scapy&lt;/a&gt; のインタラクティブシェルを使って送信元 MAC アドレスを偽装したフレームを送信してみます。&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
@@ -67,7 +67,7 @@ It is no longer possible to make changes to NTP, PTP by editing these config fil
       alt=&#34;&#34;
       
         class=&#34;image_figure image_internal image_unprocessed&#34;
-        src=&#34;https://jangari-ntk.github.io/images/2022-03-06/forged_transmit_policy_scapy.png&#34;
+        src=&#34;http://localhost:1313/images/2022-03-06/forged_transmit_policy_scapy.png&#34;
       
       
     /&gt;
@@ -101,10 +101,10 @@ It is no longer possible to make changes to NTP, PTP by editing these config fil
     
     <item>
       <title>初期 MAC アドレス、有効な MAC アドレス、「MAC アドレス変更」ポリシー</title>
-      <link>https://jangari-ntk.github.io/post/2022-02-23/</link>
+      <link>http://localhost:1313/post/2022-02-23/</link>
       <pubDate>Wed, 23 Feb 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2022-02-23/</guid>
+      <guid>http://localhost:1313/post/2022-02-23/</guid>
       <description>
         
           
@@ -149,7 +149,7 @@ It is no longer possible to make changes to NTP, PTP by editing these config fil
       alt=&#34;&#34;
       
         class=&#34;image_figure image_internal image_unprocessed&#34;
-        src=&#34;https://jangari-ntk.github.io/images/2022-02-23/mac_address_change_001.PNG&#34;
+        src=&#34;http://localhost:1313/images/2022-02-23/mac_address_change_001.PNG&#34;
       
       
     /&gt;
@@ -165,10 +165,10 @@ It is no longer possible to make changes to NTP, PTP by editing these config fil
     
     <item>
       <title>VCDB から MAC アドレスの一覧を SELECT してみる</title>
-      <link>https://jangari-ntk.github.io/post/2021-02-10/</link>
+      <link>http://localhost:1313/post/2021-02-10/</link>
       <pubDate>Wed, 10 Feb 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2021-02-10/</guid>
+      <guid>http://localhost:1313/post/2021-02-10/</guid>
       <description>
         
           

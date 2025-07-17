@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Featured on vSoliloquy</title>
-    <link>https://jangari-ntk.github.io/tags/featured/</link>
+    <link>http://localhost:1313/tags/featured/</link>
     <description>Recent content in Featured on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Copyright © 2025 VSOLILOQUY. All Rights Reserved.</copyright>
-    <lastBuildDate>Tue, 18 Aug 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jangari-ntk.github.io/tags/featured/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 18 Aug 2020 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/featured/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Active Directory over LDAPS の ID ソースを構成する</title>
-      <link>https://jangari-ntk.github.io/post/2020-08-18/</link>
+      <link>http://localhost:1313/post/2020-08-18/</link>
       <pubDate>Tue, 18 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2020-08-18/</guid>
+      <guid>http://localhost:1313/post/2020-08-18/</guid>
       <description>
         
           
@@ -38,7 +38,7 @@
       alt=&#34;従来の vCenter SSO による認証&#34;
       
         class=&#34;image_figure image_internal image_unprocessed&#34;
-        src=&#34;https://jangari-ntk.github.io/images/2020-08-11/Traditional_vCenter_SSO_diagram.PNG&#34;
+        src=&#34;http://localhost:1313/images/2020-08-11/Traditional_vCenter_SSO_diagram.PNG&#34;
       
       
     /&gt;
@@ -55,15 +55,15 @@
     
     <item>
       <title>vCenter Server 7.0 で Identity Federation を構成【Part 3】</title>
-      <link>https://jangari-ntk.github.io/post/2020-08-14/</link>
+      <link>http://localhost:1313/post/2020-08-14/</link>
       <pubDate>Fri, 14 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2020-08-14/</guid>
+      <guid>http://localhost:1313/post/2020-08-14/</guid>
       <description>
         
           
             &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
-&lt;p&gt;本記事は&lt;a href=&#34;https://jangari-ntk.github.io/post/2020-08-11/&#34;&gt;Identity Federation の構成記事&lt;/a&gt;の Part 3 となります。&lt;a href=&#34;https://jangari-ntk.github.io/post/2020-08-12/&#34;&gt;前回&lt;/a&gt;は AD FS 側の構成をおこないました。今回はいよいよ vCenter Server 側での構成を行っていきます。&lt;/p&gt;
+&lt;p&gt;本記事は&lt;a href=&#34;http://localhost:1313/post/2020-08-11/&#34;&gt;Identity Federation の構成記事&lt;/a&gt;の Part 3 となります。&lt;a href=&#34;http://localhost:1313/post/2020-08-12/&#34;&gt;前回&lt;/a&gt;は AD FS 側の構成をおこないました。今回はいよいよ vCenter Server 側での構成を行っていきます。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;注意: 本機能の &lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-0A3A19E6-150A-493B-8B57-37E19AB420F2.html&#34;&gt;VMware Docs&lt;/a&gt; での名称は vCenter Server ID プロバイダ フェデレーション (vCenter Server Identity Provider Federation)、&lt;a href=&#34;https://blogs.vmware.com/vsphere/2020/03/vsphere-7-identity-federation.html&#34;&gt;公式 Blog の記事&lt;/a&gt;などでは Identity Federation と呼称されています。本記事では文字数の便宜上、当該機能を Identity Federation として呼称することとします。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;blockquote&gt;
@@ -86,15 +86,15 @@
     
     <item>
       <title>vCenter Server 7.0 で Identity Federation を構成【Part 2】</title>
-      <link>https://jangari-ntk.github.io/post/2020-08-12/</link>
+      <link>http://localhost:1313/post/2020-08-12/</link>
       <pubDate>Wed, 12 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2020-08-12/</guid>
+      <guid>http://localhost:1313/post/2020-08-12/</guid>
       <description>
         
           
             &lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
-&lt;p&gt;本記事は &lt;a href=&#34;https://jangari-ntk.github.io/post/2020-08-11/&#34;&gt;Identity Federation の構成記事&lt;/a&gt;の Part 2 となります。今回は AD FS 側の構成を行っていきます。&lt;/p&gt;
+&lt;p&gt;本記事は &lt;a href=&#34;http://localhost:1313/post/2020-08-11/&#34;&gt;Identity Federation の構成記事&lt;/a&gt;の Part 2 となります。今回は AD FS 側の構成を行っていきます。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;注意: 本機能の &lt;a href=&#34;https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-0A3A19E6-150A-493B-8B57-37E19AB420F2.html&#34;&gt;VMware Docs&lt;/a&gt; での名称は vCenter Server ID プロバイダ フェデレーション (vCenter Server Identity Provider Federation)、&lt;a href=&#34;https://blogs.vmware.com/vsphere/2020/03/vsphere-7-identity-federation.html&#34;&gt;公式 Blog の記事&lt;/a&gt;などでは Identity Federation と呼称されています。本記事では文字数の便宜上、当該機能を Identity Federation として呼称することとします。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h2 id=&#34;vcenter-server-のリダイレクト-uri-の確認&#34;&gt;vCenter Server のリダイレクト URI の確認&lt;/h2&gt;
@@ -116,7 +116,7 @@
       alt=&#34;OpenID Connect のリダイレクト URI&#34;
       
         class=&#34;image_figure image_internal image_unprocessed&#34;
-        src=&#34;https://jangari-ntk.github.io/images/2020-08-11/vcentersso-idp-list-002.PNG&#34;
+        src=&#34;http://localhost:1313/images/2020-08-11/vcentersso-idp-list-002.PNG&#34;
       
       
     /&gt;
@@ -133,10 +133,10 @@
     
     <item>
       <title>vCenter Server 7.0 で Identity Federation を構成【Part 1】</title>
-      <link>https://jangari-ntk.github.io/post/2020-08-11/</link>
+      <link>http://localhost:1313/post/2020-08-11/</link>
       <pubDate>Tue, 11 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2020-08-11/</guid>
+      <guid>http://localhost:1313/post/2020-08-11/</guid>
       <description>
         
           

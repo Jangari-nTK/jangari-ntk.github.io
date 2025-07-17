@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>VSphere Container Plug-In on vSoliloquy</title>
-    <link>https://jangari-ntk.github.io/tags/vsphere-container-plug-in/</link>
+    <link>http://localhost:1313/tags/vsphere-container-plug-in/</link>
     <description>Recent content in VSphere Container Plug-In on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Copyright © 2025 VSOLILOQUY. All Rights Reserved.</copyright>
-    <lastBuildDate>Tue, 29 Apr 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://jangari-ntk.github.io/tags/vsphere-container-plug-in/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 29 Apr 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/vsphere-container-plug-in/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>【備忘録】vsphere-csi-provider と TKG 2.x のサポート期間のドキュメント</title>
-      <link>https://jangari-ntk.github.io/post/2025-04-29/</link>
+      <link>http://localhost:1313/post/2025-04-29/</link>
       <pubDate>Tue, 29 Apr 2025 00:00:00 +0000</pubDate>
       
-      <guid>https://jangari-ntk.github.io/post/2025-04-29/</guid>
+      <guid>http://localhost:1313/post/2025-04-29/</guid>
       <description>
         
           
@@ -42,7 +42,7 @@
       alt=&#34;&#34;
       
         class=&#34;image_figure image_internal image_unprocessed&#34;
-        src=&#34;https://jangari-ntk.github.io/images/2025-04-29/vsphere-csi-provider_EOLdate.jpg&#34;
+        src=&#34;http://localhost:1313/images/2025-04-29/vsphere-csi-provider_EOLdate.jpg&#34;
       
       
     /&gt;
@@ -74,7 +74,7 @@
       alt=&#34;&#34;
       
         class=&#34;image_figure image_internal image_unprocessed&#34;
-        src=&#34;https://jangari-ntk.github.io/images/2025-04-29/tkg2.x_EOLdate_001.jpg&#34;
+        src=&#34;http://localhost:1313/images/2025-04-29/tkg2.x_EOLdate_001.jpg&#34;
       
       
     /&gt;
