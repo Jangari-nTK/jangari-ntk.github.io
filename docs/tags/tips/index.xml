@@ -22,7 +22,7 @@
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://knowledge.broadcom.com/external/article/403203/set-up-an-offline-depot-from-vcf-90-inst.html&#34;&gt;Set Up an Offline Depot from VCF 9.0 Installer GUI fails with Secure protocol communication error&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;オフラインデポのサーバ証明書に署名した CA 証明書が VCF Installer 側には無いので、サーバ証明書の検証がおこなえないため失敗する状況は想定できました。しかし、VCF 9 デプロイ前の VCF Installer の（まだ SDDC Manager でない）状態では CA 証明書をインポートする UI が無いようです。&lt;/p&gt;
+&lt;p&gt;オフラインデポのサーバ証明書に署名した CA 証明書が VCF Installer 側には無いので、サーバ証明書の検証がおこなえないため失敗する状況は想定できました。しかし、VCF 9 の VCF Installer には少なくとも現時点では GUI 上からは CA 証明書をインポートする手段が無いようです。&lt;/p&gt;
 &lt;p&gt;すでに &lt;a href=&#34;https://williamlam.com/2025/06/using-http-with-vcf-9-0-installer-for-offline-depot.html&#34;&gt;Broadcom の中の人&lt;/a&gt;がオフラインデポへの接続で TLS を無効する方法（裏技？）を公開していますが、せっかくなので Broadcom 公式から開発者向けドキュメントが公開されている API を使用して CA 証明書をインポートすることで解決してみました。&lt;/p&gt;
 &lt;h2 id=&#34;事前準備-オフラインデポを構成&#34;&gt;事前準備: オフラインデポを構成&lt;/h2&gt;
 &lt;p&gt;まずはオフラインデポを構成するため、&lt;a href=&#34;https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-9-0-and-later/9-0/lifecycle-management/what-is-the-vcf-download-tool-/vcf-download-tool-binaries-commands.html&#34;&gt;VCF Download Tool&lt;/a&gt; を使用して各コンポーネントのバイナリをダウンロードします（Broadcom Support Portal で生成した&lt;a href=&#34;https://knowledge.broadcom.com/external/article/390098&#34;&gt;ダウンロードトークン&lt;/a&gt;が必要です）。&lt;/p&gt;
