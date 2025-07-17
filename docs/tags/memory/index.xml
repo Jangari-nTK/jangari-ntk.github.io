@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Memory on vSoliloquy</title>
-    <link>http://localhost:1313/tags/memory/</link>
+    <link>https://jangari-ntk.github.io/tags/memory/</link>
     <description>Recent content in Memory on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Copyright © 2025 VSOLILOQUY. All Rights Reserved.</copyright>
-    <lastBuildDate>Tue, 19 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/memory/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 19 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://jangari-ntk.github.io/tags/memory/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>仮想マシンのメモリの Active と Comsumed の動きを見る</title>
-      <link>http://localhost:1313/post/2021-01-19/</link>
+      <link>https://jangari-ntk.github.io/post/2021-01-19/</link>
       <pubDate>Tue, 19 Jan 2021 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/post/2021-01-19/</guid>
+      <guid>https://jangari-ntk.github.io/post/2021-01-19/</guid>
       <description>
         
           

@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Nested on vSoliloquy</title>
-    <link>http://localhost:1313/tags/nested/</link>
+    <link>https://jangari-ntk.github.io/tags/nested/</link>
     <description>Recent content in Nested on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Copyright © 2025 VSOLILOQUY. All Rights Reserved.</copyright>
-    <lastBuildDate>Sun, 30 Aug 2020 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/nested/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 30 Aug 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jangari-ntk.github.io/tags/nested/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>vRealize Automation 8.1 で Nested ESXi の Blueprint を作ってみた</title>
-      <link>http://localhost:1313/post/2020-08-30/</link>
+      <link>https://jangari-ntk.github.io/post/2020-08-30/</link>
       <pubDate>Sun, 30 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/post/2020-08-30/</guid>
+      <guid>https://jangari-ntk.github.io/post/2020-08-30/</guid>
       <description>
         
           
@@ -44,7 +44,7 @@
       alt=&#34;Traditional IT Service Request&#34;
       
         class=&#34;image_figure image_internal image_unprocessed&#34;
-        src=&#34;http://localhost:1313/images/2020-08-30/Traditional_IT_Service_Request.png&#34;
+        src=&#34;https://jangari-ntk.github.io/images/2020-08-30/Traditional_IT_Service_Request.png&#34;
       
       
     /&gt;
@@ -62,10 +62,10 @@
     
     <item>
       <title>Nested ESXi のテンプレート作りに必要な設定と解説</title>
-      <link>http://localhost:1313/post/2020-08-23/</link>
+      <link>https://jangari-ntk.github.io/post/2020-08-23/</link>
       <pubDate>Sun, 23 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/post/2020-08-23/</guid>
+      <guid>https://jangari-ntk.github.io/post/2020-08-23/</guid>
       <description>
         
           
@@ -88,10 +88,10 @@
     
     <item>
       <title>pyVmomi から API 操作で Instant Clone をやってみる</title>
-      <link>http://localhost:1313/post/2020-08-07/</link>
+      <link>https://jangari-ntk.github.io/post/2020-08-07/</link>
       <pubDate>Fri, 07 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/post/2020-08-07/</guid>
+      <guid>https://jangari-ntk.github.io/post/2020-08-07/</guid>
       <description>
         
           

@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>ESXi on Arm on vSoliloquy</title>
-    <link>http://localhost:1313/tags/esxi-on-arm/</link>
+    <link>https://jangari-ntk.github.io/tags/esxi-on-arm/</link>
     <description>Recent content in ESXi on Arm on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Copyright © 2025 VSOLILOQUY. All Rights Reserved.</copyright>
-    <lastBuildDate>Sat, 17 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/esxi-on-arm/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 17 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jangari-ntk.github.io/tags/esxi-on-arm/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>open-vm-tools を CentOS 8 aarch64 でビルド＆インストール</title>
-      <link>http://localhost:1313/post/2020-10-17/</link>
+      <link>https://jangari-ntk.github.io/post/2020-10-17/</link>
       <pubDate>Sat, 17 Oct 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/post/2020-10-17/</guid>
+      <guid>https://jangari-ntk.github.io/post/2020-10-17/</guid>
       <description>
         
           
@@ -48,10 +48,10 @@
     
     <item>
       <title>【HomeLab】ホストの USB デバイスを vSAN で使用するための設定</title>
-      <link>http://localhost:1313/post/2020-10-09/</link>
+      <link>https://jangari-ntk.github.io/post/2020-10-09/</link>
       <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/post/2020-10-09/</guid>
+      <guid>https://jangari-ntk.github.io/post/2020-10-09/</guid>
       <description>
         
           

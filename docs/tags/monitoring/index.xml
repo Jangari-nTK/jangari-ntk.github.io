@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Monitoring on vSoliloquy</title>
-    <link>http://localhost:1313/tags/monitoring/</link>
+    <link>https://jangari-ntk.github.io/tags/monitoring/</link>
     <description>Recent content in Monitoring on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Copyright © 2025 VSOLILOQUY. All Rights Reserved.</copyright>
-    <lastBuildDate>Sun, 18 Jun 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/monitoring/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 18 Jun 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://jangari-ntk.github.io/tags/monitoring/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>VMware Skyline Health Diagnostics を vSphere Client プラグインとして使用する</title>
-      <link>http://localhost:1313/post/2023-06-18/</link>
+      <link>https://jangari-ntk.github.io/post/2023-06-18/</link>
       <pubDate>Sun, 18 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/post/2023-06-18/</guid>
+      <guid>https://jangari-ntk.github.io/post/2023-06-18/</guid>
       <description>
         
           
@@ -36,10 +36,10 @@
     
     <item>
       <title>PowerCLI で vCenter Server のトリガー済みアラームを取得</title>
-      <link>http://localhost:1313/post/2022-12-09/</link>
+      <link>https://jangari-ntk.github.io/post/2022-12-09/</link>
       <pubDate>Fri, 09 Dec 2022 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/post/2022-12-09/</guid>
+      <guid>https://jangari-ntk.github.io/post/2022-12-09/</guid>
       <description>
         
           
@@ -63,7 +63,7 @@
       alt=&#34;&#34;
       
         class=&#34;image_figure image_internal image_unprocessed&#34;
-        src=&#34;http://localhost:1313/images/2022-12-09/vc_triggered_alarm_gui.PNG&#34;
+        src=&#34;https://jangari-ntk.github.io/images/2022-12-09/vc_triggered_alarm_gui.PNG&#34;
       
       
     /&gt;
@@ -95,7 +95,7 @@
       alt=&#34;&#34;
       
         class=&#34;image_figure image_internal image_unprocessed&#34;
-        src=&#34;http://localhost:1313/images/2022-12-09/inventory_hierarchy.PNG&#34;
+        src=&#34;https://jangari-ntk.github.io/images/2022-12-09/inventory_hierarchy.PNG&#34;
       
       
     /&gt;
@@ -121,7 +121,7 @@
       alt=&#34;&#34;
       
         class=&#34;image_figure image_internal image_unprocessed&#34;
-        src=&#34;http://localhost:1313/images/2022-12-09/vc_triggered_alarm_gui_root_folder.PNG&#34;
+        src=&#34;https://jangari-ntk.github.io/images/2022-12-09/vc_triggered_alarm_gui_root_folder.PNG&#34;
       
       
     /&gt;
@@ -164,10 +164,10 @@
     
     <item>
       <title>esxcli を使用したログフィルタリングの構成</title>
-      <link>http://localhost:1313/post/2022-02-04/</link>
+      <link>https://jangari-ntk.github.io/post/2022-02-04/</link>
       <pubDate>Fri, 04 Feb 2022 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/post/2022-02-04/</guid>
+      <guid>https://jangari-ntk.github.io/post/2022-02-04/</guid>
       <description>
         
           

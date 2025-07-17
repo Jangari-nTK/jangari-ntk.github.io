@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Storage on vSoliloquy</title>
-    <link>http://localhost:1313/tags/storage/</link>
+    <link>https://jangari-ntk.github.io/tags/storage/</link>
     <description>Recent content in Storage on vSoliloquy</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Copyright © 2025 VSOLILOQUY. All Rights Reserved.</copyright>
-    <lastBuildDate>Tue, 26 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/storage/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 26 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://jangari-ntk.github.io/tags/storage/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>【メモ】VMFS 6 上のシック形式の仮想ディスクには vmkfstools -K (--punchzero) が効かない</title>
-      <link>http://localhost:1313/post/2022-04-26/</link>
+      <link>https://jangari-ntk.github.io/post/2022-04-26/</link>
       <pubDate>Tue, 26 Apr 2022 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/post/2022-04-26/</guid>
+      <guid>https://jangari-ntk.github.io/post/2022-04-26/</guid>
       <description>
         
           
