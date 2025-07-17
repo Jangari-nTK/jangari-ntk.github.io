@@ -65,15 +65,14 @@ Set Up an Offline Depot from VCF 9.0 Installer GUI fails with Secure …" />
 
 
 
-<link rel="preload" href="https://jangari-ntk.github.io/css/styles.9d3102f235bcb3c6b3de590d737841a2e98cdcc27d9fa68a5572034426a98371b72f4d6ac249c11aa5d3df8244f6c19a4dfaf9a8a8c159856249c49aa742f78e.css" integrity = "sha512-nTEC8jW8s8az3lkNc3hBoumM3MJ9n6aKVXIDRCapg3G3L01qwknBGqXT34JE9sGaTfr5qKjBWYViScSap0L3jg==" as="style" crossorigin="anonymous">
+<link rel="preload" href="https://jangari-ntk.github.io/css/styles.9d3102f235bcb3c6b3de590d737841a2e98cdcc27d9fa68a5572034426a98371b72f4d6ac249c11aa5d3df8244f6c19a4dfaf9a8a8c159856249c49aa742f78e.css" as="style" crossorigin="anonymous">
 
 
 
-<link rel="preload" href="https://jangari-ntk.github.io/en/js/bundle.28510de29a3dcce02790f4b64d92fcade001d67c585bee62a35ae10eb7d3e9b4b2e767e6d8bf5beb650ae0c2a79dd30943e95cba868db5a182a2b41c6a21c422.js" as="script" integrity=
-"sha512-KFEN4po9zOAnkPS2TZL8reAB1nxYW&#43;5io1rhDrfT6bSy52fm2L9b62UK4MKnndMJQ&#43;lcuoaNtaGCorQcaiHEIg==" crossorigin="anonymous">
+<link rel="preload" href="https://jangari-ntk.github.io/en/js/bundle.28510de29a3dcce02790f4b64d92fcade001d67c585bee62a35ae10eb7d3e9b4b2e767e6d8bf5beb650ae0c2a79dd30943e95cba868db5a182a2b41c6a21c422.js" as="script" crossorigin="anonymous">
 
 
-<link rel="stylesheet" type="text/css" href="https://jangari-ntk.github.io/css/styles.9d3102f235bcb3c6b3de590d737841a2e98cdcc27d9fa68a5572034426a98371b72f4d6ac249c11aa5d3df8244f6c19a4dfaf9a8a8c159856249c49aa742f78e.css" integrity="sha512-nTEC8jW8s8az3lkNc3hBoumM3MJ9n6aKVXIDRCapg3G3L01qwknBGqXT34JE9sGaTfr5qKjBWYViScSap0L3jg==" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="https://jangari-ntk.github.io/css/styles.9d3102f235bcb3c6b3de590d737841a2e98cdcc27d9fa68a5572034426a98371b72f4d6ac249c11aa5d3df8244f6c19a4dfaf9a8a8c159856249c49aa742f78e.css" crossorigin="anonymous">
 
   </head>
   <body
@@ -209,7 +208,7 @@ Set Up an Offline Depot from VCF 9.0 Installer GUI fails with Secure …" />
 <p>オフラインデポのサーバ証明書に署名した CA 証明書が VCF Installer 側には無いので、サーバ証明書の検証がおこなえないため失敗する状況は想定できました。しかし、VCF 9 デプロイ前の VCF Installer の（まだ SDDC Manager でない）状態では CA 証明書をインポートする UI が無いようです。</p>
 <p>すでに <a href="https://williamlam.com/2025/06/using-http-with-vcf-9-0-installer-for-offline-depot.html">Broadcom の中の人</a>がオフラインデポへの接続で TLS を無効する方法（裏技？）を公開していますが、せっかくなので Broadcom 公式から開発者向けドキュメントが公開されている API を使用して CA 証明書をインポートすることで解決してみました。</p>
 <h2 id="事前準備-オフラインデポを構成">事前準備: オフラインデポを構成</h2>
-<p>まずはオフラインデポを構成するため、<a href="https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-9-0-and-later/9-0/lifecycle-management/what-is-the-vcf-download-tool-/vcf-download-tool-binaries-commands.html">VCF Download Tool</a> を使用して各コンポーネントのバイナリをダウンロードします（<a href="https://knowledge.broadcom.com/external/article/390098">ダウンロードトークン</a>が必要です）。</p>
+<p>まずはオフラインデポを構成するため、<a href="https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-9-0-and-later/9-0/lifecycle-management/what-is-the-vcf-download-tool-/vcf-download-tool-binaries-commands.html">VCF Download Tool</a> を使用して各コンポーネントのバイナリをダウンロードします（Broadcom Support Portal で生成した<a href="https://knowledge.broadcom.com/external/article/390098">ダウンロードトークン</a>が必要です）。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="o">$</span> <span class="o">./</span><span class="n">bin</span><span class="o">/</span><span class="n">vcf</span><span class="o">-</span><span class="n">download</span><span class="o">-</span><span class="k">tool</span> <span class="n">binaries</span> <span class="n">download</span> <span class="o">--</span><span class="n">vcf</span><span class="o">-</span><span class="n">version</span> <span class="mf">9.0</span><span class="o">.</span><span class="mf">0.0</span> <span class="o">--</span><span class="n">automated</span><span class="o">-</span><span class="n">install</span> <span class="o">-</span><span class="n">d</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">depot</span> <span class="o">-</span><span class="n">t</span> <span class="n">INSTALL</span> <span class="o">--</span><span class="n">depot</span><span class="o">-</span><span class="n">download</span><span class="o">-</span><span class="n">token</span><span class="o">-</span><span class="n">file</span> <span class="n">downloadtoken</span><span class="o">.</span><span class="n">txt</span>
 </span></span></code></pre></div><p>ダウンロードが完了すると、デポのディレクトリ階層は以下のようになります。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">$ tree /mnt/depot/
@@ -387,10 +386,12 @@ Set Up an Offline Depot from VCF 9.0 Installer GUI fails with Secure …" />
 </figure>
 </p>
 <h2 id="おわりに">おわりに</h2>
+<p>今回は VCF Installer からオフラインデポに HTTPS 接続するために CA 証明書を VCF Installer にインポートしてみました。</p>
+<p>オフラインデポ側で Basic 認証を使う場合には認証情報を平文でネットワーク上に流さないために TLS での暗号化は必須になります。単なるインストールバイナリの転送とはいえど、セキュリティが厳しい環境では TLS 通信の適切なハンドリングが必要な可能性もありますので、そういった場合にお役に立てば幸いです。</p>
 <h2 id="補足-リフレッシュトークン">補足: リフレッシュトークン</h2>
-<p><a href="https://developer.broadcom.com/xapis/vcf-installer-api/latest/v1/tokens/post/">Create Token</a> で一緒に取得した refreshToken は <a href="https://developer.broadcom.com/xapis/vcf-installer-api/latest/v1/tokens/access-token/refresh/patch/">Refresh Access Token</a> API でアクセストークンを更新するためのトークンです。</p>
-<p>アクセストークンを持っているユーザーは「それが誰かにかかわらず」トークン内で指定された機能にアクセスできるため、アクセストークンは一般に有効期限が短く設定されています。</p>
-<p>アクセストークンの形式は JWT のため任意のツールでデコードできます。<a href="https://jwt.io/ja">Auth0(Okta)が提供しているデコーダー</a>を使って iat　(Issued at) と exp (Expiration time) を確認すると差が 3600(秒)、つまり1時間で有効期限が切れることが分かります。</p>
+<p><a href="https://developer.broadcom.com/xapis/vcf-installer-api/latest/v1/tokens/post/">Create Token</a> API で一緒に取得した refreshToken は <a href="https://developer.broadcom.com/xapis/vcf-installer-api/latest/v1/tokens/access-token/refresh/patch/">Refresh Access Token</a> API でアクセストークンを更新するためのトークンです。</p>
+<p>アクセストークンを持っているユーザーは「それが誰かにかかわらず」トークン内で指定された機能にアクセスできるため、アクセストークンは一般に有効期限が短く設定されています。このため、定期的な処理などで利用する場合にはアクセストークンの有効期限を確認しつつ、必要に応じてリフレッシュトークンで新しいアクセストークンを生成することになります。</p>
+<p>なお、アクセストークンの形式は JSON Web Token (JWT) のため任意のツールでデコードできます。<a href="https://jwt.io/ja">Auth0(Okta)が提供しているデコーダー</a>を使って iat　(Issued at) と exp (Expiration time) を確認すると差が 3600(秒)、つまり1時間で有効期限が切れることが分かります。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">{
 </span></span><span class="line"><span class="ln"> 2</span><span class="cl">  &#34;jti&#34;: &#34;64236353-4a5c-4023-9409-066f39aecd0d&#34;,
 </span></span><span class="line"><span class="ln"> 3</span><span class="cl">  &#34;iat&#34;: 1752756332,
