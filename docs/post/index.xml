@@ -7,7 +7,39 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Copyright © 2025 VSOLILOQUY. All Rights Reserved.</copyright>
-    <lastBuildDate>Thu, 17 Jul 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://jangari-ntk.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 02 Aug 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://jangari-ntk.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>pyvmomi で仮想マシンに紐づかない vSAN オブジェクトにストレージポリシーを適用してみる</title>
+      <link>https://jangari-ntk.github.io/post/2025-08-02/</link>
+      <pubDate>Sat, 02 Aug 2025 00:00:00 +0000</pubDate>
+      
+      <guid>https://jangari-ntk.github.io/post/2025-08-02/</guid>
+      <description>
+        
+          
+            &lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;vSAN では仮想マシンを構成する VM Home オブジェクトと仮想ディスクオブジェクトには vSphere Client から個別にストレージポリシーを適用することができます。&lt;/p&gt;
+&lt;p&gt;しかし、vSAN 上にデータストアブラウザから作成したディレクトリのように、仮想マシンに紐づかない vSAN オブジェクトには vSphere Client からストレージポリシーを適用することができません。&lt;/p&gt;
+&lt;p&gt;どうにかして操作できそうにないかと vSAN Management API のドキュメントを眺めていたところ、目的を達成できそうな以下の vSAN Management API を見つけました。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://developer.broadcom.com/xapis/vsan-management-api/latest/vim.cluster.VsanObjectSystem.html#setVsanObjectPolicy&#34;&gt;VosSetVsanObjectPolicy(setVsanObjectPolicy) - vSAN Management API&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;今回、pyvmomi を使ってこの API を叩くことで、仮想マシンに紐づかない vSAN オブジェクトに対してストレージポリシーを適用する Python スクリプトを作りました（面倒だったので GitHub Copilot に書いてもらいました）。単に API をそのまま呼び出しているだけのスクリプトですが記事として公開しておきます。&lt;/p&gt;
+&lt;h2 id=&#34;背景&#34;&gt;背景&lt;/h2&gt;
+&lt;p&gt;仮想マシンに紐づかない vSAN オブジェクトのストレージポリシーを変更する方法として、&lt;a href=&#34;https://knowledge.broadcom.com/external/article/385634/vsan-host-may-not-enter-maintenance-mode.html&#34;&gt;objtool setPolicy&lt;/a&gt; や &lt;a href=&#34;https://cormachogan.com/2018/10/23/change-policy-on-a-vsan-object-via-rvc/&#34;&gt;RVC の vsan.object_reconfigure&lt;/a&gt; で vSAN オブジェクトを直接編集する方法があります。&lt;/p&gt;
+&lt;p&gt;しかし、vCenter Server が管理するストレージポリシーを適用しているわけではないため、以下のような不便さが出てきます。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;vSAN オブジェクトの属性を直接指定する必要があるため、パラメータの指定方法が煩雑になる。&lt;/li&gt;
+&lt;li&gt;クラスタの [監視] タブ &amp;gt; [仮想オブジェクト] 等でストレージポリシーが表示されない。&lt;/li&gt;
+&lt;li&gt;[配置の詳細の表示] からコンポーネントの配置状況は確認できるが、それ以外のポリシーが確認できない。例えばオブジェクト容量の予約を確認しようとすると objtool や RVC での確認が必要になる。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;個人的な考えとして、objtool や RVC を vSAN のトラブルシューティング目的で使う分にはこれらのツールの主旨に沿うと思っていますが、上述の通りそもそも vSAN オブジェクトの直接操作なので通常運用時に濫用すべきツールではないと考えています。&lt;/p&gt;
+          
+          
+        
+      </description>
+    </item>
+    
     <item>
       <title>VCF Installer に Offline Depot 用の CA 証明書を API でインポートする</title>
       <link>https://jangari-ntk.github.io/post/2025-07-17/</link>

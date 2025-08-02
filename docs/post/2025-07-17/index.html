@@ -30,21 +30,15 @@
 <meta property="og:locale" content="en" />
 
 <meta property="og:type" content="article">
-<meta name="description" content="概要
-VCF Installer での VCF9 のデプロイにあたり、オフラインデポに HTTPS での接続を試みたところ以下の KB#403203 に記載の事象に遭遇しました。
-
-Set Up an Offline Depot from VCF 9.0 Installer GUI fails with Secure …" />
+<meta name="description" content="VCF Installer での VCF9 のデプロイにあたり、オフラインデポに HTTPS での接続を試みたところ KB#403203 に記載の事象に遭遇しました。オフラインデポのサーバ証明書に署名した CA 証明書が VCF Installer 側には無いので、サーバ証明書の検証がおこなえないため失敗する状況は想定 …" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="@Jangari_nTK">
 <meta name="twitter:title" content="VCF Installer に Offline Depot 用の CA 証明書を API でインポートする" />
-<meta name="twitter:image" content="https://jangari-ntk.github.io/images/2025-04-29/thumbnail.PNG"/>
+<meta name="twitter:image" content="https://jangari-ntk.github.io/images/2025-07-17/success_02.jpg"/>
 <meta property="og:url" content="https://jangari-ntk.github.io/post/2025-07-17/" />
 <meta property="og:title" content="VCF Installer に Offline Depot 用の CA 証明書を API でインポートする" />
-<meta property="og:description" content="概要
-VCF Installer での VCF9 のデプロイにあたり、オフラインデポに HTTPS での接続を試みたところ以下の KB#403203 に記載の事象に遭遇しました。
-
-Set Up an Offline Depot from VCF 9.0 Installer GUI fails with Secure …" />
-<meta property="og:image" content="https://jangari-ntk.github.io/images/2025-04-29/thumbnail.PNG" />
+<meta property="og:description" content="VCF Installer での VCF9 のデプロイにあたり、オフラインデポに HTTPS での接続を試みたところ KB#403203 に記載の事象に遭遇しました。オフラインデポのサーバ証明書に署名した CA 証明書が VCF Installer 側には無いので、サーバ証明書の検証がおこなえないため失敗する状況は想定 …" />
+<meta property="og:image" content="https://jangari-ntk.github.io/images/2025-07-17/success_02.jpg" />
   <meta name="keywords" content="VMware Cloud Foundation,VCF Installer,Tips" />
 
 <link rel="apple-touch-icon" sizes="180x180" href="https://jangari-ntk.github.io/icons/apple-touch-icon.png">
@@ -460,6 +454,9 @@ Set Up an Offline Depot from VCF 9.0 Installer GUI fails with Secure …" />
     <h2 class="mt-4">Recent Posts</h2>
     <ul class="flex-column">
       <li>
+        <a href="https://jangari-ntk.github.io/post/2025-08-02/" class="nav-link" title="pyvmomi で仮想マシンに紐づかない vSAN オブジェクトにストレージポリシーを適用してみる">pyvmomi で仮想マシンに紐づかない vSAN オブジェクトにストレージポリシーを適用してみる</a>
+      </li>
+      <li>
         <a href="https://jangari-ntk.github.io/post/2025-05-11/" class="nav-link" title="【備忘録】TKG 2.5.2 用の Linux カスタムイメージのビルドで引っかかった箇所のメモ書き">【備忘録】TKG 2.5.2 用の Linux カスタムイメージのビルドで引っかかった箇所のメモ書き</a>
       </li>
       <li>
@@ -479,9 +476,6 @@ Set Up an Offline Depot from VCF 9.0 Installer GUI fails with Secure …" />
       </li>
       <li>
         <a href="https://jangari-ntk.github.io/post/2022-08-02/" class="nav-link" title="ESXi の構成情報の暗号化、TPM による追加の保護、TPM 障害からの復旧">ESXi の構成情報の暗号化、TPM による追加の保護、TPM 障害からの復旧</a>
-      </li>
-      <li>
-        <a href="https://jangari-ntk.github.io/post/2022-05-04/" class="nav-link" title="vSphere Diagnostic Tool を使ってみる">vSphere Diagnostic Tool を使ってみる</a>
       </li>
     </ul>
     <h2>Search</h2>
@@ -512,6 +506,11 @@ Set Up an Offline Depot from VCF 9.0 Installer GUI fails with Secure …" />
           <span class="button_tally">1</span>
         </a>
         
+        <a href='https://jangari-ntk.github.io/categories/vsan/' class="post_tag button button_translucent" title="vsan">
+          VSAN
+          <span class="button_tally">1</span>
+        </a>
+        
         
       </nav>
     </div>
@@ -530,7 +529,7 @@ Set Up an Offline Depot from VCF 9.0 Installer GUI fails with Secure …" />
         
         <a href='https://jangari-ntk.github.io/tags/tips/' class="post_tag button button_translucent" title="tips">
           TIPS
-          <span class="button_tally">22</span>
+          <span class="button_tally">23</span>
         </a>
         
         <a href='https://jangari-ntk.github.io/tags/vcenter-server/' class="post_tag button button_translucent" title="vcenter server">
@@ -583,9 +582,9 @@ Set Up an Offline Depot from VCF 9.0 Installer GUI fails with Secure …" />
           <span class="button_tally">3</span>
         </a>
         
-        <a href='https://jangari-ntk.github.io/tags/esxi-on-arm/' class="post_tag button button_translucent" title="esxi on arm">
-          ESXI ON ARM
-          <span class="button_tally">2</span>
+        <a href='https://jangari-ntk.github.io/tags/vsan/' class="post_tag button button_translucent" title="vsan">
+          VSAN
+          <span class="button_tally">3</span>
         </a>
         
         
@@ -674,6 +673,14 @@ Set Up an Offline Depot from VCF 9.0 Installer GUI fails with Secure …" />
             </a>
             
             
+            <a href='https://jangari-ntk.github.io/tags/python/' class=" post_tag button button_translucent" data-position=1 title="python">PYTHON<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://jangari-ntk.github.io/tags/pyvmomi/' class=" post_tag button button_translucent" data-position=1 title="pyvmomi">PYVMOMI<span class="button_tally">1</span>
+            </a>
+            
+            
             <a href='https://jangari-ntk.github.io/tags/raspberry-pi/' class=" post_tag button button_translucent" data-position=1 title="raspberry pi">RASPBERRY PI<span class="button_tally">1</span>
             </a>
             
@@ -694,11 +701,15 @@ Set Up an Offline Depot from VCF 9.0 Installer GUI fails with Secure …" />
             </a>
             
             
+            <a href='https://jangari-ntk.github.io/tags/storage-policy/' class=" post_tag button button_translucent" data-position=1 title="storage policy">STORAGE POLICY<span class="button_tally">1</span>
+            </a>
+            
+            
             <a href='https://jangari-ntk.github.io/tags/tanzu-kubernetes-grid/' class=" post_tag button button_translucent" data-position=2 title="tanzu kubernetes grid">TANZU KUBERNETES GRID<span class="button_tally">2</span>
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/tips/' class=" post_tag button button_translucent" data-position=22 title="tips">TIPS<span class="button_tally">22</span>
+            <a href='https://jangari-ntk.github.io/tags/tips/' class=" post_tag button button_translucent" data-position=23 title="tips">TIPS<span class="button_tally">23</span>
             </a>
             
             
@@ -730,7 +741,7 @@ Set Up an Offline Depot from VCF 9.0 Installer GUI fails with Secure …" />
             </a>
             
             
-            <a href='https://jangari-ntk.github.io/tags/vsan/' class=" post_tag button button_translucent" data-position=2 title="vsan">VSAN<span class="button_tally">2</span>
+            <a href='https://jangari-ntk.github.io/tags/vsan/' class=" post_tag button button_translucent" data-position=3 title="vsan">VSAN<span class="button_tally">3</span>
             </a>
             
             
